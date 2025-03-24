@@ -67,6 +67,8 @@ func addLogCmd(rootCmd *cobra.Command) {
 			Example: `
 	Get logs from a server
 		log -w 637128 -s app
+	Get all logs of all servers
+		log -w 637128
 	Get logs from a replica
 		log -w 637128 -r workspace-213d7a8c-48b4-42e2-8f70-c905ab04abb5-58d657cdc5-m8rrp
 	Get logs from a self-hosted Codesphere installation:
