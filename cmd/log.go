@@ -13,8 +13,11 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
+	"sync"
 
+	"github.com/codesphere-cloud/cs/pkg/cs"
 	"github.com/spf13/cobra"
 )
 
@@ -24,11 +27,11 @@ type LogCmd struct {
 }
 
 type LogCmdScope struct {
-	workspaceId *int32
+	workspaceId *int
 	server      *string
-	step        *int32
+	step        *int
 	replica     *string
-	host        *string
+	api         *string
 }
 
 type LogEntry struct {
@@ -67,7 +70,7 @@ func addLogCmd(rootCmd *cobra.Command) {
 	Get logs from a replica
 		log -w 637128 -r workspace-213d7a8c-48b4-42e2-8f70-c905ab04abb5-58d657cdc5-m8rrp
 	Get logs from a self-hosted Codesphere installation:
-		log --host codesphere.acme.com -w 637128 -s app`,
+		log --api https://codesphere.acme.com/api -w 637128 -s app`,
 		},
 	}
 	logCmd.cmd.RunE = logCmd.RunE
@@ -77,22 +80,27 @@ func addLogCmd(rootCmd *cobra.Command) {
 
 func (logCmd *LogCmd) parseLogCmdFlags() {
 	logCmd.scope = LogCmdScope{
-		host:        logCmd.cmd.Flags().String("host", "codesphere.com", "Hostname of Codesphere installation"),
-		workspaceId: logCmd.cmd.Flags().Int32P("workspace-id", "w", 0, "ID of Codesphere workspace"),
-		server:      logCmd.cmd.Flags().StringP("server", "s", "codesphere-ide", "Name of the landscape server"),
-		step:        logCmd.cmd.Flags().Int32P("step", "n", 0, "Index of execution step (default 0)"),
+		api:         logCmd.cmd.Flags().String("api", "", "URL of Codesphere API (can also be CS_API)"),
+		workspaceId: logCmd.cmd.Flags().IntP("workspace-id", "w", 0, "ID of Codesphere workspace (can also be CS_WORKSPACE_ID)"),
+		server:      logCmd.cmd.Flags().StringP("server", "s", "", "Name of the landscape server"),
+		step:        logCmd.cmd.Flags().IntP("step", "n", 0, "Index of execution step (default 0)"),
 		replica:     logCmd.cmd.Flags().StringP("replica", "r", "", "ID of server replica"),
 	}
 }
 
-func (logCmd *LogCmd) RunE(_ *cobra.Command, args []string) error {
+func (logCmd *LogCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	if *logCmd.scope.workspaceId == 0 {
-		return errors.New("Workspace ID required, but not provided.")
+		*logCmd.scope.workspaceId, err = strconv.Atoi(os.Getenv("CS_WORKSPACE_ID"))
+		if err != nil {
+			return fmt.Errorf("Failed to read env var: %e", err)
+		}
+		if *logCmd.scope.workspaceId == 0 {
+			return errors.New("Workspace ID required, but not provided.")
+		}
 	}
 
-	apiToken := os.Getenv("CS_TOKEN")
-	if apiToken == "" {
-		return errors.New("CS_TOKEN env var required, but not set.")
+	if *logCmd.scope.api == "" {
+		*logCmd.scope.api = cs.GetApiUrl()
 	}
 
 	if *logCmd.scope.replica != "" {
@@ -103,37 +111,71 @@ func (logCmd *LogCmd) RunE(_ *cobra.Command, args []string) error {
 				"server", *logCmd.scope.server,
 			)
 		}
-		return printLogsOfReplica(apiToken, &logCmd.scope)
+		return printLogsOfReplica("", &logCmd.scope)
 	}
 	if *logCmd.scope.server != "" {
-		return printLogsOfServer(apiToken, &logCmd.scope)
+		return printLogsOfServer(&logCmd.scope)
 	}
-	return errors.New("Server name must not be empty")
+
+	logCmd.printAllLogs()
+	if err != nil {
+		return fmt.Errorf("Failed to print logs: %e", err)
+	}
+
+	return nil
 }
 
-func printLogsOfReplica(apiToken string, scope *LogCmdScope) error {
+func (l *LogCmd) printAllLogs() error {
+	fmt.Println("Printing logs of all replicas")
+
+	replicas, err := cs.GetPipelineStatus(*l.scope.workspaceId, "run")
+	if err != nil {
+		return fmt.Errorf("Failed to get pipeline status: %e", err)
+	}
+
+	var wg sync.WaitGroup
+	for _, replica := range replicas {
+		for s, _ := range replica.Steps {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				scope := l.scope
+				*scope.step = s
+				*scope.replica = replica.Replica
+				prefix := fmt.Sprintf("|%-10s|%s", replica.Server, replica.Replica[len(replica.Replica)-11:])
+				printLogsOfReplica(prefix, &scope)
+			}()
+		}
+	}
+	wg.Wait()
+
+	return nil
+}
+
+func printLogsOfReplica(prefix string, scope *LogCmdScope) error {
 	endpoint := fmt.Sprintf(
-		"https://%s/api/workspaces/%d/logs/run/%d/replica/%s",
-		*scope.host,
+		"%s/workspaces/%d/logs/run/%d/replica/%s",
+		*scope.api,
 		*scope.workspaceId,
 		*scope.step,
 		*scope.replica,
 	)
-	return printLogsOfEndpoint(apiToken, endpoint)
+	return printLogsOfEndpoint(prefix, endpoint)
 }
 
-func printLogsOfServer(apiToken string, scope *LogCmdScope) error {
+func printLogsOfServer(scope *LogCmdScope) error {
 	endpoint := fmt.Sprintf(
-		"https://%s/api/workspaces/%d/logs/run/%d/server/%s",
-		*scope.host,
+		"%s/workspaces/%d/logs/run/%d/server/%s",
+		*scope.api,
 		*scope.workspaceId,
 		*scope.step,
 		*scope.server,
 	)
-	return printLogsOfEndpoint(apiToken, endpoint)
+	return printLogsOfEndpoint("", endpoint)
 }
 
-func printLogsOfEndpoint(apiToken string, endpoint string) error {
+func printLogsOfEndpoint(prefix string, endpoint string) error {
+	fmt.Println(endpoint)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -144,10 +186,9 @@ func printLogsOfEndpoint(apiToken string, endpoint string) error {
 
 	// Set the Accept header to indicate SSE
 	req.Header.Set("Accept", "text/event-stream")
-	req.Header.Set("Authorization", "Bearer "+apiToken)
+	cs.SetAuthoriziationHeader(req)
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("Failed to request logs: %s", err)
 	}
@@ -212,7 +253,7 @@ func printLogsOfEndpoint(apiToken string, endpoint string) error {
 		}
 
 		for i := 0; i < len(log); i++ {
-			fmt.Print(log[i].Data)
+			fmt.Printf("%s%s| %s", log[i].Timestamp, prefix, log[i].Data)
 		}
 	}
 }
