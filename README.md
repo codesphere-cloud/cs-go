@@ -11,7 +11,7 @@ make install
 # Usage
 
 ```
-$ go log -w <workspace_id>
+$ cs log -w <workspace_id>
 ```
 
 # Environment variables
