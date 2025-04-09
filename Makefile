@@ -23,6 +23,16 @@ generate-client:
 	    --additional-properties=isGoSubmodule=true,withGoMod=false,packageName=openapi_client \
 	    --skip-validate-spec # TODO: remove once the Codesphere openapi spec is fixed
 	# Remove all non-go files
-	rm -r ${OPENAPI_DIR}/api ${OPENAPI_DIR}/git_push.sh ${OPENAPI_DIR}/.travis.yml ${OPENAPI_DIR}/docs ${OPENAPI_DIR}/test ${OPENAPI_DIR}/README.md
+	rm -r \
+		${OPENAPI_DIR}/.gitignore \
+		${OPENAPI_DIR}/.openapi-generator/FILES \
+		${OPENAPI_DIR}/.openapi-generator-ignore \
+		${OPENAPI_DIR}/.travis.yml \
+		${OPENAPI_DIR}/api \
+		${OPENAPI_DIR}/docs \
+		${OPENAPI_DIR}/git_push.sh \
+		${OPENAPI_DIR}/README.md \
+		${OPENAPI_DIR}/test
+		
 
 generate: generate-client format
