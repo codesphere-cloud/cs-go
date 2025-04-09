@@ -17,7 +17,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/codesphere-cloud/cs/pkg/cs"
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/spf13/cobra"
 )
 

@@ -1,5 +1,6 @@
 build:
-	go build
+	cd cmd/cs && go build
+	mv cmd/cs/cs .
 
 install:
-	go install
+	cd cmd/cs && go install

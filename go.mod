@@ -1,4 +1,4 @@
-module github.com/codesphere-cloud/cs
+module github.com/codesphere-cloud/cs-go
 
 go 1.23.6
 
