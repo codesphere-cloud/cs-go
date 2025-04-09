@@ -25,3 +25,6 @@ go.work.sum
 .env
 .envrc
 cs
+
+# openapi generator
+openapitools.json
