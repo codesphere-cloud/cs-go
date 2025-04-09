@@ -1,6 +1,6 @@
 module github.com/codesphere-cloud/cs-go
 
-go 1.23.6
+go 1.24.2
 
 require github.com/spf13/cobra v1.9.1
 
