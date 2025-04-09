@@ -94,10 +94,10 @@ func (logCmd *LogCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	if *logCmd.scope.workspaceId == 0 {
 		*logCmd.scope.workspaceId, err = strconv.Atoi(os.Getenv("CS_WORKSPACE_ID"))
 		if err != nil {
-			return fmt.Errorf("Failed to read env var: %e", err)
+			return fmt.Errorf("failer to read env var: %e", err)
 		}
 		if *logCmd.scope.workspaceId == 0 {
-			return errors.New("Workspace ID required, but not provided.")
+			return errors.New("workspace ID required, but not provided")
 		}
 	}
 
@@ -119,9 +119,9 @@ func (logCmd *LogCmd) RunE(_ *cobra.Command, args []string) (err error) {
 		return printLogsOfServer(&logCmd.scope)
 	}
 
-	logCmd.printAllLogs()
+	err = logCmd.printAllLogs()
 	if err != nil {
-		return fmt.Errorf("Failed to print logs: %e", err)
+		return fmt.Errorf("failed to print logs: %e", err)
 	}
 
 	return nil
@@ -132,12 +132,12 @@ func (l *LogCmd) printAllLogs() error {
 
 	replicas, err := cs.GetPipelineStatus(*l.scope.workspaceId, "run")
 	if err != nil {
-		return fmt.Errorf("Failed to get pipeline status: %e", err)
+		return fmt.Errorf("failed to get pipeline status: %e", err)
 	}
 
 	var wg sync.WaitGroup
 	for _, replica := range replicas {
-		for s, _ := range replica.Steps {
+		for s := range replica.Steps {
 			wg.Add(1)
 			go func() {
 				defer wg.Done()
@@ -145,7 +145,10 @@ func (l *LogCmd) printAllLogs() error {
 				*scope.step = s
 				*scope.replica = replica.Replica
 				prefix := fmt.Sprintf("|%-10s|%s", replica.Server, replica.Replica[len(replica.Replica)-11:])
-				printLogsOfReplica(prefix, &scope)
+				err = printLogsOfReplica(prefix, &scope)
+				if err != nil {
+					fmt.Printf("Error printling logs: %e\n", err)
+				}
 			}()
 		}
 	}
@@ -183,21 +186,24 @@ func printLogsOfEndpoint(prefix string, endpoint string) error {
 
 	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
-		return fmt.Errorf("Failed to construct request: %s", err)
+		return fmt.Errorf("failed to construct request: %s", err)
 	}
 
 	// Set the Accept header to indicate SSE
 	req.Header.Set("Accept", "text/event-stream")
-	cs.SetAuthoriziationHeader(req)
+	err = cs.SetAuthoriziationHeader(req)
+	if err != nil {
+		return fmt.Errorf("failed to set header: %e", err)
+	}
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return fmt.Errorf("Failed to request logs: %s", err)
+		return fmt.Errorf("failed to request logs: %e", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("Log server responded with non-ok code: %d", resp.StatusCode)
+		return fmt.Errorf("log server responded with non-ok code: %d", resp.StatusCode)
 	}
 
 	reader := bufio.NewReader(resp.Body)
@@ -210,7 +216,7 @@ func printLogsOfEndpoint(prefix string, endpoint string) error {
 				if err == io.EOF {
 					return nil
 				}
-				return fmt.Errorf("Failed to parse log: %s", err)
+				return fmt.Errorf("failed to parse log: %s", err)
 			}
 
 			line = strings.TrimSpace(line)
@@ -247,9 +253,12 @@ func printLogsOfEndpoint(prefix string, endpoint string) error {
 		err := json.Unmarshal([]byte(sse.data), &log)
 		if err != nil {
 			var errRes ErrResponse
-			json.Unmarshal([]byte(sse.data), &errRes)
+			err = json.Unmarshal([]byte(sse.data), &errRes)
+			if err != nil {
+				return fmt.Errorf("error reading error json: %e", err)
+			}
 			return fmt.Errorf(
-				"Server responded with error: %d %s: %s",
+				"server responded with error: %d %s: %s",
 				errRes.Status, errRes.Title, errRes.Detail,
 			)
 		}
