@@ -33,13 +33,13 @@ func GetPipelineStatus(ws int, stage string) (res []ReplicaStatus, err error) {
 
 	status, err := Get(fmt.Sprintf("workspaces/%d/pipeline/%s", ws, stage))
 	if err != nil {
-		err = fmt.Errorf("Failed to get pipeline status: %e", err)
+		err = fmt.Errorf("failed to get pipeline status: %e", err)
 		return
 	}
 
-	json.Unmarshal(status, &res)
+	err = json.Unmarshal(status, &res)
 	if err != nil {
-		err = fmt.Errorf("Failed to unmarshal pipeline status: %e", err)
+		err = fmt.Errorf("failed to unmarshal pipeline status: %e", err)
 		return
 	}
 	return
@@ -47,14 +47,22 @@ func GetPipelineStatus(ws int, stage string) (res []ReplicaStatus, err error) {
 
 func Get(path string) (body []byte, err error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/%s", GetApiUrl(), strings.TrimPrefix(path, "/")), http.NoBody)
-	SetAuthoriziationHeader(req)
+	if err != nil {
+		err = fmt.Errorf("failed to create request: %e", err)
+		return
+	}
+	err = SetAuthoriziationHeader(req)
+	if err != nil {
+		err = fmt.Errorf("failed to set header: %e", err)
+		return
+	}
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		err = fmt.Errorf("GET failed: %e", err)
 		return
 	}
-	defer res.Body.Close()
+	defer func() { _ = res.Body.Close() }()
 	body, err = io.ReadAll(res.Body)
 	return
 }
@@ -63,7 +71,7 @@ func SetAuthoriziationHeader(req *http.Request) error {
 
 	apiToken := os.Getenv("CS_TOKEN")
 	if apiToken == "" {
-		return errors.New("CS_TOKEN env var required, but not set.")
+		return errors.New("CS_TOKEN env var required, but not set")
 	}
 	req.Header.Set("Authorization", "Bearer "+apiToken)
 	return nil

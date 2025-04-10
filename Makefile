@@ -4,8 +4,8 @@ OPENAPI_DIR = ./pkg/api/openapi_client
 format:
 	go fmt ./...
 
-check:
-	go vet ./...
+lint:
+	golangci-lint run
 
 test:
 	go test ./...
