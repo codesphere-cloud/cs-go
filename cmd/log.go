@@ -94,7 +94,7 @@ func (logCmd *LogCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	if *logCmd.scope.workspaceId == 0 {
 		*logCmd.scope.workspaceId, err = strconv.Atoi(os.Getenv("CS_WORKSPACE_ID"))
 		if err != nil {
-			return fmt.Errorf("failer to read env var: %e", err)
+			return fmt.Errorf("failed to read env var: %e", err)
 		}
 		if *logCmd.scope.workspaceId == 0 {
 			return errors.New("workspace ID required, but not provided")
