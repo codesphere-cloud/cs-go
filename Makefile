@@ -1,6 +1,8 @@
 
 OPENAPI_DIR = ./pkg/api/openapi_client
 
+all: format build
+
 format:
 	go fmt ./...
 

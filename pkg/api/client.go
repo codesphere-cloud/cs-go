@@ -7,11 +7,9 @@ import (
 	"github.com/codesphere-cloud/cs-go/pkg/api/openapi_client"
 )
 
-type Client interface {
-	ListDataCenters() ([]DataCenter, error)
-	ListWorkspacePlans() ([]WorkspacePlan, error)
-
-	ListTeams() ([]Team, error)
+type Client struct {
+	ctx context.Context
+	api *openapi_client.APIClient
 }
 
 type Configuration struct {
@@ -19,36 +17,45 @@ type Configuration struct {
 	Token   string
 }
 
-func NewClient(ctx context.Context, opts Configuration) Client {
-	cfg := openapi_client.NewConfiguration()
-	if opts.BaseUrl != nil {
-		cfg.Servers = []openapi_client.ServerConfiguration{{
-			URL: opts.BaseUrl.String(),
-		}}
+func (c Configuration) GetApiUrl() *url.URL {
+	if c.BaseUrl != nil {
+		return c.BaseUrl
 	}
 
-	return &client{
+	// url.Parse() won't return an error on this static string,
+	// hence it's safe to ignore it.
+	defaultUrl, _ := url.Parse("https://codesphere.com/api")
+	return defaultUrl
+}
+
+func NewClient(ctx context.Context, opts Configuration) *Client {
+	cfg := openapi_client.NewConfiguration()
+	cfg.Servers = []openapi_client.ServerConfiguration{{
+		URL: opts.BaseUrl.String(),
+	}}
+
+	return &Client{
 		ctx: context.WithValue(ctx, openapi_client.ContextAccessToken, opts.Token),
 		api: openapi_client.NewAPIClient(cfg),
 	}
 }
 
-type client struct {
-	ctx context.Context
-	api *openapi_client.APIClient
-}
-
-func (c *client) ListDataCenters() ([]DataCenter, error) {
+func (c *Client) ListDataCenters() ([]DataCenter, error) {
 	datacenters, _, err := c.api.MetadataAPI.MetadataGetDatacenters(c.ctx).Execute()
 	return datacenters, err
 }
 
-func (c *client) ListWorkspacePlans() ([]WorkspacePlan, error) {
+func (c *Client) ListWorkspacePlans() ([]WorkspacePlan, error) {
 	plans, _, err := c.api.MetadataAPI.MetadataGetWorkspacePlans(c.ctx).Execute()
 	return plans, err
 }
 
-func (c *client) ListTeams() ([]Team, error) {
+func (c *Client) ListTeams() ([]Team, error) {
 	teams, _, err := c.api.TeamsAPI.TeamsListTeams(c.ctx).Execute()
 	return teams, err
+}
+
+func (c *Client) ListWorkspaces(teamId int) ([]Workspace, error) {
+	workspaces, _, err := c.api.WorkspacesAPI.WorkspacesListWorkspaces(c.ctx, float32(teamId)).Execute()
+	return workspaces, err
 }
