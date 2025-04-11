@@ -2,53 +2,50 @@ package api
 
 import (
 	"context"
-	"net/url"
 
 	"github.com/codesphere-cloud/cs-go/pkg/api/openapi_client"
 )
 
-type Client interface {
-	ListDataCenters() ([]DataCenter, error)
-	ListWorkspacePlans() ([]WorkspacePlan, error)
-
-	ListTeams() ([]Team, error)
+type Client struct {
+	ctx context.Context
+	api *openapi_client.APIClient
 }
 
 type Configuration struct {
-	BaseUrl *url.URL
+	BaseUrl string
 	Token   string
 }
 
-func NewClient(ctx context.Context, opts Configuration) Client {
+func NewClient(ctx context.Context, opts Configuration) *Client {
 	cfg := openapi_client.NewConfiguration()
-	if opts.BaseUrl != nil {
+	if opts.BaseUrl != "" {
 		cfg.Servers = []openapi_client.ServerConfiguration{{
-			URL: opts.BaseUrl.String(),
+			URL: opts.BaseUrl,
 		}}
 	}
 
-	return &client{
+	return &Client{
 		ctx: context.WithValue(ctx, openapi_client.ContextAccessToken, opts.Token),
 		api: openapi_client.NewAPIClient(cfg),
 	}
 }
 
-type client struct {
-	ctx context.Context
-	api *openapi_client.APIClient
-}
-
-func (c *client) ListDataCenters() ([]DataCenter, error) {
+func (c *Client) ListDataCenters() ([]DataCenter, error) {
 	datacenters, _, err := c.api.MetadataAPI.MetadataGetDatacenters(c.ctx).Execute()
 	return datacenters, err
 }
 
-func (c *client) ListWorkspacePlans() ([]WorkspacePlan, error) {
+func (c *Client) ListWorkspacePlans() ([]WorkspacePlan, error) {
 	plans, _, err := c.api.MetadataAPI.MetadataGetWorkspacePlans(c.ctx).Execute()
 	return plans, err
 }
 
-func (c *client) ListTeams() ([]Team, error) {
+func (c *Client) ListTeams() ([]Team, error) {
 	teams, _, err := c.api.TeamsAPI.TeamsListTeams(c.ctx).Execute()
 	return teams, err
+}
+
+func (c *Client) ListWorkspaces(teamId int) ([]Workspace, error) {
+	workspaces, _, err := c.api.WorkspacesAPI.WorkspacesListWorkspaces(c.ctx, float32(teamId)).Execute()
+	return workspaces, err
 }
