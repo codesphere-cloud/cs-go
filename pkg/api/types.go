@@ -1,3 +1,6 @@
+/*
+Copyright © 2025 Codesphere Inc. <support@codesphere.com>
+*/
 package api
 
 import (
@@ -5,6 +8,9 @@ import (
 )
 
 type DataCenter = openapi.MetadataGetDatacenters200ResponseInner
-type Team = openapi.TeamsListTeams200ResponseInner
+type Team = openapi.TeamsGetTeam200Response
+type Domain = openapi.DomainsGetDomain200Response
+type DomainVerificationStatus = openapi.DomainsGetDomain200ResponseDomainVerificationStatus
+type PathToWorkspaces = map[string][]*Workspace
 type Workspace = openapi.WorkspacesGetWorkspace200Response
 type WorkspacePlan = openapi.MetadataGetWorkspacePlans200ResponseInner
