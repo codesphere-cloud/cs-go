@@ -1,5 +1,5 @@
 /*
-Copyright © 2025 Alex Klein <alex@codesphere.com>
+Copyright © 2025 Codesphere Inc. <support@codesphere.com>
 */
 package cmd
 
@@ -24,6 +24,7 @@ import (
 type LogCmd struct {
 	cmd   *cobra.Command
 	scope LogCmdScope
+	opts  GlobalOptions
 }
 
 type LogCmdScope struct {
@@ -31,7 +32,6 @@ type LogCmdScope struct {
 	server      *string
 	step        *int
 	replica     *string
-	api         *string
 }
 
 type LogEntry struct {
@@ -52,7 +52,7 @@ type SSE struct {
 	data  string
 }
 
-func addLogCmd(rootCmd *cobra.Command) {
+func addLogCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 	logCmd := LogCmd{
 		cmd: &cobra.Command{
 			Use:   "log",
@@ -74,6 +74,7 @@ func addLogCmd(rootCmd *cobra.Command) {
 	Get logs from a self-hosted Codesphere installation:
 		log --api https://codesphere.acme.com/api -w 637128 -s app`,
 		},
+		opts: opts,
 	}
 	logCmd.cmd.RunE = logCmd.RunE
 	logCmd.parseLogCmdFlags()
@@ -82,44 +83,39 @@ func addLogCmd(rootCmd *cobra.Command) {
 
 func (logCmd *LogCmd) parseLogCmdFlags() {
 	logCmd.scope = LogCmdScope{
-		api:         logCmd.cmd.Flags().String("api", "", "URL of Codesphere API (can also be CS_API)"),
-		workspaceId: logCmd.cmd.Flags().IntP("workspace-id", "w", 0, "ID of Codesphere workspace (can also be CS_WORKSPACE_ID)"),
 		server:      logCmd.cmd.Flags().StringP("server", "s", "", "Name of the landscape server"),
+		workspaceId: logCmd.cmd.Flags().IntP("workspace-id", "w", 0, "ID of Codesphere workspace (can also be CS_WORKSPACE_ID)"),
 		step:        logCmd.cmd.Flags().IntP("step", "n", 0, "Index of execution step (default 0)"),
 		replica:     logCmd.cmd.Flags().StringP("replica", "r", "", "ID of server replica"),
 	}
 }
 
-func (logCmd *LogCmd) RunE(_ *cobra.Command, args []string) (err error) {
-	if *logCmd.scope.workspaceId == 0 {
-		*logCmd.scope.workspaceId, err = strconv.Atoi(os.Getenv("CS_WORKSPACE_ID"))
+func (l *LogCmd) RunE(_ *cobra.Command, args []string) (err error) {
+	if *l.scope.workspaceId == 0 {
+		*l.scope.workspaceId, err = strconv.Atoi(os.Getenv("CS_WORKSPACE_ID"))
 		if err != nil {
 			return fmt.Errorf("failed to read env var: %e", err)
 		}
-		if *logCmd.scope.workspaceId == 0 {
+		if *l.scope.workspaceId == 0 {
 			return errors.New("workspace ID required, but not provided")
 		}
 	}
 
-	if *logCmd.scope.api == "" {
-		*logCmd.scope.api = cs.GetApiUrl()
-	}
-
-	if *logCmd.scope.replica != "" {
-		if *logCmd.scope.server != "codesphere-ide" {
+	if *l.scope.replica != "" {
+		if *l.scope.server != "codesphere-ide" {
 			slog.Warn(
 				"Ignoring server flag (providing replica ID is sufficient).",
-				"replica", *logCmd.scope.replica,
-				"server", *logCmd.scope.server,
+				"replica", *l.scope.replica,
+				"server", *l.scope.server,
 			)
 		}
-		return printLogsOfReplica("", &logCmd.scope)
+		return l.printLogsOfReplica("")
 	}
-	if *logCmd.scope.server != "" {
-		return printLogsOfServer(&logCmd.scope)
+	if *l.scope.server != "" {
+		return l.printLogsOfServer()
 	}
 
-	err = logCmd.printAllLogs()
+	err = l.printAllLogs()
 	if err != nil {
 		return fmt.Errorf("failed to print logs: %e", err)
 	}
@@ -145,7 +141,7 @@ func (l *LogCmd) printAllLogs() error {
 				*scope.step = s
 				*scope.replica = replica.Replica
 				prefix := fmt.Sprintf("|%-10s|%s", replica.Server, replica.Replica[len(replica.Replica)-11:])
-				err = printLogsOfReplica(prefix, &scope)
+				err = l.printLogsOfReplica(prefix)
 				if err != nil {
 					fmt.Printf("Error printling logs: %e\n", err)
 				}
@@ -157,24 +153,24 @@ func (l *LogCmd) printAllLogs() error {
 	return nil
 }
 
-func printLogsOfReplica(prefix string, scope *LogCmdScope) error {
+func (l *LogCmd) printLogsOfReplica(prefix string) error {
 	endpoint := fmt.Sprintf(
 		"%s/workspaces/%d/logs/run/%d/replica/%s",
-		*scope.api,
-		*scope.workspaceId,
-		*scope.step,
-		*scope.replica,
+		l.opts.GetApiUrl(),
+		*l.scope.workspaceId,
+		*l.scope.step,
+		*l.scope.replica,
 	)
 	return printLogsOfEndpoint(prefix, endpoint)
 }
 
-func printLogsOfServer(scope *LogCmdScope) error {
+func (l *LogCmd) printLogsOfServer() error {
 	endpoint := fmt.Sprintf(
 		"%s/workspaces/%d/logs/run/%d/server/%s",
-		*scope.api,
-		*scope.workspaceId,
-		*scope.step,
-		*scope.server,
+		l.opts.GetApiUrl(),
+		*l.scope.workspaceId,
+		*l.scope.step,
+		*l.scope.server,
 	)
 	return printLogsOfEndpoint("", endpoint)
 }

@@ -6,8 +6,20 @@ package cmd
 import (
 	"os"
 
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/spf13/cobra"
 )
+
+type GlobalOptions struct {
+	apiUrl *string
+}
+
+func (o GlobalOptions) GetApiUrl() string {
+	if o.apiUrl != nil {
+		return *o.apiUrl
+	}
+	return cs.GetApiUrl()
+}
 
 func Execute() {
 	var rootCmd = &cobra.Command{
@@ -17,7 +29,12 @@ func Execute() {
 	via command line.`,
 	}
 
-	addLogCmd(rootCmd)
+	opts := GlobalOptions{}
+
+	addLogCmd(rootCmd, opts)
+	addListCmd(rootCmd, opts)
+
+	opts.apiUrl = rootCmd.PersistentFlags().StringP("api", "a", "", "URL of Codesphere API (can also be CS_API)")
 
 	err := rootCmd.Execute()
 	if err != nil {

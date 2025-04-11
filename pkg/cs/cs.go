@@ -67,12 +67,20 @@ func Get(path string) (body []byte, err error) {
 	return
 }
 
-func SetAuthoriziationHeader(req *http.Request) error {
-
+func GetApiToken() (string, error) {
 	apiToken := os.Getenv("CS_TOKEN")
 	if apiToken == "" {
-		return errors.New("CS_TOKEN env var required, but not set")
+		return "", errors.New("CS_TOKEN env var required, but not set")
 	}
-	req.Header.Set("Authorization", "Bearer "+apiToken)
+	return apiToken, nil
+}
+
+func SetAuthoriziationHeader(req *http.Request) error {
+	token, err := GetApiToken()
+	if err != nil {
+		return fmt.Errorf("failed to get API token: %e", err)
+	}
+
+	req.Header.Set("Authorization", "Bearer "+token)
 	return nil
 }
