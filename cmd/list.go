@@ -27,6 +27,7 @@ func addListCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 	l.parseLogCmdFlags()
 	rootCmd.AddCommand(l.cmd)
 	addListWorkspacesCmd(l.cmd, opts)
+	addListTeamsCmd(l.cmd, opts)
 }
 
 func (l *ListCmd) parseLogCmdFlags() {
