@@ -21,6 +21,9 @@ func (c Configuration) GetApiUrl() *url.URL {
 	if c.BaseUrl != nil {
 		return c.BaseUrl
 	}
+
+	// url.Parse() won't return an error on this static string,
+	// hence it's safe to ignore it.
 	defaultUrl, _ := url.Parse("https://codesphere.com/api")
 	return defaultUrl
 }
@@ -28,7 +31,7 @@ func (c Configuration) GetApiUrl() *url.URL {
 func NewClient(ctx context.Context, opts Configuration) *Client {
 	cfg := openapi_client.NewConfiguration()
 	cfg.Servers = []openapi_client.ServerConfiguration{{
-		URL: opts.GetApiUrl().String(),
+		URL: opts.BaseUrl.String(),
 	}}
 
 	return &Client{
