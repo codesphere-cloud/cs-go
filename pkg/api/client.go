@@ -13,14 +13,22 @@ type Client struct {
 }
 
 type Configuration struct {
-	BaseUrl url.URL
+	BaseUrl *url.URL
 	Token   string
+}
+
+func (c Configuration) GetApiUrl() *url.URL {
+	if c.BaseUrl != nil {
+		return c.BaseUrl
+	}
+	defaultUrl, _ := url.Parse("https://codesphere.com/api")
+	return defaultUrl
 }
 
 func NewClient(ctx context.Context, opts Configuration) *Client {
 	cfg := openapi_client.NewConfiguration()
 	cfg.Servers = []openapi_client.ServerConfiguration{{
-		URL: opts.BaseUrl.String(),
+		URL: opts.GetApiUrl().String(),
 	}}
 
 	return &Client{

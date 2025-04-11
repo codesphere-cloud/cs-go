@@ -99,7 +99,7 @@ func NewClient(opts GlobalOptions) (*api.Client, error) {
 		return nil, fmt.Errorf("failed to parse URL '%s': %e", opts.GetApiUrl(), err)
 	}
 	client := api.NewClient(context.Background(), api.Configuration{
-		BaseUrl: *apiUrl,
+		BaseUrl: apiUrl,
 		Token:   token,
 	})
 	return client, nil
