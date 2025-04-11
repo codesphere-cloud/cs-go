@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"net/url"
 
 	"github.com/codesphere-cloud/cs-go/pkg/api/openapi_client"
 )
@@ -12,17 +13,15 @@ type Client struct {
 }
 
 type Configuration struct {
-	BaseUrl string
+	BaseUrl url.URL
 	Token   string
 }
 
 func NewClient(ctx context.Context, opts Configuration) *Client {
 	cfg := openapi_client.NewConfiguration()
-	if opts.BaseUrl != "" {
-		cfg.Servers = []openapi_client.ServerConfiguration{{
-			URL: opts.BaseUrl,
-		}}
-	}
+	cfg.Servers = []openapi_client.ServerConfiguration{{
+		URL: opts.BaseUrl.String(),
+	}}
 
 	return &Client{
 		ctx: context.WithValue(ctx, openapi_client.ContextAccessToken, opts.Token),

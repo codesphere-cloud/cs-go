@@ -6,7 +6,6 @@ package cmd
 import (
 	"os"
 
-	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/spf13/cobra"
 )
 
@@ -18,7 +17,7 @@ func (o GlobalOptions) GetApiUrl() string {
 	if o.apiUrl != nil {
 		return *o.apiUrl
 	}
-	return cs.GetApiUrl()
+	return GetApiUrl()
 }
 
 func Execute() {

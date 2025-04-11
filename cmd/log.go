@@ -17,7 +17,6 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/spf13/cobra"
 )
 
@@ -126,7 +125,7 @@ func (l *LogCmd) RunE(_ *cobra.Command, args []string) (err error) {
 func (l *LogCmd) printAllLogs() error {
 	fmt.Println("Printing logs of all replicas")
 
-	replicas, err := cs.GetPipelineStatus(*l.scope.workspaceId, "run")
+	replicas, err := GetPipelineStatus(*l.scope.workspaceId, "run")
 	if err != nil {
 		return fmt.Errorf("failed to get pipeline status: %e", err)
 	}
@@ -187,7 +186,7 @@ func printLogsOfEndpoint(prefix string, endpoint string) error {
 
 	// Set the Accept header to indicate SSE
 	req.Header.Set("Accept", "text/event-stream")
-	err = cs.SetAuthoriziationHeader(req)
+	err = SetAuthoriziationHeader(req)
 	if err != nil {
 		return fmt.Errorf("failed to set header: %e", err)
 	}

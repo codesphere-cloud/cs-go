@@ -4,12 +4,9 @@ Copyright © 2025 Codesphere Inc. <support@codesphere.com>
 package cmd
 
 import (
-	"context"
 	"errors"
 	"fmt"
 
-	"github.com/codesphere-cloud/cs-go/pkg/api"
-	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/out"
 	"github.com/jedib0t/go-pretty/v6/table"
 
@@ -53,14 +50,12 @@ func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	if l.opts.TeamId == nil || *l.opts.TeamId < 0 {
 		return errors.New("team ID not set or invalid, please use --team-id to set one")
 	}
-	token, err := cs.GetApiToken()
+
+	client, err := NewClient(l.opts.GlobalOptions)
 	if err != nil {
-		return fmt.Errorf("failed to get API token: %e", err)
+		return fmt.Errorf("failed to create Codesphere client: %e", err)
 	}
-	client := api.NewClient(context.Background(), api.Configuration{
-		BaseUrl: l.opts.GetApiUrl(),
-		Token:   token,
-	})
+
 	workspaces, err := client.ListWorkspaces(*l.opts.TeamId)
 	if err != nil {
 		return fmt.Errorf("failed to list workspaces: %e", err)

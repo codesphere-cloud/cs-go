@@ -1,13 +1,17 @@
-package cs
+package cmd
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
+
+	"github.com/codesphere-cloud/cs-go/pkg/api"
 )
 
 type Step struct {
@@ -83,4 +87,20 @@ func SetAuthoriziationHeader(req *http.Request) error {
 
 	req.Header.Set("Authorization", "Bearer "+token)
 	return nil
+}
+
+func NewClient(opts GlobalOptions) (*api.Client, error) {
+	token, err := GetApiToken()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get API token: %e", err)
+	}
+	apiUrl, err := url.Parse(opts.GetApiUrl())
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse URL '%s': %e", opts.GetApiUrl(), err)
+	}
+	client := api.NewClient(context.Background(), api.Configuration{
+		BaseUrl: *apiUrl,
+		Token:   token,
+	})
+	return client, nil
 }
