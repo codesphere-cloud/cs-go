@@ -1,11 +1,9 @@
-/*
-Copyright © 2025 Codesphere Inc. <support@codesphere.com>
-*/
 package cmd
 
 import (
 	"fmt"
 
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/out"
 	"github.com/jedib0t/go-pretty/v6/table"
 
@@ -53,7 +51,7 @@ func (l *ListTeamsCmd) RunE(_ *cobra.Command, args []string) (err error) {
 		if team.IsFirst != nil && *team.IsFirst {
 			first = "*"
 		}
-		t.AppendRow(table.Row{first, team.Id, team.Name, GetRoleName(int(team.Role)), team.DefaultDataCenterId})
+		t.AppendRow(table.Row{first, team.Id, team.Name, cs.GetRoleName(int(team.Role)), team.DefaultDataCenterId})
 	}
 	t.Render()
 

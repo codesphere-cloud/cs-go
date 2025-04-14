@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/url"
 
-	"github.com/codesphere-cloud/cs-go/pkg/api/openapi_client"
+	"github.com/codesphere-cloud/cs-go/api/openapi_client"
 )
 
 type Client struct {
