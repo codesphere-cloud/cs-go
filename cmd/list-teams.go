@@ -32,12 +32,7 @@ $ cs list teams
 		opts: opts,
 	}
 	l.cmd.RunE = l.RunE
-	l.parseLogCmdFlags()
 	p.AddCommand(l.cmd)
-}
-
-func (l *ListTeamsCmd) parseLogCmdFlags() {
-
 }
 
 func (l *ListTeamsCmd) RunE(_ *cobra.Command, args []string) (err error) {
