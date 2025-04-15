@@ -104,3 +104,10 @@ func NewClient(opts GlobalOptions) (*api.Client, error) {
 	})
 	return client, nil
 }
+
+func GetRoleName(role int) string {
+	if role == 1 {
+		return "Member"
+	}
+	return "Admin"
+}
