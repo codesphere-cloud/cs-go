@@ -21,18 +21,18 @@ var _ MappedNullable = &WorkspacesGetWorkspace200Response{}
 
 // WorkspacesGetWorkspace200Response struct for WorkspacesGetWorkspace200Response
 type WorkspacesGetWorkspace200Response struct {
-	Id                int32          `json:"id"`
+	Id                int            `json:"id"`
 	DataCenterId      float32        `json:"dataCenterId"`
-	UserId            int32          `json:"userId"`
-	TeamId            int32          `json:"teamId"`
+	UserId            int            `json:"userId"`
+	TeamId            int            `json:"teamId"`
 	Name              string         `json:"name"`
 	GitUrl            NullableString `json:"gitUrl"`
 	IsPrivateRepo     bool           `json:"isPrivateRepo"`
 	WelcomeMessage    NullableString `json:"welcomeMessage"`
 	InitialBranch     NullableString `json:"initialBranch"`
-	SourceWorkspaceId NullableInt32  `json:"sourceWorkspaceId"`
-	PlanId            int32          `json:"planId"`
-	Replicas          int32          `json:"replicas"`
+	SourceWorkspaceId NullableInt    `json:"sourceWorkspaceId"`
+	PlanId            int            `json:"planId"`
+	Replicas          int            `json:"replicas"`
 	VpnConfig         NullableString `json:"vpnConfig"`
 }
 
@@ -42,7 +42,7 @@ type _WorkspacesGetWorkspace200Response WorkspacesGetWorkspace200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWorkspacesGetWorkspace200Response(id int32, dataCenterId float32, userId int32, teamId int32, name string, gitUrl NullableString, isPrivateRepo bool, welcomeMessage NullableString, initialBranch NullableString, sourceWorkspaceId NullableInt32, planId int32, replicas int32, vpnConfig NullableString) *WorkspacesGetWorkspace200Response {
+func NewWorkspacesGetWorkspace200Response(id int, dataCenterId float32, userId int, teamId int, name string, gitUrl NullableString, isPrivateRepo bool, welcomeMessage NullableString, initialBranch NullableString, sourceWorkspaceId NullableInt, planId int, replicas int, vpnConfig NullableString) *WorkspacesGetWorkspace200Response {
 	this := WorkspacesGetWorkspace200Response{}
 	this.Id = id
 	this.DataCenterId = dataCenterId
@@ -69,9 +69,9 @@ func NewWorkspacesGetWorkspace200ResponseWithDefaults() *WorkspacesGetWorkspace2
 }
 
 // GetId returns the Id field value
-func (o *WorkspacesGetWorkspace200Response) GetId() int32 {
+func (o *WorkspacesGetWorkspace200Response) GetId() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -80,7 +80,7 @@ func (o *WorkspacesGetWorkspace200Response) GetId() int32 {
 
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *WorkspacesGetWorkspace200Response) GetIdOk() (*int32, bool) {
+func (o *WorkspacesGetWorkspace200Response) GetIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -88,7 +88,7 @@ func (o *WorkspacesGetWorkspace200Response) GetIdOk() (*int32, bool) {
 }
 
 // SetId sets field value
-func (o *WorkspacesGetWorkspace200Response) SetId(v int32) {
+func (o *WorkspacesGetWorkspace200Response) SetId(v int) {
 	o.Id = v
 }
 
@@ -117,9 +117,9 @@ func (o *WorkspacesGetWorkspace200Response) SetDataCenterId(v float32) {
 }
 
 // GetUserId returns the UserId field value
-func (o *WorkspacesGetWorkspace200Response) GetUserId() int32 {
+func (o *WorkspacesGetWorkspace200Response) GetUserId() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -128,7 +128,7 @@ func (o *WorkspacesGetWorkspace200Response) GetUserId() int32 {
 
 // GetUserIdOk returns a tuple with the UserId field value
 // and a boolean to check if the value has been set.
-func (o *WorkspacesGetWorkspace200Response) GetUserIdOk() (*int32, bool) {
+func (o *WorkspacesGetWorkspace200Response) GetUserIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -136,14 +136,14 @@ func (o *WorkspacesGetWorkspace200Response) GetUserIdOk() (*int32, bool) {
 }
 
 // SetUserId sets field value
-func (o *WorkspacesGetWorkspace200Response) SetUserId(v int32) {
+func (o *WorkspacesGetWorkspace200Response) SetUserId(v int) {
 	o.UserId = v
 }
 
 // GetTeamId returns the TeamId field value
-func (o *WorkspacesGetWorkspace200Response) GetTeamId() int32 {
+func (o *WorkspacesGetWorkspace200Response) GetTeamId() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -152,7 +152,7 @@ func (o *WorkspacesGetWorkspace200Response) GetTeamId() int32 {
 
 // GetTeamIdOk returns a tuple with the TeamId field value
 // and a boolean to check if the value has been set.
-func (o *WorkspacesGetWorkspace200Response) GetTeamIdOk() (*int32, bool) {
+func (o *WorkspacesGetWorkspace200Response) GetTeamIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -160,7 +160,7 @@ func (o *WorkspacesGetWorkspace200Response) GetTeamIdOk() (*int32, bool) {
 }
 
 // SetTeamId sets field value
-func (o *WorkspacesGetWorkspace200Response) SetTeamId(v int32) {
+func (o *WorkspacesGetWorkspace200Response) SetTeamId(v int) {
 	o.TeamId = v
 }
 
@@ -291,10 +291,10 @@ func (o *WorkspacesGetWorkspace200Response) SetInitialBranch(v string) {
 }
 
 // GetSourceWorkspaceId returns the SourceWorkspaceId field value
-// If the value is explicit nil, the zero value for int32 will be returned
-func (o *WorkspacesGetWorkspace200Response) GetSourceWorkspaceId() int32 {
+// If the value is explicit nil, the zero value for int will be returned
+func (o *WorkspacesGetWorkspace200Response) GetSourceWorkspaceId() int {
 	if o == nil || o.SourceWorkspaceId.Get() == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -304,7 +304,7 @@ func (o *WorkspacesGetWorkspace200Response) GetSourceWorkspaceId() int32 {
 // GetSourceWorkspaceIdOk returns a tuple with the SourceWorkspaceId field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *WorkspacesGetWorkspace200Response) GetSourceWorkspaceIdOk() (*int32, bool) {
+func (o *WorkspacesGetWorkspace200Response) GetSourceWorkspaceIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -312,14 +312,14 @@ func (o *WorkspacesGetWorkspace200Response) GetSourceWorkspaceIdOk() (*int32, bo
 }
 
 // SetSourceWorkspaceId sets field value
-func (o *WorkspacesGetWorkspace200Response) SetSourceWorkspaceId(v int32) {
+func (o *WorkspacesGetWorkspace200Response) SetSourceWorkspaceId(v int) {
 	o.SourceWorkspaceId.Set(&v)
 }
 
 // GetPlanId returns the PlanId field value
-func (o *WorkspacesGetWorkspace200Response) GetPlanId() int32 {
+func (o *WorkspacesGetWorkspace200Response) GetPlanId() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -328,7 +328,7 @@ func (o *WorkspacesGetWorkspace200Response) GetPlanId() int32 {
 
 // GetPlanIdOk returns a tuple with the PlanId field value
 // and a boolean to check if the value has been set.
-func (o *WorkspacesGetWorkspace200Response) GetPlanIdOk() (*int32, bool) {
+func (o *WorkspacesGetWorkspace200Response) GetPlanIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -336,14 +336,14 @@ func (o *WorkspacesGetWorkspace200Response) GetPlanIdOk() (*int32, bool) {
 }
 
 // SetPlanId sets field value
-func (o *WorkspacesGetWorkspace200Response) SetPlanId(v int32) {
+func (o *WorkspacesGetWorkspace200Response) SetPlanId(v int) {
 	o.PlanId = v
 }
 
 // GetReplicas returns the Replicas field value
-func (o *WorkspacesGetWorkspace200Response) GetReplicas() int32 {
+func (o *WorkspacesGetWorkspace200Response) GetReplicas() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -352,7 +352,7 @@ func (o *WorkspacesGetWorkspace200Response) GetReplicas() int32 {
 
 // GetReplicasOk returns a tuple with the Replicas field value
 // and a boolean to check if the value has been set.
-func (o *WorkspacesGetWorkspace200Response) GetReplicasOk() (*int32, bool) {
+func (o *WorkspacesGetWorkspace200Response) GetReplicasOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -360,7 +360,7 @@ func (o *WorkspacesGetWorkspace200Response) GetReplicasOk() (*int32, bool) {
 }
 
 // SetReplicas sets field value
-func (o *WorkspacesGetWorkspace200Response) SetReplicas(v int32) {
+func (o *WorkspacesGetWorkspace200Response) SetReplicas(v int) {
 	o.Replicas = v
 }
 
