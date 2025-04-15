@@ -1,0 +1,48 @@
+Codesphere Go SDK & CLI
+Copyright (c) Codesphere Inc.
+
+This project includes code licensed under the following terms:
+   
+----------
+Module: github.com/jedib0t/go-pretty/v6
+Version: v6.6.7
+License: MIT
+License URL: https://github.com/jedib0t/go-pretty/blob/v6.6.7/LICENSE
+ 
+----------
+Module: github.com/mattn/go-runewidth
+Version: v0.0.16
+License: MIT
+License URL: https://github.com/mattn/go-runewidth/blob/v0.0.16/LICENSE
+ 
+----------
+Module: github.com/rivo/uniseg
+Version: v0.4.7
+License: MIT
+License URL: https://github.com/rivo/uniseg/blob/v0.4.7/LICENSE.txt
+ 
+----------
+Module: github.com/spf13/cobra
+Version: v1.9.1
+License: Apache-2.0
+License URL: https://github.com/spf13/cobra/blob/v1.9.1/LICENSE.txt
+ 
+----------
+Module: github.com/spf13/pflag
+Version: v1.0.6
+License: BSD-3-Clause
+License URL: https://github.com/spf13/pflag/blob/v1.0.6/LICENSE
+ 
+----------
+Module: golang.org/x/text
+Version: v0.22.0
+License: BSD-3-Clause
+License URL: https://cs.opensource.google/go/x/text/+/v0.22.0:LICENSE
+ 
+----------
+Module: gopkg.in/validator.v2
+Version: v2.0.1
+License: Apache-2.0
+License URL: https://github.com/go-validator/validator/blob/v2.0.1/LICENSE
+
+
