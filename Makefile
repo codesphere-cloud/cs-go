@@ -6,13 +6,13 @@ all: format build
 format:
 	go fmt ./...
 
-lint:
+lint: install-build-deps
 	golangci-lint run
 
 test:
 	go test ./...
 
-generate:
+generate: install-build-deps
 	go generate ./...
 
 build:
@@ -43,6 +43,13 @@ generate-client:
 
 generate-api: generate-client format
 
-generate-license:
+generate-license: install-build-deps
 	go-licenses report --template .NOTICE.template  ./... > NOTICE
 	copywrite headers apply
+
+install-build-deps:
+	go install github.com/vektra/mockery/v3@v3.2.1
+	go install github.com/google/go-licenses@v1.6.0
+	go install github.com/hashicorp/copywrite@v0.22.0
+	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.1.2
+
