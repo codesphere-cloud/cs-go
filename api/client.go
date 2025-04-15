@@ -112,23 +112,25 @@ func (c *Client) DeleteDomain(teamId int, name string) error {
 }
 
 func (c *Client) UpdateDomain(
-	teamId int, name string, args openapi_client.DomainsGetDomain200ResponseCustomConfig,
+	teamId int, domainName string, args UpdateDomainArgs,
 ) (*Domain, error) {
 	domain, _, err := c.api.DomainsAPI.
-		DomainsUpdateDomain(c.ctx, float32(teamId), name).
+		DomainsUpdateDomain(c.ctx, float32(teamId), domainName).
 		DomainsGetDomain200ResponseCustomConfig(args).
 		Execute()
 	return domain, err
 }
 
-func (c *Client) VerifyDomain(teamId int, name string) (*DomainVerificationStatus, error) {
+func (c *Client) VerifyDomain(
+	teamId int, domainName string,
+) (*DomainVerificationStatus, error) {
 	status, _, err := c.api.DomainsAPI.
-		DomainsVerifyDomain(c.ctx, float32(teamId), name).Execute()
+		DomainsVerifyDomain(c.ctx, float32(teamId), domainName).Execute()
 	return status, err
 }
 
 func (c *Client) UpdateWorkspaceConnections(
-	teamId int, name string, connections PathToWorkspaces,
+	teamId int, domainName string, connections PathToWorkspaces,
 ) (*Domain, error) {
 	req := make(map[string][]float32)
 	for path, workspaces := range connections {
@@ -139,7 +141,7 @@ func (c *Client) UpdateWorkspaceConnections(
 		req[path] = ids
 	}
 	domain, _, err := c.api.DomainsAPI.
-		DomainsUpdateWorkspaceConnections(c.ctx, float32(teamId), name).
+		DomainsUpdateWorkspaceConnections(c.ctx, float32(teamId), domainName).
 		RequestBody(req).Execute()
 	return domain, err
 }
