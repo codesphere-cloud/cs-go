@@ -1,5 +1,5 @@
 
-OPENAPI_DIR = ./pkg/api/openapi_client
+OPENAPI_DIR = ./api/openapi_client
 
 all: format build
 
@@ -11,6 +11,9 @@ lint:
 
 test:
 	go test ./...
+
+generate:
+	go generate ./...
 
 build:
 	cd cmd/cs && go build
@@ -24,6 +27,7 @@ generate-client:
 	openapi-generator-cli generate -g go -o ${OPENAPI_DIR} -i https://codesphere.com/api/docs \
 	    --additional-properties=isGoSubmodule=true,withGoMod=false,packageName=openapi_client \
 		--type-mappings=integer=int \
+	    --template-dir=openapi-template \
 	    --skip-validate-spec # TODO: remove once the Codesphere openapi spec is fixed
 	# Remove all non-go files
 	rm -r \
@@ -37,5 +41,8 @@ generate-client:
 		${OPENAPI_DIR}/README.md \
 		${OPENAPI_DIR}/test
 
+generate-api: generate-client format
 
-generate: generate-client format
+generate-license:
+	go-licenses report --template .NOTICE.template  ./... > NOTICE
+	copywrite headers apply

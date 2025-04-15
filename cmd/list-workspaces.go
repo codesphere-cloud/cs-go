@@ -1,12 +1,12 @@
-/*
-Copyright © 2025 Codesphere Inc. <support@codesphere.com>
-*/
+// Copyright (c) Codesphere Inc.
+// SPDX-License-Identifier: Apache-2.0
+
 package cmd
 
 import (
 	"fmt"
 
-	"github.com/codesphere-cloud/cs-go/pkg/api"
+	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/pkg/out"
 	"github.com/jedib0t/go-pretty/v6/table"
 
@@ -14,8 +14,8 @@ import (
 )
 
 type ListWorkspacesCmd struct {
+	Opts ListWorkspacesOptions
 	cmd  *cobra.Command
-	opts ListWorkspacesOptions
 }
 
 type ListWorkspacesOptions struct {
@@ -35,7 +35,7 @@ List all workspaces:
 $ cs list workspaces --team-id <team-id>
 			`,
 		},
-		opts: ListWorkspacesOptions{GlobalOptions: opts},
+		Opts: ListWorkspacesOptions{GlobalOptions: opts},
 	}
 	l.cmd.RunE = l.RunE
 	l.parseLogCmdFlags()
@@ -43,26 +43,18 @@ $ cs list workspaces --team-id <team-id>
 }
 
 func (l *ListWorkspacesCmd) parseLogCmdFlags() {
-	l.opts.TeamId = l.cmd.Flags().IntP("team-id", "t", -1, "ID of team to query")
+	l.Opts.TeamId = l.cmd.Flags().IntP("team-id", "t", -1, "ID of team to query")
 }
 
 func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {
-	client, err := NewClient(l.opts.GlobalOptions)
+	client, err := NewClient(l.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %e", err)
 	}
 
-	teams, err := l.getTeamIds(client)
+	workspaces, err := l.ListWorkspaces(client)
 	if err != nil {
-		return fmt.Errorf("failed to get teams: %e", err)
-	}
-	workspaces := []api.Workspace{}
-	for _, team := range teams {
-		teamWorkspaces, err := client.ListWorkspaces(team)
-		if err != nil {
-			return fmt.Errorf("failed to list workspaces: %e", err)
-		}
-		workspaces = append(workspaces, teamWorkspaces...)
+		return fmt.Errorf("failed to list workspaces: %e", err)
 	}
 
 	t := out.GetTableWriter()
@@ -79,9 +71,25 @@ func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	return nil
 }
 
-func (l *ListWorkspacesCmd) getTeamIds(client *api.Client) (teams []int, err error) {
-	if l.opts.TeamId != nil && *l.opts.TeamId >= 0 {
-		teams = append(teams, *l.opts.TeamId)
+func (l *ListWorkspacesCmd) ListWorkspaces(client Client) ([]api.Workspace, error) {
+	teams, err := l.getTeamIds(client)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get teams: %e", err)
+	}
+	workspaces := []api.Workspace{}
+	for _, team := range teams {
+		teamWorkspaces, err := client.ListWorkspaces(team)
+		if err != nil {
+			return nil, fmt.Errorf("failed to list workspaces: %e", err)
+		}
+		workspaces = append(workspaces, teamWorkspaces...)
+	}
+	return workspaces, nil
+}
+
+func (l *ListWorkspacesCmd) getTeamIds(client Client) (teams []int, err error) {
+	if l.Opts.TeamId != nil && *l.Opts.TeamId >= 0 {
+		teams = append(teams, *l.Opts.TeamId)
 		return
 	}
 	var allTeams []api.Team

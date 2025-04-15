@@ -1,23 +1,24 @@
-/*
-Copyright © 2025 Codesphere Inc. <support@codesphere.com>
-*/
+// Copyright (c) Codesphere Inc.
+// SPDX-License-Identifier: Apache-2.0
+
 package cmd
 
 import (
 	"os"
 
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/spf13/cobra"
 )
 
 type GlobalOptions struct {
-	apiUrl *string
+	ApiUrl *string
 }
 
 func (o GlobalOptions) GetApiUrl() string {
-	if o.apiUrl != nil {
-		return *o.apiUrl
+	if o.ApiUrl != nil {
+		return *o.ApiUrl
 	}
-	return GetApiUrl()
+	return cs.GetApiUrl()
 }
 
 func Execute() {
@@ -33,7 +34,7 @@ func Execute() {
 	addLogCmd(rootCmd, opts)
 	addListCmd(rootCmd, opts)
 
-	opts.apiUrl = rootCmd.PersistentFlags().StringP("api", "a", "", "URL of Codesphere API (can also be CS_API)")
+	opts.ApiUrl = rootCmd.PersistentFlags().StringP("api", "a", "https://codesphere.com/api", "URL of Codesphere API (can also be CS_API)")
 
 	err := rootCmd.Execute()
 	if err != nil {
