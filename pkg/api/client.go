@@ -1,6 +1,3 @@
-/*
-Copyright © 2025 Codesphere Inc. <support@codesphere.com>
-*/
 package api
 
 import (
@@ -74,12 +71,12 @@ func (c *Client) ListTeams() ([]Team, error) {
 	return mapped, err
 }
 
-func (c *Client) GetTeam(teamId int32) (*Team, error) {
+func (c *Client) GetTeam(teamId int) (*Team, error) {
 	team, _, err := c.api.TeamsAPI.TeamsGetTeam(c.ctx, float32(teamId)).Execute()
 	return team, err
 }
 
-func (c *Client) CreateTeam(name string, dc int32) (*Team, error) {
+func (c *Client) CreateTeam(name string, dc int) (*Team, error) {
 	team, _, err := c.api.TeamsAPI.TeamsCreateTeam(c.ctx).
 		TeamsCreateTeamRequest(openapi_client.TeamsCreateTeamRequest{
 			Name: name,
@@ -89,33 +86,33 @@ func (c *Client) CreateTeam(name string, dc int32) (*Team, error) {
 	return team, err
 }
 
-func (c *Client) DeleteTeam(teamId int32) error {
+func (c *Client) DeleteTeam(teamId int) error {
 	_, err := c.api.TeamsAPI.TeamsDeleteTeam(c.ctx, float32(teamId)).Execute()
 	return err
 }
 
-func (c *Client) ListDomains(teamId int32) ([]Domain, error) {
+func (c *Client) ListDomains(teamId int) ([]Domain, error) {
 	domains, _, err := c.api.DomainsAPI.DomainsListDomains(c.ctx, float32(teamId)).Execute()
 	return domains, err
 }
 
-func (c *Client) GetDomain(teamId int32, name string) (*Domain, error) {
+func (c *Client) GetDomain(teamId int, name string) (*Domain, error) {
 	domain, _, err := c.api.DomainsAPI.DomainsGetDomain(c.ctx, float32(teamId), name).Execute()
 	return domain, err
 }
 
-func (c *Client) CreateDomain(teamId int32, name string) (*Domain, error) {
+func (c *Client) CreateDomain(teamId int, name string) (*Domain, error) {
 	domain, _, err := c.api.DomainsAPI.DomainsCreateDomain(c.ctx, float32(teamId), name).Execute()
 	return domain, err
 }
 
-func (c *Client) DeleteDomain(teamId int32, name string) error {
+func (c *Client) DeleteDomain(teamId int, name string) error {
 	_, err := c.api.DomainsAPI.DomainsDeleteDomain(c.ctx, float32(teamId), name).Execute()
 	return err
 }
 
 func (c *Client) UpdateDomain(
-	teamId int32, name string, args openapi_client.DomainsGetDomain200ResponseCustomConfig,
+	teamId int, name string, args openapi_client.DomainsGetDomain200ResponseCustomConfig,
 ) (*Domain, error) {
 	domain, _, err := c.api.DomainsAPI.
 		DomainsUpdateDomain(c.ctx, float32(teamId), name).
@@ -124,14 +121,14 @@ func (c *Client) UpdateDomain(
 	return domain, err
 }
 
-func (c *Client) VerifyDomain(teamId int32, name string) (*DomainVerificationStatus, error) {
+func (c *Client) VerifyDomain(teamId int, name string) (*DomainVerificationStatus, error) {
 	status, _, err := c.api.DomainsAPI.
 		DomainsVerifyDomain(c.ctx, float32(teamId), name).Execute()
 	return status, err
 }
 
 func (c *Client) UpdateWorkspaceConnections(
-	teamId int32, name string, connections PathToWorkspaces,
+	teamId int, name string, connections PathToWorkspaces,
 ) (*Domain, error) {
 	req := make(map[string][]float32)
 	for path, workspaces := range connections {

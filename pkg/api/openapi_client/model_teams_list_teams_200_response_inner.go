@@ -21,15 +21,15 @@ var _ MappedNullable = &TeamsListTeams200ResponseInner{}
 
 // TeamsListTeams200ResponseInner struct for TeamsListTeams200ResponseInner
 type TeamsListTeams200ResponseInner struct {
-	Id                  int32          `json:"id"`
-	DefaultDataCenterId int32          `json:"defaultDataCenterId"`
+	Id                  int            `json:"id"`
+	DefaultDataCenterId int            `json:"defaultDataCenterId"`
 	Name                string         `json:"name"`
 	Description         NullableString `json:"description,omitempty"`
 	AvatarId            NullableString `json:"avatarId,omitempty"`
 	AvatarUrl           NullableString `json:"avatarUrl,omitempty"`
 	IsFirst             *bool          `json:"isFirst,omitempty"`
 	// Role{0:'Admin',1:'Member'}
-	Role int32 `json:"role"`
+	Role int `json:"role"`
 }
 
 type _TeamsListTeams200ResponseInner TeamsListTeams200ResponseInner
@@ -38,7 +38,7 @@ type _TeamsListTeams200ResponseInner TeamsListTeams200ResponseInner
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTeamsListTeams200ResponseInner(id int32, defaultDataCenterId int32, name string, role int32) *TeamsListTeams200ResponseInner {
+func NewTeamsListTeams200ResponseInner(id int, defaultDataCenterId int, name string, role int) *TeamsListTeams200ResponseInner {
 	this := TeamsListTeams200ResponseInner{}
 	this.Id = id
 	this.DefaultDataCenterId = defaultDataCenterId
@@ -56,9 +56,9 @@ func NewTeamsListTeams200ResponseInnerWithDefaults() *TeamsListTeams200ResponseI
 }
 
 // GetId returns the Id field value
-func (o *TeamsListTeams200ResponseInner) GetId() int32 {
+func (o *TeamsListTeams200ResponseInner) GetId() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -67,7 +67,7 @@ func (o *TeamsListTeams200ResponseInner) GetId() int32 {
 
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *TeamsListTeams200ResponseInner) GetIdOk() (*int32, bool) {
+func (o *TeamsListTeams200ResponseInner) GetIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -75,14 +75,14 @@ func (o *TeamsListTeams200ResponseInner) GetIdOk() (*int32, bool) {
 }
 
 // SetId sets field value
-func (o *TeamsListTeams200ResponseInner) SetId(v int32) {
+func (o *TeamsListTeams200ResponseInner) SetId(v int) {
 	o.Id = v
 }
 
 // GetDefaultDataCenterId returns the DefaultDataCenterId field value
-func (o *TeamsListTeams200ResponseInner) GetDefaultDataCenterId() int32 {
+func (o *TeamsListTeams200ResponseInner) GetDefaultDataCenterId() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -91,7 +91,7 @@ func (o *TeamsListTeams200ResponseInner) GetDefaultDataCenterId() int32 {
 
 // GetDefaultDataCenterIdOk returns a tuple with the DefaultDataCenterId field value
 // and a boolean to check if the value has been set.
-func (o *TeamsListTeams200ResponseInner) GetDefaultDataCenterIdOk() (*int32, bool) {
+func (o *TeamsListTeams200ResponseInner) GetDefaultDataCenterIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -99,7 +99,7 @@ func (o *TeamsListTeams200ResponseInner) GetDefaultDataCenterIdOk() (*int32, boo
 }
 
 // SetDefaultDataCenterId sets field value
-func (o *TeamsListTeams200ResponseInner) SetDefaultDataCenterId(v int32) {
+func (o *TeamsListTeams200ResponseInner) SetDefaultDataCenterId(v int) {
 	o.DefaultDataCenterId = v
 }
 
@@ -289,9 +289,9 @@ func (o *TeamsListTeams200ResponseInner) SetIsFirst(v bool) {
 }
 
 // GetRole returns the Role field value
-func (o *TeamsListTeams200ResponseInner) GetRole() int32 {
+func (o *TeamsListTeams200ResponseInner) GetRole() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -300,7 +300,7 @@ func (o *TeamsListTeams200ResponseInner) GetRole() int32 {
 
 // GetRoleOk returns a tuple with the Role field value
 // and a boolean to check if the value has been set.
-func (o *TeamsListTeams200ResponseInner) GetRoleOk() (*int32, bool) {
+func (o *TeamsListTeams200ResponseInner) GetRoleOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -308,7 +308,7 @@ func (o *TeamsListTeams200ResponseInner) GetRoleOk() (*int32, bool) {
 }
 
 // SetRole sets field value
-func (o *TeamsListTeams200ResponseInner) SetRole(v int32) {
+func (o *TeamsListTeams200ResponseInner) SetRole(v int) {
 	o.Role = v
 }
 

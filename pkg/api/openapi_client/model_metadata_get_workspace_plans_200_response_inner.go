@@ -26,7 +26,7 @@ type MetadataGetWorkspacePlans200ResponseInner struct {
 	Title           string                                                   `json:"title"`
 	Deprecated      bool                                                     `json:"deprecated"`
 	Characteristics MetadataGetWorkspacePlans200ResponseInnerCharacteristics `json:"characteristics"`
-	MaxReplicas     int32                                                    `json:"maxReplicas"`
+	MaxReplicas     int                                                      `json:"maxReplicas"`
 }
 
 type _MetadataGetWorkspacePlans200ResponseInner MetadataGetWorkspacePlans200ResponseInner
@@ -35,7 +35,7 @@ type _MetadataGetWorkspacePlans200ResponseInner MetadataGetWorkspacePlans200Resp
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMetadataGetWorkspacePlans200ResponseInner(id float32, priceUsd float32, title string, deprecated bool, characteristics MetadataGetWorkspacePlans200ResponseInnerCharacteristics, maxReplicas int32) *MetadataGetWorkspacePlans200ResponseInner {
+func NewMetadataGetWorkspacePlans200ResponseInner(id float32, priceUsd float32, title string, deprecated bool, characteristics MetadataGetWorkspacePlans200ResponseInnerCharacteristics, maxReplicas int) *MetadataGetWorkspacePlans200ResponseInner {
 	this := MetadataGetWorkspacePlans200ResponseInner{}
 	this.Id = id
 	this.PriceUsd = priceUsd
@@ -175,9 +175,9 @@ func (o *MetadataGetWorkspacePlans200ResponseInner) SetCharacteristics(v Metadat
 }
 
 // GetMaxReplicas returns the MaxReplicas field value
-func (o *MetadataGetWorkspacePlans200ResponseInner) GetMaxReplicas() int32 {
+func (o *MetadataGetWorkspacePlans200ResponseInner) GetMaxReplicas() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -186,7 +186,7 @@ func (o *MetadataGetWorkspacePlans200ResponseInner) GetMaxReplicas() int32 {
 
 // GetMaxReplicasOk returns a tuple with the MaxReplicas field value
 // and a boolean to check if the value has been set.
-func (o *MetadataGetWorkspacePlans200ResponseInner) GetMaxReplicasOk() (*int32, bool) {
+func (o *MetadataGetWorkspacePlans200ResponseInner) GetMaxReplicasOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -194,7 +194,7 @@ func (o *MetadataGetWorkspacePlans200ResponseInner) GetMaxReplicasOk() (*int32, 
 }
 
 // SetMaxReplicas sets field value
-func (o *MetadataGetWorkspacePlans200ResponseInner) SetMaxReplicas(v int32) {
+func (o *MetadataGetWorkspacePlans200ResponseInner) SetMaxReplicas(v int) {
 	o.MaxReplicas = v
 }
 

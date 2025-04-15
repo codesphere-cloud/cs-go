@@ -21,12 +21,12 @@ var _ MappedNullable = &MetadataGetWorkspacePlans200ResponseInnerCharacteristics
 
 // MetadataGetWorkspacePlans200ResponseInnerCharacteristics struct for MetadataGetWorkspacePlans200ResponseInnerCharacteristics
 type MetadataGetWorkspacePlans200ResponseInnerCharacteristics struct {
-	Id          int32   `json:"id"`
+	Id          int     `json:"id"`
 	CPU         float32 `json:"CPU"`
 	GPU         float32 `json:"GPU"`
-	RAM         int32   `json:"RAM"`
-	SSD         int32   `json:"SSD"`
-	TempStorage int32   `json:"TempStorage"`
+	RAM         int     `json:"RAM"`
+	SSD         int     `json:"SSD"`
+	TempStorage int     `json:"TempStorage"`
 	OnDemand    bool    `json:"onDemand"`
 }
 
@@ -36,7 +36,7 @@ type _MetadataGetWorkspacePlans200ResponseInnerCharacteristics MetadataGetWorksp
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMetadataGetWorkspacePlans200ResponseInnerCharacteristics(id int32, cPU float32, gPU float32, rAM int32, sSD int32, tempStorage int32, onDemand bool) *MetadataGetWorkspacePlans200ResponseInnerCharacteristics {
+func NewMetadataGetWorkspacePlans200ResponseInnerCharacteristics(id int, cPU float32, gPU float32, rAM int, sSD int, tempStorage int, onDemand bool) *MetadataGetWorkspacePlans200ResponseInnerCharacteristics {
 	this := MetadataGetWorkspacePlans200ResponseInnerCharacteristics{}
 	this.Id = id
 	this.CPU = cPU
@@ -57,9 +57,9 @@ func NewMetadataGetWorkspacePlans200ResponseInnerCharacteristicsWithDefaults() *
 }
 
 // GetId returns the Id field value
-func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetId() int32 {
+func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetId() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -68,7 +68,7 @@ func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetId() int32
 
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetIdOk() (*int32, bool) {
+func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -76,7 +76,7 @@ func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetIdOk() (*i
 }
 
 // SetId sets field value
-func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) SetId(v int32) {
+func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) SetId(v int) {
 	o.Id = v
 }
 
@@ -129,9 +129,9 @@ func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) SetGPU(v floa
 }
 
 // GetRAM returns the RAM field value
-func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetRAM() int32 {
+func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetRAM() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -140,7 +140,7 @@ func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetRAM() int3
 
 // GetRAMOk returns a tuple with the RAM field value
 // and a boolean to check if the value has been set.
-func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetRAMOk() (*int32, bool) {
+func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetRAMOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -148,14 +148,14 @@ func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetRAMOk() (*
 }
 
 // SetRAM sets field value
-func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) SetRAM(v int32) {
+func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) SetRAM(v int) {
 	o.RAM = v
 }
 
 // GetSSD returns the SSD field value
-func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetSSD() int32 {
+func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetSSD() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -164,7 +164,7 @@ func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetSSD() int3
 
 // GetSSDOk returns a tuple with the SSD field value
 // and a boolean to check if the value has been set.
-func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetSSDOk() (*int32, bool) {
+func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetSSDOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -172,14 +172,14 @@ func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetSSDOk() (*
 }
 
 // SetSSD sets field value
-func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) SetSSD(v int32) {
+func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) SetSSD(v int) {
 	o.SSD = v
 }
 
 // GetTempStorage returns the TempStorage field value
-func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetTempStorage() int32 {
+func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetTempStorage() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -188,7 +188,7 @@ func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetTempStorag
 
 // GetTempStorageOk returns a tuple with the TempStorage field value
 // and a boolean to check if the value has been set.
-func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetTempStorageOk() (*int32, bool) {
+func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetTempStorageOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -196,7 +196,7 @@ func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) GetTempStorag
 }
 
 // SetTempStorage sets field value
-func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) SetTempStorage(v int32) {
+func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) SetTempStorage(v int) {
 	o.TempStorage = v
 }
 

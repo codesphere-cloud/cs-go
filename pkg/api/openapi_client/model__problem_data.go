@@ -21,7 +21,7 @@ var _ MappedNullable = &ProblemData{}
 
 // ProblemData struct for ProblemData
 type ProblemData struct {
-	Status  int32   `json:"status"`
+	Status  int     `json:"status"`
 	Title   string  `json:"title"`
 	Details *string `json:"details,omitempty"`
 	TraceId string  `json:"traceId"`
@@ -33,7 +33,7 @@ type _ProblemData ProblemData
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewProblemData(status int32, title string, traceId string) *ProblemData {
+func NewProblemData(status int, title string, traceId string) *ProblemData {
 	this := ProblemData{}
 	this.Status = status
 	this.Title = title
@@ -50,9 +50,9 @@ func NewProblemDataWithDefaults() *ProblemData {
 }
 
 // GetStatus returns the Status field value
-func (o *ProblemData) GetStatus() int32 {
+func (o *ProblemData) GetStatus() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -61,7 +61,7 @@ func (o *ProblemData) GetStatus() int32 {
 
 // GetStatusOk returns a tuple with the Status field value
 // and a boolean to check if the value has been set.
-func (o *ProblemData) GetStatusOk() (*int32, bool) {
+func (o *ProblemData) GetStatusOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -69,7 +69,7 @@ func (o *ProblemData) GetStatusOk() (*int32, bool) {
 }
 
 // SetStatus sets field value
-func (o *ProblemData) SetStatus(v int32) {
+func (o *ProblemData) SetStatus(v int) {
 	o.Status = v
 }
 

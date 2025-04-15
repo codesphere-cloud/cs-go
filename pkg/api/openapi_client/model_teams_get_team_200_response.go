@@ -21,8 +21,8 @@ var _ MappedNullable = &TeamsGetTeam200Response{}
 
 // TeamsGetTeam200Response struct for TeamsGetTeam200Response
 type TeamsGetTeam200Response struct {
-	Id                  int32          `json:"id"`
-	DefaultDataCenterId int32          `json:"defaultDataCenterId"`
+	Id                  int            `json:"id"`
+	DefaultDataCenterId int            `json:"defaultDataCenterId"`
 	Name                string         `json:"name"`
 	Description         NullableString `json:"description,omitempty"`
 	AvatarId            NullableString `json:"avatarId,omitempty"`
@@ -36,7 +36,7 @@ type _TeamsGetTeam200Response TeamsGetTeam200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTeamsGetTeam200Response(id int32, defaultDataCenterId int32, name string) *TeamsGetTeam200Response {
+func NewTeamsGetTeam200Response(id int, defaultDataCenterId int, name string) *TeamsGetTeam200Response {
 	this := TeamsGetTeam200Response{}
 	this.Id = id
 	this.DefaultDataCenterId = defaultDataCenterId
@@ -53,9 +53,9 @@ func NewTeamsGetTeam200ResponseWithDefaults() *TeamsGetTeam200Response {
 }
 
 // GetId returns the Id field value
-func (o *TeamsGetTeam200Response) GetId() int32 {
+func (o *TeamsGetTeam200Response) GetId() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -64,7 +64,7 @@ func (o *TeamsGetTeam200Response) GetId() int32 {
 
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *TeamsGetTeam200Response) GetIdOk() (*int32, bool) {
+func (o *TeamsGetTeam200Response) GetIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -72,14 +72,14 @@ func (o *TeamsGetTeam200Response) GetIdOk() (*int32, bool) {
 }
 
 // SetId sets field value
-func (o *TeamsGetTeam200Response) SetId(v int32) {
+func (o *TeamsGetTeam200Response) SetId(v int) {
 	o.Id = v
 }
 
 // GetDefaultDataCenterId returns the DefaultDataCenterId field value
-func (o *TeamsGetTeam200Response) GetDefaultDataCenterId() int32 {
+func (o *TeamsGetTeam200Response) GetDefaultDataCenterId() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -88,7 +88,7 @@ func (o *TeamsGetTeam200Response) GetDefaultDataCenterId() int32 {
 
 // GetDefaultDataCenterIdOk returns a tuple with the DefaultDataCenterId field value
 // and a boolean to check if the value has been set.
-func (o *TeamsGetTeam200Response) GetDefaultDataCenterIdOk() (*int32, bool) {
+func (o *TeamsGetTeam200Response) GetDefaultDataCenterIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -96,7 +96,7 @@ func (o *TeamsGetTeam200Response) GetDefaultDataCenterIdOk() (*int32, bool) {
 }
 
 // SetDefaultDataCenterId sets field value
-func (o *TeamsGetTeam200Response) SetDefaultDataCenterId(v int32) {
+func (o *TeamsGetTeam200Response) SetDefaultDataCenterId(v int) {
 	o.DefaultDataCenterId = v
 }
 

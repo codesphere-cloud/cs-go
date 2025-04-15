@@ -22,7 +22,7 @@ var _ MappedNullable = &TeamsCreateTeamRequest{}
 // TeamsCreateTeamRequest struct for TeamsCreateTeamRequest
 type TeamsCreateTeamRequest struct {
 	Name string `json:"name"`
-	Dc   int32  `json:"dc"`
+	Dc   int    `json:"dc"`
 }
 
 type _TeamsCreateTeamRequest TeamsCreateTeamRequest
@@ -31,7 +31,7 @@ type _TeamsCreateTeamRequest TeamsCreateTeamRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTeamsCreateTeamRequest(name string, dc int32) *TeamsCreateTeamRequest {
+func NewTeamsCreateTeamRequest(name string, dc int) *TeamsCreateTeamRequest {
 	this := TeamsCreateTeamRequest{}
 	this.Name = name
 	this.Dc = dc
@@ -71,9 +71,9 @@ func (o *TeamsCreateTeamRequest) SetName(v string) {
 }
 
 // GetDc returns the Dc field value
-func (o *TeamsCreateTeamRequest) GetDc() int32 {
+func (o *TeamsCreateTeamRequest) GetDc() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -82,7 +82,7 @@ func (o *TeamsCreateTeamRequest) GetDc() int32 {
 
 // GetDcOk returns a tuple with the Dc field value
 // and a boolean to check if the value has been set.
-func (o *TeamsCreateTeamRequest) GetDcOk() (*int32, bool) {
+func (o *TeamsCreateTeamRequest) GetDcOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -90,7 +90,7 @@ func (o *TeamsCreateTeamRequest) GetDcOk() (*int32, bool) {
 }
 
 // SetDc sets field value
-func (o *TeamsCreateTeamRequest) SetDc(v int32) {
+func (o *TeamsCreateTeamRequest) SetDc(v int) {
 	o.Dc = v
 }
 
