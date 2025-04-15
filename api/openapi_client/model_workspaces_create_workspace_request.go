@@ -21,15 +21,15 @@ var _ MappedNullable = &WorkspacesCreateWorkspaceRequest{}
 
 // WorkspacesCreateWorkspaceRequest struct for WorkspacesCreateWorkspaceRequest
 type WorkspacesCreateWorkspaceRequest struct {
-	TeamId            int32   `json:"teamId"`
+	TeamId            int     `json:"teamId"`
 	Name              string  `json:"name"`
-	PlanId            int32   `json:"planId"`
+	PlanId            int     `json:"planId"`
 	IsPrivateRepo     bool    `json:"isPrivateRepo"`
 	GitUrl            *string `json:"gitUrl,omitempty"`
 	InitialBranch     *string `json:"initialBranch,omitempty"`
-	SourceWorkspaceId *int32  `json:"sourceWorkspaceId,omitempty"`
+	SourceWorkspaceId *int    `json:"sourceWorkspaceId,omitempty"`
 	WelcomeMessage    *string `json:"welcomeMessage,omitempty"`
-	Replicas          int32   `json:"replicas"`
+	Replicas          int     `json:"replicas"`
 	VpnConfig         *string `json:"vpnConfig,omitempty"`
 }
 
@@ -39,7 +39,7 @@ type _WorkspacesCreateWorkspaceRequest WorkspacesCreateWorkspaceRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWorkspacesCreateWorkspaceRequest(teamId int32, name string, planId int32, isPrivateRepo bool, replicas int32) *WorkspacesCreateWorkspaceRequest {
+func NewWorkspacesCreateWorkspaceRequest(teamId int, name string, planId int, isPrivateRepo bool, replicas int) *WorkspacesCreateWorkspaceRequest {
 	this := WorkspacesCreateWorkspaceRequest{}
 	this.TeamId = teamId
 	this.Name = name
@@ -58,9 +58,9 @@ func NewWorkspacesCreateWorkspaceRequestWithDefaults() *WorkspacesCreateWorkspac
 }
 
 // GetTeamId returns the TeamId field value
-func (o *WorkspacesCreateWorkspaceRequest) GetTeamId() int32 {
+func (o *WorkspacesCreateWorkspaceRequest) GetTeamId() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -69,7 +69,7 @@ func (o *WorkspacesCreateWorkspaceRequest) GetTeamId() int32 {
 
 // GetTeamIdOk returns a tuple with the TeamId field value
 // and a boolean to check if the value has been set.
-func (o *WorkspacesCreateWorkspaceRequest) GetTeamIdOk() (*int32, bool) {
+func (o *WorkspacesCreateWorkspaceRequest) GetTeamIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -77,7 +77,7 @@ func (o *WorkspacesCreateWorkspaceRequest) GetTeamIdOk() (*int32, bool) {
 }
 
 // SetTeamId sets field value
-func (o *WorkspacesCreateWorkspaceRequest) SetTeamId(v int32) {
+func (o *WorkspacesCreateWorkspaceRequest) SetTeamId(v int) {
 	o.TeamId = v
 }
 
@@ -106,9 +106,9 @@ func (o *WorkspacesCreateWorkspaceRequest) SetName(v string) {
 }
 
 // GetPlanId returns the PlanId field value
-func (o *WorkspacesCreateWorkspaceRequest) GetPlanId() int32 {
+func (o *WorkspacesCreateWorkspaceRequest) GetPlanId() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -117,7 +117,7 @@ func (o *WorkspacesCreateWorkspaceRequest) GetPlanId() int32 {
 
 // GetPlanIdOk returns a tuple with the PlanId field value
 // and a boolean to check if the value has been set.
-func (o *WorkspacesCreateWorkspaceRequest) GetPlanIdOk() (*int32, bool) {
+func (o *WorkspacesCreateWorkspaceRequest) GetPlanIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -125,7 +125,7 @@ func (o *WorkspacesCreateWorkspaceRequest) GetPlanIdOk() (*int32, bool) {
 }
 
 // SetPlanId sets field value
-func (o *WorkspacesCreateWorkspaceRequest) SetPlanId(v int32) {
+func (o *WorkspacesCreateWorkspaceRequest) SetPlanId(v int) {
 	o.PlanId = v
 }
 
@@ -218,9 +218,9 @@ func (o *WorkspacesCreateWorkspaceRequest) SetInitialBranch(v string) {
 }
 
 // GetSourceWorkspaceId returns the SourceWorkspaceId field value if set, zero value otherwise.
-func (o *WorkspacesCreateWorkspaceRequest) GetSourceWorkspaceId() int32 {
+func (o *WorkspacesCreateWorkspaceRequest) GetSourceWorkspaceId() int {
 	if o == nil || IsNil(o.SourceWorkspaceId) {
-		var ret int32
+		var ret int
 		return ret
 	}
 	return *o.SourceWorkspaceId
@@ -228,7 +228,7 @@ func (o *WorkspacesCreateWorkspaceRequest) GetSourceWorkspaceId() int32 {
 
 // GetSourceWorkspaceIdOk returns a tuple with the SourceWorkspaceId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *WorkspacesCreateWorkspaceRequest) GetSourceWorkspaceIdOk() (*int32, bool) {
+func (o *WorkspacesCreateWorkspaceRequest) GetSourceWorkspaceIdOk() (*int, bool) {
 	if o == nil || IsNil(o.SourceWorkspaceId) {
 		return nil, false
 	}
@@ -244,8 +244,8 @@ func (o *WorkspacesCreateWorkspaceRequest) HasSourceWorkspaceId() bool {
 	return false
 }
 
-// SetSourceWorkspaceId gets a reference to the given int32 and assigns it to the SourceWorkspaceId field.
-func (o *WorkspacesCreateWorkspaceRequest) SetSourceWorkspaceId(v int32) {
+// SetSourceWorkspaceId gets a reference to the given int and assigns it to the SourceWorkspaceId field.
+func (o *WorkspacesCreateWorkspaceRequest) SetSourceWorkspaceId(v int) {
 	o.SourceWorkspaceId = &v
 }
 
@@ -282,9 +282,9 @@ func (o *WorkspacesCreateWorkspaceRequest) SetWelcomeMessage(v string) {
 }
 
 // GetReplicas returns the Replicas field value
-func (o *WorkspacesCreateWorkspaceRequest) GetReplicas() int32 {
+func (o *WorkspacesCreateWorkspaceRequest) GetReplicas() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -293,7 +293,7 @@ func (o *WorkspacesCreateWorkspaceRequest) GetReplicas() int32 {
 
 // GetReplicasOk returns a tuple with the Replicas field value
 // and a boolean to check if the value has been set.
-func (o *WorkspacesCreateWorkspaceRequest) GetReplicasOk() (*int32, bool) {
+func (o *WorkspacesCreateWorkspaceRequest) GetReplicasOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -301,7 +301,7 @@ func (o *WorkspacesCreateWorkspaceRequest) GetReplicasOk() (*int32, bool) {
 }
 
 // SetReplicas sets field value
-func (o *WorkspacesCreateWorkspaceRequest) SetReplicas(v int32) {
+func (o *WorkspacesCreateWorkspaceRequest) SetReplicas(v int) {
 	o.Replicas = v
 }
 

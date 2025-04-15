@@ -21,7 +21,7 @@ var _ MappedNullable = &DomainsGetDomain400Response{}
 
 // DomainsGetDomain400Response struct for DomainsGetDomain400Response
 type DomainsGetDomain400Response struct {
-	Status  int32   `json:"status"`
+	Status  int     `json:"status"`
 	Title   string  `json:"title"`
 	Details *string `json:"details,omitempty"`
 	TraceId string  `json:"traceId"`
@@ -33,7 +33,7 @@ type _DomainsGetDomain400Response DomainsGetDomain400Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDomainsGetDomain400Response(status int32, title string, traceId string) *DomainsGetDomain400Response {
+func NewDomainsGetDomain400Response(status int, title string, traceId string) *DomainsGetDomain400Response {
 	this := DomainsGetDomain400Response{}
 	this.Status = status
 	this.Title = title
@@ -50,9 +50,9 @@ func NewDomainsGetDomain400ResponseWithDefaults() *DomainsGetDomain400Response {
 }
 
 // GetStatus returns the Status field value
-func (o *DomainsGetDomain400Response) GetStatus() int32 {
+func (o *DomainsGetDomain400Response) GetStatus() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -61,7 +61,7 @@ func (o *DomainsGetDomain400Response) GetStatus() int32 {
 
 // GetStatusOk returns a tuple with the Status field value
 // and a boolean to check if the value has been set.
-func (o *DomainsGetDomain400Response) GetStatusOk() (*int32, bool) {
+func (o *DomainsGetDomain400Response) GetStatusOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -69,7 +69,7 @@ func (o *DomainsGetDomain400Response) GetStatusOk() (*int32, bool) {
 }
 
 // SetStatus sets field value
-func (o *DomainsGetDomain400Response) SetStatus(v int32) {
+func (o *DomainsGetDomain400Response) SetStatus(v int) {
 	o.Status = v
 }
 

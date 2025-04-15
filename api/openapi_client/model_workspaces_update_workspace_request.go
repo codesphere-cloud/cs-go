@@ -19,9 +19,9 @@ var _ MappedNullable = &WorkspacesUpdateWorkspaceRequest{}
 
 // WorkspacesUpdateWorkspaceRequest struct for WorkspacesUpdateWorkspaceRequest
 type WorkspacesUpdateWorkspaceRequest struct {
-	PlanId    *int32         `json:"planId,omitempty"`
+	PlanId    *int           `json:"planId,omitempty"`
 	Name      *string        `json:"name,omitempty"`
-	Replicas  *int32         `json:"replicas,omitempty"`
+	Replicas  *int           `json:"replicas,omitempty"`
 	VpnConfig NullableString `json:"vpnConfig,omitempty"`
 }
 
@@ -43,9 +43,9 @@ func NewWorkspacesUpdateWorkspaceRequestWithDefaults() *WorkspacesUpdateWorkspac
 }
 
 // GetPlanId returns the PlanId field value if set, zero value otherwise.
-func (o *WorkspacesUpdateWorkspaceRequest) GetPlanId() int32 {
+func (o *WorkspacesUpdateWorkspaceRequest) GetPlanId() int {
 	if o == nil || IsNil(o.PlanId) {
-		var ret int32
+		var ret int
 		return ret
 	}
 	return *o.PlanId
@@ -53,7 +53,7 @@ func (o *WorkspacesUpdateWorkspaceRequest) GetPlanId() int32 {
 
 // GetPlanIdOk returns a tuple with the PlanId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *WorkspacesUpdateWorkspaceRequest) GetPlanIdOk() (*int32, bool) {
+func (o *WorkspacesUpdateWorkspaceRequest) GetPlanIdOk() (*int, bool) {
 	if o == nil || IsNil(o.PlanId) {
 		return nil, false
 	}
@@ -69,8 +69,8 @@ func (o *WorkspacesUpdateWorkspaceRequest) HasPlanId() bool {
 	return false
 }
 
-// SetPlanId gets a reference to the given int32 and assigns it to the PlanId field.
-func (o *WorkspacesUpdateWorkspaceRequest) SetPlanId(v int32) {
+// SetPlanId gets a reference to the given int and assigns it to the PlanId field.
+func (o *WorkspacesUpdateWorkspaceRequest) SetPlanId(v int) {
 	o.PlanId = &v
 }
 
@@ -107,9 +107,9 @@ func (o *WorkspacesUpdateWorkspaceRequest) SetName(v string) {
 }
 
 // GetReplicas returns the Replicas field value if set, zero value otherwise.
-func (o *WorkspacesUpdateWorkspaceRequest) GetReplicas() int32 {
+func (o *WorkspacesUpdateWorkspaceRequest) GetReplicas() int {
 	if o == nil || IsNil(o.Replicas) {
-		var ret int32
+		var ret int
 		return ret
 	}
 	return *o.Replicas
@@ -117,7 +117,7 @@ func (o *WorkspacesUpdateWorkspaceRequest) GetReplicas() int32 {
 
 // GetReplicasOk returns a tuple with the Replicas field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *WorkspacesUpdateWorkspaceRequest) GetReplicasOk() (*int32, bool) {
+func (o *WorkspacesUpdateWorkspaceRequest) GetReplicasOk() (*int, bool) {
 	if o == nil || IsNil(o.Replicas) {
 		return nil, false
 	}
@@ -133,8 +133,8 @@ func (o *WorkspacesUpdateWorkspaceRequest) HasReplicas() bool {
 	return false
 }
 
-// SetReplicas gets a reference to the given int32 and assigns it to the Replicas field.
-func (o *WorkspacesUpdateWorkspaceRequest) SetReplicas(v int32) {
+// SetReplicas gets a reference to the given int and assigns it to the Replicas field.
+func (o *WorkspacesUpdateWorkspaceRequest) SetReplicas(v int) {
 	o.Replicas = &v
 }
 

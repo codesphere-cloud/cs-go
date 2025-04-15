@@ -1,6 +1,3 @@
-/*
-Copyright © 2025 Codesphere Inc. <support@codesphere.com>
-*/
 package api
 
 import (

@@ -22,7 +22,7 @@ var _ MappedNullable = &DomainsGetDomain200Response{}
 // DomainsGetDomain200Response struct for DomainsGetDomain200Response
 type DomainsGetDomain200Response struct {
 	TeamId                   float32                                             `json:"teamId"`
-	DataCenterId             int32                                               `json:"dataCenterId"`
+	DataCenterId             int                                                 `json:"dataCenterId"`
 	Workspaces               map[string][]float32                                `json:"workspaces"`
 	Name                     string                                              `json:"name"`
 	CertificateRequestStatus DomainsGetDomain200ResponseCertificateRequestStatus `json:"certificateRequestStatus"`
@@ -38,7 +38,7 @@ type _DomainsGetDomain200Response DomainsGetDomain200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDomainsGetDomain200Response(teamId float32, dataCenterId int32, workspaces map[string][]float32, name string, certificateRequestStatus DomainsGetDomain200ResponseCertificateRequestStatus, dnsEntries DomainsGetDomain200ResponseDnsEntries, domainVerificationStatus DomainsGetDomain200ResponseDomainVerificationStatus) *DomainsGetDomain200Response {
+func NewDomainsGetDomain200Response(teamId float32, dataCenterId int, workspaces map[string][]float32, name string, certificateRequestStatus DomainsGetDomain200ResponseCertificateRequestStatus, dnsEntries DomainsGetDomain200ResponseDnsEntries, domainVerificationStatus DomainsGetDomain200ResponseDomainVerificationStatus) *DomainsGetDomain200Response {
 	this := DomainsGetDomain200Response{}
 	this.TeamId = teamId
 	this.DataCenterId = dataCenterId
@@ -83,9 +83,9 @@ func (o *DomainsGetDomain200Response) SetTeamId(v float32) {
 }
 
 // GetDataCenterId returns the DataCenterId field value
-func (o *DomainsGetDomain200Response) GetDataCenterId() int32 {
+func (o *DomainsGetDomain200Response) GetDataCenterId() int {
 	if o == nil {
-		var ret int32
+		var ret int
 		return ret
 	}
 
@@ -94,7 +94,7 @@ func (o *DomainsGetDomain200Response) GetDataCenterId() int32 {
 
 // GetDataCenterIdOk returns a tuple with the DataCenterId field value
 // and a boolean to check if the value has been set.
-func (o *DomainsGetDomain200Response) GetDataCenterIdOk() (*int32, bool) {
+func (o *DomainsGetDomain200Response) GetDataCenterIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -102,7 +102,7 @@ func (o *DomainsGetDomain200Response) GetDataCenterIdOk() (*int32, bool) {
 }
 
 // SetDataCenterId sets field value
-func (o *DomainsGetDomain200Response) SetDataCenterId(v int32) {
+func (o *DomainsGetDomain200Response) SetDataCenterId(v int) {
 	o.DataCenterId = v
 }
 
