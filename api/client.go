@@ -55,25 +55,12 @@ func (c *Client) ListWorkspacePlans() ([]WorkspacePlan, error) {
 
 func (c *Client) ListTeams() ([]Team, error) {
 	teams, _, err := c.api.TeamsAPI.TeamsListTeams(c.ctx).Execute()
-
-	mapped := make([]Team, len(teams))
-	for i, t := range teams {
-		mapped[i] = Team{
-			Id:                  t.Id,
-			DefaultDataCenterId: t.DefaultDataCenterId,
-			Name:                t.Name,
-			Description:         t.Description,
-			AvatarId:            t.AvatarId,
-			AvatarUrl:           t.AvatarUrl,
-			IsFirst:             t.IsFirst,
-		}
-	}
-	return mapped, err
+	return teams, err
 }
 
 func (c *Client) GetTeam(teamId int) (*Team, error) {
 	team, _, err := c.api.TeamsAPI.TeamsGetTeam(c.ctx, float32(teamId)).Execute()
-	return team, err
+	return ConvertToTeam(team), err
 }
 
 func (c *Client) CreateTeam(name string, dc int) (*Team, error) {
@@ -83,7 +70,7 @@ func (c *Client) CreateTeam(name string, dc int) (*Team, error) {
 			Dc:   dc,
 		}).
 		Execute()
-	return team, err
+	return ConvertToTeam(team), err
 }
 
 func (c *Client) DeleteTeam(teamId int) error {
@@ -96,18 +83,18 @@ func (c *Client) ListDomains(teamId int) ([]Domain, error) {
 	return domains, err
 }
 
-func (c *Client) GetDomain(teamId int, name string) (*Domain, error) {
-	domain, _, err := c.api.DomainsAPI.DomainsGetDomain(c.ctx, float32(teamId), name).Execute()
+func (c *Client) GetDomain(teamId int, domainName string) (*Domain, error) {
+	domain, _, err := c.api.DomainsAPI.DomainsGetDomain(c.ctx, float32(teamId), domainName).Execute()
 	return domain, err
 }
 
-func (c *Client) CreateDomain(teamId int, name string) (*Domain, error) {
-	domain, _, err := c.api.DomainsAPI.DomainsCreateDomain(c.ctx, float32(teamId), name).Execute()
+func (c *Client) CreateDomain(teamId int, domainName string) (*Domain, error) {
+	domain, _, err := c.api.DomainsAPI.DomainsCreateDomain(c.ctx, float32(teamId), domainName).Execute()
 	return domain, err
 }
 
-func (c *Client) DeleteDomain(teamId int, name string) error {
-	_, err := c.api.DomainsAPI.DomainsDeleteDomain(c.ctx, float32(teamId), name).Execute()
+func (c *Client) DeleteDomain(teamId int, domainName string) error {
+	_, err := c.api.DomainsAPI.DomainsDeleteDomain(c.ctx, float32(teamId), domainName).Execute()
 	return err
 }
 
