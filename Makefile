@@ -52,4 +52,3 @@ install-build-deps:
 	go install github.com/google/go-licenses@v1.6.0
 	go install github.com/hashicorp/copywrite@v0.22.0
 	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.1.2
-
