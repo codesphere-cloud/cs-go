@@ -1,7 +1,7 @@
 package api
 
 import (
-	openapi "github.com/codesphere-cloud/cs-go/pkg/api/openapi_client"
+	openapi "github.com/codesphere-cloud/cs-go/api/openapi_client"
 )
 
 type DataCenter = openapi.MetadataGetDatacenters200ResponseInner

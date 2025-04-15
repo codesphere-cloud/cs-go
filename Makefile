@@ -1,5 +1,5 @@
 
-OPENAPI_DIR = ./pkg/api/openapi_client
+OPENAPI_DIR = ./api/openapi_client
 
 all: format build
 
@@ -11,6 +11,9 @@ lint:
 
 test:
 	go test ./...
+
+generate:
+	go generate ./...
 
 build:
 	cd cmd/cs && go build
@@ -37,4 +40,4 @@ generate-client:
 		${OPENAPI_DIR}/test
 		
 
-generate: generate-client format
+generate-api: generate-client format
