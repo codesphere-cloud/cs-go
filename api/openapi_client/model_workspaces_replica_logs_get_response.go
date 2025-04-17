@@ -136,7 +136,7 @@ func (o *WorkspacesReplicaLogsGetResponse) UnmarshalJSON(data []byte) (err error
 	varWorkspacesReplicaLogsGetResponse := _WorkspacesReplicaLogsGetResponse{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varWorkspacesReplicaLogsGetResponse)
 
 	if err != nil {

@@ -136,7 +136,7 @@ func (o *WorkspacesListEnvVars200ResponseInner) UnmarshalJSON(data []byte) (err 
 	varWorkspacesListEnvVars200ResponseInner := _WorkspacesListEnvVars200ResponseInner{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varWorkspacesListEnvVars200ResponseInner)
 
 	if err != nil {

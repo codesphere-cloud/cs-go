@@ -22,14 +22,14 @@ var _ MappedNullable = &DomainsGetDomain200Response{}
 
 // DomainsGetDomain200Response struct for DomainsGetDomain200Response
 type DomainsGetDomain200Response struct {
-	TeamId                   float32                                             `json:"teamId"`
+	TeamId                   int                                                 `json:"teamId"`
 	DataCenterId             int                                                 `json:"dataCenterId"`
-	Workspaces               map[string][]float32                                `json:"workspaces"`
+	Workspaces               map[string][]int                                    `json:"workspaces"`
 	Name                     string                                              `json:"name"`
 	CertificateRequestStatus DomainsGetDomain200ResponseCertificateRequestStatus `json:"certificateRequestStatus"`
 	DnsEntries               DomainsGetDomain200ResponseDnsEntries               `json:"dnsEntries"`
 	DomainVerificationStatus DomainsGetDomain200ResponseDomainVerificationStatus `json:"domainVerificationStatus"`
-	CustomConfigRevision     *float32                                            `json:"customConfigRevision,omitempty"`
+	CustomConfigRevision     *int                                                `json:"customConfigRevision,omitempty"`
 	CustomConfig             *DomainsGetDomain200ResponseCustomConfig            `json:"customConfig,omitempty"`
 }
 
@@ -39,7 +39,7 @@ type _DomainsGetDomain200Response DomainsGetDomain200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDomainsGetDomain200Response(teamId float32, dataCenterId int, workspaces map[string][]float32, name string, certificateRequestStatus DomainsGetDomain200ResponseCertificateRequestStatus, dnsEntries DomainsGetDomain200ResponseDnsEntries, domainVerificationStatus DomainsGetDomain200ResponseDomainVerificationStatus) *DomainsGetDomain200Response {
+func NewDomainsGetDomain200Response(teamId int, dataCenterId int, workspaces map[string][]int, name string, certificateRequestStatus DomainsGetDomain200ResponseCertificateRequestStatus, dnsEntries DomainsGetDomain200ResponseDnsEntries, domainVerificationStatus DomainsGetDomain200ResponseDomainVerificationStatus) *DomainsGetDomain200Response {
 	this := DomainsGetDomain200Response{}
 	this.TeamId = teamId
 	this.DataCenterId = dataCenterId
@@ -60,9 +60,9 @@ func NewDomainsGetDomain200ResponseWithDefaults() *DomainsGetDomain200Response {
 }
 
 // GetTeamId returns the TeamId field value
-func (o *DomainsGetDomain200Response) GetTeamId() float32 {
+func (o *DomainsGetDomain200Response) GetTeamId() int {
 	if o == nil {
-		var ret float32
+		var ret int
 		return ret
 	}
 
@@ -71,7 +71,7 @@ func (o *DomainsGetDomain200Response) GetTeamId() float32 {
 
 // GetTeamIdOk returns a tuple with the TeamId field value
 // and a boolean to check if the value has been set.
-func (o *DomainsGetDomain200Response) GetTeamIdOk() (*float32, bool) {
+func (o *DomainsGetDomain200Response) GetTeamIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -79,7 +79,7 @@ func (o *DomainsGetDomain200Response) GetTeamIdOk() (*float32, bool) {
 }
 
 // SetTeamId sets field value
-func (o *DomainsGetDomain200Response) SetTeamId(v float32) {
+func (o *DomainsGetDomain200Response) SetTeamId(v int) {
 	o.TeamId = v
 }
 
@@ -108,9 +108,9 @@ func (o *DomainsGetDomain200Response) SetDataCenterId(v int) {
 }
 
 // GetWorkspaces returns the Workspaces field value
-func (o *DomainsGetDomain200Response) GetWorkspaces() map[string][]float32 {
+func (o *DomainsGetDomain200Response) GetWorkspaces() map[string][]int {
 	if o == nil {
-		var ret map[string][]float32
+		var ret map[string][]int
 		return ret
 	}
 
@@ -119,7 +119,7 @@ func (o *DomainsGetDomain200Response) GetWorkspaces() map[string][]float32 {
 
 // GetWorkspacesOk returns a tuple with the Workspaces field value
 // and a boolean to check if the value has been set.
-func (o *DomainsGetDomain200Response) GetWorkspacesOk() (*map[string][]float32, bool) {
+func (o *DomainsGetDomain200Response) GetWorkspacesOk() (*map[string][]int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -127,7 +127,7 @@ func (o *DomainsGetDomain200Response) GetWorkspacesOk() (*map[string][]float32, 
 }
 
 // SetWorkspaces sets field value
-func (o *DomainsGetDomain200Response) SetWorkspaces(v map[string][]float32) {
+func (o *DomainsGetDomain200Response) SetWorkspaces(v map[string][]int) {
 	o.Workspaces = v
 }
 
@@ -228,9 +228,9 @@ func (o *DomainsGetDomain200Response) SetDomainVerificationStatus(v DomainsGetDo
 }
 
 // GetCustomConfigRevision returns the CustomConfigRevision field value if set, zero value otherwise.
-func (o *DomainsGetDomain200Response) GetCustomConfigRevision() float32 {
+func (o *DomainsGetDomain200Response) GetCustomConfigRevision() int {
 	if o == nil || IsNil(o.CustomConfigRevision) {
-		var ret float32
+		var ret int
 		return ret
 	}
 	return *o.CustomConfigRevision
@@ -238,7 +238,7 @@ func (o *DomainsGetDomain200Response) GetCustomConfigRevision() float32 {
 
 // GetCustomConfigRevisionOk returns a tuple with the CustomConfigRevision field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *DomainsGetDomain200Response) GetCustomConfigRevisionOk() (*float32, bool) {
+func (o *DomainsGetDomain200Response) GetCustomConfigRevisionOk() (*int, bool) {
 	if o == nil || IsNil(o.CustomConfigRevision) {
 		return nil, false
 	}
@@ -254,8 +254,8 @@ func (o *DomainsGetDomain200Response) HasCustomConfigRevision() bool {
 	return false
 }
 
-// SetCustomConfigRevision gets a reference to the given float32 and assigns it to the CustomConfigRevision field.
-func (o *DomainsGetDomain200Response) SetCustomConfigRevision(v float32) {
+// SetCustomConfigRevision gets a reference to the given int and assigns it to the CustomConfigRevision field.
+func (o *DomainsGetDomain200Response) SetCustomConfigRevision(v int) {
 	o.CustomConfigRevision = &v
 }
 
@@ -348,7 +348,7 @@ func (o *DomainsGetDomain200Response) UnmarshalJSON(data []byte) (err error) {
 	varDomainsGetDomain200Response := _DomainsGetDomain200Response{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varDomainsGetDomain200Response)
 
 	if err != nil {

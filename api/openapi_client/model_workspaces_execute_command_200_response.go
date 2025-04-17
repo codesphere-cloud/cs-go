@@ -192,7 +192,7 @@ func (o *WorkspacesExecuteCommand200Response) UnmarshalJSON(data []byte) (err er
 	varWorkspacesExecuteCommand200Response := _WorkspacesExecuteCommand200Response{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varWorkspacesExecuteCommand200Response)
 
 	if err != nil {

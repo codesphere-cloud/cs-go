@@ -265,7 +265,7 @@ func (o *WorkspacesPipelineStatus200ResponseInner) UnmarshalJSON(data []byte) (e
 	varWorkspacesPipelineStatus200ResponseInner := _WorkspacesPipelineStatus200ResponseInner{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varWorkspacesPipelineStatus200ResponseInner)
 
 	if err != nil {

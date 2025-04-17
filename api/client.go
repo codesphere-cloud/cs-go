@@ -122,11 +122,11 @@ func (c *Client) VerifyDomain(
 func (c *Client) UpdateWorkspaceConnections(
 	teamId int, domainName string, connections PathToWorkspaces,
 ) (*Domain, error) {
-	req := make(map[string][]float32)
+	req := make(map[string][]int)
 	for path, workspaces := range connections {
-		ids := make([]float32, len(workspaces))
+		ids := make([]int, len(workspaces))
 		for i, w := range workspaces {
-			ids[i] = float32(w.Id)
+			ids[i] = w.Id
 		}
 		req[path] = ids
 	}

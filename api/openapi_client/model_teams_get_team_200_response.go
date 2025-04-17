@@ -341,7 +341,7 @@ func (o *TeamsGetTeam200Response) UnmarshalJSON(data []byte) (err error) {
 	varTeamsGetTeam200Response := _TeamsGetTeam200Response{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varTeamsGetTeam200Response)
 
 	if err != nil {

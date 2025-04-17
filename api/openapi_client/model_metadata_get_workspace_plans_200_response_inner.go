@@ -22,7 +22,7 @@ var _ MappedNullable = &MetadataGetWorkspacePlans200ResponseInner{}
 
 // MetadataGetWorkspacePlans200ResponseInner struct for MetadataGetWorkspacePlans200ResponseInner
 type MetadataGetWorkspacePlans200ResponseInner struct {
-	Id              float32                                                  `json:"id"`
+	Id              int                                                      `json:"id"`
 	PriceUsd        float32                                                  `json:"priceUsd"`
 	Title           string                                                   `json:"title"`
 	Deprecated      bool                                                     `json:"deprecated"`
@@ -36,7 +36,7 @@ type _MetadataGetWorkspacePlans200ResponseInner MetadataGetWorkspacePlans200Resp
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMetadataGetWorkspacePlans200ResponseInner(id float32, priceUsd float32, title string, deprecated bool, characteristics MetadataGetWorkspacePlans200ResponseInnerCharacteristics, maxReplicas int) *MetadataGetWorkspacePlans200ResponseInner {
+func NewMetadataGetWorkspacePlans200ResponseInner(id int, priceUsd float32, title string, deprecated bool, characteristics MetadataGetWorkspacePlans200ResponseInnerCharacteristics, maxReplicas int) *MetadataGetWorkspacePlans200ResponseInner {
 	this := MetadataGetWorkspacePlans200ResponseInner{}
 	this.Id = id
 	this.PriceUsd = priceUsd
@@ -56,9 +56,9 @@ func NewMetadataGetWorkspacePlans200ResponseInnerWithDefaults() *MetadataGetWork
 }
 
 // GetId returns the Id field value
-func (o *MetadataGetWorkspacePlans200ResponseInner) GetId() float32 {
+func (o *MetadataGetWorkspacePlans200ResponseInner) GetId() int {
 	if o == nil {
-		var ret float32
+		var ret int
 		return ret
 	}
 
@@ -67,7 +67,7 @@ func (o *MetadataGetWorkspacePlans200ResponseInner) GetId() float32 {
 
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *MetadataGetWorkspacePlans200ResponseInner) GetIdOk() (*float32, bool) {
+func (o *MetadataGetWorkspacePlans200ResponseInner) GetIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -75,7 +75,7 @@ func (o *MetadataGetWorkspacePlans200ResponseInner) GetIdOk() (*float32, bool) {
 }
 
 // SetId sets field value
-func (o *MetadataGetWorkspacePlans200ResponseInner) SetId(v float32) {
+func (o *MetadataGetWorkspacePlans200ResponseInner) SetId(v int) {
 	o.Id = v
 }
 
@@ -248,7 +248,7 @@ func (o *MetadataGetWorkspacePlans200ResponseInner) UnmarshalJSON(data []byte) (
 	varMetadataGetWorkspacePlans200ResponseInner := _MetadataGetWorkspacePlans200ResponseInner{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varMetadataGetWorkspacePlans200ResponseInner)
 
 	if err != nil {

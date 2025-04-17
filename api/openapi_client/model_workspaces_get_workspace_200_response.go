@@ -22,18 +22,18 @@ var _ MappedNullable = &WorkspacesGetWorkspace200Response{}
 
 // WorkspacesGetWorkspace200Response struct for WorkspacesGetWorkspace200Response
 type WorkspacesGetWorkspace200Response struct {
-	Id                int            `json:"id"`
-	DataCenterId      float32        `json:"dataCenterId"`
-	UserId            int            `json:"userId"`
 	TeamId            int            `json:"teamId"`
 	Name              string         `json:"name"`
-	GitUrl            NullableString `json:"gitUrl"`
+	PlanId            int            `json:"planId"`
 	IsPrivateRepo     bool           `json:"isPrivateRepo"`
-	WelcomeMessage    NullableString `json:"welcomeMessage"`
+	Replicas          int            `json:"replicas"`
+	Id                int            `json:"id"`
+	DataCenterId      int            `json:"dataCenterId"`
+	UserId            int            `json:"userId"`
+	GitUrl            NullableString `json:"gitUrl"`
 	InitialBranch     NullableString `json:"initialBranch"`
 	SourceWorkspaceId NullableInt    `json:"sourceWorkspaceId"`
-	PlanId            int            `json:"planId"`
-	Replicas          int            `json:"replicas"`
+	WelcomeMessage    NullableString `json:"welcomeMessage"`
 	VpnConfig         NullableString `json:"vpnConfig"`
 }
 
@@ -43,20 +43,20 @@ type _WorkspacesGetWorkspace200Response WorkspacesGetWorkspace200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWorkspacesGetWorkspace200Response(id int, dataCenterId float32, userId int, teamId int, name string, gitUrl NullableString, isPrivateRepo bool, welcomeMessage NullableString, initialBranch NullableString, sourceWorkspaceId NullableInt, planId int, replicas int, vpnConfig NullableString) *WorkspacesGetWorkspace200Response {
+func NewWorkspacesGetWorkspace200Response(teamId int, name string, planId int, isPrivateRepo bool, replicas int, id int, dataCenterId int, userId int, gitUrl NullableString, initialBranch NullableString, sourceWorkspaceId NullableInt, welcomeMessage NullableString, vpnConfig NullableString) *WorkspacesGetWorkspace200Response {
 	this := WorkspacesGetWorkspace200Response{}
+	this.TeamId = teamId
+	this.Name = name
+	this.PlanId = planId
+	this.IsPrivateRepo = isPrivateRepo
+	this.Replicas = replicas
 	this.Id = id
 	this.DataCenterId = dataCenterId
 	this.UserId = userId
-	this.TeamId = teamId
-	this.Name = name
 	this.GitUrl = gitUrl
-	this.IsPrivateRepo = isPrivateRepo
-	this.WelcomeMessage = welcomeMessage
 	this.InitialBranch = initialBranch
 	this.SourceWorkspaceId = sourceWorkspaceId
-	this.PlanId = planId
-	this.Replicas = replicas
+	this.WelcomeMessage = welcomeMessage
 	this.VpnConfig = vpnConfig
 	return &this
 }
@@ -67,78 +67,6 @@ func NewWorkspacesGetWorkspace200Response(id int, dataCenterId float32, userId i
 func NewWorkspacesGetWorkspace200ResponseWithDefaults() *WorkspacesGetWorkspace200Response {
 	this := WorkspacesGetWorkspace200Response{}
 	return &this
-}
-
-// GetId returns the Id field value
-func (o *WorkspacesGetWorkspace200Response) GetId() int {
-	if o == nil {
-		var ret int
-		return ret
-	}
-
-	return o.Id
-}
-
-// GetIdOk returns a tuple with the Id field value
-// and a boolean to check if the value has been set.
-func (o *WorkspacesGetWorkspace200Response) GetIdOk() (*int, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Id, true
-}
-
-// SetId sets field value
-func (o *WorkspacesGetWorkspace200Response) SetId(v int) {
-	o.Id = v
-}
-
-// GetDataCenterId returns the DataCenterId field value
-func (o *WorkspacesGetWorkspace200Response) GetDataCenterId() float32 {
-	if o == nil {
-		var ret float32
-		return ret
-	}
-
-	return o.DataCenterId
-}
-
-// GetDataCenterIdOk returns a tuple with the DataCenterId field value
-// and a boolean to check if the value has been set.
-func (o *WorkspacesGetWorkspace200Response) GetDataCenterIdOk() (*float32, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.DataCenterId, true
-}
-
-// SetDataCenterId sets field value
-func (o *WorkspacesGetWorkspace200Response) SetDataCenterId(v float32) {
-	o.DataCenterId = v
-}
-
-// GetUserId returns the UserId field value
-func (o *WorkspacesGetWorkspace200Response) GetUserId() int {
-	if o == nil {
-		var ret int
-		return ret
-	}
-
-	return o.UserId
-}
-
-// GetUserIdOk returns a tuple with the UserId field value
-// and a boolean to check if the value has been set.
-func (o *WorkspacesGetWorkspace200Response) GetUserIdOk() (*int, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.UserId, true
-}
-
-// SetUserId sets field value
-func (o *WorkspacesGetWorkspace200Response) SetUserId(v int) {
-	o.UserId = v
 }
 
 // GetTeamId returns the TeamId field value
@@ -189,30 +117,28 @@ func (o *WorkspacesGetWorkspace200Response) SetName(v string) {
 	o.Name = v
 }
 
-// GetGitUrl returns the GitUrl field value
-// If the value is explicit nil, the zero value for string will be returned
-func (o *WorkspacesGetWorkspace200Response) GetGitUrl() string {
-	if o == nil || o.GitUrl.Get() == nil {
-		var ret string
+// GetPlanId returns the PlanId field value
+func (o *WorkspacesGetWorkspace200Response) GetPlanId() int {
+	if o == nil {
+		var ret int
 		return ret
 	}
 
-	return *o.GitUrl.Get()
+	return o.PlanId
 }
 
-// GetGitUrlOk returns a tuple with the GitUrl field value
+// GetPlanIdOk returns a tuple with the PlanId field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *WorkspacesGetWorkspace200Response) GetGitUrlOk() (*string, bool) {
+func (o *WorkspacesGetWorkspace200Response) GetPlanIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.GitUrl.Get(), o.GitUrl.IsSet()
+	return &o.PlanId, true
 }
 
-// SetGitUrl sets field value
-func (o *WorkspacesGetWorkspace200Response) SetGitUrl(v string) {
-	o.GitUrl.Set(&v)
+// SetPlanId sets field value
+func (o *WorkspacesGetWorkspace200Response) SetPlanId(v int) {
+	o.PlanId = v
 }
 
 // GetIsPrivateRepo returns the IsPrivateRepo field value
@@ -239,30 +165,126 @@ func (o *WorkspacesGetWorkspace200Response) SetIsPrivateRepo(v bool) {
 	o.IsPrivateRepo = v
 }
 
-// GetWelcomeMessage returns the WelcomeMessage field value
+// GetReplicas returns the Replicas field value
+func (o *WorkspacesGetWorkspace200Response) GetReplicas() int {
+	if o == nil {
+		var ret int
+		return ret
+	}
+
+	return o.Replicas
+}
+
+// GetReplicasOk returns a tuple with the Replicas field value
+// and a boolean to check if the value has been set.
+func (o *WorkspacesGetWorkspace200Response) GetReplicasOk() (*int, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Replicas, true
+}
+
+// SetReplicas sets field value
+func (o *WorkspacesGetWorkspace200Response) SetReplicas(v int) {
+	o.Replicas = v
+}
+
+// GetId returns the Id field value
+func (o *WorkspacesGetWorkspace200Response) GetId() int {
+	if o == nil {
+		var ret int
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *WorkspacesGetWorkspace200Response) GetIdOk() (*int, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *WorkspacesGetWorkspace200Response) SetId(v int) {
+	o.Id = v
+}
+
+// GetDataCenterId returns the DataCenterId field value
+func (o *WorkspacesGetWorkspace200Response) GetDataCenterId() int {
+	if o == nil {
+		var ret int
+		return ret
+	}
+
+	return o.DataCenterId
+}
+
+// GetDataCenterIdOk returns a tuple with the DataCenterId field value
+// and a boolean to check if the value has been set.
+func (o *WorkspacesGetWorkspace200Response) GetDataCenterIdOk() (*int, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.DataCenterId, true
+}
+
+// SetDataCenterId sets field value
+func (o *WorkspacesGetWorkspace200Response) SetDataCenterId(v int) {
+	o.DataCenterId = v
+}
+
+// GetUserId returns the UserId field value
+func (o *WorkspacesGetWorkspace200Response) GetUserId() int {
+	if o == nil {
+		var ret int
+		return ret
+	}
+
+	return o.UserId
+}
+
+// GetUserIdOk returns a tuple with the UserId field value
+// and a boolean to check if the value has been set.
+func (o *WorkspacesGetWorkspace200Response) GetUserIdOk() (*int, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.UserId, true
+}
+
+// SetUserId sets field value
+func (o *WorkspacesGetWorkspace200Response) SetUserId(v int) {
+	o.UserId = v
+}
+
+// GetGitUrl returns the GitUrl field value
 // If the value is explicit nil, the zero value for string will be returned
-func (o *WorkspacesGetWorkspace200Response) GetWelcomeMessage() string {
-	if o == nil || o.WelcomeMessage.Get() == nil {
+func (o *WorkspacesGetWorkspace200Response) GetGitUrl() string {
+	if o == nil || o.GitUrl.Get() == nil {
 		var ret string
 		return ret
 	}
 
-	return *o.WelcomeMessage.Get()
+	return *o.GitUrl.Get()
 }
 
-// GetWelcomeMessageOk returns a tuple with the WelcomeMessage field value
+// GetGitUrlOk returns a tuple with the GitUrl field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *WorkspacesGetWorkspace200Response) GetWelcomeMessageOk() (*string, bool) {
+func (o *WorkspacesGetWorkspace200Response) GetGitUrlOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.WelcomeMessage.Get(), o.WelcomeMessage.IsSet()
+	return o.GitUrl.Get(), o.GitUrl.IsSet()
 }
 
-// SetWelcomeMessage sets field value
-func (o *WorkspacesGetWorkspace200Response) SetWelcomeMessage(v string) {
-	o.WelcomeMessage.Set(&v)
+// SetGitUrl sets field value
+func (o *WorkspacesGetWorkspace200Response) SetGitUrl(v string) {
+	o.GitUrl.Set(&v)
 }
 
 // GetInitialBranch returns the InitialBranch field value
@@ -317,52 +339,30 @@ func (o *WorkspacesGetWorkspace200Response) SetSourceWorkspaceId(v int) {
 	o.SourceWorkspaceId.Set(&v)
 }
 
-// GetPlanId returns the PlanId field value
-func (o *WorkspacesGetWorkspace200Response) GetPlanId() int {
-	if o == nil {
-		var ret int
+// GetWelcomeMessage returns the WelcomeMessage field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *WorkspacesGetWorkspace200Response) GetWelcomeMessage() string {
+	if o == nil || o.WelcomeMessage.Get() == nil {
+		var ret string
 		return ret
 	}
 
-	return o.PlanId
+	return *o.WelcomeMessage.Get()
 }
 
-// GetPlanIdOk returns a tuple with the PlanId field value
+// GetWelcomeMessageOk returns a tuple with the WelcomeMessage field value
 // and a boolean to check if the value has been set.
-func (o *WorkspacesGetWorkspace200Response) GetPlanIdOk() (*int, bool) {
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *WorkspacesGetWorkspace200Response) GetWelcomeMessageOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.PlanId, true
+	return o.WelcomeMessage.Get(), o.WelcomeMessage.IsSet()
 }
 
-// SetPlanId sets field value
-func (o *WorkspacesGetWorkspace200Response) SetPlanId(v int) {
-	o.PlanId = v
-}
-
-// GetReplicas returns the Replicas field value
-func (o *WorkspacesGetWorkspace200Response) GetReplicas() int {
-	if o == nil {
-		var ret int
-		return ret
-	}
-
-	return o.Replicas
-}
-
-// GetReplicasOk returns a tuple with the Replicas field value
-// and a boolean to check if the value has been set.
-func (o *WorkspacesGetWorkspace200Response) GetReplicasOk() (*int, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Replicas, true
-}
-
-// SetReplicas sets field value
-func (o *WorkspacesGetWorkspace200Response) SetReplicas(v int) {
-	o.Replicas = v
+// SetWelcomeMessage sets field value
+func (o *WorkspacesGetWorkspace200Response) SetWelcomeMessage(v string) {
+	o.WelcomeMessage.Set(&v)
 }
 
 // GetVpnConfig returns the VpnConfig field value
@@ -401,18 +401,18 @@ func (o WorkspacesGetWorkspace200Response) MarshalJSON() ([]byte, error) {
 
 func (o WorkspacesGetWorkspace200Response) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	toSerialize["teamId"] = o.TeamId
+	toSerialize["name"] = o.Name
+	toSerialize["planId"] = o.PlanId
+	toSerialize["isPrivateRepo"] = o.IsPrivateRepo
+	toSerialize["replicas"] = o.Replicas
 	toSerialize["id"] = o.Id
 	toSerialize["dataCenterId"] = o.DataCenterId
 	toSerialize["userId"] = o.UserId
-	toSerialize["teamId"] = o.TeamId
-	toSerialize["name"] = o.Name
 	toSerialize["gitUrl"] = o.GitUrl.Get()
-	toSerialize["isPrivateRepo"] = o.IsPrivateRepo
-	toSerialize["welcomeMessage"] = o.WelcomeMessage.Get()
 	toSerialize["initialBranch"] = o.InitialBranch.Get()
 	toSerialize["sourceWorkspaceId"] = o.SourceWorkspaceId.Get()
-	toSerialize["planId"] = o.PlanId
-	toSerialize["replicas"] = o.Replicas
+	toSerialize["welcomeMessage"] = o.WelcomeMessage.Get()
 	toSerialize["vpnConfig"] = o.VpnConfig.Get()
 	return toSerialize, nil
 }
@@ -422,18 +422,18 @@ func (o *WorkspacesGetWorkspace200Response) UnmarshalJSON(data []byte) (err erro
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
+		"teamId",
+		"name",
+		"planId",
+		"isPrivateRepo",
+		"replicas",
 		"id",
 		"dataCenterId",
 		"userId",
-		"teamId",
-		"name",
 		"gitUrl",
-		"isPrivateRepo",
-		"welcomeMessage",
 		"initialBranch",
 		"sourceWorkspaceId",
-		"planId",
-		"replicas",
+		"welcomeMessage",
 		"vpnConfig",
 	}
 
@@ -454,7 +454,7 @@ func (o *WorkspacesGetWorkspace200Response) UnmarshalJSON(data []byte) (err erro
 	varWorkspacesGetWorkspace200Response := _WorkspacesGetWorkspace200Response{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varWorkspacesGetWorkspace200Response)
 
 	if err != nil {

@@ -108,7 +108,7 @@ func (o *WorkspacesGetWorkspaceStatus200Response) UnmarshalJSON(data []byte) (er
 	varWorkspacesGetWorkspaceStatus200Response := _WorkspacesGetWorkspaceStatus200Response{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varWorkspacesGetWorkspaceStatus200Response)
 
 	if err != nil {

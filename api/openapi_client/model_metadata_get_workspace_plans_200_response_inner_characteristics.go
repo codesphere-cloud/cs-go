@@ -276,7 +276,7 @@ func (o *MetadataGetWorkspacePlans200ResponseInnerCharacteristics) UnmarshalJSON
 	varMetadataGetWorkspacePlans200ResponseInnerCharacteristics := _MetadataGetWorkspacePlans200ResponseInnerCharacteristics{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varMetadataGetWorkspacePlans200ResponseInnerCharacteristics)
 
 	if err != nil {
