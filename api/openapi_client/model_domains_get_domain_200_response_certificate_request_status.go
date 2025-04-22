@@ -138,7 +138,7 @@ func (o *DomainsGetDomain200ResponseCertificateRequestStatus) UnmarshalJSON(data
 	varDomainsGetDomain200ResponseCertificateRequestStatus := _DomainsGetDomain200ResponseCertificateRequestStatus{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varDomainsGetDomain200ResponseCertificateRequestStatus)
 
 	if err != nil {

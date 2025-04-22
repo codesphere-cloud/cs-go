@@ -180,7 +180,7 @@ func (o *WorkspacesExecuteCommandRequest) UnmarshalJSON(data []byte) (err error)
 	varWorkspacesExecuteCommandRequest := _WorkspacesExecuteCommandRequest{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varWorkspacesExecuteCommandRequest)
 
 	if err != nil {

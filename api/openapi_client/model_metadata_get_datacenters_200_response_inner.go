@@ -22,10 +22,10 @@ var _ MappedNullable = &MetadataGetDatacenters200ResponseInner{}
 
 // MetadataGetDatacenters200ResponseInner struct for MetadataGetDatacenters200ResponseInner
 type MetadataGetDatacenters200ResponseInner struct {
-	Id          float32 `json:"id"`
-	Name        string  `json:"name"`
-	City        string  `json:"city"`
-	CountryCode string  `json:"countryCode"`
+	Id          int    `json:"id"`
+	Name        string `json:"name"`
+	City        string `json:"city"`
+	CountryCode string `json:"countryCode"`
 }
 
 type _MetadataGetDatacenters200ResponseInner MetadataGetDatacenters200ResponseInner
@@ -34,7 +34,7 @@ type _MetadataGetDatacenters200ResponseInner MetadataGetDatacenters200ResponseIn
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMetadataGetDatacenters200ResponseInner(id float32, name string, city string, countryCode string) *MetadataGetDatacenters200ResponseInner {
+func NewMetadataGetDatacenters200ResponseInner(id int, name string, city string, countryCode string) *MetadataGetDatacenters200ResponseInner {
 	this := MetadataGetDatacenters200ResponseInner{}
 	this.Id = id
 	this.Name = name
@@ -52,9 +52,9 @@ func NewMetadataGetDatacenters200ResponseInnerWithDefaults() *MetadataGetDatacen
 }
 
 // GetId returns the Id field value
-func (o *MetadataGetDatacenters200ResponseInner) GetId() float32 {
+func (o *MetadataGetDatacenters200ResponseInner) GetId() int {
 	if o == nil {
-		var ret float32
+		var ret int
 		return ret
 	}
 
@@ -63,7 +63,7 @@ func (o *MetadataGetDatacenters200ResponseInner) GetId() float32 {
 
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *MetadataGetDatacenters200ResponseInner) GetIdOk() (*float32, bool) {
+func (o *MetadataGetDatacenters200ResponseInner) GetIdOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -71,7 +71,7 @@ func (o *MetadataGetDatacenters200ResponseInner) GetIdOk() (*float32, bool) {
 }
 
 // SetId sets field value
-func (o *MetadataGetDatacenters200ResponseInner) SetId(v float32) {
+func (o *MetadataGetDatacenters200ResponseInner) SetId(v int) {
 	o.Id = v
 }
 
@@ -192,7 +192,7 @@ func (o *MetadataGetDatacenters200ResponseInner) UnmarshalJSON(data []byte) (err
 	varMetadataGetDatacenters200ResponseInner := _MetadataGetDatacenters200ResponseInner{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varMetadataGetDatacenters200ResponseInner)
 
 	if err != nil {

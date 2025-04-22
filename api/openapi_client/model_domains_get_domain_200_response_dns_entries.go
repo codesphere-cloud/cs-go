@@ -164,7 +164,7 @@ func (o *DomainsGetDomain200ResponseDnsEntries) UnmarshalJSON(data []byte) (err 
 	varDomainsGetDomain200ResponseDnsEntries := _DomainsGetDomain200ResponseDnsEntries{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varDomainsGetDomain200ResponseDnsEntries)
 
 	if err != nil {

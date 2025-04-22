@@ -406,7 +406,6 @@ type ApiWorkspacesDeployLandscapeRequest struct {
 	ctx         context.Context
 	ApiService  *WorkspacesAPIService
 	workspaceId float32
-	profile     string
 }
 
 func (r ApiWorkspacesDeployLandscapeRequest) Execute() (*http.Response, error) {
@@ -418,15 +417,13 @@ WorkspacesDeployLandscape deployLandscape
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param workspaceId
-	@param profile
 	@return ApiWorkspacesDeployLandscapeRequest
 */
-func (a *WorkspacesAPIService) WorkspacesDeployLandscape(ctx context.Context, workspaceId float32, profile string) ApiWorkspacesDeployLandscapeRequest {
+func (a *WorkspacesAPIService) WorkspacesDeployLandscape(ctx context.Context, workspaceId float32) ApiWorkspacesDeployLandscapeRequest {
 	return ApiWorkspacesDeployLandscapeRequest{
 		ApiService:  a,
 		ctx:         ctx,
 		workspaceId: workspaceId,
-		profile:     profile,
 	}
 }
 
@@ -443,9 +440,8 @@ func (a *WorkspacesAPIService) WorkspacesDeployLandscapeExecute(r ApiWorkspacesD
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/workspaces/{workspaceId}/landscape/deploy/{profile}"
+	localVarPath := localBasePath + "/workspaces/{workspaceId}/landscape/deploy"
 	localVarPath = strings.Replace(localVarPath, "{"+"workspaceId"+"}", url.PathEscape(parameterValueToString(r.workspaceId, "workspaceId")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"profile"+"}", url.PathEscape(parameterValueToString(r.profile, "profile")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -528,46 +524,50 @@ func (a *WorkspacesAPIService) WorkspacesDeployLandscapeExecute(r ApiWorkspacesD
 	return localVarHTTPResponse, nil
 }
 
-type ApiWorkspacesDeployLandscape_0Request struct {
+type ApiWorkspacesDeployLandscape1Request struct {
 	ctx         context.Context
 	ApiService  *WorkspacesAPIService
 	workspaceId float32
+	profile     string
 }
 
-func (r ApiWorkspacesDeployLandscape_0Request) Execute() (*http.Response, error) {
-	return r.ApiService.WorkspacesDeployLandscape_1Execute(r)
+func (r ApiWorkspacesDeployLandscape1Request) Execute() (*http.Response, error) {
+	return r.ApiService.WorkspacesDeployLandscape1Execute(r)
 }
 
 /*
-WorkspacesDeployLandscape_0 deployLandscape
+WorkspacesDeployLandscape1 deployLandscape
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param workspaceId
-	@return ApiWorkspacesDeployLandscape_0Request
+	@param profile
+	@return ApiWorkspacesDeployLandscape1Request
 */
-func (a *WorkspacesAPIService) WorkspacesDeployLandscape_1(ctx context.Context, workspaceId float32) ApiWorkspacesDeployLandscape_0Request {
-	return ApiWorkspacesDeployLandscape_0Request{
+func (a *WorkspacesAPIService) WorkspacesDeployLandscape1(ctx context.Context, workspaceId float32, profile string) ApiWorkspacesDeployLandscape1Request {
+	return ApiWorkspacesDeployLandscape1Request{
 		ApiService:  a,
 		ctx:         ctx,
 		workspaceId: workspaceId,
+		profile:     profile,
 	}
 }
 
 // Execute executes the request
-func (a *WorkspacesAPIService) WorkspacesDeployLandscape_1Execute(r ApiWorkspacesDeployLandscape_0Request) (*http.Response, error) {
+func (a *WorkspacesAPIService) WorkspacesDeployLandscape1Execute(r ApiWorkspacesDeployLandscape1Request) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WorkspacesAPIService.WorkspacesDeployLandscape_1")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WorkspacesAPIService.WorkspacesDeployLandscape1")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/workspaces/{workspaceId}/landscape/deploy"
+	localVarPath := localBasePath + "/workspaces/{workspaceId}/landscape/deploy/{profile}"
 	localVarPath = strings.Replace(localVarPath, "{"+"workspaceId"+"}", url.PathEscape(parameterValueToString(r.workspaceId, "workspaceId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"profile"+"}", url.PathEscape(parameterValueToString(r.profile, "profile")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1200,8 +1200,6 @@ type ApiWorkspacesGitPullRequest struct {
 	ctx         context.Context
 	ApiService  *WorkspacesAPIService
 	workspaceId float32
-	remote      string
-	branch      string
 }
 
 func (r ApiWorkspacesGitPullRequest) Execute() (*http.Response, error) {
@@ -1213,17 +1211,13 @@ WorkspacesGitPull gitPull
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param workspaceId
-	@param remote
-	@param branch
 	@return ApiWorkspacesGitPullRequest
 */
-func (a *WorkspacesAPIService) WorkspacesGitPull(ctx context.Context, workspaceId float32, remote string, branch string) ApiWorkspacesGitPullRequest {
+func (a *WorkspacesAPIService) WorkspacesGitPull(ctx context.Context, workspaceId float32) ApiWorkspacesGitPullRequest {
 	return ApiWorkspacesGitPullRequest{
 		ApiService:  a,
 		ctx:         ctx,
 		workspaceId: workspaceId,
-		remote:      remote,
-		branch:      branch,
 	}
 }
 
@@ -1240,10 +1234,8 @@ func (a *WorkspacesAPIService) WorkspacesGitPullExecute(r ApiWorkspacesGitPullRe
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/workspaces/{workspaceId}/git/pull/{remote}/{branch}"
+	localVarPath := localBasePath + "/workspaces/{workspaceId}/git/pull"
 	localVarPath = strings.Replace(localVarPath, "{"+"workspaceId"+"}", url.PathEscape(parameterValueToString(r.workspaceId, "workspaceId")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"remote"+"}", url.PathEscape(parameterValueToString(r.remote, "remote")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"branch"+"}", url.PathEscape(parameterValueToString(r.branch, "branch")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1326,27 +1318,27 @@ func (a *WorkspacesAPIService) WorkspacesGitPullExecute(r ApiWorkspacesGitPullRe
 	return localVarHTTPResponse, nil
 }
 
-type ApiWorkspacesGitPull_0Request struct {
+type ApiWorkspacesGitPull1Request struct {
 	ctx         context.Context
 	ApiService  *WorkspacesAPIService
 	workspaceId float32
 	remote      string
 }
 
-func (r ApiWorkspacesGitPull_0Request) Execute() (*http.Response, error) {
-	return r.ApiService.WorkspacesGitPull_2Execute(r)
+func (r ApiWorkspacesGitPull1Request) Execute() (*http.Response, error) {
+	return r.ApiService.WorkspacesGitPull1Execute(r)
 }
 
 /*
-WorkspacesGitPull_0 gitPull
+WorkspacesGitPull1 gitPull
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param workspaceId
 	@param remote
-	@return ApiWorkspacesGitPull_0Request
+	@return ApiWorkspacesGitPull1Request
 */
-func (a *WorkspacesAPIService) WorkspacesGitPull_2(ctx context.Context, workspaceId float32, remote string) ApiWorkspacesGitPull_0Request {
-	return ApiWorkspacesGitPull_0Request{
+func (a *WorkspacesAPIService) WorkspacesGitPull1(ctx context.Context, workspaceId float32, remote string) ApiWorkspacesGitPull1Request {
+	return ApiWorkspacesGitPull1Request{
 		ApiService:  a,
 		ctx:         ctx,
 		workspaceId: workspaceId,
@@ -1355,14 +1347,14 @@ func (a *WorkspacesAPIService) WorkspacesGitPull_2(ctx context.Context, workspac
 }
 
 // Execute executes the request
-func (a *WorkspacesAPIService) WorkspacesGitPull_2Execute(r ApiWorkspacesGitPull_0Request) (*http.Response, error) {
+func (a *WorkspacesAPIService) WorkspacesGitPull1Execute(r ApiWorkspacesGitPull1Request) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WorkspacesAPIService.WorkspacesGitPull_2")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WorkspacesAPIService.WorkspacesGitPull1")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -1452,46 +1444,54 @@ func (a *WorkspacesAPIService) WorkspacesGitPull_2Execute(r ApiWorkspacesGitPull
 	return localVarHTTPResponse, nil
 }
 
-type ApiWorkspacesGitPull_1Request struct {
+type ApiWorkspacesGitPull2Request struct {
 	ctx         context.Context
 	ApiService  *WorkspacesAPIService
 	workspaceId float32
+	remote      string
+	branch      string
 }
 
-func (r ApiWorkspacesGitPull_1Request) Execute() (*http.Response, error) {
-	return r.ApiService.WorkspacesGitPull_3Execute(r)
+func (r ApiWorkspacesGitPull2Request) Execute() (*http.Response, error) {
+	return r.ApiService.WorkspacesGitPull2Execute(r)
 }
 
 /*
-WorkspacesGitPull_1 gitPull
+WorkspacesGitPull2 gitPull
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param workspaceId
-	@return ApiWorkspacesGitPull_1Request
+	@param remote
+	@param branch
+	@return ApiWorkspacesGitPull2Request
 */
-func (a *WorkspacesAPIService) WorkspacesGitPull_3(ctx context.Context, workspaceId float32) ApiWorkspacesGitPull_1Request {
-	return ApiWorkspacesGitPull_1Request{
+func (a *WorkspacesAPIService) WorkspacesGitPull2(ctx context.Context, workspaceId float32, remote string, branch string) ApiWorkspacesGitPull2Request {
+	return ApiWorkspacesGitPull2Request{
 		ApiService:  a,
 		ctx:         ctx,
 		workspaceId: workspaceId,
+		remote:      remote,
+		branch:      branch,
 	}
 }
 
 // Execute executes the request
-func (a *WorkspacesAPIService) WorkspacesGitPull_3Execute(r ApiWorkspacesGitPull_1Request) (*http.Response, error) {
+func (a *WorkspacesAPIService) WorkspacesGitPull2Execute(r ApiWorkspacesGitPull2Request) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WorkspacesAPIService.WorkspacesGitPull_3")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WorkspacesAPIService.WorkspacesGitPull2")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/workspaces/{workspaceId}/git/pull"
+	localVarPath := localBasePath + "/workspaces/{workspaceId}/git/pull/{remote}/{branch}"
 	localVarPath = strings.Replace(localVarPath, "{"+"workspaceId"+"}", url.PathEscape(parameterValueToString(r.workspaceId, "workspaceId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"remote"+"}", url.PathEscape(parameterValueToString(r.remote, "remote")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"branch"+"}", url.PathEscape(parameterValueToString(r.branch, "branch")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -2436,7 +2436,6 @@ type ApiWorkspacesStartPipelineStageRequest struct {
 	ApiService  *WorkspacesAPIService
 	workspaceId float32
 	stage       string
-	profile     string
 }
 
 func (r ApiWorkspacesStartPipelineStageRequest) Execute() (*http.Response, error) {
@@ -2449,16 +2448,14 @@ WorkspacesStartPipelineStage startPipelineStage
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param workspaceId
 	@param stage
-	@param profile
 	@return ApiWorkspacesStartPipelineStageRequest
 */
-func (a *WorkspacesAPIService) WorkspacesStartPipelineStage(ctx context.Context, workspaceId float32, stage string, profile string) ApiWorkspacesStartPipelineStageRequest {
+func (a *WorkspacesAPIService) WorkspacesStartPipelineStage(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesStartPipelineStageRequest {
 	return ApiWorkspacesStartPipelineStageRequest{
 		ApiService:  a,
 		ctx:         ctx,
 		workspaceId: workspaceId,
 		stage:       stage,
-		profile:     profile,
 	}
 }
 
@@ -2475,10 +2472,9 @@ func (a *WorkspacesAPIService) WorkspacesStartPipelineStageExecute(r ApiWorkspac
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/workspaces/{workspaceId}/pipeline/{stage}/start/{profile}"
+	localVarPath := localBasePath + "/workspaces/{workspaceId}/pipeline/{stage}/start"
 	localVarPath = strings.Replace(localVarPath, "{"+"workspaceId"+"}", url.PathEscape(parameterValueToString(r.workspaceId, "workspaceId")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"stage"+"}", url.PathEscape(parameterValueToString(r.stage, "stage")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"profile"+"}", url.PathEscape(parameterValueToString(r.profile, "profile")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -2561,50 +2557,54 @@ func (a *WorkspacesAPIService) WorkspacesStartPipelineStageExecute(r ApiWorkspac
 	return localVarHTTPResponse, nil
 }
 
-type ApiWorkspacesStartPipelineStage_0Request struct {
+type ApiWorkspacesStartPipelineStage1Request struct {
 	ctx         context.Context
 	ApiService  *WorkspacesAPIService
 	workspaceId float32
 	stage       string
+	profile     string
 }
 
-func (r ApiWorkspacesStartPipelineStage_0Request) Execute() (*http.Response, error) {
-	return r.ApiService.WorkspacesStartPipelineStage_4Execute(r)
+func (r ApiWorkspacesStartPipelineStage1Request) Execute() (*http.Response, error) {
+	return r.ApiService.WorkspacesStartPipelineStage1Execute(r)
 }
 
 /*
-WorkspacesStartPipelineStage_0 startPipelineStage
+WorkspacesStartPipelineStage1 startPipelineStage
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param workspaceId
 	@param stage
-	@return ApiWorkspacesStartPipelineStage_0Request
+	@param profile
+	@return ApiWorkspacesStartPipelineStage1Request
 */
-func (a *WorkspacesAPIService) WorkspacesStartPipelineStage_4(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesStartPipelineStage_0Request {
-	return ApiWorkspacesStartPipelineStage_0Request{
+func (a *WorkspacesAPIService) WorkspacesStartPipelineStage1(ctx context.Context, workspaceId float32, stage string, profile string) ApiWorkspacesStartPipelineStage1Request {
+	return ApiWorkspacesStartPipelineStage1Request{
 		ApiService:  a,
 		ctx:         ctx,
 		workspaceId: workspaceId,
 		stage:       stage,
+		profile:     profile,
 	}
 }
 
 // Execute executes the request
-func (a *WorkspacesAPIService) WorkspacesStartPipelineStage_4Execute(r ApiWorkspacesStartPipelineStage_0Request) (*http.Response, error) {
+func (a *WorkspacesAPIService) WorkspacesStartPipelineStage1Execute(r ApiWorkspacesStartPipelineStage1Request) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WorkspacesAPIService.WorkspacesStartPipelineStage_4")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WorkspacesAPIService.WorkspacesStartPipelineStage1")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/workspaces/{workspaceId}/pipeline/{stage}/start"
+	localVarPath := localBasePath + "/workspaces/{workspaceId}/pipeline/{stage}/start/{profile}"
 	localVarPath = strings.Replace(localVarPath, "{"+"workspaceId"+"}", url.PathEscape(parameterValueToString(r.workspaceId, "workspaceId")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"stage"+"}", url.PathEscape(parameterValueToString(r.stage, "stage")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"profile"+"}", url.PathEscape(parameterValueToString(r.profile, "profile")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}

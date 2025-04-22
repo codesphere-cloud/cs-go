@@ -49,12 +49,12 @@ func (l *ListWorkspacesCmd) parseLogCmdFlags() {
 func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	client, err := NewClient(l.Opts.GlobalOptions)
 	if err != nil {
-		return fmt.Errorf("failed to create Codesphere client: %e", err)
+		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
 	workspaces, err := l.ListWorkspaces(client)
 	if err != nil {
-		return fmt.Errorf("failed to list workspaces: %e", err)
+		return fmt.Errorf("failed to list workspaces: %w", err)
 	}
 
 	t := out.GetTableWriter()
@@ -74,13 +74,13 @@ func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {
 func (l *ListWorkspacesCmd) ListWorkspaces(client Client) ([]api.Workspace, error) {
 	teams, err := l.getTeamIds(client)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get teams: %e", err)
+		return nil, fmt.Errorf("failed to get teams: %w", err)
 	}
 	workspaces := []api.Workspace{}
 	for _, team := range teams {
 		teamWorkspaces, err := client.ListWorkspaces(team)
 		if err != nil {
-			return nil, fmt.Errorf("failed to list workspaces: %e", err)
+			return nil, fmt.Errorf("failed to list workspaces: %w", err)
 		}
 		workspaces = append(workspaces, teamWorkspaces...)
 	}

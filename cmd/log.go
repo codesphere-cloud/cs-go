@@ -94,7 +94,7 @@ func (l *LogCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	if *l.scope.workspaceId == 0 {
 		*l.scope.workspaceId, err = strconv.Atoi(os.Getenv("CS_WORKSPACE_ID"))
 		if err != nil {
-			return fmt.Errorf("failed to read env var: %e", err)
+			return fmt.Errorf("failed to read env var: %w", err)
 		}
 		if *l.scope.workspaceId == 0 {
 			return errors.New("workspace ID required, but not provided")
@@ -117,7 +117,7 @@ func (l *LogCmd) RunE(_ *cobra.Command, args []string) (err error) {
 
 	err = l.printAllLogs()
 	if err != nil {
-		return fmt.Errorf("failed to print logs: %e", err)
+		return fmt.Errorf("failed to print logs: %w", err)
 	}
 
 	return nil
@@ -128,7 +128,7 @@ func (l *LogCmd) printAllLogs() error {
 
 	replicas, err := cs.GetPipelineStatus(*l.scope.workspaceId, "run")
 	if err != nil {
-		return fmt.Errorf("failed to get pipeline status: %e", err)
+		return fmt.Errorf("failed to get pipeline status: %w", err)
 	}
 
 	var wg sync.WaitGroup
@@ -143,7 +143,7 @@ func (l *LogCmd) printAllLogs() error {
 				prefix := fmt.Sprintf("|%-10s|%s", replica.Server, replica.Replica[len(replica.Replica)-11:])
 				err = l.printLogsOfReplica(prefix)
 				if err != nil {
-					fmt.Printf("Error printling logs: %e\n", err)
+					fmt.Printf("Error printling logs: %s\n", err.Error())
 				}
 			}()
 		}
@@ -189,12 +189,12 @@ func printLogsOfEndpoint(prefix string, endpoint string) error {
 	req.Header.Set("Accept", "text/event-stream")
 	err = cs.SetAuthoriziationHeader(req)
 	if err != nil {
-		return fmt.Errorf("failed to set header: %e", err)
+		return fmt.Errorf("failed to set header: %w", err)
 	}
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return fmt.Errorf("failed to request logs: %e", err)
+		return fmt.Errorf("failed to request logs: %w", err)
 	}
 	defer func() { _ = resp.Body.Close() }()
 
@@ -251,7 +251,7 @@ func printLogsOfEndpoint(prefix string, endpoint string) error {
 			var errRes ErrResponse
 			err = json.Unmarshal([]byte(sse.data), &errRes)
 			if err != nil {
-				return fmt.Errorf("error reading error json: %e", err)
+				return fmt.Errorf("error reading error json: %w", err)
 			}
 			return fmt.Errorf(
 				"server responded with error: %d %s: %s",

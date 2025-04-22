@@ -699,10 +699,10 @@ type ApiDomainsUpdateWorkspaceConnectionsRequest struct {
 	ApiService  *DomainsAPIService
 	teamId      float32
 	domainName  string
-	requestBody *map[string][]float32
+	requestBody *map[string][]int
 }
 
-func (r ApiDomainsUpdateWorkspaceConnectionsRequest) RequestBody(requestBody map[string][]float32) ApiDomainsUpdateWorkspaceConnectionsRequest {
+func (r ApiDomainsUpdateWorkspaceConnectionsRequest) RequestBody(requestBody map[string][]int) ApiDomainsUpdateWorkspaceConnectionsRequest {
 	r.requestBody = &requestBody
 	return r
 }

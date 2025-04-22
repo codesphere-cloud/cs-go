@@ -24,7 +24,7 @@ var _ MappedNullable = &DomainsUpdateDomain409Response{}
 type DomainsUpdateDomain409Response struct {
 	Status  int     `json:"status"`
 	Title   string  `json:"title"`
-	Details *string `json:"details,omitempty"`
+	Detail  *string `json:"detail,omitempty"`
 	TraceId string  `json:"traceId"`
 }
 
@@ -98,36 +98,36 @@ func (o *DomainsUpdateDomain409Response) SetTitle(v string) {
 	o.Title = v
 }
 
-// GetDetails returns the Details field value if set, zero value otherwise.
-func (o *DomainsUpdateDomain409Response) GetDetails() string {
-	if o == nil || IsNil(o.Details) {
+// GetDetail returns the Detail field value if set, zero value otherwise.
+func (o *DomainsUpdateDomain409Response) GetDetail() string {
+	if o == nil || IsNil(o.Detail) {
 		var ret string
 		return ret
 	}
-	return *o.Details
+	return *o.Detail
 }
 
-// GetDetailsOk returns a tuple with the Details field value if set, nil otherwise
+// GetDetailOk returns a tuple with the Detail field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *DomainsUpdateDomain409Response) GetDetailsOk() (*string, bool) {
-	if o == nil || IsNil(o.Details) {
+func (o *DomainsUpdateDomain409Response) GetDetailOk() (*string, bool) {
+	if o == nil || IsNil(o.Detail) {
 		return nil, false
 	}
-	return o.Details, true
+	return o.Detail, true
 }
 
-// HasDetails returns a boolean if a field has been set.
-func (o *DomainsUpdateDomain409Response) HasDetails() bool {
-	if o != nil && !IsNil(o.Details) {
+// HasDetail returns a boolean if a field has been set.
+func (o *DomainsUpdateDomain409Response) HasDetail() bool {
+	if o != nil && !IsNil(o.Detail) {
 		return true
 	}
 
 	return false
 }
 
-// SetDetails gets a reference to the given string and assigns it to the Details field.
-func (o *DomainsUpdateDomain409Response) SetDetails(v string) {
-	o.Details = &v
+// SetDetail gets a reference to the given string and assigns it to the Detail field.
+func (o *DomainsUpdateDomain409Response) SetDetail(v string) {
+	o.Detail = &v
 }
 
 // GetTraceId returns the TraceId field value
@@ -166,8 +166,8 @@ func (o DomainsUpdateDomain409Response) ToMap() (map[string]interface{}, error) 
 	toSerialize := map[string]interface{}{}
 	toSerialize["status"] = o.Status
 	toSerialize["title"] = o.Title
-	if !IsNil(o.Details) {
-		toSerialize["details"] = o.Details
+	if !IsNil(o.Detail) {
+		toSerialize["detail"] = o.Detail
 	}
 	toSerialize["traceId"] = o.TraceId
 	return toSerialize, nil
@@ -200,7 +200,7 @@ func (o *DomainsUpdateDomain409Response) UnmarshalJSON(data []byte) (err error) 
 	varDomainsUpdateDomain409Response := _DomainsUpdateDomain409Response{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varDomainsUpdateDomain409Response)
 
 	if err != nil {

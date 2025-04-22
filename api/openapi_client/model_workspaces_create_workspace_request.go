@@ -26,11 +26,11 @@ type WorkspacesCreateWorkspaceRequest struct {
 	Name              string  `json:"name"`
 	PlanId            int     `json:"planId"`
 	IsPrivateRepo     bool    `json:"isPrivateRepo"`
+	Replicas          int     `json:"replicas"`
 	GitUrl            *string `json:"gitUrl,omitempty"`
 	InitialBranch     *string `json:"initialBranch,omitempty"`
 	SourceWorkspaceId *int    `json:"sourceWorkspaceId,omitempty"`
 	WelcomeMessage    *string `json:"welcomeMessage,omitempty"`
-	Replicas          int     `json:"replicas"`
 	VpnConfig         *string `json:"vpnConfig,omitempty"`
 }
 
@@ -152,6 +152,30 @@ func (o *WorkspacesCreateWorkspaceRequest) GetIsPrivateRepoOk() (*bool, bool) {
 // SetIsPrivateRepo sets field value
 func (o *WorkspacesCreateWorkspaceRequest) SetIsPrivateRepo(v bool) {
 	o.IsPrivateRepo = v
+}
+
+// GetReplicas returns the Replicas field value
+func (o *WorkspacesCreateWorkspaceRequest) GetReplicas() int {
+	if o == nil {
+		var ret int
+		return ret
+	}
+
+	return o.Replicas
+}
+
+// GetReplicasOk returns a tuple with the Replicas field value
+// and a boolean to check if the value has been set.
+func (o *WorkspacesCreateWorkspaceRequest) GetReplicasOk() (*int, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Replicas, true
+}
+
+// SetReplicas sets field value
+func (o *WorkspacesCreateWorkspaceRequest) SetReplicas(v int) {
+	o.Replicas = v
 }
 
 // GetGitUrl returns the GitUrl field value if set, zero value otherwise.
@@ -282,30 +306,6 @@ func (o *WorkspacesCreateWorkspaceRequest) SetWelcomeMessage(v string) {
 	o.WelcomeMessage = &v
 }
 
-// GetReplicas returns the Replicas field value
-func (o *WorkspacesCreateWorkspaceRequest) GetReplicas() int {
-	if o == nil {
-		var ret int
-		return ret
-	}
-
-	return o.Replicas
-}
-
-// GetReplicasOk returns a tuple with the Replicas field value
-// and a boolean to check if the value has been set.
-func (o *WorkspacesCreateWorkspaceRequest) GetReplicasOk() (*int, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Replicas, true
-}
-
-// SetReplicas sets field value
-func (o *WorkspacesCreateWorkspaceRequest) SetReplicas(v int) {
-	o.Replicas = v
-}
-
 // GetVpnConfig returns the VpnConfig field value if set, zero value otherwise.
 func (o *WorkspacesCreateWorkspaceRequest) GetVpnConfig() string {
 	if o == nil || IsNil(o.VpnConfig) {
@@ -352,6 +352,7 @@ func (o WorkspacesCreateWorkspaceRequest) ToMap() (map[string]interface{}, error
 	toSerialize["name"] = o.Name
 	toSerialize["planId"] = o.PlanId
 	toSerialize["isPrivateRepo"] = o.IsPrivateRepo
+	toSerialize["replicas"] = o.Replicas
 	if !IsNil(o.GitUrl) {
 		toSerialize["gitUrl"] = o.GitUrl
 	}
@@ -364,7 +365,6 @@ func (o WorkspacesCreateWorkspaceRequest) ToMap() (map[string]interface{}, error
 	if !IsNil(o.WelcomeMessage) {
 		toSerialize["welcomeMessage"] = o.WelcomeMessage
 	}
-	toSerialize["replicas"] = o.Replicas
 	if !IsNil(o.VpnConfig) {
 		toSerialize["vpnConfig"] = o.VpnConfig
 	}
@@ -400,7 +400,7 @@ func (o *WorkspacesCreateWorkspaceRequest) UnmarshalJSON(data []byte) (err error
 	varWorkspacesCreateWorkspaceRequest := _WorkspacesCreateWorkspaceRequest{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varWorkspacesCreateWorkspaceRequest)
 
 	if err != nil {

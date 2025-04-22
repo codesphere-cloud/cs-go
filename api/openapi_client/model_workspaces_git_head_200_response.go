@@ -108,7 +108,7 @@ func (o *WorkspacesGitHead200Response) UnmarshalJSON(data []byte) (err error) {
 	varWorkspacesGitHead200Response := _WorkspacesGitHead200Response{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varWorkspacesGitHead200Response)
 
 	if err != nil {

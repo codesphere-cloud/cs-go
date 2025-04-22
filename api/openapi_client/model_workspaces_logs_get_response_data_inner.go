@@ -165,7 +165,7 @@ func (o *WorkspacesLogsGetResponseDataInner) UnmarshalJSON(data []byte) (err err
 	varWorkspacesLogsGetResponseDataInner := _WorkspacesLogsGetResponseDataInner{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	//decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varWorkspacesLogsGetResponseDataInner)
 
 	if err != nil {

@@ -39,12 +39,12 @@ $ cs list teams
 func (l *ListTeamsCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	client, err := NewClient(l.opts)
 	if err != nil {
-		return fmt.Errorf("failed to create Codesphere client: %e", err)
+		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
 	teams, err := client.ListTeams()
 	if err != nil {
-		return fmt.Errorf("failed to list teams: %e", err)
+		return fmt.Errorf("failed to list teams: %w", err)
 	}
 
 	t := out.GetTableWriter()
