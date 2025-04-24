@@ -33,6 +33,7 @@ func Execute() {
 	addLogCmd(rootCmd, opts)
 	addListCmd(rootCmd, opts)
 	addPipelinesCmd(rootCmd, opts)
+	addSetEnvVarCmd(rootCmd, opts)
 
 	opts.ApiUrl = rootCmd.PersistentFlags().StringP("api", "a", "https://codesphere.com/api", "URL of Codesphere API (can also be CS_API)")
 

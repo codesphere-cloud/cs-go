@@ -18,6 +18,7 @@ type Client interface {
 	ListTeams() ([]api.Team, error)
 	ListWorkspaces(teamId int) ([]api.Workspace, error)
 	StartPipelines(workspaceId int, pipelineStage string) error
+	SetEnvVarOnWorkspace(workspaceId int, vars map[string]string) error
 }
 
 func NewClient(opts GlobalOptions) (Client, error) {
