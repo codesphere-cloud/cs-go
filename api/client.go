@@ -168,3 +168,8 @@ func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string
 		Execute()
 	return err
 }
+
+func (c *Client) StartPipelines(workspaceId int, pipelineStage string) error {
+	_, err := c.api.WorkspacesAPI.WorkspacesStartPipelineStage(c.ctx, float32(workspaceId), pipelineStage).Execute()
+	return err
+}
