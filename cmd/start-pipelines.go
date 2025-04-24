@@ -48,7 +48,7 @@ func (s *PipelinesStartCmd) RunE(_ *cobra.Command, args []string) (err error) {
 		return fmt.Errorf("failed to parse workspaceId: %w", err)
 	}
 
-	pipelineStage, err := s.parsePipelineStage(args[1])
+	pipelineStage, _ := s.parsePipelineStage(args[1])
 
 	return s.StartPipeline(client, workspaceId, pipelineStage)
 }
