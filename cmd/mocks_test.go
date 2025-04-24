@@ -147,6 +147,52 @@ func (_c *MockClient_ListWorkspaces_Call) RunAndReturn(run func(teamId int) ([]a
 	return _c
 }
 
+// SetEnvVarOnWorkspace provides a mock function for the type MockClient
+func (_mock *MockClient) SetEnvVarOnWorkspace(workspaceId int, vars map[string]string) error {
+	ret := _mock.Called(workspaceId, vars)
+
+	if len(ret) == 0 {
+		panic("no return value specified for SetEnvVarOnWorkspace")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(int, map[string]string) error); ok {
+		r0 = returnFunc(workspaceId, vars)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockClient_SetEnvVarOnWorkspace_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SetEnvVarOnWorkspace'
+type MockClient_SetEnvVarOnWorkspace_Call struct {
+	*mock.Call
+}
+
+// SetEnvVarOnWorkspace is a helper method to define mock.On call
+//   - workspaceId
+//   - vars
+func (_e *MockClient_Expecter) SetEnvVarOnWorkspace(workspaceId interface{}, vars interface{}) *MockClient_SetEnvVarOnWorkspace_Call {
+	return &MockClient_SetEnvVarOnWorkspace_Call{Call: _e.mock.On("SetEnvVarOnWorkspace", workspaceId, vars)}
+}
+
+func (_c *MockClient_SetEnvVarOnWorkspace_Call) Run(run func(workspaceId int, vars map[string]string)) *MockClient_SetEnvVarOnWorkspace_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(int), args[1].(map[string]string))
+	})
+	return _c
+}
+
+func (_c *MockClient_SetEnvVarOnWorkspace_Call) Return(err error) *MockClient_SetEnvVarOnWorkspace_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockClient_SetEnvVarOnWorkspace_Call) RunAndReturn(run func(workspaceId int, vars map[string]string) error) *MockClient_SetEnvVarOnWorkspace_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // StartPipelines provides a mock function for the type MockClient
 func (_mock *MockClient) StartPipelines(workspaceId int, pipelineStage string) error {
 	ret := _mock.Called(workspaceId, pipelineStage)
