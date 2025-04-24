@@ -146,3 +146,49 @@ func (_c *MockClient_ListWorkspaces_Call) RunAndReturn(run func(teamId int) ([]a
 	_c.Call.Return(run)
 	return _c
 }
+
+// StartPipelines provides a mock function for the type MockClient
+func (_mock *MockClient) StartPipelines(workspaceId int, pipelineStage string) error {
+	ret := _mock.Called(workspaceId, pipelineStage)
+
+	if len(ret) == 0 {
+		panic("no return value specified for StartPipelines")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(int, string) error); ok {
+		r0 = returnFunc(workspaceId, pipelineStage)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockClient_StartPipelines_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'StartPipelines'
+type MockClient_StartPipelines_Call struct {
+	*mock.Call
+}
+
+// StartPipelines is a helper method to define mock.On call
+//   - workspaceId
+//   - pipelineStage
+func (_e *MockClient_Expecter) StartPipelines(workspaceId interface{}, pipelineStage interface{}) *MockClient_StartPipelines_Call {
+	return &MockClient_StartPipelines_Call{Call: _e.mock.On("StartPipelines", workspaceId, pipelineStage)}
+}
+
+func (_c *MockClient_StartPipelines_Call) Run(run func(workspaceId int, pipelineStage string)) *MockClient_StartPipelines_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(int), args[1].(string))
+	})
+	return _c
+}
+
+func (_c *MockClient_StartPipelines_Call) Return(err error) *MockClient_StartPipelines_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockClient_StartPipelines_Call) RunAndReturn(run func(workspaceId int, pipelineStage string) error) *MockClient_StartPipelines_Call {
+	_c.Call.Return(run)
+	return _c
+}
