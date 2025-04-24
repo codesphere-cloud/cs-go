@@ -11,16 +11,16 @@ import (
 	"net/url"
 
 	"github.com/codesphere-cloud/cs-go/api"
-	"github.com/codesphere-cloud/cs-go/pkg/cs"
 )
 
 type Client interface {
 	ListTeams() ([]api.Team, error)
 	ListWorkspaces(teamId int) ([]api.Workspace, error)
+	SetEnvVarOnWorkspace(workspaceId int, vars map[string]string) error
 }
 
 func NewClient(opts GlobalOptions) (Client, error) {
-	token, err := cs.GetApiToken()
+	token, err := opts.Env.GetApiToken()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get API token: %w", err)
 	}

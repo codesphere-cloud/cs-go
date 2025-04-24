@@ -5,11 +5,9 @@ package cs
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 	"strings"
 )
 
@@ -22,14 +20,6 @@ type ReplicaStatus struct {
 	Steps   []Step `json:"steps"`
 	Replica string `json:"replica"`
 	Server  string `json:"server"`
-}
-
-func GetApiUrl() string {
-	url := os.Getenv("CS_API")
-	if url != "" {
-		return url
-	}
-	return "https://codesphere.com/api"
 }
 
 func GetPipelineStatus(ws int, stage string) (res []ReplicaStatus, err error) {
@@ -49,7 +39,7 @@ func GetPipelineStatus(ws int, stage string) (res []ReplicaStatus, err error) {
 }
 
 func Get(path string) (body []byte, err error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/%s", GetApiUrl(), strings.TrimPrefix(path, "/")), http.NoBody)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/%s", NewEnv().GetApiUrl(), strings.TrimPrefix(path, "/")), http.NoBody)
 	if err != nil {
 		err = fmt.Errorf("failed to create request: %w", err)
 		return
@@ -70,16 +60,8 @@ func Get(path string) (body []byte, err error) {
 	return
 }
 
-func GetApiToken() (string, error) {
-	apiToken := os.Getenv("CS_TOKEN")
-	if apiToken == "" {
-		return "", errors.New("CS_TOKEN env var required, but not set")
-	}
-	return apiToken, nil
-}
-
 func SetAuthoriziationHeader(req *http.Request) error {
-	token, err := GetApiToken()
+	token, err := NewEnv().GetApiToken()
 	if err != nil {
 		return fmt.Errorf("failed to get API token: %w", err)
 	}

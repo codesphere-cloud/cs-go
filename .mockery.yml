@@ -17,6 +17,7 @@ packages:
   github.com/codesphere-cloud/cs-go/cmd:
     interfaces:
       Client:
+      Env:
   github.com/codesphere-cloud/cs-go/api/openapi_client:
     config:
       all: true
