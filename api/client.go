@@ -140,3 +140,31 @@ func (c *Client) ListWorkspaces(teamId int) ([]Workspace, error) {
 	workspaces, _, err := c.api.WorkspacesAPI.WorkspacesListWorkspaces(c.ctx, float32(teamId)).Execute()
 	return workspaces, err
 }
+
+func (c *Client) WorkspaceStatus(workspaceId int) (*WorkspaceStatus, error) {
+	status, _, err := c.api.WorkspacesAPI.WorkspacesGetWorkspaceStatus(c.ctx, float32(workspaceId)).Execute()
+	return status, err
+}
+
+func (c *Client) CreateWorkspace(args CreateWorkspaceArgs) (*Workspace, error) {
+	workspace, _, err := c.api.WorkspacesAPI.
+		WorkspacesCreateWorkspace(c.ctx).
+		WorkspacesCreateWorkspaceRequest(args).
+		Execute()
+	return workspace, err
+}
+
+func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string) error {
+	vars := []openapi_client.WorkspacesListEnvVars200ResponseInner{}
+	for k, v := range envVars {
+		vars = append(vars, openapi_client.WorkspacesListEnvVars200ResponseInner{
+			Name:  k,
+			Value: v,
+		})
+	}
+	_, err := c.api.WorkspacesAPI.
+		WorkspacesSetEnvVar(c.ctx, float32(workspaceId)).
+		WorkspacesListEnvVars200ResponseInner(vars).
+		Execute()
+	return err
+}
