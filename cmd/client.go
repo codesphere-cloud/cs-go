@@ -17,6 +17,7 @@ import (
 type Client interface {
 	ListTeams() ([]api.Team, error)
 	ListWorkspaces(teamId int) ([]api.Workspace, error)
+	StartPipelines(workspaceId int, pipelineStage string) error
 }
 
 func NewClient(opts GlobalOptions) (Client, error) {

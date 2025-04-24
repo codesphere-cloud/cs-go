@@ -25,14 +25,14 @@ func Execute() {
 	var rootCmd = &cobra.Command{
 		Use:   "cs",
 		Short: "The codesphere CLI",
-		Long: `Manage and debug resources deployed in Codesphere
-	via command line.`,
+		Long:  `Manage and debug resources deployed in Codesphere via command line.`,
 	}
 
 	opts := GlobalOptions{}
 
 	addLogCmd(rootCmd, opts)
 	addListCmd(rootCmd, opts)
+	addPipelinesCmd(rootCmd, opts)
 
 	opts.ApiUrl = rootCmd.PersistentFlags().StringP("api", "a", "https://codesphere.com/api", "URL of Codesphere API (can also be CS_API)")
 
