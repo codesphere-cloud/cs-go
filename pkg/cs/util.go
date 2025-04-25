@@ -103,10 +103,7 @@ func GetRoleName(role int) string {
 //
 // Returns [NotFound] if no plan with the given Id could be found
 // Returns [Duplicated] if no plan with the given Id could be found
-func TeamIdByName(
-	client *api.Client,
-	name string,
-) (api.Team, error) {
+func TeamIdByName(client *api.Client, name string) (api.Team, error) {
 	teams, err := client.ListTeams()
 	if err != nil {
 		return api.Team{}, err
@@ -133,10 +130,7 @@ func TeamIdByName(
 // Fetches the workspace plan for a given name.
 //
 // Returns [NotFound] if no plan with the given Id could be found
-func PlanByName(
-	client *api.Client,
-	name string,
-) (api.WorkspacePlan, error) {
+func PlanByName(client *api.Client, name string) (api.WorkspacePlan, error) {
 	plans, err := client.ListWorkspacePlans()
 	if err != nil {
 		return api.WorkspacePlan{}, err
