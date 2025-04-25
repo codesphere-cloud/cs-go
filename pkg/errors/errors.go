@@ -5,44 +5,44 @@ import (
 	"time"
 )
 
-type TimedOut struct {
+type TimedOutError struct {
 	msg string
 }
 
-func (e *TimedOut) Error() string {
+func (e *TimedOutError) Error() string {
 	return e.msg
 }
 
-func NewTimedOut(operation string, timeout time.Duration) *TimedOut {
-	return &TimedOut{
+func TimedOut(operation string, timeout time.Duration) *TimedOutError {
+	return &TimedOutError{
 		msg: fmt.Sprintf("%s timed out after %s", operation, timeout.String()),
 	}
 }
 
-type NotFound struct {
+type NotFoundError struct {
 	msg string
 }
 
-func (e *NotFound) Error() string {
+func (e *NotFoundError) Error() string {
 	return e.msg
 }
 
-func NewNotFound(msg string) *NotFound {
-	return &NotFound{
+func NotFound(msg string) *NotFoundError {
+	return &NotFoundError{
 		msg: msg,
 	}
 }
 
-type Duplicated struct {
+type DuplicatedError struct {
 	msg string
 }
 
-func (e *Duplicated) Error() string {
+func (e *DuplicatedError) Error() string {
 	return e.msg
 }
 
-func NewDuplicated(msg string) *Duplicated {
-	return &Duplicated{
+func Duplicated(msg string) *DuplicatedError {
+	return &DuplicatedError{
 		msg: msg,
 	}
 }

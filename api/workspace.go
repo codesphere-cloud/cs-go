@@ -78,7 +78,7 @@ func WaitForWorkspaceRunning(
 		time.Sleep(delay)
 	}
 
-	return errors.NewTimedOut(
+	return errors.TimedOut(
 		fmt.Sprintf("Waiting for workspace %s(%d) to be ready", workspace.Name, workspace.Id),
 		timeout)
 }
