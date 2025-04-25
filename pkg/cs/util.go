@@ -120,11 +120,11 @@ func TeamIdByName(
 	}
 
 	if len(matchingTeams) == 0 {
-		return api.Team{}, cserrors.NotFound(fmt.Sprintf("No team with name %s found", name))
+		return api.Team{}, cserrors.NotFound(fmt.Sprintf("no team with name %s found", name))
 	}
 
 	if len(matchingTeams) > 1 {
-		return api.Team{}, cserrors.Duplicated(fmt.Sprintf("Multiple teams (%v) with the name %s found.", matchingTeams, name))
+		return api.Team{}, cserrors.Duplicated(fmt.Sprintf("multiple teams (%v) with the name %s found.", matchingTeams, name))
 	}
 
 	return matchingTeams[0], nil
@@ -147,5 +147,5 @@ func PlanByName(
 			return p, nil
 		}
 	}
-	return api.WorkspacePlan{}, cserrors.NotFound(fmt.Sprintf("No team with name %s found", name))
+	return api.WorkspacePlan{}, cserrors.NotFound(fmt.Sprintf("no team with name %s found", name))
 }
