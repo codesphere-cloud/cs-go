@@ -12,7 +12,7 @@ lint: install-build-deps
 test:
 	go test ./...
 
-generate: install-build-deps
+generate:
 	go generate ./...
 
 build:
@@ -25,7 +25,7 @@ install:
 generate-client:
 	rm -rf ${OPENAPI_DIR}
 	openapi-generator-cli generate -g go -o ${OPENAPI_DIR} -i https://codesphere.com/api/docs \
-	    --additional-properties=isGoSubmodule=true,withGoMod=false,packageName=openapi_client \
+	    --additional-properties=generateInterfaces=true,isGoSubmodule=true,withGoMod=false,packageName=openapi_client \
 		--type-mappings=integer=int \
 	    --template-dir openapi-template \
 	    --skip-validate-spec # TODO: remove once the Codesphere openapi spec is fixed

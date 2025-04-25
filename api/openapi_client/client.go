@@ -49,13 +49,13 @@ type APIClient struct {
 
 	// API Services
 
-	DomainsAPI *DomainsAPIService
+	DomainsAPI DomainsAPI
 
-	MetadataAPI *MetadataAPIService
+	MetadataAPI MetadataAPI
 
-	TeamsAPI *TeamsAPIService
+	TeamsAPI TeamsAPI
 
-	WorkspacesAPI *WorkspacesAPIService
+	WorkspacesAPI WorkspacesAPI
 }
 
 type service struct {

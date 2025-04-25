@@ -13,6 +13,7 @@ import (
 	"strings"
 
 	"github.com/codesphere-cloud/cs-go/api"
+	cserrors "github.com/codesphere-cloud/cs-go/pkg/errors"
 )
 
 type Step struct {
@@ -119,11 +120,11 @@ func TeamIdByName(
 	}
 
 	if len(matchingTeams) == 0 {
-		return api.Team{}, NewNotFound(fmt.Sprintf("No team with name %s found", name))
+		return api.Team{}, cserrors.NewNotFound(fmt.Sprintf("No team with name %s found", name))
 	}
 
 	if len(matchingTeams) > 1 {
-		return api.Team{}, NewDuplicated(fmt.Sprintf("Multiple teams (%v) with the name %s found.", matchingTeams, name))
+		return api.Team{}, cserrors.NewDuplicated(fmt.Sprintf("Multiple teams (%v) with the name %s found.", matchingTeams, name))
 	}
 
 	return matchingTeams[0], nil
@@ -146,5 +147,5 @@ func PlanByName(
 			return p, nil
 		}
 	}
-	return api.WorkspacePlan{}, NewNotFound(fmt.Sprintf("No team with name %s found", name))
+	return api.WorkspacePlan{}, cserrors.NewNotFound(fmt.Sprintf("No team with name %s found", name))
 }

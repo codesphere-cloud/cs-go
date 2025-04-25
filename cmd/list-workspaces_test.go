@@ -13,7 +13,7 @@ import (
 
 func TestListWorkspaces(t *testing.T) {
 	l := newListWorkspacesCmdWithTeam(0)
-	client := NewMockClient(t)
+	client := cmd.NewMockClient(t)
 	client.EXPECT().ListWorkspaces(0).Return([]api.Workspace{}, nil)
 
 	w, err := l.ListWorkspaces(client)
@@ -23,7 +23,7 @@ func TestListWorkspaces(t *testing.T) {
 
 func TestListWorkspacesAllTeams(t *testing.T) {
 	l := newListWorkspacesCmd()
-	client := NewMockClient(t)
+	client := cmd.NewMockClient(t)
 	client.EXPECT().ListTeams().Return([]api.Team{{Id: 0}, {Id: 1}}, nil)
 
 	expectedWorkspaces := []api.Workspace{

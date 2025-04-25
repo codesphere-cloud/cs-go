@@ -20,12 +20,332 @@ import (
 	"strings"
 )
 
+type WorkspacesAPI interface {
+
+	/*
+		WorkspacesCreateWorkspace createWorkspace
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiWorkspacesCreateWorkspaceRequest
+	*/
+	WorkspacesCreateWorkspace(ctx context.Context) ApiWorkspacesCreateWorkspaceRequest
+
+	// WorkspacesCreateWorkspaceExecute executes the request
+	//  @return WorkspacesGetWorkspace200Response
+	WorkspacesCreateWorkspaceExecute(r ApiWorkspacesCreateWorkspaceRequest) (*WorkspacesGetWorkspace200Response, *http.Response, error)
+
+	/*
+		WorkspacesDeleteEnvVar deleteEnvVar
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@return ApiWorkspacesDeleteEnvVarRequest
+	*/
+	WorkspacesDeleteEnvVar(ctx context.Context, workspaceId float32) ApiWorkspacesDeleteEnvVarRequest
+
+	// WorkspacesDeleteEnvVarExecute executes the request
+	WorkspacesDeleteEnvVarExecute(r ApiWorkspacesDeleteEnvVarRequest) (*http.Response, error)
+
+	/*
+		WorkspacesDeleteWorkspace deleteWorkspace
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@return ApiWorkspacesDeleteWorkspaceRequest
+	*/
+	WorkspacesDeleteWorkspace(ctx context.Context, workspaceId float32) ApiWorkspacesDeleteWorkspaceRequest
+
+	// WorkspacesDeleteWorkspaceExecute executes the request
+	WorkspacesDeleteWorkspaceExecute(r ApiWorkspacesDeleteWorkspaceRequest) (*http.Response, error)
+
+	/*
+		WorkspacesDeployLandscape deployLandscape
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@return ApiWorkspacesDeployLandscapeRequest
+	*/
+	WorkspacesDeployLandscape(ctx context.Context, workspaceId float32) ApiWorkspacesDeployLandscapeRequest
+
+	// WorkspacesDeployLandscapeExecute executes the request
+	WorkspacesDeployLandscapeExecute(r ApiWorkspacesDeployLandscapeRequest) (*http.Response, error)
+
+	/*
+		WorkspacesDeployLandscape1 deployLandscape
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@param profile
+		@return ApiWorkspacesDeployLandscape1Request
+	*/
+	WorkspacesDeployLandscape1(ctx context.Context, workspaceId float32, profile string) ApiWorkspacesDeployLandscape1Request
+
+	// WorkspacesDeployLandscape1Execute executes the request
+	WorkspacesDeployLandscape1Execute(r ApiWorkspacesDeployLandscape1Request) (*http.Response, error)
+
+	/*
+		WorkspacesExecuteCommand executeCommand
+
+		Executes the command with "bash -c command". Timeouts after 5000ms.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@return ApiWorkspacesExecuteCommandRequest
+	*/
+	WorkspacesExecuteCommand(ctx context.Context, workspaceId float32) ApiWorkspacesExecuteCommandRequest
+
+	// WorkspacesExecuteCommandExecute executes the request
+	//  @return WorkspacesExecuteCommand200Response
+	WorkspacesExecuteCommandExecute(r ApiWorkspacesExecuteCommandRequest) (*WorkspacesExecuteCommand200Response, *http.Response, error)
+
+	/*
+		WorkspacesGetWorkspace getWorkspace
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@return ApiWorkspacesGetWorkspaceRequest
+	*/
+	WorkspacesGetWorkspace(ctx context.Context, workspaceId float32) ApiWorkspacesGetWorkspaceRequest
+
+	// WorkspacesGetWorkspaceExecute executes the request
+	//  @return WorkspacesGetWorkspace200Response
+	WorkspacesGetWorkspaceExecute(r ApiWorkspacesGetWorkspaceRequest) (*WorkspacesGetWorkspace200Response, *http.Response, error)
+
+	/*
+		WorkspacesGetWorkspaceStatus getWorkspaceStatus
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@return ApiWorkspacesGetWorkspaceStatusRequest
+	*/
+	WorkspacesGetWorkspaceStatus(ctx context.Context, workspaceId float32) ApiWorkspacesGetWorkspaceStatusRequest
+
+	// WorkspacesGetWorkspaceStatusExecute executes the request
+	//  @return WorkspacesGetWorkspaceStatus200Response
+	WorkspacesGetWorkspaceStatusExecute(r ApiWorkspacesGetWorkspaceStatusRequest) (*WorkspacesGetWorkspaceStatus200Response, *http.Response, error)
+
+	/*
+		WorkspacesGitHead gitHead
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@return ApiWorkspacesGitHeadRequest
+	*/
+	WorkspacesGitHead(ctx context.Context, workspaceId float32) ApiWorkspacesGitHeadRequest
+
+	// WorkspacesGitHeadExecute executes the request
+	//  @return WorkspacesGitHead200Response
+	WorkspacesGitHeadExecute(r ApiWorkspacesGitHeadRequest) (*WorkspacesGitHead200Response, *http.Response, error)
+
+	/*
+		WorkspacesGitPull gitPull
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@return ApiWorkspacesGitPullRequest
+	*/
+	WorkspacesGitPull(ctx context.Context, workspaceId float32) ApiWorkspacesGitPullRequest
+
+	// WorkspacesGitPullExecute executes the request
+	WorkspacesGitPullExecute(r ApiWorkspacesGitPullRequest) (*http.Response, error)
+
+	/*
+		WorkspacesGitPull1 gitPull
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@param remote
+		@return ApiWorkspacesGitPull1Request
+	*/
+	WorkspacesGitPull1(ctx context.Context, workspaceId float32, remote string) ApiWorkspacesGitPull1Request
+
+	// WorkspacesGitPull1Execute executes the request
+	WorkspacesGitPull1Execute(r ApiWorkspacesGitPull1Request) (*http.Response, error)
+
+	/*
+		WorkspacesGitPull2 gitPull
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@param remote
+		@param branch
+		@return ApiWorkspacesGitPull2Request
+	*/
+	WorkspacesGitPull2(ctx context.Context, workspaceId float32, remote string, branch string) ApiWorkspacesGitPull2Request
+
+	// WorkspacesGitPull2Execute executes the request
+	WorkspacesGitPull2Execute(r ApiWorkspacesGitPull2Request) (*http.Response, error)
+
+	/*
+		WorkspacesListEnvVars listEnvVars
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@return ApiWorkspacesListEnvVarsRequest
+	*/
+	WorkspacesListEnvVars(ctx context.Context, workspaceId float32) ApiWorkspacesListEnvVarsRequest
+
+	// WorkspacesListEnvVarsExecute executes the request
+	//  @return []WorkspacesListEnvVars200ResponseInner
+	WorkspacesListEnvVarsExecute(r ApiWorkspacesListEnvVarsRequest) ([]WorkspacesListEnvVars200ResponseInner, *http.Response, error)
+
+	/*
+		WorkspacesListWorkspaces listWorkspaces
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param teamId
+		@return ApiWorkspacesListWorkspacesRequest
+	*/
+	WorkspacesListWorkspaces(ctx context.Context, teamId float32) ApiWorkspacesListWorkspacesRequest
+
+	// WorkspacesListWorkspacesExecute executes the request
+	//  @return []WorkspacesGetWorkspace200Response
+	WorkspacesListWorkspacesExecute(r ApiWorkspacesListWorkspacesRequest) ([]WorkspacesGetWorkspace200Response, *http.Response, error)
+
+	/*
+		WorkspacesLogs logs
+
+		Returns a stream of logs for a given "stage" and "step". For "run" stage logs of Multi Server Deployments use [serverLogs](#/workspaces/workspaces-serverLogs) or [replicaLogs](#/workspaces/workspaces-replicaLogs).
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@param stage
+		@param step
+		@return ApiWorkspacesLogsRequest
+	*/
+	WorkspacesLogs(ctx context.Context, workspaceId float32, stage string, step float32) ApiWorkspacesLogsRequest
+
+	// WorkspacesLogsExecute executes the request
+	//  @return WorkspacesLogs200Response
+	WorkspacesLogsExecute(r ApiWorkspacesLogsRequest) (*WorkspacesLogs200Response, *http.Response, error)
+
+	/*
+		WorkspacesPipelineStatus pipelineStatus
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@param stage
+		@return ApiWorkspacesPipelineStatusRequest
+	*/
+	WorkspacesPipelineStatus(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesPipelineStatusRequest
+
+	// WorkspacesPipelineStatusExecute executes the request
+	//  @return []WorkspacesPipelineStatus200ResponseInner
+	WorkspacesPipelineStatusExecute(r ApiWorkspacesPipelineStatusRequest) ([]WorkspacesPipelineStatus200ResponseInner, *http.Response, error)
+
+	/*
+		WorkspacesReplicaLogs replicaLogs
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@param step
+		@param replica
+		@return ApiWorkspacesReplicaLogsRequest
+	*/
+	WorkspacesReplicaLogs(ctx context.Context, workspaceId float32, step float32, replica string) ApiWorkspacesReplicaLogsRequest
+
+	// WorkspacesReplicaLogsExecute executes the request
+	//  @return WorkspacesReplicaLogs200Response
+	WorkspacesReplicaLogsExecute(r ApiWorkspacesReplicaLogsRequest) (*WorkspacesReplicaLogs200Response, *http.Response, error)
+
+	/*
+		WorkspacesServerLogs serverLogs
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@param step
+		@param server
+		@return ApiWorkspacesServerLogsRequest
+	*/
+	WorkspacesServerLogs(ctx context.Context, workspaceId float32, step float32, server string) ApiWorkspacesServerLogsRequest
+
+	// WorkspacesServerLogsExecute executes the request
+	//  @return WorkspacesServerLogs200Response
+	WorkspacesServerLogsExecute(r ApiWorkspacesServerLogsRequest) (*WorkspacesServerLogs200Response, *http.Response, error)
+
+	/*
+		WorkspacesSetEnvVar setEnvVar
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@return ApiWorkspacesSetEnvVarRequest
+	*/
+	WorkspacesSetEnvVar(ctx context.Context, workspaceId float32) ApiWorkspacesSetEnvVarRequest
+
+	// WorkspacesSetEnvVarExecute executes the request
+	WorkspacesSetEnvVarExecute(r ApiWorkspacesSetEnvVarRequest) (*http.Response, error)
+
+	/*
+		WorkspacesStartPipelineStage startPipelineStage
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@param stage
+		@return ApiWorkspacesStartPipelineStageRequest
+	*/
+	WorkspacesStartPipelineStage(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesStartPipelineStageRequest
+
+	// WorkspacesStartPipelineStageExecute executes the request
+	WorkspacesStartPipelineStageExecute(r ApiWorkspacesStartPipelineStageRequest) (*http.Response, error)
+
+	/*
+		WorkspacesStartPipelineStage1 startPipelineStage
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@param stage
+		@param profile
+		@return ApiWorkspacesStartPipelineStage1Request
+	*/
+	WorkspacesStartPipelineStage1(ctx context.Context, workspaceId float32, stage string, profile string) ApiWorkspacesStartPipelineStage1Request
+
+	// WorkspacesStartPipelineStage1Execute executes the request
+	WorkspacesStartPipelineStage1Execute(r ApiWorkspacesStartPipelineStage1Request) (*http.Response, error)
+
+	/*
+		WorkspacesStopPipelineStage stopPipelineStage
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@param stage
+		@return ApiWorkspacesStopPipelineStageRequest
+	*/
+	WorkspacesStopPipelineStage(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesStopPipelineStageRequest
+
+	// WorkspacesStopPipelineStageExecute executes the request
+	WorkspacesStopPipelineStageExecute(r ApiWorkspacesStopPipelineStageRequest) (*http.Response, error)
+
+	/*
+		WorkspacesTeardownLandscape teardownLandscape
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@return ApiWorkspacesTeardownLandscapeRequest
+	*/
+	WorkspacesTeardownLandscape(ctx context.Context, workspaceId float32) ApiWorkspacesTeardownLandscapeRequest
+
+	// WorkspacesTeardownLandscapeExecute executes the request
+	WorkspacesTeardownLandscapeExecute(r ApiWorkspacesTeardownLandscapeRequest) (*http.Response, error)
+
+	/*
+		WorkspacesUpdateWorkspace updateWorkspace
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param workspaceId
+		@return ApiWorkspacesUpdateWorkspaceRequest
+	*/
+	WorkspacesUpdateWorkspace(ctx context.Context, workspaceId float32) ApiWorkspacesUpdateWorkspaceRequest
+
+	// WorkspacesUpdateWorkspaceExecute executes the request
+	WorkspacesUpdateWorkspaceExecute(r ApiWorkspacesUpdateWorkspaceRequest) (*http.Response, error)
+}
+
 // WorkspacesAPIService WorkspacesAPI service
 type WorkspacesAPIService service
 
 type ApiWorkspacesCreateWorkspaceRequest struct {
 	ctx                              context.Context
-	ApiService                       *WorkspacesAPIService
+	ApiService                       WorkspacesAPI
 	workspacesCreateWorkspaceRequest *WorkspacesCreateWorkspaceRequest
 }
 
@@ -152,7 +472,7 @@ func (a *WorkspacesAPIService) WorkspacesCreateWorkspaceExecute(r ApiWorkspacesC
 
 type ApiWorkspacesDeleteEnvVarRequest struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 	requestBody *[]string
 }
@@ -282,7 +602,7 @@ func (a *WorkspacesAPIService) WorkspacesDeleteEnvVarExecute(r ApiWorkspacesDele
 
 type ApiWorkspacesDeleteWorkspaceRequest struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 }
 
@@ -404,7 +724,7 @@ func (a *WorkspacesAPIService) WorkspacesDeleteWorkspaceExecute(r ApiWorkspacesD
 
 type ApiWorkspacesDeployLandscapeRequest struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 }
 
@@ -526,7 +846,7 @@ func (a *WorkspacesAPIService) WorkspacesDeployLandscapeExecute(r ApiWorkspacesD
 
 type ApiWorkspacesDeployLandscape1Request struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 	profile     string
 }
@@ -652,7 +972,7 @@ func (a *WorkspacesAPIService) WorkspacesDeployLandscape1Execute(r ApiWorkspaces
 
 type ApiWorkspacesExecuteCommandRequest struct {
 	ctx                             context.Context
-	ApiService                      *WorkspacesAPIService
+	ApiService                      WorkspacesAPI
 	workspaceId                     float32
 	workspacesExecuteCommandRequest *WorkspacesExecuteCommandRequest
 }
@@ -796,7 +1116,7 @@ func (a *WorkspacesAPIService) WorkspacesExecuteCommandExecute(r ApiWorkspacesEx
 
 type ApiWorkspacesGetWorkspaceRequest struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 }
 
@@ -930,7 +1250,7 @@ func (a *WorkspacesAPIService) WorkspacesGetWorkspaceExecute(r ApiWorkspacesGetW
 
 type ApiWorkspacesGetWorkspaceStatusRequest struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 }
 
@@ -1064,7 +1384,7 @@ func (a *WorkspacesAPIService) WorkspacesGetWorkspaceStatusExecute(r ApiWorkspac
 
 type ApiWorkspacesGitHeadRequest struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 }
 
@@ -1198,7 +1518,7 @@ func (a *WorkspacesAPIService) WorkspacesGitHeadExecute(r ApiWorkspacesGitHeadRe
 
 type ApiWorkspacesGitPullRequest struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 }
 
@@ -1320,7 +1640,7 @@ func (a *WorkspacesAPIService) WorkspacesGitPullExecute(r ApiWorkspacesGitPullRe
 
 type ApiWorkspacesGitPull1Request struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 	remote      string
 }
@@ -1446,7 +1766,7 @@ func (a *WorkspacesAPIService) WorkspacesGitPull1Execute(r ApiWorkspacesGitPull1
 
 type ApiWorkspacesGitPull2Request struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 	remote      string
 	branch      string
@@ -1576,7 +1896,7 @@ func (a *WorkspacesAPIService) WorkspacesGitPull2Execute(r ApiWorkspacesGitPull2
 
 type ApiWorkspacesListEnvVarsRequest struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 }
 
@@ -1710,7 +2030,7 @@ func (a *WorkspacesAPIService) WorkspacesListEnvVarsExecute(r ApiWorkspacesListE
 
 type ApiWorkspacesListWorkspacesRequest struct {
 	ctx        context.Context
-	ApiService *WorkspacesAPIService
+	ApiService WorkspacesAPI
 	teamId     float32
 }
 
@@ -1833,7 +2153,7 @@ func (a *WorkspacesAPIService) WorkspacesListWorkspacesExecute(r ApiWorkspacesLi
 
 type ApiWorkspacesLogsRequest struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 	stage       string
 	step        float32
@@ -1945,7 +2265,7 @@ func (a *WorkspacesAPIService) WorkspacesLogsExecute(r ApiWorkspacesLogsRequest)
 
 type ApiWorkspacesPipelineStatusRequest struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 	stage       string
 }
@@ -2083,7 +2403,7 @@ func (a *WorkspacesAPIService) WorkspacesPipelineStatusExecute(r ApiWorkspacesPi
 
 type ApiWorkspacesReplicaLogsRequest struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 	step        float32
 	replica     string
@@ -2193,7 +2513,7 @@ func (a *WorkspacesAPIService) WorkspacesReplicaLogsExecute(r ApiWorkspacesRepli
 
 type ApiWorkspacesServerLogsRequest struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 	step        float32
 	server      string
@@ -2303,7 +2623,7 @@ func (a *WorkspacesAPIService) WorkspacesServerLogsExecute(r ApiWorkspacesServer
 
 type ApiWorkspacesSetEnvVarRequest struct {
 	ctx                                   context.Context
-	ApiService                            *WorkspacesAPIService
+	ApiService                            WorkspacesAPI
 	workspaceId                           float32
 	workspacesListEnvVars200ResponseInner *[]WorkspacesListEnvVars200ResponseInner
 }
@@ -2433,7 +2753,7 @@ func (a *WorkspacesAPIService) WorkspacesSetEnvVarExecute(r ApiWorkspacesSetEnvV
 
 type ApiWorkspacesStartPipelineStageRequest struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 	stage       string
 }
@@ -2559,7 +2879,7 @@ func (a *WorkspacesAPIService) WorkspacesStartPipelineStageExecute(r ApiWorkspac
 
 type ApiWorkspacesStartPipelineStage1Request struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 	stage       string
 	profile     string
@@ -2689,7 +3009,7 @@ func (a *WorkspacesAPIService) WorkspacesStartPipelineStage1Execute(r ApiWorkspa
 
 type ApiWorkspacesStopPipelineStageRequest struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 	stage       string
 }
@@ -2815,7 +3135,7 @@ func (a *WorkspacesAPIService) WorkspacesStopPipelineStageExecute(r ApiWorkspace
 
 type ApiWorkspacesTeardownLandscapeRequest struct {
 	ctx         context.Context
-	ApiService  *WorkspacesAPIService
+	ApiService  WorkspacesAPI
 	workspaceId float32
 }
 
@@ -2937,7 +3257,7 @@ func (a *WorkspacesAPIService) WorkspacesTeardownLandscapeExecute(r ApiWorkspace
 
 type ApiWorkspacesUpdateWorkspaceRequest struct {
 	ctx                              context.Context
-	ApiService                       *WorkspacesAPIService
+	ApiService                       WorkspacesAPI
 	workspaceId                      float32
 	workspacesUpdateWorkspaceRequest *WorkspacesUpdateWorkspaceRequest
 }

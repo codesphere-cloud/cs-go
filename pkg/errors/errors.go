@@ -1,4 +1,4 @@
-package cs
+package errors
 
 import (
 	"fmt"

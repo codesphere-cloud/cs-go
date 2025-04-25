@@ -4,10 +4,11 @@
 all: false
 dir: '{{.InterfaceDir}}'
 force-file-write: true
+filename: 'mocks.go'
 formatter: gofmt
 log-level: info
 structname: '{{.Mock}}{{.InterfaceName}}'
-pkgname: '{{.SrcPackageName}}_test'
+pkgname: '{{.SrcPackageName}}'
 recursive: false
 require-template-schema-exists: true
 template: testify
@@ -16,3 +17,7 @@ packages:
   github.com/codesphere-cloud/cs-go/cmd:
     interfaces:
       Client:
+  github.com/codesphere-cloud/cs-go/api/openapi_client:
+    config:
+      all: true
+    interfaces:

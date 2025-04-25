@@ -34,16 +34,19 @@ func (c Configuration) GetApiUrl() *url.URL {
 	return defaultUrl
 }
 
+func NewClientWithCustomApi(ctx context.Context, opts Configuration, api *openapi_client.APIClient) *Client {
+	return &Client{
+		ctx: context.WithValue(ctx, openapi_client.ContextAccessToken, opts.Token),
+		api: api,
+	}
+}
+
 func NewClient(ctx context.Context, opts Configuration) *Client {
 	cfg := openapi_client.NewConfiguration()
 	cfg.Servers = []openapi_client.ServerConfiguration{{
 		URL: opts.BaseUrl.String(),
 	}}
-
-	return &Client{
-		ctx: context.WithValue(ctx, openapi_client.ContextAccessToken, opts.Token),
-		api: openapi_client.NewAPIClient(cfg),
-	}
+	return NewClientWithCustomApi(ctx, opts, openapi_client.NewAPIClient(cfg))
 }
 
 func (c *Client) ListDataCenters() ([]DataCenter, error) {
@@ -104,10 +107,9 @@ func (c *Client) DeleteDomain(teamId int, domainName string) error {
 func (c *Client) UpdateDomain(
 	teamId int, domainName string, args UpdateDomainArgs,
 ) (*Domain, error) {
-	domain, _, err := c.api.DomainsAPI.
-		DomainsUpdateDomain(c.ctx, float32(teamId), domainName).
-		DomainsGetDomain200ResponseCustomConfig(args).
-		Execute()
+	domain, _, err := c.api.DomainsAPI.DomainsUpdateDomainExecute(
+		c.api.DomainsAPI.DomainsUpdateDomain(c.ctx, float32(teamId), domainName).
+			DomainsGetDomain200ResponseCustomConfig(args))
 	return domain, err
 }
 
@@ -134,37 +136,4 @@ func (c *Client) UpdateWorkspaceConnections(
 		DomainsUpdateWorkspaceConnections(c.ctx, float32(teamId), domainName).
 		RequestBody(req).Execute()
 	return domain, err
-}
-
-func (c *Client) ListWorkspaces(teamId int) ([]Workspace, error) {
-	workspaces, _, err := c.api.WorkspacesAPI.WorkspacesListWorkspaces(c.ctx, float32(teamId)).Execute()
-	return workspaces, err
-}
-
-func (c *Client) WorkspaceStatus(workspaceId int) (*WorkspaceStatus, error) {
-	status, _, err := c.api.WorkspacesAPI.WorkspacesGetWorkspaceStatus(c.ctx, float32(workspaceId)).Execute()
-	return status, err
-}
-
-func (c *Client) CreateWorkspace(args CreateWorkspaceArgs) (*Workspace, error) {
-	workspace, _, err := c.api.WorkspacesAPI.
-		WorkspacesCreateWorkspace(c.ctx).
-		WorkspacesCreateWorkspaceRequest(args).
-		Execute()
-	return workspace, err
-}
-
-func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string) error {
-	vars := []openapi_client.WorkspacesListEnvVars200ResponseInner{}
-	for k, v := range envVars {
-		vars = append(vars, openapi_client.WorkspacesListEnvVars200ResponseInner{
-			Name:  k,
-			Value: v,
-		})
-	}
-	_, err := c.api.WorkspacesAPI.
-		WorkspacesSetEnvVar(c.ctx, float32(workspaceId)).
-		WorkspacesListEnvVars200ResponseInner(vars).
-		Execute()
-	return err
 }
