@@ -46,7 +46,7 @@ func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string
 // Waits for a given workspace to be running.
 //
 // Returns [TimedOut] error if the workspace does not become running in time.
-func WaitForWorkspaceRunning(client *Client, workspace *Workspace, opts WaitForWorkspaceRunningOptions) error {
+func (client *Client) WaitForWorkspaceRunning(workspace *Workspace, opts WaitForWorkspaceRunningOptions) error {
 	timeout := opts.Timeout
 	if timeout == 0 {
 		timeout = 20 * time.Minute
@@ -57,7 +57,7 @@ func WaitForWorkspaceRunning(client *Client, workspace *Workspace, opts WaitForW
 	}
 
 	maxWaitTime := time.Now().Add(timeout)
-	for time.Now().Before(maxWaitTime) {
+	for {
 		status, err := client.WorkspaceStatus(workspace.Id)
 
 		if err != nil {
@@ -66,6 +66,9 @@ func WaitForWorkspaceRunning(client *Client, workspace *Workspace, opts WaitForW
 		}
 		if status.IsRunning {
 			return nil
+		}
+		if time.Now().After(maxWaitTime) {
+			break
 		}
 		time.Sleep(delay)
 	}
@@ -88,7 +91,7 @@ type DeployWorkspaceArgs struct {
 // Deploys a workspace with the given configuration.
 //
 // Returns [TimedOut] error if the timeout is reached
-func DeployWorkspace(client Client, args DeployWorkspaceArgs) error {
+func (client Client) DeployWorkspace(args DeployWorkspaceArgs) error {
 	workspace, err := client.CreateWorkspace(CreateWorkspaceArgs{
 		TeamId:            args.TeamId,
 		Name:              args.Name,
@@ -104,7 +107,7 @@ func DeployWorkspace(client Client, args DeployWorkspaceArgs) error {
 	if err != nil {
 		return err
 	}
-	if err := WaitForWorkspaceRunning(&client, workspace, WaitForWorkspaceRunningOptions{Timeout: args.Timeout}); err != nil {
+	if err := client.WaitForWorkspaceRunning(workspace, WaitForWorkspaceRunningOptions{Timeout: args.Timeout}); err != nil {
 		return err
 	}
 
