@@ -3,8 +3,8 @@ package api
 import (
 	"fmt"
 
+	"github.com/codesphere-cloud/cs-go/api/errors"
 	"github.com/codesphere-cloud/cs-go/api/openapi_client"
-	"github.com/codesphere-cloud/cs-go/pkg/errors"
 
 	"time"
 )
@@ -15,21 +15,17 @@ type WaitForWorkspaceRunningOptions struct {
 }
 
 func (c *Client) ListWorkspaces(teamId int) ([]Workspace, error) {
-	req := c.api.WorkspacesAPI.WorkspacesListWorkspaces(c.ctx, float32(teamId))
-	workspaces, _, err := c.api.WorkspacesAPI.WorkspacesListWorkspacesExecute(req)
+	workspaces, _, err := c.api.WorkspacesAPI.WorkspacesListWorkspaces(c.ctx, float32(teamId)).Execute()
 	return workspaces, err
 }
 
 func (c *Client) WorkspaceStatus(workspaceId int) (*WorkspaceStatus, error) {
-	req := c.api.WorkspacesAPI.WorkspacesGetWorkspaceStatus(c.ctx, float32(workspaceId))
-	status, _, err := c.api.WorkspacesAPI.WorkspacesGetWorkspaceStatusExecute(req)
+	status, _, err := c.api.WorkspacesAPI.WorkspacesGetWorkspaceStatus(c.ctx, float32(workspaceId)).Execute()
 	return status, err
 }
 
 func (c *Client) CreateWorkspace(args CreateWorkspaceArgs) (*Workspace, error) {
-	req := c.api.WorkspacesAPI.WorkspacesCreateWorkspace(c.ctx).WorkspacesCreateWorkspaceRequest(args)
-	workspace, _, err := c.api.WorkspacesAPI.
-		WorkspacesCreateWorkspaceExecute(req)
+	workspace, _, err := c.api.WorkspacesAPI.WorkspacesCreateWorkspace(c.ctx).WorkspacesCreateWorkspaceRequest(args).Execute()
 	return workspace, err
 }
 

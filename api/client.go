@@ -107,9 +107,10 @@ func (c *Client) DeleteDomain(teamId int, domainName string) error {
 func (c *Client) UpdateDomain(
 	teamId int, domainName string, args UpdateDomainArgs,
 ) (*Domain, error) {
-	domain, _, err := c.api.DomainsAPI.DomainsUpdateDomainExecute(
-		c.api.DomainsAPI.DomainsUpdateDomain(c.ctx, float32(teamId), domainName).
-			DomainsGetDomain200ResponseCustomConfig(args))
+	domain, _, err := c.api.DomainsAPI.
+		DomainsUpdateDomain(c.ctx, float32(teamId), domainName).
+		DomainsGetDomain200ResponseCustomConfig(args).
+		Execute()
 	return domain, err
 }
 

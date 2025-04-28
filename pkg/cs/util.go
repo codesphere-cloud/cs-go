@@ -13,7 +13,7 @@ import (
 	"strings"
 
 	"github.com/codesphere-cloud/cs-go/api"
-	cserrors "github.com/codesphere-cloud/cs-go/pkg/errors"
+	cserrors "github.com/codesphere-cloud/cs-go/api/errors"
 )
 
 type Step struct {

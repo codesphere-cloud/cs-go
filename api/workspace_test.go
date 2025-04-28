@@ -23,7 +23,7 @@ func TestListWorkspaces(t *testing.T) {
 	}
 	teamId := 42
 
-	wsApiMock.EXPECT().WorkspacesListWorkspaces(mock.Anything, float32(teamId)).Return(openapi_client.ApiWorkspacesListWorkspacesRequest{})
+	wsApiMock.EXPECT().WorkspacesListWorkspaces(mock.Anything, float32(teamId)).Return(openapi_client.ApiWorkspacesListWorkspacesRequest{ApiService: wsApiMock})
 	wsApiMock.EXPECT().WorkspacesListWorkspacesExecute(mock.Anything).Return(workspaces, nil, nil)
 	workspaces, err := client.ListWorkspaces(teamId)
 	assert.Nil(t, err, "should be nil")
