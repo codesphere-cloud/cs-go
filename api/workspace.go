@@ -46,15 +46,8 @@ func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string
 // Waits for a given workspace to be running.
 //
 // Returns [TimedOut] error if the workspace does not become running in time.
-func (client *Client) WaitForWorkspaceRunning(workspace *Workspace, opts WaitForWorkspaceRunningOptions) error {
-	timeout := opts.Timeout
-	if timeout == 0 {
-		timeout = 20 * time.Minute
-	}
-	delay := opts.Delay
-	if delay == 0 {
-		delay = 5 * time.Second
-	}
+func (client *Client) WaitForWorkspaceRunning(workspace *Workspace, timeout time.Duration) error {
+	delay := 5 * time.Second
 
 	maxWaitTime := time.Now().Add(timeout)
 	for {
@@ -83,7 +76,7 @@ type DeployWorkspaceArgs struct {
 	PlanId        int
 	Name          string
 	EnvVars       map[string]string
-	VpnConfigName *string
+	VpnConfigName string
 
 	Timeout time.Duration
 }
@@ -91,7 +84,7 @@ type DeployWorkspaceArgs struct {
 // Deploys a workspace with the given configuration.
 //
 // Returns [TimedOut] error if the timeout is reached
-func (client Client) DeployWorkspace(args DeployWorkspaceArgs) error {
+func (client Client) DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, error) {
 	workspace, err := client.CreateWorkspace(CreateWorkspaceArgs{
 		TeamId:            args.TeamId,
 		Name:              args.Name,
@@ -102,19 +95,19 @@ func (client Client) DeployWorkspace(args DeployWorkspaceArgs) error {
 		SourceWorkspaceId: nil,
 		WelcomeMessage:    nil,
 		Replicas:          1,
-		VpnConfig:         args.VpnConfigName,
+		VpnConfig:         &args.VpnConfigName,
 	})
 	if err != nil {
-		return err
+		return nil, err
 	}
-	if err := client.WaitForWorkspaceRunning(workspace, WaitForWorkspaceRunningOptions{Timeout: args.Timeout}); err != nil {
-		return err
+	if err := client.WaitForWorkspaceRunning(workspace, args.Timeout); err != nil {
+		return workspace, err
 	}
 
 	if len(args.EnvVars) != 0 {
 		if err := client.SetEnvVarOnWorkspace(workspace.Id, args.EnvVars); err != nil {
-			return err
+			return workspace, err
 		}
 	}
-	return nil
+	return workspace, nil
 }

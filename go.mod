@@ -3,6 +3,7 @@ module github.com/codesphere-cloud/cs-go
 go 1.24.2
 
 require (
+	github.com/agiledragon/gomonkey/v2 v2.13.0
 	github.com/jedib0t/go-pretty/v6 v6.6.7
 	github.com/spf13/cobra v1.9.1
 	github.com/stretchr/testify v1.10.0

@@ -1,14 +1,14 @@
 package api_test
 
 import (
+	"context"
 	"testing"
 	"time"
-
-	"context"
 
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/api/errors"
 	"github.com/codesphere-cloud/cs-go/api/openapi_client"
+	tu "github.com/codesphere-cloud/cs-go/pkg/testutils"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -18,7 +18,25 @@ func getTestingClient(t *testing.T) (*api.Client, *openapi_client.MockWorkspaces
 	apis := openapi_client.APIClient{
 		WorkspacesAPI: wsApiMock,
 	}
+	tu.PatchTimeFuncs(t)
 	return api.NewClientWithCustomApi(context.TODO(), api.Configuration{}, &apis), wsApiMock
+}
+
+func mockWorkspaceStatus(wsApiMock *openapi_client.MockWorkspacesAPI, workspaceId int, isRunning ...bool) {
+	wsApiMock.EXPECT().WorkspacesGetWorkspaceStatus(mock.Anything, float32(workspaceId)).
+		Return(openapi_client.ApiWorkspacesGetWorkspaceStatusRequest{ApiService: wsApiMock})
+	for _, running := range isRunning {
+		wsApiMock.EXPECT().WorkspacesGetWorkspaceStatusExecute(mock.Anything).Once().Return(&api.WorkspaceStatus{
+			IsRunning: running,
+		}, nil, nil)
+	}
+	mock.InOrder(wsApiMock.ExpectedCalls...)
+}
+
+func mockCreateWorkspace(wsApiMock *openapi_client.MockWorkspacesAPI, ws api.Workspace) {
+	wsApiMock.EXPECT().WorkspacesCreateWorkspace(mock.Anything).
+		Return(openapi_client.ApiWorkspacesCreateWorkspaceRequest{ApiService: wsApiMock})
+	wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(&ws, nil, nil)
 }
 
 func TestListWorkspaces(t *testing.T) {
@@ -45,16 +63,8 @@ func TestWaitForWorkspaceRunningSuccess(t *testing.T) {
 		Id: 0, Name: "fakeWorkspace",
 	}
 
-	wsApiMock.EXPECT().WorkspacesGetWorkspaceStatus(mock.Anything, float32(0)).
-		Return(openapi_client.ApiWorkspacesGetWorkspaceStatusRequest{ApiService: wsApiMock})
-	wsApiMock.EXPECT().WorkspacesGetWorkspaceStatusExecute(mock.Anything).Return(&api.WorkspaceStatus{
-		IsRunning: true,
-	}, nil, nil)
-
-	err := client.WaitForWorkspaceRunning(
-		&ws,
-		api.WaitForWorkspaceRunningOptions{Timeout: 1 * time.Millisecond, Delay: 1 * time.Millisecond},
-	)
+	mockWorkspaceStatus(wsApiMock, ws.Id, true)
+	err := client.WaitForWorkspaceRunning(&ws, 1*time.Millisecond)
 
 	assert.Nil(t, err, "should be nil")
 }
@@ -66,16 +76,8 @@ func TestWaitForWorkspaceRunningTimeout(t *testing.T) {
 		Id: 0, Name: "fakeWorkspace",
 	}
 
-	wsApiMock.EXPECT().WorkspacesGetWorkspaceStatus(mock.Anything, float32(0)).
-		Return(openapi_client.ApiWorkspacesGetWorkspaceStatusRequest{ApiService: wsApiMock})
-	wsApiMock.EXPECT().WorkspacesGetWorkspaceStatusExecute(mock.Anything).Return(&api.WorkspaceStatus{
-		IsRunning: false,
-	}, nil, nil)
-
-	err := client.WaitForWorkspaceRunning(
-		&ws,
-		api.WaitForWorkspaceRunningOptions{Timeout: 1 * time.Millisecond, Delay: 1 * time.Millisecond},
-	)
+	mockWorkspaceStatus(wsApiMock, ws.Id, false, false)
+	err := client.WaitForWorkspaceRunning(&ws, 1*time.Second)
 
 	assert.IsType(t, err, &errors.TimedOutError{}, "expected timeout error")
 }
@@ -87,19 +89,8 @@ func TestWaitForWorkspaceRunningOnRetry(t *testing.T) {
 		Id: 42, Name: "fakeWorkspace",
 	}
 
-	wsApiMock.EXPECT().WorkspacesGetWorkspaceStatus(mock.Anything, float32(42)).
-		Return(openapi_client.ApiWorkspacesGetWorkspaceStatusRequest{ApiService: wsApiMock})
-	wsApiMock.EXPECT().WorkspacesGetWorkspaceStatusExecute(mock.Anything).Return(&api.WorkspaceStatus{
-		IsRunning: false,
-	}, nil, nil).Once()
-	wsApiMock.EXPECT().WorkspacesGetWorkspaceStatusExecute(mock.Anything).Return(&api.WorkspaceStatus{
-		IsRunning: true,
-	}, nil, nil).Once()
-
-	err := client.WaitForWorkspaceRunning(
-		&ws,
-		api.WaitForWorkspaceRunningOptions{Timeout: 10 * time.Millisecond, Delay: 1 * time.Millisecond},
-	)
+	mockWorkspaceStatus(wsApiMock, ws.Id, false, true)
+	err := client.WaitForWorkspaceRunning(&ws, 1*time.Millisecond)
 
 	assert.Nil(t, err, "should be nil")
 }
@@ -114,18 +105,14 @@ func TestDeployWorkspace(t *testing.T) {
 	wsApiMock.EXPECT().WorkspacesCreateWorkspace(mock.Anything).
 		Return(openapi_client.ApiWorkspacesCreateWorkspaceRequest{ApiService: wsApiMock})
 	wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(&ws, nil, nil)
+	mockWorkspaceStatus(wsApiMock, ws.Id, true)
 
-	wsApiMock.EXPECT().WorkspacesGetWorkspaceStatus(mock.Anything, float32(42)).
-		Return(openapi_client.ApiWorkspacesGetWorkspaceStatusRequest{ApiService: wsApiMock})
-	wsApiMock.EXPECT().WorkspacesGetWorkspaceStatusExecute(mock.Anything).Return(&api.WorkspaceStatus{
-		IsRunning: true,
-	}, nil, nil)
-
-	err := client.DeployWorkspace(
+	newWs, err := client.DeployWorkspace(
 		api.DeployWorkspaceArgs{Timeout: 1 * time.Millisecond},
 	)
 
 	assert.Nil(t, err, "should be nil")
+	assert.Equal(t, newWs.Name, ws.Name, "Should have the same name")
 }
 
 func TestDeployWorkspaceWithEnvVars(t *testing.T) {
@@ -142,21 +129,13 @@ func TestDeployWorkspaceWithEnvVars(t *testing.T) {
 		},
 	}
 
-	wsApiMock.EXPECT().WorkspacesCreateWorkspace(mock.Anything).
-		Return(openapi_client.ApiWorkspacesCreateWorkspaceRequest{ApiService: wsApiMock})
-	wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(&ws, nil, nil)
-
-	wsApiMock.EXPECT().WorkspacesGetWorkspaceStatus(mock.Anything, float32(42)).
-		Return(openapi_client.ApiWorkspacesGetWorkspaceStatusRequest{ApiService: wsApiMock})
-	wsApiMock.EXPECT().WorkspacesGetWorkspaceStatusExecute(mock.Anything).Return(&api.WorkspaceStatus{
-		IsRunning: true,
-	}, nil, nil)
-
+	mockCreateWorkspace(wsApiMock, ws)
+	mockWorkspaceStatus(wsApiMock, ws.Id, true)
 	wsApiMock.EXPECT().WorkspacesSetEnvVar(mock.Anything, float32(42)).
 		Return(openapi_client.ApiWorkspacesSetEnvVarRequest{ApiService: wsApiMock})
 	wsApiMock.EXPECT().WorkspacesSetEnvVarExecute(mock.Anything).Return(nil, nil).Once()
-
-	err := client.DeployWorkspace(args)
+	newWs, err := client.DeployWorkspace(args)
 
 	assert.Nil(t, err, "should be nil")
+	assert.Equal(t, newWs.Name, ws.Name, "Should have the same name")
 }
