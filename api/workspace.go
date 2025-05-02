@@ -9,11 +9,6 @@ import (
 	"time"
 )
 
-type WaitForWorkspaceRunningOptions struct {
-	Timeout time.Duration
-	Delay   time.Duration
-}
-
 func (c *Client) ListWorkspaces(teamId int) ([]Workspace, error) {
 	workspaces, _, err := c.api.WorkspacesAPI.WorkspacesListWorkspaces(c.ctx, float32(teamId)).Execute()
 	return workspaces, err

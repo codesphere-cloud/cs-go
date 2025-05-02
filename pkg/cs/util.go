@@ -11,9 +11,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-
-	"github.com/codesphere-cloud/cs-go/api"
-	cserrors "github.com/codesphere-cloud/cs-go/api/errors"
 )
 
 type Step struct {
@@ -96,50 +93,4 @@ func GetRoleName(role int) string {
 		return "Member"
 	}
 	return "Admin"
-}
-
-// Fetches the team for a given team name.
-// If the name is ambigous an error is thrown.
-//
-// Returns [NotFound] if no plan with the given Id could be found
-// Returns [Duplicated] if no plan with the given Id could be found
-func TeamIdByName(client *api.Client, name string) (api.Team, error) {
-	teams, err := client.ListTeams()
-	if err != nil {
-		return api.Team{}, err
-	}
-
-	matchingTeams := []api.Team{}
-	for _, t := range teams {
-		if t.Name == name {
-			matchingTeams = append(matchingTeams, t)
-		}
-	}
-
-	if len(matchingTeams) == 0 {
-		return api.Team{}, cserrors.NotFound(fmt.Sprintf("no team with name %s found", name))
-	}
-
-	if len(matchingTeams) > 1 {
-		return api.Team{}, cserrors.Duplicated(fmt.Sprintf("multiple teams (%v) with the name %s found.", matchingTeams, name))
-	}
-
-	return matchingTeams[0], nil
-}
-
-// Fetches the workspace plan for a given name.
-//
-// Returns [NotFound] if no plan with the given Id could be found
-func PlanByName(client *api.Client, name string) (api.WorkspacePlan, error) {
-	plans, err := client.ListWorkspacePlans()
-	if err != nil {
-		return api.WorkspacePlan{}, err
-	}
-
-	for _, p := range plans {
-		if p.Title == name {
-			return p, nil
-		}
-	}
-	return api.WorkspacePlan{}, cserrors.NotFound(fmt.Sprintf("no team with name %s found", name))
 }
