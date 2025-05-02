@@ -2,7 +2,7 @@
 // github.com/vektra/mockery
 // template: testify
 
-package cmd_test
+package cmd
 
 import (
 	"github.com/codesphere-cloud/cs-go/api"

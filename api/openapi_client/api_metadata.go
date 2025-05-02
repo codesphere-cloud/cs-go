@@ -19,12 +19,39 @@ import (
 	"net/url"
 )
 
+type MetadataAPI interface {
+
+	/*
+		MetadataGetDatacenters getDatacenters
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiMetadataGetDatacentersRequest
+	*/
+	MetadataGetDatacenters(ctx context.Context) ApiMetadataGetDatacentersRequest
+
+	// MetadataGetDatacentersExecute executes the request
+	//  @return []MetadataGetDatacenters200ResponseInner
+	MetadataGetDatacentersExecute(r ApiMetadataGetDatacentersRequest) ([]MetadataGetDatacenters200ResponseInner, *http.Response, error)
+
+	/*
+		MetadataGetWorkspacePlans getWorkspacePlans
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiMetadataGetWorkspacePlansRequest
+	*/
+	MetadataGetWorkspacePlans(ctx context.Context) ApiMetadataGetWorkspacePlansRequest
+
+	// MetadataGetWorkspacePlansExecute executes the request
+	//  @return []MetadataGetWorkspacePlans200ResponseInner
+	MetadataGetWorkspacePlansExecute(r ApiMetadataGetWorkspacePlansRequest) ([]MetadataGetWorkspacePlans200ResponseInner, *http.Response, error)
+}
+
 // MetadataAPIService MetadataAPI service
 type MetadataAPIService service
 
 type ApiMetadataGetDatacentersRequest struct {
 	ctx        context.Context
-	ApiService *MetadataAPIService
+	ApiService MetadataAPI
 }
 
 func (r ApiMetadataGetDatacentersRequest) Execute() ([]MetadataGetDatacenters200ResponseInner, *http.Response, error) {
@@ -132,7 +159,7 @@ func (a *MetadataAPIService) MetadataGetDatacentersExecute(r ApiMetadataGetDatac
 
 type ApiMetadataGetWorkspacePlansRequest struct {
 	ctx        context.Context
-	ApiService *MetadataAPIService
+	ApiService MetadataAPI
 }
 
 func (r ApiMetadataGetWorkspacePlansRequest) Execute() ([]MetadataGetWorkspacePlans200ResponseInner, *http.Response, error) {

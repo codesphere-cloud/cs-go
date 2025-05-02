@@ -23,6 +23,7 @@ type DomainsGetDomain200ResponseCustomConfig struct {
 	MaxBodySizeMb         *float32 `json:"maxBodySizeMb,omitempty"`
 	MaxConnectionTimeoutS *float32 `json:"maxConnectionTimeoutS,omitempty"`
 	UseRegex              *bool    `json:"useRegex,omitempty"`
+	Restricted            *bool    `json:"restricted,omitempty"`
 }
 
 // NewDomainsGetDomain200ResponseCustomConfig instantiates a new DomainsGetDomain200ResponseCustomConfig object
@@ -138,6 +139,38 @@ func (o *DomainsGetDomain200ResponseCustomConfig) SetUseRegex(v bool) {
 	o.UseRegex = &v
 }
 
+// GetRestricted returns the Restricted field value if set, zero value otherwise.
+func (o *DomainsGetDomain200ResponseCustomConfig) GetRestricted() bool {
+	if o == nil || IsNil(o.Restricted) {
+		var ret bool
+		return ret
+	}
+	return *o.Restricted
+}
+
+// GetRestrictedOk returns a tuple with the Restricted field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DomainsGetDomain200ResponseCustomConfig) GetRestrictedOk() (*bool, bool) {
+	if o == nil || IsNil(o.Restricted) {
+		return nil, false
+	}
+	return o.Restricted, true
+}
+
+// HasRestricted returns a boolean if a field has been set.
+func (o *DomainsGetDomain200ResponseCustomConfig) HasRestricted() bool {
+	if o != nil && !IsNil(o.Restricted) {
+		return true
+	}
+
+	return false
+}
+
+// SetRestricted gets a reference to the given bool and assigns it to the Restricted field.
+func (o *DomainsGetDomain200ResponseCustomConfig) SetRestricted(v bool) {
+	o.Restricted = &v
+}
+
 func (o DomainsGetDomain200ResponseCustomConfig) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -156,6 +189,9 @@ func (o DomainsGetDomain200ResponseCustomConfig) ToMap() (map[string]interface{}
 	}
 	if !IsNil(o.UseRegex) {
 		toSerialize["useRegex"] = o.UseRegex
+	}
+	if !IsNil(o.Restricted) {
+		toSerialize["restricted"] = o.Restricted
 	}
 	return toSerialize, nil
 }

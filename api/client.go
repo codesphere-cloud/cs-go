@@ -34,51 +34,25 @@ func (c Configuration) GetApiUrl() *url.URL {
 	return defaultUrl
 }
 
+// For use in tests
+func NewClientWithCustomApi(ctx context.Context, opts Configuration, api *openapi_client.APIClient) *Client {
+	return &Client{
+		ctx: context.WithValue(ctx, openapi_client.ContextAccessToken, opts.Token),
+		api: api,
+	}
+}
+
 func NewClient(ctx context.Context, opts Configuration) *Client {
 	cfg := openapi_client.NewConfiguration()
 	cfg.Servers = []openapi_client.ServerConfiguration{{
 		URL: opts.BaseUrl.String(),
 	}}
-
-	return &Client{
-		ctx: context.WithValue(ctx, openapi_client.ContextAccessToken, opts.Token),
-		api: openapi_client.NewAPIClient(cfg),
-	}
+	return NewClientWithCustomApi(ctx, opts, openapi_client.NewAPIClient(cfg))
 }
 
 func (c *Client) ListDataCenters() ([]DataCenter, error) {
 	datacenters, _, err := c.api.MetadataAPI.MetadataGetDatacenters(c.ctx).Execute()
 	return datacenters, err
-}
-
-func (c *Client) ListWorkspacePlans() ([]WorkspacePlan, error) {
-	plans, _, err := c.api.MetadataAPI.MetadataGetWorkspacePlans(c.ctx).Execute()
-	return plans, err
-}
-
-func (c *Client) ListTeams() ([]Team, error) {
-	teams, _, err := c.api.TeamsAPI.TeamsListTeams(c.ctx).Execute()
-	return teams, err
-}
-
-func (c *Client) GetTeam(teamId int) (*Team, error) {
-	team, _, err := c.api.TeamsAPI.TeamsGetTeam(c.ctx, float32(teamId)).Execute()
-	return ConvertToTeam(team), err
-}
-
-func (c *Client) CreateTeam(name string, dc int) (*Team, error) {
-	team, _, err := c.api.TeamsAPI.TeamsCreateTeam(c.ctx).
-		TeamsCreateTeamRequest(openapi_client.TeamsCreateTeamRequest{
-			Name: name,
-			Dc:   dc,
-		}).
-		Execute()
-	return ConvertToTeam(team), err
-}
-
-func (c *Client) DeleteTeam(teamId int) error {
-	_, err := c.api.TeamsAPI.TeamsDeleteTeam(c.ctx, float32(teamId)).Execute()
-	return err
 }
 
 func (c *Client) ListDomains(teamId int) ([]Domain, error) {
@@ -134,9 +108,4 @@ func (c *Client) UpdateWorkspaceConnections(
 		DomainsUpdateWorkspaceConnections(c.ctx, float32(teamId), domainName).
 		RequestBody(req).Execute()
 	return domain, err
-}
-
-func (c *Client) ListWorkspaces(teamId int) ([]Workspace, error) {
-	workspaces, _, err := c.api.WorkspacesAPI.WorkspacesListWorkspaces(c.ctx, float32(teamId)).Execute()
-	return workspaces, err
 }

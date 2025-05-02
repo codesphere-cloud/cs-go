@@ -20,12 +20,111 @@ import (
 	"strings"
 )
 
+type DomainsAPI interface {
+
+	/*
+		DomainsCreateDomain createDomain
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param teamId
+		@param domainName
+		@return ApiDomainsCreateDomainRequest
+	*/
+	DomainsCreateDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsCreateDomainRequest
+
+	// DomainsCreateDomainExecute executes the request
+	//  @return DomainsGetDomain200Response
+	DomainsCreateDomainExecute(r ApiDomainsCreateDomainRequest) (*DomainsGetDomain200Response, *http.Response, error)
+
+	/*
+		DomainsDeleteDomain deleteDomain
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param teamId
+		@param domainName
+		@return ApiDomainsDeleteDomainRequest
+	*/
+	DomainsDeleteDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsDeleteDomainRequest
+
+	// DomainsDeleteDomainExecute executes the request
+	DomainsDeleteDomainExecute(r ApiDomainsDeleteDomainRequest) (*http.Response, error)
+
+	/*
+		DomainsGetDomain getDomain
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param teamId
+		@param domainName
+		@return ApiDomainsGetDomainRequest
+	*/
+	DomainsGetDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsGetDomainRequest
+
+	// DomainsGetDomainExecute executes the request
+	//  @return DomainsGetDomain200Response
+	DomainsGetDomainExecute(r ApiDomainsGetDomainRequest) (*DomainsGetDomain200Response, *http.Response, error)
+
+	/*
+		DomainsListDomains listDomains
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param teamId
+		@return ApiDomainsListDomainsRequest
+	*/
+	DomainsListDomains(ctx context.Context, teamId float32) ApiDomainsListDomainsRequest
+
+	// DomainsListDomainsExecute executes the request
+	//  @return []DomainsGetDomain200Response
+	DomainsListDomainsExecute(r ApiDomainsListDomainsRequest) ([]DomainsGetDomain200Response, *http.Response, error)
+
+	/*
+		DomainsUpdateDomain updateDomain
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param teamId
+		@param domainName
+		@return ApiDomainsUpdateDomainRequest
+	*/
+	DomainsUpdateDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsUpdateDomainRequest
+
+	// DomainsUpdateDomainExecute executes the request
+	//  @return DomainsGetDomain200Response
+	DomainsUpdateDomainExecute(r ApiDomainsUpdateDomainRequest) (*DomainsGetDomain200Response, *http.Response, error)
+
+	/*
+		DomainsUpdateWorkspaceConnections updateWorkspaceConnections
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param teamId
+		@param domainName
+		@return ApiDomainsUpdateWorkspaceConnectionsRequest
+	*/
+	DomainsUpdateWorkspaceConnections(ctx context.Context, teamId float32, domainName string) ApiDomainsUpdateWorkspaceConnectionsRequest
+
+	// DomainsUpdateWorkspaceConnectionsExecute executes the request
+	//  @return DomainsGetDomain200Response
+	DomainsUpdateWorkspaceConnectionsExecute(r ApiDomainsUpdateWorkspaceConnectionsRequest) (*DomainsGetDomain200Response, *http.Response, error)
+
+	/*
+		DomainsVerifyDomain verifyDomain
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param teamId
+		@param domainName
+		@return ApiDomainsVerifyDomainRequest
+	*/
+	DomainsVerifyDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsVerifyDomainRequest
+
+	// DomainsVerifyDomainExecute executes the request
+	//  @return DomainsGetDomain200ResponseDomainVerificationStatus
+	DomainsVerifyDomainExecute(r ApiDomainsVerifyDomainRequest) (*DomainsGetDomain200ResponseDomainVerificationStatus, *http.Response, error)
+}
+
 // DomainsAPIService DomainsAPI service
 type DomainsAPIService service
 
 type ApiDomainsCreateDomainRequest struct {
 	ctx        context.Context
-	ApiService *DomainsAPIService
+	ApiService DomainsAPI
 	teamId     float32
 	domainName string
 }
@@ -152,7 +251,7 @@ func (a *DomainsAPIService) DomainsCreateDomainExecute(r ApiDomainsCreateDomainR
 
 type ApiDomainsDeleteDomainRequest struct {
 	ctx        context.Context
-	ApiService *DomainsAPIService
+	ApiService DomainsAPI
 	teamId     float32
 	domainName string
 }
@@ -278,7 +377,7 @@ func (a *DomainsAPIService) DomainsDeleteDomainExecute(r ApiDomainsDeleteDomainR
 
 type ApiDomainsGetDomainRequest struct {
 	ctx        context.Context
-	ApiService *DomainsAPIService
+	ApiService DomainsAPI
 	teamId     float32
 	domainName string
 }
@@ -416,7 +515,7 @@ func (a *DomainsAPIService) DomainsGetDomainExecute(r ApiDomainsGetDomainRequest
 
 type ApiDomainsListDomainsRequest struct {
 	ctx        context.Context
-	ApiService *DomainsAPIService
+	ApiService DomainsAPI
 	teamId     float32
 }
 
@@ -539,7 +638,7 @@ func (a *DomainsAPIService) DomainsListDomainsExecute(r ApiDomainsListDomainsReq
 
 type ApiDomainsUpdateDomainRequest struct {
 	ctx                                     context.Context
-	ApiService                              *DomainsAPIService
+	ApiService                              DomainsAPI
 	teamId                                  float32
 	domainName                              string
 	domainsGetDomain200ResponseCustomConfig *DomainsGetDomain200ResponseCustomConfig
@@ -696,7 +795,7 @@ func (a *DomainsAPIService) DomainsUpdateDomainExecute(r ApiDomainsUpdateDomainR
 
 type ApiDomainsUpdateWorkspaceConnectionsRequest struct {
 	ctx         context.Context
-	ApiService  *DomainsAPIService
+	ApiService  DomainsAPI
 	teamId      float32
 	domainName  string
 	requestBody *map[string][]int
@@ -842,7 +941,7 @@ func (a *DomainsAPIService) DomainsUpdateWorkspaceConnectionsExecute(r ApiDomain
 
 type ApiDomainsVerifyDomainRequest struct {
 	ctx        context.Context
-	ApiService *DomainsAPIService
+	ApiService DomainsAPI
 	teamId     float32
 	domainName string
 }

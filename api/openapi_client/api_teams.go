@@ -20,12 +20,64 @@ import (
 	"strings"
 )
 
+type TeamsAPI interface {
+
+	/*
+		TeamsCreateTeam createTeam
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiTeamsCreateTeamRequest
+	*/
+	TeamsCreateTeam(ctx context.Context) ApiTeamsCreateTeamRequest
+
+	// TeamsCreateTeamExecute executes the request
+	//  @return TeamsGetTeam200Response
+	TeamsCreateTeamExecute(r ApiTeamsCreateTeamRequest) (*TeamsGetTeam200Response, *http.Response, error)
+
+	/*
+		TeamsDeleteTeam deleteTeam
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param teamId
+		@return ApiTeamsDeleteTeamRequest
+	*/
+	TeamsDeleteTeam(ctx context.Context, teamId float32) ApiTeamsDeleteTeamRequest
+
+	// TeamsDeleteTeamExecute executes the request
+	TeamsDeleteTeamExecute(r ApiTeamsDeleteTeamRequest) (*http.Response, error)
+
+	/*
+		TeamsGetTeam getTeam
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param teamId
+		@return ApiTeamsGetTeamRequest
+	*/
+	TeamsGetTeam(ctx context.Context, teamId float32) ApiTeamsGetTeamRequest
+
+	// TeamsGetTeamExecute executes the request
+	//  @return TeamsGetTeam200Response
+	TeamsGetTeamExecute(r ApiTeamsGetTeamRequest) (*TeamsGetTeam200Response, *http.Response, error)
+
+	/*
+		TeamsListTeams listTeams
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiTeamsListTeamsRequest
+	*/
+	TeamsListTeams(ctx context.Context) ApiTeamsListTeamsRequest
+
+	// TeamsListTeamsExecute executes the request
+	//  @return []TeamsListTeams200ResponseInner
+	TeamsListTeamsExecute(r ApiTeamsListTeamsRequest) ([]TeamsListTeams200ResponseInner, *http.Response, error)
+}
+
 // TeamsAPIService TeamsAPI service
 type TeamsAPIService service
 
 type ApiTeamsCreateTeamRequest struct {
 	ctx                    context.Context
-	ApiService             *TeamsAPIService
+	ApiService             TeamsAPI
 	teamsCreateTeamRequest *TeamsCreateTeamRequest
 }
 
@@ -152,7 +204,7 @@ func (a *TeamsAPIService) TeamsCreateTeamExecute(r ApiTeamsCreateTeamRequest) (*
 
 type ApiTeamsDeleteTeamRequest struct {
 	ctx        context.Context
-	ApiService *TeamsAPIService
+	ApiService TeamsAPI
 	teamId     float32
 }
 
@@ -274,7 +326,7 @@ func (a *TeamsAPIService) TeamsDeleteTeamExecute(r ApiTeamsDeleteTeamRequest) (*
 
 type ApiTeamsGetTeamRequest struct {
 	ctx        context.Context
-	ApiService *TeamsAPIService
+	ApiService TeamsAPI
 	teamId     float32
 }
 
@@ -408,7 +460,7 @@ func (a *TeamsAPIService) TeamsGetTeamExecute(r ApiTeamsGetTeamRequest) (*TeamsG
 
 type ApiTeamsListTeamsRequest struct {
 	ctx        context.Context
-	ApiService *TeamsAPIService
+	ApiService TeamsAPI
 }
 
 func (r ApiTeamsListTeamsRequest) Execute() ([]TeamsListTeams200ResponseInner, *http.Response, error) {

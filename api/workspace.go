@@ -1,0 +1,108 @@
+package api
+
+import (
+	"fmt"
+
+	"github.com/codesphere-cloud/cs-go/api/errors"
+	"github.com/codesphere-cloud/cs-go/api/openapi_client"
+
+	"time"
+)
+
+func (c *Client) ListWorkspaces(teamId int) ([]Workspace, error) {
+	workspaces, _, err := c.api.WorkspacesAPI.WorkspacesListWorkspaces(c.ctx, float32(teamId)).Execute()
+	return workspaces, err
+}
+
+func (c *Client) WorkspaceStatus(workspaceId int) (*WorkspaceStatus, error) {
+	status, _, err := c.api.WorkspacesAPI.WorkspacesGetWorkspaceStatus(c.ctx, float32(workspaceId)).Execute()
+	return status, err
+}
+
+func (c *Client) CreateWorkspace(args CreateWorkspaceArgs) (*Workspace, error) {
+	workspace, _, err := c.api.WorkspacesAPI.WorkspacesCreateWorkspace(c.ctx).WorkspacesCreateWorkspaceRequest(args).Execute()
+	return workspace, err
+}
+
+func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string) error {
+	vars := []openapi_client.WorkspacesListEnvVars200ResponseInner{}
+	for k, v := range envVars {
+		vars = append(vars, openapi_client.WorkspacesListEnvVars200ResponseInner{
+			Name:  k,
+			Value: v,
+		})
+	}
+
+	req := c.api.WorkspacesAPI.WorkspacesSetEnvVar(c.ctx, float32(workspaceId)).WorkspacesListEnvVars200ResponseInner(vars)
+	_, err := c.api.WorkspacesAPI.WorkspacesSetEnvVarExecute(req)
+	return err
+}
+
+// Waits for a given workspace to be running.
+//
+// Returns [TimedOut] error if the workspace does not become running in time.
+func (client *Client) WaitForWorkspaceRunning(workspace *Workspace, timeout time.Duration) error {
+	delay := 5 * time.Second
+
+	maxWaitTime := time.Now().Add(timeout)
+	for {
+		status, err := client.WorkspaceStatus(workspace.Id)
+
+		if err != nil {
+			// TODO: log error and retry until timeout is reached.
+			return err
+		}
+		if status.IsRunning {
+			return nil
+		}
+		if time.Now().After(maxWaitTime) {
+			break
+		}
+		time.Sleep(delay)
+	}
+
+	return errors.TimedOut(
+		fmt.Sprintf("waiting for workspace %s(%d) to be ready", workspace.Name, workspace.Id),
+		timeout)
+}
+
+type DeployWorkspaceArgs struct {
+	TeamId        int
+	PlanId        int
+	Name          string
+	EnvVars       map[string]string
+	VpnConfigName string
+
+	Timeout time.Duration
+}
+
+// Deploys a workspace with the given configuration.
+//
+// Returns [TimedOut] error if the timeout is reached
+func (client Client) DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, error) {
+	workspace, err := client.CreateWorkspace(CreateWorkspaceArgs{
+		TeamId:            args.TeamId,
+		Name:              args.Name,
+		PlanId:            args.PlanId,
+		IsPrivateRepo:     true,
+		GitUrl:            nil,
+		InitialBranch:     nil,
+		SourceWorkspaceId: nil,
+		WelcomeMessage:    nil,
+		Replicas:          1,
+		VpnConfig:         &args.VpnConfigName,
+	})
+	if err != nil {
+		return nil, err
+	}
+	if err := client.WaitForWorkspaceRunning(workspace, args.Timeout); err != nil {
+		return workspace, err
+	}
+
+	if len(args.EnvVars) != 0 {
+		if err := client.SetEnvVarOnWorkspace(workspace.Id, args.EnvVars); err != nil {
+			return workspace, err
+		}
+	}
+	return workspace, nil
+}

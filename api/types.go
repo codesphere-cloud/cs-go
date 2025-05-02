@@ -13,7 +13,10 @@ type Domain = openapi.DomainsGetDomain200Response
 type DomainVerificationStatus = openapi.DomainsGetDomain200ResponseDomainVerificationStatus
 type UpdateDomainArgs = openapi.DomainsGetDomain200ResponseCustomConfig
 type PathToWorkspaces = map[string][]*Workspace
+
 type Workspace = openapi.WorkspacesGetWorkspace200Response
+type WorkspaceStatus = openapi.WorkspacesGetWorkspaceStatus200Response
+type CreateWorkspaceArgs = openapi.WorkspacesCreateWorkspaceRequest
 type WorkspacePlan = openapi.MetadataGetWorkspacePlans200ResponseInner
 
 // TODO: remove the conversion once the api is fixed
