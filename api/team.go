@@ -12,7 +12,7 @@ import (
 //
 // Returns [NotFound] if no plan with the given Id could be found
 // Returns [Duplicated] if no plan with the given Id could be found
-func TeamIdByName(client Client, name string) (Team, error) {
+func (client *Client) TeamIdByName(name string) (Team, error) {
 	teams, err := client.ListTeams()
 	if err != nil {
 		return Team{}, err

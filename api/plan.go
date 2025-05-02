@@ -9,7 +9,7 @@ import (
 // Fetches the workspace plan for a given name.
 //
 // Returns [NotFound] if no plan with the given Id could be found
-func PlanByName(client Client, name string) (WorkspacePlan, error) {
+func (client *Client) PlanByName(name string) (WorkspacePlan, error) {
 	plans, err := client.ListWorkspacePlans()
 	if err != nil {
 		return WorkspacePlan{}, err
