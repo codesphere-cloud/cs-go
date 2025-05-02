@@ -21,3 +21,7 @@ packages:
     config:
       all: true
     interfaces:
+  github.com/codesphere-cloud/cs-go/api:
+    config:
+      all: true
+    interfaces:

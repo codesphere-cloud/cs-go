@@ -5,6 +5,7 @@ package api
 
 import (
 	openapi "github.com/codesphere-cloud/cs-go/api/openapi_client"
+	"time"
 )
 
 type DataCenter = openapi.MetadataGetDatacenters200ResponseInner
@@ -32,4 +33,19 @@ func ConvertToTeam(t *openapi.TeamsGetTeam200Response) *Team {
 
 		Role: 0,
 	}
+}
+
+type Time interface {
+	Sleep(time.Duration)
+	Now() time.Time
+}
+
+type RealTime struct{}
+
+func (r *RealTime) Now() time.Time {
+	return time.Now()
+}
+
+func (r *RealTime) Sleep(time.Duration) {
+
 }
