@@ -3,7 +3,6 @@ module github.com/codesphere-cloud/cs-go
 go 1.24.2
 
 require (
-	github.com/agiledragon/gomonkey/v2 v2.13.0
 	github.com/jedib0t/go-pretty/v6 v6.6.7
 	github.com/onsi/ginkgo/v2 v2.23.4
 	github.com/onsi/gomega v1.37.0
@@ -25,7 +24,7 @@ require (
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
 	go.uber.org/automaxprocs v1.6.0 // indirect
-	golang.org/x/net v0.37.0 // indirect
+	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sys v0.32.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
 	golang.org/x/tools v0.31.0 // indirect
