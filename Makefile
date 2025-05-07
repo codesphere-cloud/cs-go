@@ -10,6 +10,7 @@ lint: install-build-deps
 	golangci-lint run
 
 test:
+	# -count=1 to disable caching test results
 	go test ./... -count=1
 
 generate:

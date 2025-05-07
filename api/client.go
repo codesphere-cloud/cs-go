@@ -11,8 +11,9 @@ import (
 )
 
 type Client struct {
-	ctx context.Context
-	api *openapi_client.APIClient
+	ctx  context.Context
+	api  *openapi_client.APIClient
+	time Time
 }
 
 type Configuration struct {
@@ -35,10 +36,11 @@ func (c Configuration) GetApiUrl() *url.URL {
 }
 
 // For use in tests
-func NewClientWithCustomApi(ctx context.Context, opts Configuration, api *openapi_client.APIClient) *Client {
+func NewClientWithCustomDeps(ctx context.Context, opts Configuration, api *openapi_client.APIClient, time Time) *Client {
 	return &Client{
-		ctx: context.WithValue(ctx, openapi_client.ContextAccessToken, opts.Token),
-		api: api,
+		ctx:  context.WithValue(ctx, openapi_client.ContextAccessToken, opts.Token),
+		api:  api,
+		time: time,
 	}
 }
 
@@ -47,7 +49,7 @@ func NewClient(ctx context.Context, opts Configuration) *Client {
 	cfg.Servers = []openapi_client.ServerConfiguration{{
 		URL: opts.BaseUrl.String(),
 	}}
-	return NewClientWithCustomApi(ctx, opts, openapi_client.NewAPIClient(cfg))
+	return NewClientWithCustomDeps(ctx, opts, openapi_client.NewAPIClient(cfg), &RealTime{})
 }
 
 func (c *Client) ListDataCenters() ([]DataCenter, error) {

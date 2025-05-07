@@ -2,24 +2,26 @@ package api_test
 
 import (
 	"context"
-	"testing"
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+	"github.com/stretchr/testify/mock"
 	"time"
 
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/api/errors"
 	"github.com/codesphere-cloud/cs-go/api/openapi_client"
-	tu "github.com/codesphere-cloud/cs-go/pkg/testutils"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
 
-func getTestingClient(t *testing.T) (*api.Client, *openapi_client.MockWorkspacesAPI) {
-	wsApiMock := openapi_client.NewMockWorkspacesAPI(t)
-	apis := openapi_client.APIClient{
-		WorkspacesAPI: wsApiMock,
-	}
-	tu.PatchTimeFuncs(t)
-	return api.NewClientWithCustomApi(context.TODO(), api.Configuration{}, &apis), wsApiMock
+func mockTime() *api.MockTime {
+	currentTime := time.Unix(1746190963, 0)
+	m := api.NewMockTime(GinkgoT())
+	m.EXPECT().Now().RunAndReturn(func() time.Time {
+		return currentTime
+	}).Maybe()
+	m.EXPECT().Sleep(mock.Anything).Run(func(delay time.Duration) {
+		currentTime = currentTime.Add(delay)
+	}).Maybe()
+	return m
 }
 
 func mockWorkspaceStatus(wsApiMock *openapi_client.MockWorkspacesAPI, workspaceId int, isRunning ...bool) {
@@ -33,109 +35,104 @@ func mockWorkspaceStatus(wsApiMock *openapi_client.MockWorkspacesAPI, workspaceI
 	mock.InOrder(wsApiMock.ExpectedCalls...)
 }
 
-func mockCreateWorkspace(wsApiMock *openapi_client.MockWorkspacesAPI, ws api.Workspace) {
-	wsApiMock.EXPECT().WorkspacesCreateWorkspace(mock.Anything).
-		Return(openapi_client.ApiWorkspacesCreateWorkspaceRequest{ApiService: wsApiMock})
-	wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(&ws, nil, nil)
-}
-
-func TestListWorkspaces(t *testing.T) {
-	client, wsApiMock := getTestingClient(t)
-
-	workspaces := []api.Workspace{
-		{Id: 0, Name: "fakeForTeam0"},
-		{Id: 1, Name: "fakeForTeam1"},
-	}
-	teamId := 42
-
-	wsApiMock.EXPECT().WorkspacesListWorkspaces(mock.Anything, float32(teamId)).
-		Return(openapi_client.ApiWorkspacesListWorkspacesRequest{ApiService: wsApiMock})
-	wsApiMock.EXPECT().WorkspacesListWorkspacesExecute(mock.Anything).Return(workspaces, nil, nil)
-	workspaces, err := client.ListWorkspaces(teamId)
-	assert.Nil(t, err, "should be nil")
-	assert.Equal(t, workspaces, workspaces)
-}
-
-func TestWaitForWorkspaceRunningSuccess(t *testing.T) {
-	client, wsApiMock := getTestingClient(t)
-
-	ws := api.Workspace{
-		Id: 0, Name: "fakeWorkspace",
-	}
-
-	mockWorkspaceStatus(wsApiMock, ws.Id, true)
-	err := client.WaitForWorkspaceRunning(&ws, 1*time.Millisecond)
-
-	assert.Nil(t, err, "should be nil")
-}
-
-func TestWaitForWorkspaceRunningTimeout(t *testing.T) {
-	client, wsApiMock := getTestingClient(t)
-
-	ws := api.Workspace{
-		Id: 0, Name: "fakeWorkspace",
-	}
-
-	mockWorkspaceStatus(wsApiMock, ws.Id, false, false)
-	err := client.WaitForWorkspaceRunning(&ws, 1*time.Second)
-
-	assert.IsType(t, err, &errors.TimedOutError{}, "expected timeout error")
-}
-
-func TestWaitForWorkspaceRunningOnRetry(t *testing.T) {
-	client, wsApiMock := getTestingClient(t)
-
-	ws := api.Workspace{
-		Id: 42, Name: "fakeWorkspace",
-	}
-
-	mockWorkspaceStatus(wsApiMock, ws.Id, false, true)
-	err := client.WaitForWorkspaceRunning(&ws, 1*time.Millisecond)
-
-	assert.Nil(t, err, "should be nil")
-}
-
-func TestDeployWorkspace(t *testing.T) {
-	client, wsApiMock := getTestingClient(t)
-
-	ws := api.Workspace{
-		Id: 42, Name: "fakeWorkspace",
-	}
-
-	wsApiMock.EXPECT().WorkspacesCreateWorkspace(mock.Anything).
-		Return(openapi_client.ApiWorkspacesCreateWorkspaceRequest{ApiService: wsApiMock})
-	wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(&ws, nil, nil)
-	mockWorkspaceStatus(wsApiMock, ws.Id, true)
-
-	newWs, err := client.DeployWorkspace(
-		api.DeployWorkspaceArgs{Timeout: 1 * time.Millisecond},
+var _ = Describe("Workspace", func() {
+	var (
+		ws        api.Workspace
+		wsApiMock *openapi_client.MockWorkspacesAPI
+		client    *api.Client
 	)
 
-	assert.Nil(t, err, "should be nil")
-	assert.Equal(t, newWs.Name, ws.Name, "Should have the same name")
-}
+	BeforeEach(func() {
+		wsApiMock = openapi_client.NewMockWorkspacesAPI(GinkgoT())
+		mockTime := mockTime()
+		apis := openapi_client.APIClient{
+			WorkspacesAPI: wsApiMock,
+		}
+		client = api.NewClientWithCustomDeps(context.TODO(), api.Configuration{}, &apis, mockTime)
+	})
 
-func TestDeployWorkspaceWithEnvVars(t *testing.T) {
-	client, wsApiMock := getTestingClient(t)
+	Context("ListWorkspace", func() {
+		It("lists workspaces", func() {
+			expectedWorkspaces := []api.Workspace{
+				{Id: 0, Name: "fakeForTeam0"},
+				{Id: 1, Name: "fakeForTeam1"},
+			}
+			teamId := 42
 
-	ws := api.Workspace{
-		Id: 42, Name: "fakeWorkspace",
-	}
-	args := api.DeployWorkspaceArgs{
-		Timeout: 1 * time.Millisecond,
-		EnvVars: map[string]string{
-			"foo":  "bar",
-			"some": "thing",
-		},
-	}
+			wsApiMock.EXPECT().WorkspacesListWorkspaces(mock.Anything, float32(teamId)).
+				Return(openapi_client.ApiWorkspacesListWorkspacesRequest{ApiService: wsApiMock})
+			wsApiMock.EXPECT().WorkspacesListWorkspacesExecute(mock.Anything).Return(expectedWorkspaces, nil, nil)
+			workspaces, err := client.ListWorkspaces(teamId)
 
-	mockCreateWorkspace(wsApiMock, ws)
-	mockWorkspaceStatus(wsApiMock, ws.Id, true)
-	wsApiMock.EXPECT().WorkspacesSetEnvVar(mock.Anything, float32(42)).
-		Return(openapi_client.ApiWorkspacesSetEnvVarRequest{ApiService: wsApiMock})
-	wsApiMock.EXPECT().WorkspacesSetEnvVarExecute(mock.Anything).Return(nil, nil).Once()
-	newWs, err := client.DeployWorkspace(args)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(workspaces).To(Equal(expectedWorkspaces))
+		})
+	})
 
-	assert.Nil(t, err, "should be nil")
-	assert.Equal(t, newWs.Name, ws.Name, "Should have the same name")
-}
+	Context("WaitForWorkspaceRunning", func() {
+
+		BeforeEach(func() {
+			ws = api.Workspace{
+				Id: 0, Name: "fakeWorkspace",
+			}
+		})
+
+		It("Success when already running", func() {
+			mockWorkspaceStatus(wsApiMock, ws.Id, true)
+
+			err := client.WaitForWorkspaceRunning(&ws, 1*time.Millisecond)
+			Expect(err).NotTo(HaveOccurred())
+		})
+
+		It("Returns an error on timeout", func() {
+			mockWorkspaceStatus(wsApiMock, ws.Id, false, false)
+			err := client.WaitForWorkspaceRunning(&ws, 1*time.Second)
+
+			Expect(err).To(BeAssignableToTypeOf(&errors.TimedOutError{}))
+		})
+
+		It("Success on retry", func() {
+			mockWorkspaceStatus(wsApiMock, ws.Id, false, true)
+			err := client.WaitForWorkspaceRunning(&ws, 1*time.Second)
+
+			Expect(err).NotTo(HaveOccurred())
+		})
+	})
+
+	Context("DeployWorkspace", func() {
+		BeforeEach(func() {
+			mockWorkspaceStatus(wsApiMock, ws.Id, true)
+			wsApiMock.EXPECT().WorkspacesCreateWorkspace(mock.Anything).
+				Return(openapi_client.ApiWorkspacesCreateWorkspaceRequest{ApiService: wsApiMock})
+			wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(&ws, nil, nil)
+		})
+
+		It("Returns workspace on success", func() {
+			newWs, err := client.DeployWorkspace(
+				api.DeployWorkspaceArgs{Timeout: 1 * time.Millisecond},
+			)
+
+			Expect(err).NotTo(HaveOccurred())
+			Expect(newWs.Name).To(Equal(ws.Name))
+		})
+
+		It("Calls SetEnvVar endpoint when env vars are set", func() {
+			wsApiMock.EXPECT().WorkspacesSetEnvVar(mock.Anything, float32(0)).
+				Return(openapi_client.ApiWorkspacesSetEnvVarRequest{ApiService: wsApiMock})
+			wsApiMock.EXPECT().WorkspacesSetEnvVarExecute(mock.Anything).Return(nil, nil).Once()
+
+			newWs, err := client.DeployWorkspace(
+				api.DeployWorkspaceArgs{
+					Timeout: 1 * time.Millisecond,
+					EnvVars: map[string]string{
+						"foo":  "bar",
+						"some": "thing",
+					},
+				},
+			)
+
+			Expect(err).NotTo(HaveOccurred())
+			Expect(newWs.Name).To(Equal(ws.Name))
+		})
+	})
+})

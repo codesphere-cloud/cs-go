@@ -44,7 +44,7 @@ func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string
 func (client *Client) WaitForWorkspaceRunning(workspace *Workspace, timeout time.Duration) error {
 	delay := 5 * time.Second
 
-	maxWaitTime := time.Now().Add(timeout)
+	maxWaitTime := client.time.Now().Add(timeout)
 	for {
 		status, err := client.WorkspaceStatus(workspace.Id)
 
@@ -55,10 +55,10 @@ func (client *Client) WaitForWorkspaceRunning(workspace *Workspace, timeout time
 		if status.IsRunning {
 			return nil
 		}
-		if time.Now().After(maxWaitTime) {
+		if client.time.Now().After(maxWaitTime) {
 			break
 		}
-		time.Sleep(delay)
+		client.time.Sleep(delay)
 	}
 
 	return errors.TimedOut(
