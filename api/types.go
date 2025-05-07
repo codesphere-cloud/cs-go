@@ -46,6 +46,6 @@ func (r *RealTime) Now() time.Time {
 	return time.Now()
 }
 
-func (r *RealTime) Sleep(time.Duration) {
-
+func (r *RealTime) Sleep(t time.Duration) {
+	time.Sleep(t)
 }
