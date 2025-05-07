@@ -2,7 +2,19 @@ Codesphere Go SDK & CLI
 Copyright (c) Codesphere Inc.
 
 This project includes code licensed under the following terms:
+ 
+----------
+Module: github.com/agiledragon/gomonkey/v2
+Version: v2.13.0
+License: MIT
+License URL: https://github.com/agiledragon/gomonkey/blob/v2.13.0/LICENSE
    
+----------
+Module: github.com/davecgh/go-spew/spew
+Version: v1.1.1
+License: ISC
+License URL: https://github.com/davecgh/go-spew/blob/v1.1.1/LICENSE
+ 
 ----------
 Module: github.com/jedib0t/go-pretty/v6
 Version: v6.6.7
@@ -14,6 +26,12 @@ Module: github.com/mattn/go-runewidth
 Version: v0.0.16
 License: MIT
 License URL: https://github.com/mattn/go-runewidth/blob/v0.0.16/LICENSE
+ 
+----------
+Module: github.com/pmezard/go-difflib/difflib
+Version: v1.0.0
+License: BSD-3-Clause
+License URL: https://github.com/pmezard/go-difflib/blob/v1.0.0/LICENSE
  
 ----------
 Module: github.com/rivo/uniseg
@@ -34,6 +52,18 @@ License: BSD-3-Clause
 License URL: https://github.com/spf13/pflag/blob/v1.0.6/LICENSE
  
 ----------
+Module: github.com/stretchr/objx
+Version: v0.5.2
+License: MIT
+License URL: https://github.com/stretchr/objx/blob/v0.5.2/LICENSE
+ 
+----------
+Module: github.com/stretchr/testify
+Version: v1.10.0
+License: MIT
+License URL: https://github.com/stretchr/testify/blob/v1.10.0/LICENSE
+ 
+----------
 Module: golang.org/x/text
 Version: v0.22.0
 License: BSD-3-Clause
@@ -44,5 +74,11 @@ Module: gopkg.in/validator.v2
 Version: v2.0.1
 License: Apache-2.0
 License URL: https://github.com/go-validator/validator/blob/v2.0.1/LICENSE
+ 
+----------
+Module: gopkg.in/yaml.v3
+Version: v3.0.1
+License: MIT
+License URL: https://github.com/go-yaml/yaml/blob/v3.0.1/LICENSE
 
 

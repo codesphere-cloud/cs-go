@@ -46,7 +46,8 @@ generate-client:
 
 generate-api: generate-client format
 
-generate-license: install-build-deps
+generate-license:
+	echo use make install-build-deps to install necessary binaries
 	go-licenses report --template .NOTICE.template  ./... > NOTICE
 	copywrite headers apply
 
