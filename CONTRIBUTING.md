@@ -25,7 +25,7 @@ If you'd like to contribute code, please follow these steps:
 2.  **Create a Branch:** Create a new branch for your changes: `git checkout -b feature/your-feature-name`
 3.  **Set Up Development Environment:**
 
-    * Ensure you have Go installed.  The minimum required Go version is specified in the `go.mod` file.
+    * Ensure you have Go installed. The minimum required Go version is specified in the `go.mod` file.
     * Clone your forked repository: `git clone git@github.com:your-username/cs-go.git`
     * Navigate to the project directory: `cd cs-go`
     * Run `make`: This command should download necessary dependencies and build the CLI.
@@ -51,6 +51,52 @@ If you'd like to contribute code, please follow these steps:
         * `fix(api): Handle edge case in API client`
         * `feat(cli): Add new command for listing resources`
         * `docs: Update contributing guide with commit message conventions`
+    * **Developer Certificate of Origin (DCO)**
+
+        In order to contribute to this project, you must agree to the [Developer Certificate of Origin (DCO)](https://developercertificate.org/). This is a simple statement that you, as a contributor, have the right to submit the code you are contributing.
+
+        ```text
+        Developer's Certificate of Origin 1.1
+
+        By making a contribution to this project, I certify that:
+
+        (a) The contribution was created in whole or in part by me and I
+            have the right to submit it under the open source license
+            indicated in the file; or
+
+        (b) The contribution is based upon previous work that, to the best
+            of my knowledge, is covered under an appropriate open source
+            license and I have the right under that license to submit that
+            work with modifications, whether created in whole or in part
+            by me, or solely by me; or
+
+        (c) The contribution was provided directly to me by some other
+            person who certified (a), (b) or (c) and I have not modified
+            it.
+
+        (d) I understand and agree that this project and the contribution
+            are public and that a record of the contribution (including all
+            personal information I submit with it) is maintained indefinitely
+            and may be redistributed consistent with this project or the
+            open source license(s) involved.
+        ```
+
+        To indicate that you accept the DCO, you must add a `Signed-off-by` line to each of your commit messages. Here's an example:
+
+        ```
+        Fix: Handle edge case in API client
+
+        This commit fixes a bug where the API client would crash when receiving
+        an empty response.
+
+        Signed-off-by: John Doe <john.doe@example.com>
+        ```
+
+        You can add this line to your commit message using the `-s` flag with the `git commit` command:
+
+        ```bash
+        git commit -s -m "Your commit message"
+        ```
 
 8.  **Submit a Pull Request:** [Open a new pull request](https://github.com/codesphere-cloud/cs-go/compare) to the `main` branch of this repository. Please include a clear description of your changes and reference any related issues.
 

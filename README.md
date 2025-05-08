@@ -38,4 +38,4 @@ CS_API - API url of codesphere, defaults to https://codesphere.com/api
 ## Community & Contributions
 
 Please review our [Code of Conduct](CODE_OF_CONDUCT.md) to understand our community expectations. 
-We welcome contributions! Check out our [Contributing Guidelines](CONTRIBUTING.md) to get started.
+We welcome contributions! All contributions to this project must be made in accordance with the Developer Certificate of Origin (DCO). See our full [Contributing Guidelines](CONTRIBUTING.md) for details.
