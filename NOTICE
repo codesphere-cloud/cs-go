@@ -2,12 +2,6 @@ Codesphere Go SDK & CLI
 Copyright (c) Codesphere Inc.
 
 This project includes code licensed under the following terms:
- 
-----------
-Module: github.com/agiledragon/gomonkey/v2
-Version: v2.13.0
-License: MIT
-License URL: https://github.com/agiledragon/gomonkey/blob/v2.13.0/LICENSE
    
 ----------
 Module: github.com/davecgh/go-spew/spew
@@ -65,9 +59,9 @@ License URL: https://github.com/stretchr/testify/blob/v1.10.0/LICENSE
  
 ----------
 Module: golang.org/x/text
-Version: v0.22.0
+Version: v0.23.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/text/+/v0.22.0:LICENSE
+License URL: https://cs.opensource.google/go/x/text/+/v0.23.0:LICENSE
  
 ----------
 Module: gopkg.in/validator.v2
