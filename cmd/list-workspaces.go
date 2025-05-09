@@ -14,13 +14,8 @@ import (
 )
 
 type ListWorkspacesCmd struct {
-	Opts ListWorkspacesOptions
+	Opts GlobalOptions
 	cmd  *cobra.Command
-}
-
-type ListWorkspacesOptions struct {
-	GlobalOptions
-	TeamId *int
 }
 
 func addListWorkspacesCmd(p *cobra.Command, opts GlobalOptions) {
@@ -35,19 +30,14 @@ List all workspaces:
 $ cs list workspaces --team-id <team-id>
 			`,
 		},
-		Opts: ListWorkspacesOptions{GlobalOptions: opts},
+		Opts: opts,
 	}
 	l.cmd.RunE = l.RunE
-	l.parseLogCmdFlags()
 	p.AddCommand(l.cmd)
 }
 
-func (l *ListWorkspacesCmd) parseLogCmdFlags() {
-	l.Opts.TeamId = l.cmd.Flags().IntP("team-id", "t", -1, "ID of team to query")
-}
-
 func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {
-	client, err := NewClient(l.Opts.GlobalOptions)
+	client, err := NewClient(l.Opts)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -90,6 +80,15 @@ func (l *ListWorkspacesCmd) ListWorkspaces(client Client) ([]api.Workspace, erro
 func (l *ListWorkspacesCmd) getTeamIds(client Client) (teams []int, err error) {
 	if l.Opts.TeamId != nil && *l.Opts.TeamId >= 0 {
 		teams = append(teams, *l.Opts.TeamId)
+		return
+	}
+	teamIdEnv, err := l.Opts.Env.GetTeamId()
+	if err != nil {
+		err = fmt.Errorf("failed to get team ID from env: %w", err)
+		return
+	}
+	if teamIdEnv >= 0 {
+		teams = append(teams, teamIdEnv)
 		return
 	}
 	var allTeams []api.Team
