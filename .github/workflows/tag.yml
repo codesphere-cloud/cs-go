@@ -6,10 +6,13 @@ on:
       - main
 
 jobs:
-  build:
+  tag:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+          fetch-depth: 0
 
       - name: Tag
         run: hack/tag.sh
