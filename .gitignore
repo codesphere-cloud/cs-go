@@ -29,3 +29,6 @@ cs
 
 # openapi generator
 openapitools.json
+
+# goreleaser builds
+dist
