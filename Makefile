@@ -13,7 +13,7 @@ test:
 	# -count=1 to disable caching test results
 	go test ./... -count=1
 
-generate:
+generate: install-build-deps
 	go generate ./...
 
 build:
@@ -24,9 +24,12 @@ install:
 	cd cmd/cs && go install
 
 generate-client:
+ifeq (, $(shell which openapi-generator-cli))
+	$(error "openapi-generator-cli not found, please install, e.g. using brew. See https://openapi-generator.tech/docs/installation")
+endif
 	rm -rf ${OPENAPI_DIR}
 	openapi-generator-cli generate -g go -o ${OPENAPI_DIR} -i https://codesphere.com/api/docs \
-	    --additional-properties=generateInterfaces=true,isGoSubmodule=true,withGoMod=false,packageName=openapi_client \
+	    --additional-properties=generateInterfaces=true,isGoSubmodule=true,withGoMod=false,packageName=openapi_client,disallowAdditionalPropertiesIfNotSet=false \
 	    --type-mappings=integer=int \
 	    --template-dir openapi-template \
 	    --skip-validate-spec # TODO: remove once the Codesphere openapi spec is fixed
@@ -46,13 +49,20 @@ generate-client:
 
 generate-api: generate-client format
 
-generate-license: install-build-deps
+generate-license:
 	go-licenses report --template .NOTICE.template  ./... > NOTICE
 	copywrite headers apply
 
 install-build-deps:
+ifeq (, $(shell which mockery))
 	go install github.com/vektra/mockery/v3@v3.2.1
+endif
+ifeq (, $(shell which go-licenses))
 	go install github.com/google/go-licenses@v1.6.0
+endif
+ifeq (, $(shell which copywrite))
 	go install github.com/hashicorp/copywrite@v0.22.0
+endif
+ifeq (, $(shell which golangci-lint))
 	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.1.2
-
+endif
