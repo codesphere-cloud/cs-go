@@ -14,5 +14,12 @@ jobs:
           fetch-tags: true
           fetch-depth: 0
 
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
       - name: Tag
-        run: hack/tag.sh
+        run: hack/tag-release.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
