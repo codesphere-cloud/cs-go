@@ -17,6 +17,23 @@ If you encounter a bug or have a feature request, please [open a new issue](http
 
 We'd love to hear your ideas! Please [open a new issue](https://github.com/codesphere-cloud/cs-go/issues/new) to discuss your proposed feature or improvement before submitting code. This allows us to align on the design and approach.
 
+## How to Add a New Subcommand to the CLI
+
+This project currently uses a fork of cobra-cli with locally-scoped variables: https://github.com/NautiluX/cobra-cli-local.
+
+Please use it to add new commands to the Go CLI like following:
+
+```
+cobra-cli add -L -d cli -p list teams
+```
+
+Run the generated `AddListTeamsCmd()` function in the parent `cli/cmd/list.go` to add the subcommand.
+This will add the following command to the CLI:
+
+```
+cs list teams
+```
+
 ## Contributing Code
 
 If you'd like to contribute code, please follow these steps:

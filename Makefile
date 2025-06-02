@@ -17,11 +17,11 @@ generate: install-build-deps
 	go generate ./...
 
 build:
-	cd cmd/cs && go build
-	mv cmd/cs/cs .
+	go build -C cli -o ../cs
 
-install:
-	cd cmd/cs && go install
+GOBIN ?= $(shell go env GOPATH)/bin
+install: build
+	mv cs ${GOBIN}/
 
 generate-client:
 ifeq (, $(shell which openapi-generator-cli))
