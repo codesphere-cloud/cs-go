@@ -1,0 +1,26 @@
+FROM {{.BaseImage}}
+
+RUN mkdir -p /home/user/app
+WORKDIR /home/user/app
+
+# Install bash
+RUN apk add --update bash && rm -rf /var/cache/apk/*
+
+# Install Nix in single-user mode (no daemon)
+RUN curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
+
+# Set up the Nix environment
+RUN echo ". /home/user/.nix-profile/etc/profile.d/nix.sh" >> /home/user/.bashrc
+
+COPY --chown=user:appusers . /home/user/app
+
+# Execute Prepare Stage
+{{range $val := .PrepareSteps}}
+{{if gt (len $val.Name) 0}}# {{$val.Name}}{{end}}
+RUN {{$val.Command}}{{end}}
+
+# Make entrypoint executable
+RUN chmod +x ./entrypoint.sh
+
+# Execute Run Stage
+ENTRYPOINT ["./entrypoint.sh"]

@@ -1,0 +1,4 @@
+#!/bin/bash
+{{range $val := .RunSteps}}{{if gt (len $val.Name) 0}}# {{$val.Name}}{{end}}
+{{$val.Command}}
+{{end}}
