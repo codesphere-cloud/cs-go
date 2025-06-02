@@ -9,6 +9,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/stretchr/testify v1.10.0
 	gopkg.in/validator.v2 v2.0.1
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
