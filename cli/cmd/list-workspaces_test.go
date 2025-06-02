@@ -5,7 +5,7 @@ package cmd_test
 
 import (
 	"github.com/codesphere-cloud/cs-go/api"
-	"github.com/codesphere-cloud/cs-go/cmd"
+	"github.com/codesphere-cloud/cs-go/cli/cmd"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
