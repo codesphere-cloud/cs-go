@@ -23,14 +23,14 @@ Not that some commands may require you to elevate to the root user with `sudo`.
 ##### ARM Mac
 
 ```
-gh release download -R codesphere-cloud/cs-go -o cs -D /usr/local/bin/cs -p *darwin_arm64
+gh release download -R codesphere-cloud/cs-go -O /usr/local/bin/cs -p "*darwin_arm64"
 chmod +x /usr/local/bin/cs
 ```
 
 ##### Linux Amd64
 
 ```
-gh release download -R codesphere-cloud/cs-go -o cs -D /usr/local/bin/cs -p *linux_amd4
+gh release download -R codesphere-cloud/cs-go -O /usr/local/bin/cs -p "*linux_amd64"
 chmod +x /usr/local/bin/cs
 ```
 
