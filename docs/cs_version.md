@@ -1,31 +1,24 @@
-## cs set-env
+## cs version
 
-set env vars
+A brief description of your command
 
 ### Synopsis
 
-set environment variables for your workspace
+A longer description that spans multiple lines and likely contains examples
+and usage of using your command. For example:
+
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.
 
 ```
-cs set-env [flags]
-```
-
-### Examples
-
-```
-# Set single environment variable
-$ cs set-env --workspace-id <workspace-id> --env foo=bar
-
-# Set multiple environment variables
-$ cs set-env --workspace-id <workspace-id> --env foo=bar --env hello=world
-
+cs version [flags]
 ```
 
 ### Options
 
 ```
-  -e, --env-var stringArray   env vars to set in form key=val
-  -h, --help                  help for set-env
+  -h, --help   help for version
 ```
 
 ### Options inherited from parent commands
