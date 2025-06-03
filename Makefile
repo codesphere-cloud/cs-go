@@ -49,6 +49,13 @@ endif
 
 generate-api: generate-client format
 
+.PHONY: docs
+docs:
+	rm -rf docs
+	mkdir docs
+	go run -ldflags="-X 'github.com/codesphere-cloud/cs-go/pkg/out.binName=cs'" hack/gendocs/main.go 
+	cp docs/{cs,README}.md
+
 generate-license:
 	go-licenses report --template .NOTICE.template  ./... > NOTICE
 	copywrite headers apply

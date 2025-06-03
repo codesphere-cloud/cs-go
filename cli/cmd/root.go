@@ -60,7 +60,7 @@ func (o GlobalOptions) GetWorkspaceId() (int, error) {
 	return wsId, nil
 }
 
-func Execute() {
+func GetRootCmd() *cobra.Command {
 	var rootCmd = &cobra.Command{
 		Use:   "cs",
 		Short: "The codesphere CLI",
@@ -68,7 +68,6 @@ func Execute() {
 	}
 
 	opts := GlobalOptions{Env: cs.NewEnv()}
-
 	addLogCmd(rootCmd, opts)
 	addListCmd(rootCmd, opts)
 	addSetEnvVarCmd(rootCmd, opts)
@@ -76,8 +75,11 @@ func Execute() {
 	opts.ApiUrl = rootCmd.PersistentFlags().StringP("api", "a", "https://codesphere.com/api", "URL of Codesphere API (can also be CS_API)")
 	opts.TeamId = rootCmd.PersistentFlags().IntP("team", "t", -1, "Team ID (relevant for some commands, can also be CS_TEAM_ID)")
 	opts.WorkspaceId = rootCmd.PersistentFlags().IntP("workspace", "w", -1, "Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID)")
+	return rootCmd
+}
 
-	err := rootCmd.Execute()
+func Execute() {
+	err := GetRootCmd().Execute()
 	if err != nil {
 		os.Exit(1)
 	}

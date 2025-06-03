@@ -23,14 +23,14 @@ Not that some commands may require you to elevate to the root user with `sudo`.
 ##### ARM Mac
 
 ```
-gh release download -R codesphere-cloud/cs-go -o cs -D /usr/local/bin/cs -p *darwin_arm64
+gh release download -R codesphere-cloud/cs-go -O /usr/local/bin/cs -p "*darwin_arm64"
 chmod +x /usr/local/bin/cs
 ```
 
 ##### Linux Amd64
 
 ```
-gh release download -R codesphere-cloud/cs-go -o cs -D /usr/local/bin/cs -p *linux_amd4
+gh release download -R codesphere-cloud/cs-go -O /usr/local/bin/cs -p "*linux_amd64"
 chmod +x /usr/local/bin/cs
 ```
 
@@ -89,110 +89,7 @@ The `cs` CLI supports several global options that you can set via command-line f
 
 The `cs` CLI organizes its functionality into several top-level commands, each with specific subcommands and flags.
 
-##### `cs list`
-
-Use this command to list various resources available in Codesphere.
-
-**Usage:**
-
-```
-cs list [command]
-```
-
-###### `cs list teams`
-
-Lists all teams you have access to in Codesphere.
-
-**Usage:**
-
-```
-cs list teams
-```
-
-**Example:**
-
-```
-$ cs list teams
-```
-
-###### `cs list workspaces`
-
-Lists all workspaces available in Codesphere.
-
-**Usage:**
-
-```
-cs list workspaces [--team-id <team-id>]
-```
-
-**Example:**
-
-```
-$ cs list workspaces --team-id <team-id>
-```
-
-If you don't specify `--team-id`, the command will try to list workspaces for all teams you can access (or for the team specified by `CS_TEAM_ID`).
-
-##### `cs log`
-
-Retrieves run logs from services within your workspaces.
-
-**Usage:**
-
-```
-cs log --workspace-id <workspace-id> [options]
-```
-
-**Description:**
-
-You can retrieve logs based on the given scope. If you provide both the step number and server, it returns all logs from all replicas of that server. If you provide a specific replica ID, it will return logs for that replica only.
-
-**Examples:**
-
-```
-# Get logs from a specific server within a workspace
-$ cs log -w 637128 -s app
-
-# Get all logs from all servers in a workspace
-$ cs log -w 637128
-
-# Get logs from a specific replica
-$ cs log -w 637128 -r workspace-213d7a8c-48b4-42e2-8f70-c905ab04abb5-58d657cdc5-m8rrp
-
-# Get logs from a self-hosted Codesphere installation (using a custom API URL)
-$ cs log --api https://codesphere.acme.com/api -w 637128 -s app
-```
-
-**Flags:**
-
-* `--server`, `-s` (string): Name of the landscape server.
-
-* `--workspace-id`, `-w` (int): ID of your Codesphere workspace. You can also set this via the `CS_WORKSPACE_ID` environment variable. **This flag or environment variable is required if not set globally.**
-
-* `--step`, `-n` (int): Index of the execution step (default 0).
-
-* `--replica`, `-r` (string): ID of the server replica. If you provide this, the `--server` flag will be ignored.
-
-##### `cs set-env`
-
-Sets environment variables for your workspace.
-
-**Usage:**
-
-```
-cs set-env --workspace-id <workspace-id> --env <key>=<value> [--env <key2>=<key2> ...]
-```
-
-**Example:**
-
-```
-# Set environment variables for a specific workspace
-$ cs set-env --workspace-id <workspace-id> --env foo=bar --env hello=world
-```
-
-**Flags:**
-
-* `--env-var`, `-e` (stringArray): Environment variables to set, in the format `key=val`. You can use this flag multiple times to set several variables.
+See our [Usage Documentation](docs) for usage information about the specific subcommands.
 
 ## Go SDK
 

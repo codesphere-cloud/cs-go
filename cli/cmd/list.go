@@ -4,6 +4,7 @@
 package cmd
 
 import (
+	"github.com/codesphere-cloud/cs-go/pkg/out"
 	"github.com/spf13/cobra"
 )
 
@@ -17,11 +18,9 @@ func addListCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 			Use:   "list",
 			Short: "list resources",
 			Long:  `list resources available in Codesphere`,
-			Example: `
-				List all workspaces:
-
-			  $ cs list workspaces
-			`,
+			Example: out.FormatExampleCommands("list", map[string]string{
+				"workspaces": "List all workspaces",
+			}),
 		},
 	}
 	rootCmd.AddCommand(l.cmd)
