@@ -21,7 +21,7 @@ type SetEnvVarOptions struct {
 	EnvVar *[]string
 }
 
-func addSetEnvVarCmd(p *cobra.Command, opts GlobalOptions) {
+func AddSetEnvVarCmd(p *cobra.Command, opts GlobalOptions) {
 	l := SetEnvVarCmd{
 		cmd: &cobra.Command{
 			Use:   "set-env",

@@ -46,7 +46,9 @@ endif
 		${OPENAPI_DIR}/test
 	make generate
 
-
+release-binaries:
+	goreleaser release --verbose --skip=validate --skip=publish --clean
+ 
 generate-api: generate-client format
 
 .PHONY: docs

@@ -68,9 +68,10 @@ func GetRootCmd() *cobra.Command {
 	}
 
 	opts := GlobalOptions{Env: cs.NewEnv()}
-	addLogCmd(rootCmd, opts)
-	addListCmd(rootCmd, opts)
-	addSetEnvVarCmd(rootCmd, opts)
+	AddLogCmd(rootCmd, opts)
+	AddListCmd(rootCmd, opts)
+	AddSetEnvVarCmd(rootCmd, opts)
+	AddVersionCmd(rootCmd)
 
 	opts.ApiUrl = rootCmd.PersistentFlags().StringP("api", "a", "https://codesphere.com/api", "URL of Codesphere API (can also be CS_API)")
 	opts.TeamId = rootCmd.PersistentFlags().IntP("team", "t", -1, "Team ID (relevant for some commands, can also be CS_TEAM_ID)")

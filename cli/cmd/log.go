@@ -53,7 +53,7 @@ type SSE struct {
 	data  string
 }
 
-func addLogCmd(rootCmd *cobra.Command, opts GlobalOptions) {
+func AddLogCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 	logCmd := LogCmd{
 		cmd: &cobra.Command{
 			Use:   "log",
