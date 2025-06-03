@@ -15,7 +15,6 @@ cs list workspaces [flags]
 ```
 # List all workspaces
 $ cs list workspaces --team-id <team-id>
-
 ```
 
 ### Options

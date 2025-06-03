@@ -18,8 +18,8 @@ func AddListCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 			Use:   "list",
 			Short: "list resources",
 			Long:  `list resources available in Codesphere`,
-			Example: out.FormatExampleCommands("list", map[string]string{
-				"workspaces": "List all workspaces",
+			Example: out.FormatExampleCommands("list", []out.Example{
+				{Cmd: "workspaces", Desc: "List all workspaces"},
 			}),
 		},
 	}

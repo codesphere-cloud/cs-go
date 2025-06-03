@@ -15,7 +15,6 @@ cs list teams [flags]
 ```
 # List all teams
 $ cs list teams 
-
 ```
 
 ### Options

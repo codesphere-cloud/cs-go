@@ -18,7 +18,6 @@ $ cs set-env --workspace-id <workspace-id> --env foo=bar
 
 # Set multiple environment variables
 $ cs set-env --workspace-id <workspace-id> --env foo=bar --env hello=world
-
 ```
 
 ### Options

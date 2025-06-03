@@ -18,17 +18,20 @@ func GetTableWriter() table.Writer {
 
 var binName string
 
-func FormatExampleCommands(command string, examples map[string]string) (res string) {
+type Example struct {
+	Cmd  string
+	Desc string
+}
+
+func FormatExampleCommands(command string, examples []Example) (res string) {
 	if binName == "" {
 		binName = os.Args[0]
 	}
-	first := true
-	for subcommand, comment := range examples {
-		if !first {
-			res += "\n"
+	for i, ex := range examples {
+		if i > 0 {
+			res += "\n\n"
 		}
-		res += fmt.Sprintf("# %s\n$ %s %s %s\n", comment, binName, command, subcommand)
-		first = false
+		res += fmt.Sprintf("# %s\n$ %s %s %s", ex.Desc, binName, command, ex.Cmd)
 	}
 	return
 }

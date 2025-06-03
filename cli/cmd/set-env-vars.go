@@ -27,9 +27,9 @@ func AddSetEnvVarCmd(p *cobra.Command, opts GlobalOptions) {
 			Use:   "set-env",
 			Short: "set env vars",
 			Long:  `set environment variables for your workspace`,
-			Example: out.FormatExampleCommands("set-env", map[string]string{
-				"--workspace-id <workspace-id> --env foo=bar":                   "Set single environment variable",
-				"--workspace-id <workspace-id> --env foo=bar --env hello=world": "Set multiple environment variables",
+			Example: out.FormatExampleCommands("set-env", []out.Example{
+				{Cmd: "--workspace-id <workspace-id> --env foo=bar", Desc: "Set single environment variable"},
+				{Cmd: "--workspace-id <workspace-id> --env foo=bar --env hello=world", Desc: "Set multiple environment variables"},
 			}),
 		},
 		Opts: SetEnvVarOptions{GlobalOptions: opts},
