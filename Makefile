@@ -46,7 +46,9 @@ endif
 		${OPENAPI_DIR}/test
 	make generate
 
-
+release-binaries:
+	goreleaser release --verbose --skip=validate --skip=publish --clean
+ 
 generate-api: generate-client format
 
 .PHONY: docs
@@ -56,7 +58,7 @@ docs:
 	go run -ldflags="-X 'github.com/codesphere-cloud/cs-go/pkg/out.binName=cs'" hack/gendocs/main.go 
 	cp docs/{cs,README}.md
 
-generate-license:
+generate-license: generate
 	go-licenses report --template .NOTICE.template  ./... > NOTICE
 	copywrite headers apply
 

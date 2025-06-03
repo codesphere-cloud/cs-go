@@ -18,7 +18,13 @@ builds:
     - amd64
     - arm64
     - arm
-    main: ./cmd/cs
+    main: ./cli
+    binary: cs
+    ldflags:
+    - -s -w
+    - -X github.com/codesphere-cloud/cs-go/pkg/cs.version={{.Version}}
+    - -X github.com/codesphere-cloud/cs-go/pkg/cs.commit={{.Commit}}
+    - -X github.com/codesphere-cloud/cs-go/pkg/cs.date={{.Date}}
 
 changelog:
   sort: asc

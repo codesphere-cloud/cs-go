@@ -11,7 +11,6 @@ list resources available in Codesphere
 ```
 # List all workspaces
 $ cs list workspaces
-
 ```
 
 ### Options

@@ -53,7 +53,7 @@ type SSE struct {
 	data  string
 }
 
-func addLogCmd(rootCmd *cobra.Command, opts GlobalOptions) {
+func AddLogCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 	logCmd := LogCmd{
 		cmd: &cobra.Command{
 			Use:   "log",
@@ -65,10 +65,10 @@ all replicas of that server.
 
 If you provide a specific replica id, it will return the logs of
 that replica only.`,
-			Example: out.FormatExampleCommands("log", map[string]string{
-				"-w 637128 -s app": "Get logs from a server",
-				"-w 637128":        "Get all logs of all servers",
-				"-w 637128 -r workspace-213d7a8c-48b4-42e2-8f70-c905ab04abb5-58d657cdc5-m8rrp": "Get logs from a replica",
+			Example: out.FormatExampleCommands("log", []out.Example{
+				{Cmd: "-w 637128 -s app", Desc: "Get logs from a server"},
+				{Cmd: "-w 637128", Desc: "Get all logs of all servers"},
+				{Cmd: "-w 637128 -r workspace-213d7a8c-48b4-42e2-8f70-c905ab04abb5-58d657cdc5-m8rrp", Desc: "Get logs from a replica"},
 			}),
 		},
 		opts: opts,
