@@ -18,6 +18,7 @@ import (
 	"sync"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
+	"github.com/codesphere-cloud/cs-go/pkg/out"
 	"github.com/spf13/cobra"
 )
 
@@ -59,20 +60,16 @@ func addLogCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 			Short: "Retrieve Run logs from services",
 			Long: `You can retrieve logs based on the given scope.
 
-	If you provide the step number and server, it returns all logs from
-	all replicas of that server.
+If you provide the step number and server, it returns all logs from
+all replicas of that server.
 
-	If you provide a specific replica id, it will return the logs of
-	that replica only.`,
-			Example: `
-	Get logs from a server
-		log -w 637128 -s app
-	Get all logs of all servers
-		log -w 637128
-	Get logs from a replica
-		log -w 637128 -r workspace-213d7a8c-48b4-42e2-8f70-c905ab04abb5-58d657cdc5-m8rrp
-	Get logs from a self-hosted Codesphere installation:
-		log --api https://codesphere.acme.com/api -w 637128 -s app`,
+If you provide a specific replica id, it will return the logs of
+that replica only.`,
+			Example: out.FormatExampleCommands("log", map[string]string{
+				"-w 637128 -s app": "Get logs from a server",
+				"-w 637128":        "Get all logs of all servers",
+				"-w 637128 -r workspace-213d7a8c-48b4-42e2-8f70-c905ab04abb5-58d657cdc5-m8rrp": "Get logs from a replica",
+			}),
 		},
 		opts: opts,
 	}
@@ -83,10 +80,9 @@ func addLogCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 
 func (logCmd *LogCmd) parseLogCmdFlags() {
 	logCmd.scope = LogCmdScope{
-		server:      logCmd.cmd.Flags().StringP("server", "s", "", "Name of the landscape server"),
-		workspaceId: logCmd.cmd.Flags().IntP("workspace-id", "w", 0, "ID of Codesphere workspace (can also be CS_WORKSPACE_ID)"),
-		step:        logCmd.cmd.Flags().IntP("step", "n", 0, "Index of execution step (default 0)"),
-		replica:     logCmd.cmd.Flags().StringP("replica", "r", "", "ID of server replica"),
+		server:  logCmd.cmd.Flags().StringP("server", "s", "", "Name of the landscape server"),
+		step:    logCmd.cmd.Flags().IntP("step", "n", 0, "Index of execution step (default 0)"),
+		replica: logCmd.cmd.Flags().StringP("replica", "r", "", "ID of server replica"),
 	}
 }
 
