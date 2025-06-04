@@ -56,7 +56,7 @@ docs:
 	rm -rf docs
 	mkdir docs
 	go run -ldflags="-X 'github.com/codesphere-cloud/cs-go/pkg/out.binName=cs'" hack/gendocs/main.go 
-	cp docs/{cs,README}.md
+	cp docs/cs.md docs/README.md
 
 generate-license: generate
 	go-licenses report --template .NOTICE.template  ./... > NOTICE
