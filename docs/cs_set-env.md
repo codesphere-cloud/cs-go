@@ -30,7 +30,7 @@ $ cs set-env --workspace-id <workspace-id> --env foo=bar --env hello=world
 ### Options inherited from parent commands
 
 ```
-  -a, --api string      URL of Codesphere API (can also be CS_API) (default "https://codesphere.com/api")
+  -a, --api string      URL of Codesphere API (can also be CS_API)
   -t, --team int        Team ID (relevant for some commands, can also be CS_TEAM_ID) (default -1)
   -w, --workspace int   Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)
 ```
