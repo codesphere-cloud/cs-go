@@ -19,6 +19,8 @@ type Client interface {
 	GetWorkspace(workspaceId int) (api.Workspace, error)
 	SetEnvVarOnWorkspace(workspaceId int, vars map[string]string) error
 	ExecCommand(workspaceId int, command string, workdir string, env map[string]string) (string, string, error)
+	ListWorkspacePlans() ([]api.WorkspacePlan, error)
+	DeployWorkspace(args api.DeployWorkspaceArgs) (*api.Workspace, error)
 }
 
 func NewClient(opts GlobalOptions) (Client, error) {

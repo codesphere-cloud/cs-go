@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -88,4 +89,12 @@ func ArgToEnvVarMap(input []string) (map[string]string, error) {
 		res[split[0]] = split[1]
 	}
 	return res, nil
+}
+
+func ValidateUrl(urlIn string) (string, error) {
+	urlParsed, err := url.Parse(urlIn)
+	if err != nil {
+		return "", fmt.Errorf("failed to parse URL %s: %w", urlIn, err)
+	}
+	return urlParsed.String(), nil
 }

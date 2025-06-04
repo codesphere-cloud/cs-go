@@ -95,7 +95,11 @@ type DeployWorkspaceArgs struct {
 	PlanId        int
 	Name          string
 	EnvVars       map[string]string
-	VpnConfigName string
+	VpnConfigName *string //must be nil to use default
+
+	IsPrivateRepo bool
+	GitUrl        *string //must be nil to use default
+	Branch        *string //must be nil to use default
 
 	Timeout time.Duration
 }
@@ -108,13 +112,13 @@ func (client Client) DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, erro
 		TeamId:            args.TeamId,
 		Name:              args.Name,
 		PlanId:            args.PlanId,
-		IsPrivateRepo:     true,
-		GitUrl:            nil,
-		InitialBranch:     nil,
+		IsPrivateRepo:     args.IsPrivateRepo,
+		GitUrl:            args.GitUrl,
+		InitialBranch:     args.Branch,
 		SourceWorkspaceId: nil,
 		WelcomeMessage:    nil,
 		Replicas:          1,
-		VpnConfig:         &args.VpnConfigName,
+		VpnConfig:         args.VpnConfigName,
 	})
 	if err != nil {
 		return nil, err
