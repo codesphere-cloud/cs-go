@@ -76,3 +76,16 @@ func GetRoleName(role int) string {
 	}
 	return "Admin"
 }
+
+func ArgToEnvVarMap(input []string) (map[string]string, error) {
+	res := map[string]string{}
+	for _, v := range input {
+		split := strings.Split(v, "=")
+		if len(split) != 2 {
+			return res, fmt.Errorf("invalid environment variable argument: %s", v)
+
+		}
+		res[split[0]] = split[1]
+	}
+	return res, nil
+}

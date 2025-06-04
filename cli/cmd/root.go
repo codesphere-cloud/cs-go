@@ -26,14 +26,14 @@ type Env interface {
 }
 
 func (o GlobalOptions) GetApiUrl() string {
-	if o.ApiUrl != nil {
+	if o.ApiUrl != nil && *o.ApiUrl != "" {
 		return *o.ApiUrl
 	}
 	return o.Env.GetApiUrl()
 }
 
 func (o GlobalOptions) GetTeamId() (int, error) {
-	if o.TeamId != nil {
+	if o.TeamId != nil && *o.TeamId != -1 {
 		return *o.TeamId, nil
 	}
 	wsId, err := o.Env.GetTeamId()
@@ -47,7 +47,7 @@ func (o GlobalOptions) GetTeamId() (int, error) {
 }
 
 func (o GlobalOptions) GetWorkspaceId() (int, error) {
-	if o.WorkspaceId != nil {
+	if o.WorkspaceId != nil && *o.WorkspaceId != -1 {
 		return *o.WorkspaceId, nil
 	}
 	wsId, err := o.Env.GetWorkspaceId()
@@ -68,15 +68,19 @@ func GetRootCmd() *cobra.Command {
 	}
 
 	opts := GlobalOptions{Env: cs.NewEnv()}
+
+	opts.ApiUrl = rootCmd.PersistentFlags().StringP("api", "a", "", "URL of Codesphere API (can also be CS_API)")
+	opts.TeamId = rootCmd.PersistentFlags().IntP("team", "t", -1, "Team ID (relevant for some commands, can also be CS_TEAM_ID)")
+	opts.WorkspaceId = rootCmd.PersistentFlags().IntP("workspace", "w", -1, "Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID)")
+
+	AddExecCmd(rootCmd, opts)
 	AddLogCmd(rootCmd, opts)
 	AddListCmd(rootCmd, opts)
 	AddSetEnvVarCmd(rootCmd, opts)
 	AddVersionCmd(rootCmd)
 	AddLicensesCmd(rootCmd)
+	AddOpenCmd(rootCmd, opts)
 
-	opts.ApiUrl = rootCmd.PersistentFlags().StringP("api", "a", "https://codesphere.com/api", "URL of Codesphere API (can also be CS_API)")
-	opts.TeamId = rootCmd.PersistentFlags().IntP("team", "t", -1, "Team ID (relevant for some commands, can also be CS_TEAM_ID)")
-	opts.WorkspaceId = rootCmd.PersistentFlags().IntP("workspace", "w", -1, "Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID)")
 	return rootCmd
 }
 

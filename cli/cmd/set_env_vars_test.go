@@ -68,7 +68,7 @@ var _ = Describe("SetEnvVars", func() {
 		})
 		It("doesn't set environment variables", func() {
 			err := e.SetEnvironmentVariables(mockClient)
-			Expect(err).To(MatchError("invalid environment variable argument: helloworld"))
+			Expect(err).To(MatchError("failed to parse environment variables: invalid environment variable argument: helloworld"))
 		})
 
 	})

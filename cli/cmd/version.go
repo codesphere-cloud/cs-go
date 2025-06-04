@@ -28,7 +28,7 @@ func AddVersionCmd(rootCmd *cobra.Command) {
 		cmd: &cobra.Command{
 			Use:   "version",
 			Short: "Print version",
-			Long:  `Prints current version of Codesphere CLI.`,
+			Long:  `Print current version of Codesphere CLI.`,
 		},
 	}
 	rootCmd.AddCommand(version.cmd)

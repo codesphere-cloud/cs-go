@@ -17,6 +17,11 @@ func (c *Client) ListWorkspaces(teamId int) ([]Workspace, error) {
 	return workspaces, err
 }
 
+func (c *Client) GetWorkspace(workspaceId int) (Workspace, error) {
+	workspace, _, err := c.api.WorkspacesAPI.WorkspacesGetWorkspace(c.ctx, float32(workspaceId)).Execute()
+	return *workspace, err
+}
+
 func (c *Client) WorkspaceStatus(workspaceId int) (*WorkspaceStatus, error) {
 	status, _, err := c.api.WorkspacesAPI.WorkspacesGetWorkspaceStatus(c.ctx, float32(workspaceId)).Execute()
 	return status, err
@@ -39,6 +44,22 @@ func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string
 	req := c.api.WorkspacesAPI.WorkspacesSetEnvVar(c.ctx, float32(workspaceId)).WorkspacesListEnvVars200ResponseInner(vars)
 	_, err := c.api.WorkspacesAPI.WorkspacesSetEnvVarExecute(req)
 	return err
+}
+
+func (c *Client) ExecCommand(workspaceId int, command string, workdir string, env map[string]string) (string, string, error) {
+	cmd := openapi_client.WorkspacesExecuteCommandRequest{
+		Command:    command,
+		WorkingDir: &workdir,
+		Env:        &env,
+	}
+
+	req := c.api.WorkspacesAPI.WorkspacesExecuteCommand(c.ctx, float32(workspaceId)).WorkspacesExecuteCommandRequest(cmd)
+	res, _, err := req.Execute()
+
+	if err != nil {
+		return "", "", fmt.Errorf("failed to execute command: %w", err)
+	}
+	return res.Output, res.Error, nil
 }
 
 // Waits for a given workspace to be running.
