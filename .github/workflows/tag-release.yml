@@ -13,6 +13,7 @@ jobs:
         with:
           fetch-tags: true
           fetch-depth: 0
+          ssh-key: ${{ secrets.ACTION_KEY }}
 
       - name: Set up Go
         uses: actions/setup-go@v5
