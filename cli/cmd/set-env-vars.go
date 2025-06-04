@@ -5,8 +5,8 @@ package cmd
 
 import (
 	"fmt"
-	"strings"
 
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/out"
 	"github.com/spf13/cobra"
 )
@@ -53,14 +53,9 @@ func (l *SetEnvVarCmd) RunE(_ *cobra.Command, args []string) (err error) {
 }
 
 func (l *SetEnvVarCmd) SetEnvironmentVariables(client Client) (err error) {
-	envVarMap := map[string]string{}
-	for _, v := range *l.Opts.EnvVar {
-		split := strings.Split(v, "=")
-		if len(split) != 2 {
-			return fmt.Errorf("invalid environment variable argument: %s", v)
-
-		}
-		envVarMap[split[0]] = split[1]
+	envVarMap, err := cs.ArgToEnvVarMap(*l.Opts.EnvVar)
+	if err != nil {
+		return fmt.Errorf("failed to parse environment variables: %w", err)
 	}
 	wsId, err := l.Opts.GetWorkspaceId()
 	if err != nil {

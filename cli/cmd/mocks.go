@@ -36,6 +36,123 @@ func (_m *MockClient) EXPECT() *MockClient_Expecter {
 	return &MockClient_Expecter{mock: &_m.Mock}
 }
 
+// ExecCommand provides a mock function for the type MockClient
+func (_mock *MockClient) ExecCommand(workspaceId int, command string, workdir string, env map[string]string) (string, string, error) {
+	ret := _mock.Called(workspaceId, command, workdir, env)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ExecCommand")
+	}
+
+	var r0 string
+	var r1 string
+	var r2 error
+	if returnFunc, ok := ret.Get(0).(func(int, string, string, map[string]string) (string, string, error)); ok {
+		return returnFunc(workspaceId, command, workdir, env)
+	}
+	if returnFunc, ok := ret.Get(0).(func(int, string, string, map[string]string) string); ok {
+		r0 = returnFunc(workspaceId, command, workdir, env)
+	} else {
+		r0 = ret.Get(0).(string)
+	}
+	if returnFunc, ok := ret.Get(1).(func(int, string, string, map[string]string) string); ok {
+		r1 = returnFunc(workspaceId, command, workdir, env)
+	} else {
+		r1 = ret.Get(1).(string)
+	}
+	if returnFunc, ok := ret.Get(2).(func(int, string, string, map[string]string) error); ok {
+		r2 = returnFunc(workspaceId, command, workdir, env)
+	} else {
+		r2 = ret.Error(2)
+	}
+	return r0, r1, r2
+}
+
+// MockClient_ExecCommand_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ExecCommand'
+type MockClient_ExecCommand_Call struct {
+	*mock.Call
+}
+
+// ExecCommand is a helper method to define mock.On call
+//   - workspaceId
+//   - command
+//   - workdir
+//   - env
+func (_e *MockClient_Expecter) ExecCommand(workspaceId interface{}, command interface{}, workdir interface{}, env interface{}) *MockClient_ExecCommand_Call {
+	return &MockClient_ExecCommand_Call{Call: _e.mock.On("ExecCommand", workspaceId, command, workdir, env)}
+}
+
+func (_c *MockClient_ExecCommand_Call) Run(run func(workspaceId int, command string, workdir string, env map[string]string)) *MockClient_ExecCommand_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(int), args[1].(string), args[2].(string), args[3].(map[string]string))
+	})
+	return _c
+}
+
+func (_c *MockClient_ExecCommand_Call) Return(s string, s1 string, err error) *MockClient_ExecCommand_Call {
+	_c.Call.Return(s, s1, err)
+	return _c
+}
+
+func (_c *MockClient_ExecCommand_Call) RunAndReturn(run func(workspaceId int, command string, workdir string, env map[string]string) (string, string, error)) *MockClient_ExecCommand_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetWorkspace provides a mock function for the type MockClient
+func (_mock *MockClient) GetWorkspace(workspaceId int) (api.Workspace, error) {
+	ret := _mock.Called(workspaceId)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetWorkspace")
+	}
+
+	var r0 api.Workspace
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(int) (api.Workspace, error)); ok {
+		return returnFunc(workspaceId)
+	}
+	if returnFunc, ok := ret.Get(0).(func(int) api.Workspace); ok {
+		r0 = returnFunc(workspaceId)
+	} else {
+		r0 = ret.Get(0).(api.Workspace)
+	}
+	if returnFunc, ok := ret.Get(1).(func(int) error); ok {
+		r1 = returnFunc(workspaceId)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockClient_GetWorkspace_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetWorkspace'
+type MockClient_GetWorkspace_Call struct {
+	*mock.Call
+}
+
+// GetWorkspace is a helper method to define mock.On call
+//   - workspaceId
+func (_e *MockClient_Expecter) GetWorkspace(workspaceId interface{}) *MockClient_GetWorkspace_Call {
+	return &MockClient_GetWorkspace_Call{Call: _e.mock.On("GetWorkspace", workspaceId)}
+}
+
+func (_c *MockClient_GetWorkspace_Call) Run(run func(workspaceId int)) *MockClient_GetWorkspace_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(int))
+	})
+	return _c
+}
+
+func (_c *MockClient_GetWorkspace_Call) Return(v api.Workspace, err error) *MockClient_GetWorkspace_Call {
+	_c.Call.Return(v, err)
+	return _c
+}
+
+func (_c *MockClient_GetWorkspace_Call) RunAndReturn(run func(workspaceId int) (api.Workspace, error)) *MockClient_GetWorkspace_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // ListTeams provides a mock function for the type MockClient
 func (_mock *MockClient) ListTeams() ([]api.Team, error) {
 	ret := _mock.Called()
@@ -189,6 +306,78 @@ func (_c *MockClient_SetEnvVarOnWorkspace_Call) Return(err error) *MockClient_Se
 }
 
 func (_c *MockClient_SetEnvVarOnWorkspace_Call) RunAndReturn(run func(workspaceId int, vars map[string]string) error) *MockClient_SetEnvVarOnWorkspace_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// NewMockBrowser creates a new instance of MockBrowser. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
+// The first argument is typically a *testing.T value.
+func NewMockBrowser(t interface {
+	mock.TestingT
+	Cleanup(func())
+}) *MockBrowser {
+	mock := &MockBrowser{}
+	mock.Mock.Test(t)
+
+	t.Cleanup(func() { mock.AssertExpectations(t) })
+
+	return mock
+}
+
+// MockBrowser is an autogenerated mock type for the Browser type
+type MockBrowser struct {
+	mock.Mock
+}
+
+type MockBrowser_Expecter struct {
+	mock *mock.Mock
+}
+
+func (_m *MockBrowser) EXPECT() *MockBrowser_Expecter {
+	return &MockBrowser_Expecter{mock: &_m.Mock}
+}
+
+// OpenIde provides a mock function for the type MockBrowser
+func (_mock *MockBrowser) OpenIde(path string) error {
+	ret := _mock.Called(path)
+
+	if len(ret) == 0 {
+		panic("no return value specified for OpenIde")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(string) error); ok {
+		r0 = returnFunc(path)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockBrowser_OpenIde_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'OpenIde'
+type MockBrowser_OpenIde_Call struct {
+	*mock.Call
+}
+
+// OpenIde is a helper method to define mock.On call
+//   - path
+func (_e *MockBrowser_Expecter) OpenIde(path interface{}) *MockBrowser_OpenIde_Call {
+	return &MockBrowser_OpenIde_Call{Call: _e.mock.On("OpenIde", path)}
+}
+
+func (_c *MockBrowser_OpenIde_Call) Run(run func(path string)) *MockBrowser_OpenIde_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(string))
+	})
+	return _c
+}
+
+func (_c *MockBrowser_OpenIde_Call) Return(err error) *MockBrowser_OpenIde_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockBrowser_OpenIde_Call) RunAndReturn(run func(path string) error) *MockBrowser_OpenIde_Call {
 	_c.Call.Return(run)
 	return _c
 }
