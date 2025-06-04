@@ -1,5 +1,6 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![GitHub Workflow Status](https://github.com/codesphere-cloud/cs-go/actions/workflows/build.yml/badge.svg)
+![GitHub Release Workflow Status](https://github.com/codesphere-cloud/cs-go/actions/workflows/tag-release.yml/badge.svg)
 
 # Codesphere Go SDK & CLI
 
