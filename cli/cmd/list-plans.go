@@ -61,7 +61,6 @@ func (c *ListPlansCmd) RunE(_ *cobra.Command, args []string) error {
 
 func formatBytesAsGib(in int) string {
 	return fmt.Sprintf("%.2f", float32(in)/1024/1024/1024)
-
 }
 
 func AddListPlansCmd(list *cobra.Command, opts GlobalOptions) {

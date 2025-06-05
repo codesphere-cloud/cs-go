@@ -86,9 +86,9 @@ func AddCreateWorkspaceCmd(create *cobra.Command, opts GlobalOptions) {
 			Example: out.FormatExampleCommands("create workspace my-workspace", []out.Example{
 				{Cmd: "-p 20", Desc: "Create an empty workspace, using plan 20"},
 				{Cmd: "-r https://github.com/codesphere-cloud/landingpage-temp.git", Desc: "Create a workspace from a git repository"},
-				{Cmd: "-r https://github.com/codesphere-cloud/landingpage-temp.git -e FOO=BAR -e A=B", Desc: "Create a workspace and set environment variables"},
+				{Cmd: "-r https://github.com/codesphere-cloud/landingpage-temp.git -e DEPLOYMENT=prod -e A=B", Desc: "Create a workspace and set environment variables"},
 				{Cmd: "-r https://github.com/codesphere-cloud/landingpage-temp.git --vpn myVpn", Desc: "Create a workspace and connect to VPN myVpn"},
-				{Cmd: "-r https://github.com/codesphere-cloud/landingpage-temp.git --timeout 30", Desc: "Create a workspace and wait 30 seconds for it to become running"},
+				{Cmd: "-r https://github.com/codesphere-cloud/landingpage-temp.git --timeout 30s", Desc: "Create a workspace and wait 30 seconds for it to become running"},
 				{Cmd: "-r https://github.com/codesphere-cloud/landingpage-temp.git -b staging", Desc: "Create a workspace from branch 'staging'"},
 				{Cmd: "-r https://github.com/my-org/my-private-project.git -P", Desc: "Create a workspace from a private git repository"},
 			}),
@@ -97,10 +97,10 @@ func AddCreateWorkspaceCmd(create *cobra.Command, opts GlobalOptions) {
 	}
 	workspace.Opts.Repo = workspace.cmd.Flags().StringP("repository", "r", "", "Git repository to create the workspace from")
 	workspace.Opts.Vpn = workspace.cmd.Flags().String("vpn", "", "Vpn config to use")
-	workspace.Opts.Env = workspace.cmd.Flags().StringArrayP("env", "e", []string{}, "Environment variables to set in the workspace")
+	workspace.Opts.Env = workspace.cmd.Flags().StringArrayP("env", "e", []string{}, "Environment variables to set in the workspace in key=value form (e.g. --env DEPLOYMENT=prod)")
 	workspace.Opts.Plan = workspace.cmd.Flags().IntP("plan", "p", 8, "Plan ID for the workspace")
 	workspace.Opts.Private = workspace.cmd.Flags().BoolP("private", "P", false, "Use private repository")
-	workspace.Opts.Timeout = workspace.cmd.Flags().Duration("timeout", 60*time.Second, "Time to wait for the workspace to start")
+	workspace.Opts.Timeout = workspace.cmd.Flags().Duration("timeout", 10*time.Minute, "Time to wait for the workspace to start (e.g. 5m for 5 minutes)")
 	workspace.Opts.Branch = workspace.cmd.Flags().StringP("branch", "b", "", "branch to check out")
 
 	create.AddCommand(workspace.cmd)

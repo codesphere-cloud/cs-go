@@ -38,6 +38,8 @@ func FormatExampleCommands(command string, examples []Example) (res string) {
 	return
 }
 
+// Remove tabs to allow formatted multi-line descriptions in Code without cluttering
+// the help output
 func Long(in string) string {
 	re := regexp.MustCompile("\n\t+")
 	return re.ReplaceAllString(in, "\n")

@@ -45,7 +45,7 @@ func AddExecCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 			Args:  cobra.MinimumNArgs(1),
 			Short: "Run a command in Codesphere workspace",
 			Long: out.Long(`Run a command in a Codesphere workspace.
-  			Output will be printed to STDOUT, errors to STDERR.`),
+				Output will be printed to STDOUT, errors to STDERR.`),
 			Example: out.FormatExampleCommands("exec", []out.Example{
 				{Cmd: "-- echo hello world", Desc: "Print `hello world`"},
 				{Cmd: "-- find .", Desc: "List all files in workspace"},
