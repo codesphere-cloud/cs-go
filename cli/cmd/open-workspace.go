@@ -39,8 +39,8 @@ func AddOpenWorkspaceCmd(open *cobra.Command, opts GlobalOptions) {
 	workspace := OpenWorkspaceCmd{
 		cmd: &cobra.Command{
 			Use:   "workspace",
-			Short: "Open workspace in web browser",
-			Long:  `Open workspace in the Codesphere IDE.`,
+			Short: "Open workspace in the Codesphere IDE",
+			Long:  `Open workspace in the Codesphere IDE in your web browser.`,
 			Example: out.FormatExampleCommands("open workspace", []out.Example{
 				{Cmd: "-w 42", Desc: "open workspace 42 in web browser"},
 				{Cmd: "", Desc: "open workspace set by environment variable CS_WORKSPACE_ID"},
