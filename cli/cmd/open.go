@@ -27,8 +27,8 @@ func AddOpenCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 	open := OpenCmd{
 		cmd: &cobra.Command{
 			Use:   "open",
-			Short: "Open the codesphere IDE",
-			Long:  `Open the codesphere IDE.`,
+			Short: "Open the Codesphere IDE",
+			Long:  `Open the Codesphere IDE.`,
 		},
 	}
 	rootCmd.AddCommand(open.cmd)

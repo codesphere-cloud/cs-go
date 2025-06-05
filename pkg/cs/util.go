@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -88,4 +89,16 @@ func ArgToEnvVarMap(input []string) (map[string]string, error) {
 		res[split[0]] = split[1]
 	}
 	return res, nil
+}
+
+// Validates a URL is a http/https URL
+func ValidateUrl(urlIn string) (string, error) {
+	urlParsed, err := url.Parse(urlIn)
+	if err != nil {
+		return "", fmt.Errorf("failed to parse URL %s: %w", urlIn, err)
+	}
+	if urlParsed.Scheme != "http" && urlParsed.Scheme != "https" {
+		return "", fmt.Errorf("unsupported URL scheme: %s. Only http and https are supported", urlParsed.Scheme)
+	}
+	return urlParsed.String(), nil
 }

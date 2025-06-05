@@ -63,7 +63,7 @@ func (o GlobalOptions) GetWorkspaceId() (int, error) {
 func GetRootCmd() *cobra.Command {
 	var rootCmd = &cobra.Command{
 		Use:   "cs",
-		Short: "The codesphere CLI",
+		Short: "The Codesphere CLI",
 		Long:  `Manage and debug resources deployed in Codesphere via command line.`,
 	}
 
@@ -80,6 +80,7 @@ func GetRootCmd() *cobra.Command {
 	AddVersionCmd(rootCmd)
 	AddLicensesCmd(rootCmd)
 	AddOpenCmd(rootCmd, opts)
+	AddCreateCmd(rootCmd, opts)
 
 	return rootCmd
 }

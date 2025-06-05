@@ -57,7 +57,7 @@ func AddLogCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 	logCmd := LogCmd{
 		cmd: &cobra.Command{
 			Use:   "log",
-			Short: "Retrieve Run logs from services",
+			Short: "Retrieve run logs from services",
 			Long: `You can retrieve logs based on the given scope.
 
 If you provide the step number and server, it returns all logs from

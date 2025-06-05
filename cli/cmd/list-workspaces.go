@@ -22,8 +22,8 @@ func addListWorkspacesCmd(p *cobra.Command, opts GlobalOptions) {
 	l := ListWorkspacesCmd{
 		cmd: &cobra.Command{
 			Use:   "workspaces",
-			Short: "list workspaces",
-			Long:  `list workspaces available in Codesphere`,
+			Short: "List workspaces",
+			Long:  `List workspaces available in Codesphere`,
 			Example: out.FormatExampleCommands("list workspaces", []out.Example{
 				{Cmd: "--team-id <team-id>", Desc: "List all workspaces"},
 			}),

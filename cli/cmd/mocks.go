@@ -36,6 +36,62 @@ func (_m *MockClient) EXPECT() *MockClient_Expecter {
 	return &MockClient_Expecter{mock: &_m.Mock}
 }
 
+// DeployWorkspace provides a mock function for the type MockClient
+func (_mock *MockClient) DeployWorkspace(args api.DeployWorkspaceArgs) (*api.Workspace, error) {
+	ret := _mock.Called(args)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeployWorkspace")
+	}
+
+	var r0 *api.Workspace
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(api.DeployWorkspaceArgs) (*api.Workspace, error)); ok {
+		return returnFunc(args)
+	}
+	if returnFunc, ok := ret.Get(0).(func(api.DeployWorkspaceArgs) *api.Workspace); ok {
+		r0 = returnFunc(args)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*api.Workspace)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(api.DeployWorkspaceArgs) error); ok {
+		r1 = returnFunc(args)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockClient_DeployWorkspace_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeployWorkspace'
+type MockClient_DeployWorkspace_Call struct {
+	*mock.Call
+}
+
+// DeployWorkspace is a helper method to define mock.On call
+//   - args
+func (_e *MockClient_Expecter) DeployWorkspace(args interface{}) *MockClient_DeployWorkspace_Call {
+	return &MockClient_DeployWorkspace_Call{Call: _e.mock.On("DeployWorkspace", args)}
+}
+
+func (_c *MockClient_DeployWorkspace_Call) Run(run func(args api.DeployWorkspaceArgs)) *MockClient_DeployWorkspace_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(api.DeployWorkspaceArgs))
+	})
+	return _c
+}
+
+func (_c *MockClient_DeployWorkspace_Call) Return(v *api.Workspace, err error) *MockClient_DeployWorkspace_Call {
+	_c.Call.Return(v, err)
+	return _c
+}
+
+func (_c *MockClient_DeployWorkspace_Call) RunAndReturn(run func(args api.DeployWorkspaceArgs) (*api.Workspace, error)) *MockClient_DeployWorkspace_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // ExecCommand provides a mock function for the type MockClient
 func (_mock *MockClient) ExecCommand(workspaceId int, command string, workdir string, env map[string]string) (string, string, error) {
 	ret := _mock.Called(workspaceId, command, workdir, env)
@@ -204,6 +260,61 @@ func (_c *MockClient_ListTeams_Call) Return(vs []api.Team, err error) *MockClien
 }
 
 func (_c *MockClient_ListTeams_Call) RunAndReturn(run func() ([]api.Team, error)) *MockClient_ListTeams_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ListWorkspacePlans provides a mock function for the type MockClient
+func (_mock *MockClient) ListWorkspacePlans() ([]api.WorkspacePlan, error) {
+	ret := _mock.Called()
+
+	if len(ret) == 0 {
+		panic("no return value specified for ListWorkspacePlans")
+	}
+
+	var r0 []api.WorkspacePlan
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func() ([]api.WorkspacePlan, error)); ok {
+		return returnFunc()
+	}
+	if returnFunc, ok := ret.Get(0).(func() []api.WorkspacePlan); ok {
+		r0 = returnFunc()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]api.WorkspacePlan)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func() error); ok {
+		r1 = returnFunc()
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockClient_ListWorkspacePlans_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListWorkspacePlans'
+type MockClient_ListWorkspacePlans_Call struct {
+	*mock.Call
+}
+
+// ListWorkspacePlans is a helper method to define mock.On call
+func (_e *MockClient_Expecter) ListWorkspacePlans() *MockClient_ListWorkspacePlans_Call {
+	return &MockClient_ListWorkspacePlans_Call{Call: _e.mock.On("ListWorkspacePlans")}
+}
+
+func (_c *MockClient_ListWorkspacePlans_Call) Run(run func()) *MockClient_ListWorkspacePlans_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run()
+	})
+	return _c
+}
+
+func (_c *MockClient_ListWorkspacePlans_Call) Return(vs []api.WorkspacePlan, err error) *MockClient_ListWorkspacePlans_Call {
+	_c.Call.Return(vs, err)
+	return _c
+}
+
+func (_c *MockClient_ListWorkspacePlans_Call) RunAndReturn(run func() ([]api.WorkspacePlan, error)) *MockClient_ListWorkspacePlans_Call {
 	_c.Call.Return(run)
 	return _c
 }
