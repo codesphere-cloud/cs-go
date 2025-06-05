@@ -16,10 +16,18 @@ This project is licensed under the Apache License, Version 2.0 - see the [LICENS
 
 You can install the Codesphere CLI in a few ways:
 
+#### Install inside a Codesphere Workspace
+
+To use the CLI inside a Codesphere workspace, install it using the following command:
+
+```
+wget -qO- 'https://api.github.com/repos/codesphere-cloud/cs-go/releases/latest' | grep linux_amd64 | grep browser_download_url | sed s/.*https/https/ | sed s/\".*$// | xargs wget -O $HOME/.local/bin/cs && chmod +x $HOME/.local/bin/cs
+```
+
 #### Using GitHub CLI (`gh`)
 
 If you have the [GitHub CLI](https://cli.github.com/) installed, you can install the `cs` CLI with a command like the following.
-Not that some commands may require you to elevate to the root user with `sudo`.
+Note that some commands may require you to elevate to the root user with `sudo`.
 
 ##### ARM Mac
 
@@ -38,7 +46,7 @@ chmod +x /usr/local/bin/cs
 #### Using `wget`
 
 This option requires to have the `wget` and `jq` utils installed. Download the `cs` CLI and add permissions to run it with the following commands:
-Not that some commands may require you to elevate to the root user with `sudo`.
+Note that some commands may require you to elevate to the root user with `sudo`.
 
 ##### ARM Mac
 
@@ -59,7 +67,7 @@ chmod +x /usr/local/bin/cs
 #### Manual Download
 
 You can also download the pre-compiled binaries from the [Codesphere CLI Releases page](https://github.com/codesphere-cloud/cs-go/releases).
-Not that some commands may require you to elevate to the root user with `sudo`.
+Note that some commands may require you to elevate to the root user with `sudo`.
 
 1. Go to the [latest release](https://github.com/codesphere-cloud/cs-go/releases/latest).
 
