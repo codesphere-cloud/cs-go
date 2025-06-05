@@ -26,7 +26,12 @@ func (e *Environment) GetApiToken() (string, error) {
 }
 
 func (e *Environment) GetWorkspaceId() (int, error) {
-	return e.ReadNumericEnv("CS_WORKSPACE_ID")
+	prefixedId, err := e.ReadNumericEnv("CS_WORKSPACE_ID")
+	if prefixedId != -1 && err == nil {
+		return prefixedId, nil
+	}
+
+	return e.ReadNumericEnv("WORKSPACE_ID")
 }
 
 func (e *Environment) GetTeamId() (int, error) {
