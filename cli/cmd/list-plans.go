@@ -6,14 +6,13 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/codesphere-cloud/cs-go/pkg/out"
+	"github.com/codesphere-cloud/cs-go/pkg/io"
 
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/jedib0t/go-pretty/v6/text"
 	"github.com/spf13/cobra"
 )
 
-// ListPlansCmd represents the plans command
 type ListPlansCmd struct {
 	cmd  *cobra.Command
 	Opts GlobalOptions
@@ -31,7 +30,7 @@ func (c *ListPlansCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to list plans: %s", err)
 	}
 
-	t := out.GetTableWriter()
+	t := io.GetTableWriter()
 	t.AppendHeader(table.Row{"ID", "Name", "On Demand", "CPU", "RAM(GiB)", "SSD(GiB)", "Price(USD)", "Max Replicas"})
 	t.SetColumnConfigs([]table.ColumnConfig{
 		{Name: "Price(USD)", Align: text.AlignRight},
@@ -71,7 +70,7 @@ func AddListPlansCmd(list *cobra.Command, opts GlobalOptions) {
 		cmd: &cobra.Command{
 			Use:   "plans",
 			Short: "List available plans",
-			Long: out.Long(`List available workpace plans.
+			Long: io.Long(`List available workpace plans.
 
 				When creating new workspaces you need to select a specific plan.`),
 		},

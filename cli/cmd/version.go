@@ -10,7 +10,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// VersionCmd represents the version command
 type VersionCmd struct {
 	cmd *cobra.Command
 }

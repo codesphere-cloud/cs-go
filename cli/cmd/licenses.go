@@ -11,7 +11,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// LicensesCmd represents the licenses command
 type LicensesCmd struct {
 	cmd *cobra.Command
 }

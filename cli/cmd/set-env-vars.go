@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
-	"github.com/codesphere-cloud/cs-go/pkg/out"
+	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +27,7 @@ func AddSetEnvVarCmd(p *cobra.Command, opts GlobalOptions) {
 			Use:   "set-env",
 			Short: "Set environment varariables",
 			Long:  `Set environment variables in a workspace`,
-			Example: out.FormatExampleCommands("set-env", []out.Example{
+			Example: io.FormatExampleCommands("set-env", []io.Example{
 				{Cmd: "--workspace <workspace-id> --env-var foo=bar", Desc: "Set single environment variable"},
 				{Cmd: "--workspace <workspace-id> --env-var foo=bar --env-var hello=world", Desc: "Set multiple environment variables"},
 			}),

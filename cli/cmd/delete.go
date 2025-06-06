@@ -4,7 +4,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// DeleteCmd represents the delete command
 type DeleteCmd struct {
 	cmd *cobra.Command
 }

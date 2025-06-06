@@ -1,7 +1,7 @@
 // Copyright (c) Codesphere Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-package out
+package io
 
 import (
 	"bufio"
@@ -51,16 +51,13 @@ type Prompt struct{}
 
 // Prompt for non-empty user input from STDIN
 func (p *Prompt) InputPrompt(prompt string) string {
-	var input string
 	r := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Printf("%s: ", prompt)
-		input, _ = r.ReadString('\n')
-
+		input, err := r.ReadString('\n')
 		input = strings.TrimSpace(input)
-		if input != "" {
-			break
+		if input != "" || err != nil {
+			return input
 		}
 	}
-	return input
 }

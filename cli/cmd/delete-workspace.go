@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/codesphere-cloud/cs-go/pkg/out"
+	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
 )
 
@@ -12,7 +12,6 @@ type Prompt interface {
 	InputPrompt(prompt string) string
 }
 
-// DeleteWorkspaceCmd represents the workspace command
 type DeleteWorkspaceCmd struct {
 	cmd    *cobra.Command
 	Opts   DeleteWorkspaceOpts
@@ -43,12 +42,12 @@ func AddDeleteWorkspaceCmd(delete *cobra.Command, opts GlobalOptions) {
 		cmd: &cobra.Command{
 			Use:   "workspace",
 			Short: "Delete workspace",
-			Long: out.Long(`Delete workspace after confirmation.
+			Long: io.Long(`Delete workspace after confirmation.
 
 			Confirmation can be given interactively or with the --yes flag`),
 		},
 		Opts:   DeleteWorkspaceOpts{GlobalOptions: opts},
-		Prompt: &out.Prompt{},
+		Prompt: &io.Prompt{},
 	}
 	workspace.Opts.Confirmed = workspace.cmd.Flags().Bool("yes", false, "Confirm deletion of workspace")
 	delete.AddCommand(workspace.cmd)
