@@ -21,25 +21,25 @@ cs create workspace [flags]
 
 ```
 # Create an empty workspace, using plan 20
-$ /tmp/go-build1549867059/b001/exe/main create workspace my-workspace -p 20
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main create workspace my-workspace -p 20
 
 # Create a workspace from a git repository
-$ /tmp/go-build1549867059/b001/exe/main create workspace my-workspace -r https://github.com/codesphere-cloud/landingpage-temp.git
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main create workspace my-workspace -r https://github.com/codesphere-cloud/landingpage-temp.git
 
 # Create a workspace and set environment variables
-$ /tmp/go-build1549867059/b001/exe/main create workspace my-workspace -r https://github.com/codesphere-cloud/landingpage-temp.git -e DEPLOYMENT=prod -e A=B
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main create workspace my-workspace -r https://github.com/codesphere-cloud/landingpage-temp.git -e DEPLOYMENT=prod -e A=B
 
 # Create a workspace and connect to VPN myVpn
-$ /tmp/go-build1549867059/b001/exe/main create workspace my-workspace -r https://github.com/codesphere-cloud/landingpage-temp.git --vpn myVpn
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main create workspace my-workspace -r https://github.com/codesphere-cloud/landingpage-temp.git --vpn myVpn
 
 # Create a workspace and wait 30 seconds for it to become running
-$ /tmp/go-build1549867059/b001/exe/main create workspace my-workspace -r https://github.com/codesphere-cloud/landingpage-temp.git --timeout 30s
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main create workspace my-workspace -r https://github.com/codesphere-cloud/landingpage-temp.git --timeout 30s
 
 # Create a workspace from branch 'staging'
-$ /tmp/go-build1549867059/b001/exe/main create workspace my-workspace -r https://github.com/codesphere-cloud/landingpage-temp.git -b staging
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main create workspace my-workspace -r https://github.com/codesphere-cloud/landingpage-temp.git -b staging
 
 # Create a workspace from a private git repository
-$ /tmp/go-build1549867059/b001/exe/main create workspace my-workspace -r https://github.com/my-org/my-private-project.git -P
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main create workspace my-workspace -r https://github.com/my-org/my-private-project.git -P
 ```
 
 ### Options

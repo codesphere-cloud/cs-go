@@ -14,7 +14,7 @@ cs list teams [flags]
 
 ```
 # List all teams
-$ /tmp/go-build1549867059/b001/exe/main list teams 
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main list teams 
 ```
 
 ### Options

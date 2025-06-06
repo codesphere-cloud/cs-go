@@ -14,10 +14,10 @@ cs set-env [flags]
 
 ```
 # Set single environment variable
-$ /tmp/go-build1549867059/b001/exe/main set-env --workspace <workspace-id> --env-var foo=bar
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main set-env --workspace <workspace-id> --env-var foo=bar
 
 # Set multiple environment variables
-$ /tmp/go-build1549867059/b001/exe/main set-env --workspace <workspace-id> --env-var foo=bar --env-var hello=world
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main set-env --workspace <workspace-id> --env-var foo=bar --env-var hello=world
 ```
 
 ### Options

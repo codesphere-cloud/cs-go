@@ -15,16 +15,16 @@ cs exec [flags]
 
 ```
 # Print `hello world`
-$ /tmp/go-build1549867059/b001/exe/main exec -- echo hello world
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main exec -- echo hello world
 
 # List all files in workspace
-$ /tmp/go-build1549867059/b001/exe/main exec -- find .
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main exec -- find .
 
 # List all files in the user directory
-$ /tmp/go-build1549867059/b001/exe/main exec -d user -- find .
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main exec -d user -- find .
 
 # Set custom environment variables for this command
-$ /tmp/go-build1549867059/b001/exe/main exec -e FOO=bar -- 'echo $FOO'
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main exec -e FOO=bar -- 'echo $FOO'
 ```
 
 ### Options

@@ -20,13 +20,13 @@ cs log [flags]
 
 ```
 # Get logs from a server
-$ /tmp/go-build1549867059/b001/exe/main log -w 637128 -s app
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main log -w 637128 -s app
 
 # Get all logs of all servers
-$ /tmp/go-build1549867059/b001/exe/main log -w 637128
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main log -w 637128
 
 # Get logs from a replica
-$ /tmp/go-build1549867059/b001/exe/main log -w 637128 -r workspace-213d7a8c-48b4-42e2-8f70-c905ab04abb5-58d657cdc5-m8rrp
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main log -w 637128 -r workspace-213d7a8c-48b4-42e2-8f70-c905ab04abb5-58d657cdc5-m8rrp
 ```
 
 ### Options

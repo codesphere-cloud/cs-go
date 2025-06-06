@@ -14,10 +14,10 @@ cs open workspace [flags]
 
 ```
 # open workspace 42 in web browser
-$ /tmp/go-build1549867059/b001/exe/main open workspace -w 42
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main open workspace -w 42
 
 # open workspace set by environment variable CS_WORKSPACE_ID
-$ /tmp/go-build1549867059/b001/exe/main open workspace 
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main open workspace 
 ```
 
 ### Options
