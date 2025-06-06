@@ -81,6 +81,7 @@ func GetRootCmd() *cobra.Command {
 	AddLicensesCmd(rootCmd)
 	AddOpenCmd(rootCmd, opts)
 	AddCreateCmd(rootCmd, opts)
+	AddDeleteCmd(rootCmd, opts)
 
 	return rootCmd
 }

@@ -1,12 +1,14 @@
 // Copyright (c) Codesphere Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-package out
+package io
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"regexp"
+	"strings"
 
 	"github.com/jedib0t/go-pretty/v6/table"
 )
@@ -43,4 +45,19 @@ func FormatExampleCommands(command string, examples []Example) (res string) {
 func Long(in string) string {
 	re := regexp.MustCompile("\n\t+")
 	return re.ReplaceAllString(in, "\n")
+}
+
+type Prompt struct{}
+
+// Prompt for non-empty user input from STDIN
+func (p *Prompt) InputPrompt(prompt string) string {
+	r := bufio.NewReader(os.Stdin)
+	for {
+		fmt.Printf("%s: ", prompt)
+		input, err := r.ReadString('\n')
+		input = strings.TrimSpace(input)
+		if input != "" || err != nil {
+			return input
+		}
+	}
 }

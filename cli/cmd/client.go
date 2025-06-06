@@ -21,6 +21,7 @@ type Client interface {
 	ExecCommand(workspaceId int, command string, workdir string, env map[string]string) (string, string, error)
 	ListWorkspacePlans() ([]api.WorkspacePlan, error)
 	DeployWorkspace(args api.DeployWorkspaceArgs) (*api.Workspace, error)
+	DeleteWorkspace(wsId int) error
 }
 
 func NewClient(opts GlobalOptions) (Client, error) {

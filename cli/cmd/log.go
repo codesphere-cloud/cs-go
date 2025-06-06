@@ -18,7 +18,7 @@ import (
 	"sync"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
-	"github.com/codesphere-cloud/cs-go/pkg/out"
+	csio "github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
 )
 
@@ -58,14 +58,14 @@ func AddLogCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 		cmd: &cobra.Command{
 			Use:   "log",
 			Short: "Retrieve run logs from services",
-			Long: `You can retrieve logs based on the given scope.
+			Long: csio.Long(`You can retrieve logs based on the given scope.
 
-If you provide the step number and server, it returns all logs from
-all replicas of that server.
+				If you provide the step number and server, it returns all logs from
+				all replicas of that server.
 
-If you provide a specific replica id, it will return the logs of
-that replica only.`,
-			Example: out.FormatExampleCommands("log", []out.Example{
+				If you provide a specific replica id, it will return the logs of
+				that replica only.`),
+			Example: csio.FormatExampleCommands("log", []csio.Example{
 				{Cmd: "-w 637128 -s app", Desc: "Get logs from a server"},
 				{Cmd: "-w 637128", Desc: "Get all logs of all servers"},
 				{Cmd: "-w 637128 -r workspace-213d7a8c-48b4-42e2-8f70-c905ab04abb5-58d657cdc5-m8rrp", Desc: "Get logs from a replica"},

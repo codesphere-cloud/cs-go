@@ -7,7 +7,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// CreateCmd represents the create command
 type CreateCmd struct {
 	cmd *cobra.Command
 }

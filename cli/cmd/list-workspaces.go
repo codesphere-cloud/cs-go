@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"github.com/codesphere-cloud/cs-go/api"
-	"github.com/codesphere-cloud/cs-go/pkg/out"
+	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/jedib0t/go-pretty/v6/table"
 
 	"github.com/spf13/cobra"
@@ -24,7 +24,7 @@ func addListWorkspacesCmd(p *cobra.Command, opts GlobalOptions) {
 			Use:   "workspaces",
 			Short: "List workspaces",
 			Long:  `List workspaces available in Codesphere`,
-			Example: out.FormatExampleCommands("list workspaces", []out.Example{
+			Example: io.FormatExampleCommands("list workspaces", []io.Example{
 				{Cmd: "--team-id <team-id>", Desc: "List all workspaces"},
 			}),
 		},
@@ -45,7 +45,7 @@ func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {
 		return fmt.Errorf("failed to list workspaces: %w", err)
 	}
 
-	t := out.GetTableWriter()
+	t := io.GetTableWriter()
 	t.AppendHeader(table.Row{"Team ID", "ID", "Name", "Repository"})
 	for _, w := range workspaces {
 		gitUrl := ""

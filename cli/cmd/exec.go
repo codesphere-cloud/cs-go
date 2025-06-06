@@ -9,12 +9,11 @@ import (
 	"strings"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
-	"github.com/codesphere-cloud/cs-go/pkg/out"
+	"github.com/codesphere-cloud/cs-go/pkg/io"
 
 	"github.com/spf13/cobra"
 )
 
-// ExecCmd represents the exec command
 type ExecCmd struct {
 	cmd  *cobra.Command
 	Opts ExecOptions
@@ -44,9 +43,9 @@ func AddExecCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 			Use:   "exec",
 			Args:  cobra.MinimumNArgs(1),
 			Short: "Run a command in Codesphere workspace",
-			Long: out.Long(`Run a command in a Codesphere workspace.
+			Long: io.Long(`Run a command in a Codesphere workspace.
 				Output will be printed to STDOUT, errors to STDERR.`),
-			Example: out.FormatExampleCommands("exec", []out.Example{
+			Example: io.FormatExampleCommands("exec", []io.Example{
 				{Cmd: "-- echo hello world", Desc: "Print `hello world`"},
 				{Cmd: "-- find .", Desc: "List all files in workspace"},
 				{Cmd: "-d user -- find .", Desc: "List all files in the user directory"},

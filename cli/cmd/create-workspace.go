@@ -11,11 +11,10 @@ import (
 
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
-	"github.com/codesphere-cloud/cs-go/pkg/out"
+	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
 )
 
-// CreateWorkspaceCmd represents the workspace command
 type CreateWorkspaceCmd struct {
 	cmd  *cobra.Command
 	Opts CreateWorkspaceOpts
@@ -78,7 +77,7 @@ func AddCreateWorkspaceCmd(create *cobra.Command, opts GlobalOptions) {
 			Use:   "workspace",
 			Short: "Create a workspace",
 			Args:  cobra.RangeArgs(1, 1),
-			Long: out.Long(`Create a workspace in Codesphere.
+			Long: io.Long(`Create a workspace in Codesphere.
 
 				Specify a (private) git repository or start an empty workspace.
 				Environment variables can be set to initialize the workspace with a specific environment.
@@ -86,7 +85,7 @@ func AddCreateWorkspaceCmd(create *cobra.Command, opts GlobalOptions) {
 
 				To decide which plan suits your needs, run 'cs list plans'
 			`),
-			Example: out.FormatExampleCommands("create workspace my-workspace", []out.Example{
+			Example: io.FormatExampleCommands("create workspace my-workspace", []io.Example{
 				{Cmd: "-p 20", Desc: "Create an empty workspace, using plan 20"},
 				{Cmd: "-r https://github.com/codesphere-cloud/landingpage-temp.git", Desc: "Create a workspace from a git repository"},
 				{Cmd: "-r https://github.com/codesphere-cloud/landingpage-temp.git -e DEPLOYMENT=prod -e A=B", Desc: "Create a workspace and set environment variables"},

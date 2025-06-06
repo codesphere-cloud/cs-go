@@ -11,14 +11,11 @@ import (
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 )
 
-// OpenCmd represents the open command
 type OpenCmd struct {
 	cmd *cobra.Command
 }
 
 func (c *OpenCmd) RunE(_ *cobra.Command, args []string) error {
-	//Command execution goes here
-
 	fmt.Println("Opening Codesphere IDE")
 	return cs.NewBrowser().OpenIde("")
 }

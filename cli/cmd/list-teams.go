@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
-	"github.com/codesphere-cloud/cs-go/pkg/out"
+	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/jedib0t/go-pretty/v6/table"
 
 	"github.com/spf13/cobra"
@@ -24,7 +24,7 @@ func addListTeamsCmd(p *cobra.Command, opts GlobalOptions) {
 			Use:   "teams",
 			Short: "List teams",
 			Long:  `List teams available in Codesphere`,
-			Example: out.FormatExampleCommands("list teams", []out.Example{
+			Example: io.FormatExampleCommands("list teams", []io.Example{
 				{Desc: "List all teams"},
 			}),
 		},
@@ -45,7 +45,7 @@ func (l *ListTeamsCmd) RunE(_ *cobra.Command, args []string) (err error) {
 		return fmt.Errorf("failed to list teams: %w", err)
 	}
 
-	t := out.GetTableWriter()
+	t := io.GetTableWriter()
 	t.AppendHeader(table.Row{"P", "ID", "Name", "Role", "Default DC"})
 	for _, team := range teams {
 		first := ""

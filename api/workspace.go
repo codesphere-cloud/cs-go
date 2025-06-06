@@ -19,7 +19,16 @@ func (c *Client) ListWorkspaces(teamId int) ([]Workspace, error) {
 
 func (c *Client) GetWorkspace(workspaceId int) (Workspace, error) {
 	workspace, _, err := c.api.WorkspacesAPI.WorkspacesGetWorkspace(c.ctx, float32(workspaceId)).Execute()
-	return *workspace, err
+
+	if workspace != nil {
+		return *workspace, err
+	}
+	return Workspace{}, err
+}
+
+func (c *Client) DeleteWorkspace(workspaceId int) error {
+	_, err := c.api.WorkspacesAPI.WorkspacesDeleteWorkspace(c.ctx, float32(workspaceId)).Execute()
+	return err
 }
 
 func (c *Client) WorkspaceStatus(workspaceId int) (*WorkspaceStatus, error) {
