@@ -82,6 +82,7 @@ func GetRootCmd() *cobra.Command {
 	AddOpenCmd(rootCmd, opts)
 	AddCreateCmd(rootCmd, opts)
 	AddDeleteCmd(rootCmd, opts)
+	AddStartCmd(rootCmd, opts)
 
 	return rootCmd
 }

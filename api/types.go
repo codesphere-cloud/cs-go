@@ -20,6 +20,8 @@ type WorkspaceStatus = openapi.WorkspacesGetWorkspaceStatus200Response
 type CreateWorkspaceArgs = openapi.WorkspacesCreateWorkspaceRequest
 type WorkspacePlan = openapi.MetadataGetWorkspacePlans200ResponseInner
 
+type PipelineStatus = openapi.WorkspacesPipelineStatus200ResponseInner
+
 // TODO: remove the conversion once the api is fixed
 func ConvertToTeam(t *openapi.TeamsGetTeam200Response) *Team {
 	return &Team{

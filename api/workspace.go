@@ -71,6 +71,23 @@ func (c *Client) ExecCommand(workspaceId int, command string, workdir string, en
 	return res.Output, res.Error, nil
 }
 
+func (c *Client) StartPipelineStage(wsId int, profile string, stage string) error {
+	if profile == "ci.yml" || profile == "" {
+		req := c.api.WorkspacesAPI.WorkspacesStartPipelineStage(c.ctx, float32(wsId), stage)
+		_, err := req.Execute()
+		return err
+	}
+	req := c.api.WorkspacesAPI.WorkspacesStartPipelineStage1(c.ctx, float32(wsId), stage, profile)
+	_, err := req.Execute()
+	return err
+}
+
+func (c *Client) GetPipelineState(wsId int, stage string) ([]PipelineStatus, error) {
+	req := c.api.WorkspacesAPI.WorkspacesPipelineStatus(c.ctx, float32(wsId), stage)
+	res, _, err := req.Execute()
+	return res, err
+}
+
 // Waits for a given workspace to be running.
 //
 // Returns [TimedOut] error if the workspace does not become running in time.
