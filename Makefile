@@ -55,7 +55,7 @@ generate-api: generate-client format
 docs:
 	rm -rf docs
 	mkdir docs
-	go run -ldflags="-X 'github.com/codesphere-cloud/cs-go/pkg/out.binName=cs'" hack/gendocs/main.go 
+	go run -ldflags="-X 'github.com/codesphere-cloud/cs-go/pkg/io.binName=cs'" hack/gendocs/main.go 
 	cp docs/cs.md docs/README.md
 
 generate-license: generate

@@ -20,6 +20,7 @@ func GetTableWriter() table.Writer {
 	return t
 }
 
+// This variable is injected during docs generation. Update in Makefile when moving
 var binName string
 
 type Example struct {
