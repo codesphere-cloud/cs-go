@@ -58,7 +58,7 @@ func AddStartPipelineCmd(start *cobra.Command, opts GlobalOptions) {
 				{Cmd: "prepare test", Desc: "Start the prepare and test stages sequencially and wait for them to finish"},
 				{Cmd: "prepare test run", Desc: "Start the prepare, test, and run stages sequencially. Exits after the run stage is triggered"},
 				{Cmd: "run", Desc: "Start the run stage and exit when running"},
-				{Cmd: "-p ci.prod.yml run", Desc: "Start the run stage of the ci.prod.yml profile"},
+				{Cmd: "-p prod run", Desc: "Start the run stage of the prod profile"},
 				{Cmd: "-t 5m prepare", Desc: "start the prepare stage, timeout after 5 minutes."},
 			}),
 		},
@@ -75,12 +75,12 @@ func AddStartPipelineCmd(start *cobra.Command, opts GlobalOptions) {
 
 func (c *StartPipelineCmd) StartPipelineStages(client Client, wsId int, stages []string) error {
 	for _, stage := range stages {
-		if !IsValidStage(stage) {
+		if !isValidStage(stage) {
 			return fmt.Errorf("invalid pipeline stage: %s", stage)
 		}
 	}
 	for _, stage := range stages {
-		err := c.StartStage(client, wsId, stage)
+		err := c.startStage(client, wsId, stage)
 		if err != nil {
 			return err
 		}
@@ -88,11 +88,11 @@ func (c *StartPipelineCmd) StartPipelineStages(client Client, wsId int, stages [
 	return nil
 }
 
-func IsValidStage(stage string) bool {
+func isValidStage(stage string) bool {
 	return slices.Contains([]string{"prepare", "test", "run"}, stage)
 }
 
-func (c *StartPipelineCmd) StartStage(client Client, wsId int, stage string) error {
+func (c *StartPipelineCmd) startStage(client Client, wsId int, stage string) error {
 	fmt.Printf("starting %s stage on workspace %d...", stage, wsId)
 
 	err := client.StartPipelineStage(wsId, *c.Opts.Profile, stage)
@@ -134,7 +134,7 @@ func (c *StartPipelineCmd) waitForPipelineStage(client Client, wsId int, stage s
 
 		err = shouldAbort(status)
 		if err != nil {
-			fmt.Println()
+			fmt.Println("(failed)")
 			return fmt.Errorf("stage %s failed: %w", stage, err)
 		}
 
