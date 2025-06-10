@@ -18,12 +18,19 @@ $ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d
 
 # Set multiple environment variables
 $ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main set-env --workspace <workspace-id> --env-var foo=bar --env-var hello=world
+
+# Set environmental variables with a file
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main set-env --workspace <workspace-id> --env-file .env.sample 
+
+# Set environmental variables with a file and single/multiple values
+$ /home/runner/.cache/go-build/14/142566baf6f47b381ccbdff9218d5f9501b1be7b016f5d73eacb871e2ca47b86-d/main set-env --workspace <workspace-id> --env-file .env.sample --env-var foo=bar --env-var hello=world
 ```
 
 ### Options
 
 ```
   -e, --env-var stringArray   env vars to set in form key=val
+  -f, --env-file string       file path to env file
   -h, --help                  help for set-env
 ```
 
