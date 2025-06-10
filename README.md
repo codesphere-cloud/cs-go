@@ -21,7 +21,7 @@ You can install the Codesphere CLI in a few ways:
 To use the CLI inside a Codesphere workspace, install it using the following command:
 
 ```
-wget -qO- 'https://api.github.com/repos/codesphere-cloud/cs-go/releases/latest' | grep linux_amd64 | grep browser_download_url | sed s/.*https/https/ | sed s/\".*$// | xargs wget -O $HOME/.local/bin/cs && chmod +x $HOME/.local/bin/cs
+mkdir -p $HOME/.local/bin && wget -qO- 'https://api.github.com/repos/codesphere-cloud/cs-go/releases/latest' | grep linux_amd64 | grep browser_download_url | sed s/.*https/https/ | sed s/\".*$// | xargs wget -O $HOME/.local/bin/cs && chmod +x $HOME/.local/bin/cs
 ```
 
 #### Using GitHub CLI (`gh`)
