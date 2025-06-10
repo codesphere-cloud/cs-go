@@ -169,7 +169,7 @@ func allFinished(status []api.PipelineStatus) bool {
 func shouldAbort(status []api.PipelineStatus) error {
 	for _, s := range status {
 		if slices.Contains([]string{"failure", "aborted"}, s.State) {
-			fmt.Errorf("server %s, replica %s reached unexpected state %s", s.Server, s.Replica, s.State)
+			return fmt.Errorf("server %s, replica %s reached unexpected state %s", s.Server, s.Replica, s.State)
 		}
 	}
 	return nil
