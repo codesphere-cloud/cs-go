@@ -3,10 +3,10 @@ package export
 import (
 	_ "embed"
 	"fmt"
-	"os"
 	"text/template"
 
 	"github.com/codesphere-cloud/cs-go/pkg/ci"
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 )
 
 //go:embed docker.tmpl
@@ -23,42 +23,42 @@ type DockerTemplateConfig struct {
 	RunSteps     []ci.Step
 }
 
-func CreateDockerfile(config DockerTemplateConfig) error {
-	err := CreateDirectory(config.OutputPath)
+func CreateDockerfile(fs *cs.FileSystem, config DockerTemplateConfig) error {
+	err := fs.CreateDirectory(config.OutputPath)
 	if err != nil {
-		return fmt.Errorf("error creating directory: %w\n", err)
+		return fmt.Errorf("error creating directory: %w", err)
 	}
 
 	// Create Dockerfile
-	f, err := os.Create(config.OutputPath + "/Dockerfile")
+	f, err := fs.CreateFile(config.OutputPath + "/Dockerfile")
 	if err != nil {
-		return fmt.Errorf("error creating docker file: %w\n", err)
+		return fmt.Errorf("error creating docker file: %w", err)
 	}
 
 	dockerTemplate, err := template.New("dockerTemplate").Parse(dockerTemplateFile)
 	if err != nil {
-		return fmt.Errorf("error parsing docker template: %w\n", err)
+		return fmt.Errorf("error parsing docker template: %w", err)
 	}
 
 	err = dockerTemplate.Execute(f, config)
 	if err != nil {
-		return fmt.Errorf("error executing docker template: %w\n", err)
+		return fmt.Errorf("error executing docker template: %w", err)
 	}
 
 	// Create shell script for entrypoint
-	f, err = os.Create(config.OutputPath + "/entrypoint.sh")
+	f, err = fs.CreateFile(config.OutputPath + "/entrypoint.sh")
 	if err != nil {
-		return fmt.Errorf("error creating entrypoint.sh: %w\n", err)
+		return fmt.Errorf("error creating entrypoint.sh: %w", err)
 	}
 
 	entrypointTemplate, err := template.New("entrypoint").Parse(entrypointTemplateFile)
 	if err != nil {
-		return fmt.Errorf("error parsing shell template: %w\n", err)
+		return fmt.Errorf("error parsing shell template: %w", err)
 	}
 
 	err = entrypointTemplate.Execute(f, config)
 	if err != nil {
-		return fmt.Errorf("error executing shell template: %w\n", err)
+		return fmt.Errorf("error executing shell template: %w", err)
 	}
 
 	return f.Close()

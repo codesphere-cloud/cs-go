@@ -3,10 +3,10 @@ package export
 import (
 	_ "embed"
 	"fmt"
-	"os"
 	"text/template"
 
 	"github.com/codesphere-cloud/cs-go/pkg/ci"
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 )
 
 //go:embed dockercompose.tmpl
@@ -19,25 +19,26 @@ type DockerComposeTemplateConfig struct {
 	EnvVars  []string
 }
 
-func CreateDockerCompose(config DockerComposeTemplateConfig) error {
+func CreateDockerCompose(fs *cs.FileSystem, config DockerComposeTemplateConfig) error {
+	err := fs.CreateDirectory(config.OutputPath)
+	if err != nil {
+		return fmt.Errorf("error creating directory: %w", err)
+	}
+
+	// Create the docker compose file
 	t, err := template.New("dockercompose.tmpl").Parse(DockerComposeTemplateFile)
 	if err != nil {
-		return fmt.Errorf("error parsing docker compose template: %w\n", err)
+		return fmt.Errorf("error parsing docker compose template: %w", err)
 	}
 
-	err = CreateDirectory(config.OutputPath)
+	f, err := fs.CreateFile(config.OutputPath + "/docker-compose.yml")
 	if err != nil {
-		return fmt.Errorf("error creating directory: %w\n", err)
-	}
-
-	f, err := os.Create(config.OutputPath + "/docker-compose.yml")
-	if err != nil {
-		return fmt.Errorf("error creating docker compose file: %w\n", err)
+		return fmt.Errorf("error creating docker compose file: %w", err)
 	}
 
 	err = t.Execute(f, config)
 	if err != nil {
-		return fmt.Errorf("error executing docker compose template: %w\n", err)
+		return fmt.Errorf("error executing docker compose template: %w", err)
 	}
 
 	return f.Close()

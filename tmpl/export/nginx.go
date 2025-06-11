@@ -3,10 +3,10 @@ package export
 import (
 	_ "embed"
 	"fmt"
-	"os"
 	"text/template"
 
 	"github.com/codesphere-cloud/cs-go/pkg/ci"
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 )
 
 //go:embed nginx.tmpl
@@ -18,25 +18,26 @@ type NginxConfigTemplateConfig struct {
 	Services map[string]ci.Service
 }
 
-func CreateNginxConfig(config NginxConfigTemplateConfig) error {
+func CreateNginxConfig(fs *cs.FileSystem, config NginxConfigTemplateConfig) error {
+	err := fs.CreateDirectory(config.OutputPath)
+	if err != nil {
+		return fmt.Errorf("error creating directory: %w", err)
+	}
+
+	// Create the nginx config file
 	t, err := template.New("nginx").Parse(nginxTemplateFile)
 	if err != nil {
-		return fmt.Errorf("error parsing nginx template: %w\n", err)
+		return fmt.Errorf("error parsing nginx template: %w", err)
 	}
 
-	err = CreateDirectory(config.OutputPath)
+	f, err := fs.Create(config.OutputPath + "/nginx.conf")
 	if err != nil {
-		return fmt.Errorf("error creating directory: %w\n", err)
-	}
-
-	f, err := os.Create(config.OutputPath + "/nginx.conf")
-	if err != nil {
-		return fmt.Errorf("error creating nginx file: %w\n", err)
+		return fmt.Errorf("error creating nginx file: %w", err)
 	}
 
 	err = t.Execute(f, config)
 	if err != nil {
-		return fmt.Errorf("error executing nginx template: %w\n", err)
+		return fmt.Errorf("error executing nginx template: %w", err)
 	}
 
 	return f.Close()

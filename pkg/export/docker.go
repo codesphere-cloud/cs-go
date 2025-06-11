@@ -2,18 +2,17 @@ package export
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/codesphere-cloud/cs-go/pkg/ci"
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	templates "github.com/codesphere-cloud/cs-go/tmpl/export"
 )
 
-func ExportDockerArtifacts(inputPath, outputPath, baseImage string, envVars []string) {
+func ExportDockerArtifacts(fs *cs.FileSystem, inputPath string, outputPath string, baseImage string, envVars []string) error {
 	// Get map from yml file
 	ymlContent, err := ci.ReadYmlFile(inputPath)
 	if err != nil {
-		fmt.Printf("error getting map from yml file: %s\n", err)
-		os.Exit(1)
+		return fmt.Errorf("error reading yml file: %s", err)
 	}
 
 	// Update old services (path directly in network) to network with array of paths
@@ -43,10 +42,9 @@ func ExportDockerArtifacts(inputPath, outputPath, baseImage string, envVars []st
 			PrepareSteps: ymlContent.Prepare.Steps,
 			RunSteps:     service.Steps,
 		}
-		err = templates.CreateDockerfile(config)
+		err = templates.CreateDockerfile(fs, config)
 		if err != nil {
-			fmt.Printf("error creating dockerfile: %s\n", err)
-			os.Exit(1)
+			return fmt.Errorf("error creating dockerfile for service %s: %s", serviceName, err)
 		}
 	}
 
@@ -57,10 +55,9 @@ func ExportDockerArtifacts(inputPath, outputPath, baseImage string, envVars []st
 		OutputPath: outputPath,
 		Services:   ymlContent.Run,
 	}
-	err = templates.CreateNginxConfig(configNginx)
+	err = templates.CreateNginxConfig(fs, configNginx)
 	if err != nil {
-		fmt.Printf("error creating docker compose file: %s\n", err)
-		os.Exit(1)
+		return fmt.Errorf("error creating nginx config file: %s", err)
 	}
 
 	// Create Docker compose file
@@ -71,9 +68,10 @@ func ExportDockerArtifacts(inputPath, outputPath, baseImage string, envVars []st
 		Services:   ymlContent.Run,
 		EnvVars:    envVars,
 	}
-	err = templates.CreateDockerCompose(configDockerCompose)
+	err = templates.CreateDockerCompose(fs, configDockerCompose)
 	if err != nil {
-		fmt.Printf("error creating docker compose file: %s\n", err)
-		os.Exit(1)
+		return fmt.Errorf("error creating docker compose file: %s", err)
 	}
+
+	return nil
 }

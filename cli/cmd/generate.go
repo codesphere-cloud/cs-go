@@ -1,13 +1,9 @@
-/*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
 	"github.com/spf13/cobra"
 )
 
-// GenerateCmd represents the generate command
 type GenerateCmd struct {
 	cmd *cobra.Command
 }
