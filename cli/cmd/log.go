@@ -7,13 +7,10 @@ import (
 	"bufio"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"log/slog"
 	"net/http"
-	"os"
-	"strconv"
 	"strings"
 	"sync"
 
@@ -29,8 +26,9 @@ type LogCmd struct {
 }
 
 type LogCmdScope struct {
-	workspaceId *int
+	workspaceId int
 	server      *string
+	stage       *string
 	step        *int
 	replica     *string
 }
@@ -81,20 +79,16 @@ func AddLogCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 func (logCmd *LogCmd) parseLogCmdFlags() {
 	logCmd.scope = LogCmdScope{
 		server:  logCmd.cmd.Flags().StringP("server", "s", "", "Name of the landscape server"),
+		stage:   logCmd.cmd.Flags().String("stage", "run", "Stage to stream logs from"),
 		step:    logCmd.cmd.Flags().IntP("step", "n", 0, "Index of execution step (default 0)"),
 		replica: logCmd.cmd.Flags().StringP("replica", "r", "", "ID of server replica"),
 	}
 }
 
 func (l *LogCmd) RunE(_ *cobra.Command, args []string) (err error) {
-	if *l.scope.workspaceId == 0 {
-		*l.scope.workspaceId, err = strconv.Atoi(os.Getenv("CS_WORKSPACE_ID"))
-		if err != nil {
-			return fmt.Errorf("failed to read env var: %w", err)
-		}
-		if *l.scope.workspaceId == 0 {
-			return errors.New("workspace ID required, but not provided")
-		}
+	l.scope.workspaceId, err = l.opts.GetWorkspaceId()
+	if err != nil {
+		return fmt.Errorf("failed to get workspace ID: %w", err)
 	}
 
 	if *l.scope.replica != "" {
@@ -110,19 +104,16 @@ func (l *LogCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	if *l.scope.server != "" {
 		return l.printLogsOfServer()
 	}
-
-	err = l.printAllLogs()
-	if err != nil {
-		return fmt.Errorf("failed to print logs: %w", err)
+	if *l.scope.stage != "run" {
+		return l.printLogsOfStage()
 	}
-
-	return nil
+	return l.printAllLogs()
 }
 
 func (l *LogCmd) printAllLogs() error {
 	fmt.Println("Printing logs of all replicas")
 
-	replicas, err := cs.GetPipelineStatus(*l.scope.workspaceId, "run")
+	replicas, err := cs.GetPipelineStatus(l.scope.workspaceId, *l.scope.stage)
 	if err != nil {
 		return fmt.Errorf("failed to get pipeline status: %w", err)
 	}
@@ -149,11 +140,22 @@ func (l *LogCmd) printAllLogs() error {
 	return nil
 }
 
+func (l *LogCmd) printLogsOfStage() error {
+	endpoint := fmt.Sprintf(
+		"%s/workspaces/%d/logs/%s/%d",
+		l.opts.GetApiUrl(),
+		l.scope.workspaceId,
+		*l.scope.stage,
+		*l.scope.step,
+	)
+	return printLogsOfEndpoint("", endpoint)
+}
+
 func (l *LogCmd) printLogsOfReplica(prefix string) error {
 	endpoint := fmt.Sprintf(
 		"%s/workspaces/%d/logs/run/%d/replica/%s",
 		l.opts.GetApiUrl(),
-		*l.scope.workspaceId,
+		l.scope.workspaceId,
 		*l.scope.step,
 		*l.scope.replica,
 	)
@@ -164,7 +166,7 @@ func (l *LogCmd) printLogsOfServer() error {
 	endpoint := fmt.Sprintf(
 		"%s/workspaces/%d/logs/run/%d/server/%s",
 		l.opts.GetApiUrl(),
-		*l.scope.workspaceId,
+		l.scope.workspaceId,
 		*l.scope.step,
 		*l.scope.server,
 	)
@@ -172,7 +174,6 @@ func (l *LogCmd) printLogsOfServer() error {
 }
 
 func printLogsOfEndpoint(prefix string, endpoint string) error {
-	fmt.Println(endpoint)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
