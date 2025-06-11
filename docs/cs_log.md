@@ -35,6 +35,7 @@ $ cs log -w 637128 -r workspace-213d7a8c-48b4-42e2-8f70-c905ab04abb5-58d657cdc5-
   -h, --help             help for log
   -r, --replica string   ID of server replica
   -s, --server string    Name of the landscape server
+      --stage string     Stage to stream logs from (default "run")
   -n, --step int         Index of execution step (default 0)
 ```
 
