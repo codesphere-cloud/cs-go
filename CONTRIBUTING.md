@@ -24,7 +24,7 @@ This project currently uses a fork of cobra-cli with locally-scoped variables: h
 Please use it to add new commands to the Go CLI like following:
 
 ```
-cobra-cli add -L -d cli -p list teams
+cobra-cli add -c false -L -d cli -p list teams
 ```
 
 Run the generated `AddListTeamsCmd()` function in the parent `cli/cmd/list.go` to add the subcommand.
