@@ -22,6 +22,8 @@ type Client interface {
 	ListWorkspacePlans() ([]api.WorkspacePlan, error)
 	DeployWorkspace(args api.DeployWorkspaceArgs) (*api.Workspace, error)
 	DeleteWorkspace(wsId int) error
+	StartPipelineStage(wsId int, profile string, stage string) error
+	GetPipelineState(wsId int, stage string) ([]api.PipelineStatus, error)
 }
 
 func NewClient(opts GlobalOptions) (Client, error) {

@@ -5,7 +5,6 @@ package cmd_test
 
 import (
 	"errors"
-	"fmt"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -85,7 +84,6 @@ var _ = Describe("CreateWorkspace", func() {
 			getWsErr = nil
 		})
 		JustBeforeEach(func() {
-			fmt.Println(ws)
 			mockClient.EXPECT().GetWorkspace(wsId).Return(ws, getWsErr)
 		})
 		Context("Workspace exists", func() {

@@ -23,20 +23,24 @@ func GetTableWriter() table.Writer {
 // This variable is injected during docs generation. Update in Makefile when moving
 var binName string
 
+func BinName() string {
+	if binName == "" {
+		binName = os.Args[0]
+	}
+	return binName
+}
+
 type Example struct {
 	Cmd  string
 	Desc string
 }
 
 func FormatExampleCommands(command string, examples []Example) (res string) {
-	if binName == "" {
-		binName = os.Args[0]
-	}
 	for i, ex := range examples {
 		if i > 0 {
 			res += "\n\n"
 		}
-		res += fmt.Sprintf("# %s\n$ %s %s %s", ex.Desc, binName, command, ex.Cmd)
+		res += fmt.Sprintf("# %s\n$ %s %s %s", ex.Desc, BinName(), command, ex.Cmd)
 	}
 	return
 }

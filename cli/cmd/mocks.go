@@ -200,6 +200,63 @@ func (_c *MockClient_ExecCommand_Call) RunAndReturn(run func(workspaceId int, co
 	return _c
 }
 
+// GetPipelineState provides a mock function for the type MockClient
+func (_mock *MockClient) GetPipelineState(wsId int, stage string) ([]api.PipelineStatus, error) {
+	ret := _mock.Called(wsId, stage)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetPipelineState")
+	}
+
+	var r0 []api.PipelineStatus
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(int, string) ([]api.PipelineStatus, error)); ok {
+		return returnFunc(wsId, stage)
+	}
+	if returnFunc, ok := ret.Get(0).(func(int, string) []api.PipelineStatus); ok {
+		r0 = returnFunc(wsId, stage)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]api.PipelineStatus)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(int, string) error); ok {
+		r1 = returnFunc(wsId, stage)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockClient_GetPipelineState_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetPipelineState'
+type MockClient_GetPipelineState_Call struct {
+	*mock.Call
+}
+
+// GetPipelineState is a helper method to define mock.On call
+//   - wsId
+//   - stage
+func (_e *MockClient_Expecter) GetPipelineState(wsId interface{}, stage interface{}) *MockClient_GetPipelineState_Call {
+	return &MockClient_GetPipelineState_Call{Call: _e.mock.On("GetPipelineState", wsId, stage)}
+}
+
+func (_c *MockClient_GetPipelineState_Call) Run(run func(wsId int, stage string)) *MockClient_GetPipelineState_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(int), args[1].(string))
+	})
+	return _c
+}
+
+func (_c *MockClient_GetPipelineState_Call) Return(vs []api.PipelineStatus, err error) *MockClient_GetPipelineState_Call {
+	_c.Call.Return(vs, err)
+	return _c
+}
+
+func (_c *MockClient_GetPipelineState_Call) RunAndReturn(run func(wsId int, stage string) ([]api.PipelineStatus, error)) *MockClient_GetPipelineState_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // GetWorkspace provides a mock function for the type MockClient
 func (_mock *MockClient) GetWorkspace(workspaceId int) (api.Workspace, error) {
 	ret := _mock.Called(workspaceId)
@@ -462,6 +519,53 @@ func (_c *MockClient_SetEnvVarOnWorkspace_Call) Return(err error) *MockClient_Se
 }
 
 func (_c *MockClient_SetEnvVarOnWorkspace_Call) RunAndReturn(run func(workspaceId int, vars map[string]string) error) *MockClient_SetEnvVarOnWorkspace_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// StartPipelineStage provides a mock function for the type MockClient
+func (_mock *MockClient) StartPipelineStage(wsId int, profile string, stage string) error {
+	ret := _mock.Called(wsId, profile, stage)
+
+	if len(ret) == 0 {
+		panic("no return value specified for StartPipelineStage")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(int, string, string) error); ok {
+		r0 = returnFunc(wsId, profile, stage)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockClient_StartPipelineStage_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'StartPipelineStage'
+type MockClient_StartPipelineStage_Call struct {
+	*mock.Call
+}
+
+// StartPipelineStage is a helper method to define mock.On call
+//   - wsId
+//   - profile
+//   - stage
+func (_e *MockClient_Expecter) StartPipelineStage(wsId interface{}, profile interface{}, stage interface{}) *MockClient_StartPipelineStage_Call {
+	return &MockClient_StartPipelineStage_Call{Call: _e.mock.On("StartPipelineStage", wsId, profile, stage)}
+}
+
+func (_c *MockClient_StartPipelineStage_Call) Run(run func(wsId int, profile string, stage string)) *MockClient_StartPipelineStage_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(int), args[1].(string), args[2].(string))
+	})
+	return _c
+}
+
+func (_c *MockClient_StartPipelineStage_Call) Return(err error) *MockClient_StartPipelineStage_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockClient_StartPipelineStage_Call) RunAndReturn(run func(wsId int, profile string, stage string) error) *MockClient_StartPipelineStage_Call {
 	_c.Call.Return(run)
 	return _c
 }
