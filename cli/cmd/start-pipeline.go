@@ -115,7 +115,6 @@ func (c *StartPipelineCmd) waitForPipelineStage(client Client, wsId int, stage s
 	maxWaitTime := c.Time.Now().Add(*c.Opts.Timeout)
 	for {
 		status, err := client.GetPipelineState(wsId, stage)
-
 		if err != nil {
 			fmt.Printf("\nError getting pipeline status: %s, trying again...", err.Error())
 			c.Time.Sleep(delay)
