@@ -51,13 +51,13 @@ type Port struct {
 func ReadYmlFile(inputPath string) (*CiYml, error) {
 	ymlFile, err := os.ReadFile(inputPath)
 	if err != nil {
-		return nil, fmt.Errorf("error reading yml file: %w\n", err)
+		return nil, fmt.Errorf("error reading yml file: %w", err)
 	}
 
 	ymlContent := &CiYml{}
 	err = yaml.Unmarshal(ymlFile, &ymlContent)
 	if err != nil {
-		return nil, fmt.Errorf("error unmarshalling yml file: %w\n", err)
+		return nil, fmt.Errorf("error unmarshalling yml file: %w", err)
 	}
 
 	return ymlContent, nil
