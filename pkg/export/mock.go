@@ -10,7 +10,7 @@ func NewMockExporter(t interface {
 	Cleanup(func())
 }) *MockExporter {
 	mock := &MockExporter{}
-	mock.Mock.Test(t)
+	mock.Test(t)
 
 	t.Cleanup(func() { mock.AssertExpectations(t) })
 

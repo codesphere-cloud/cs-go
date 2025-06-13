@@ -12,7 +12,7 @@ func NewMockGit(t interface {
 	Cleanup(func())
 }) *MockGit {
 	mock := &MockGit{}
-	mock.Mock.Test(t)
+	mock.Test(t)
 
 	t.Cleanup(func() { mock.AssertExpectations(t) })
 
