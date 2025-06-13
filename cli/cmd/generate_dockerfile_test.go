@@ -66,7 +66,8 @@ var _ = Describe("GenerateDockerfile", func() {
 
 		Context("initial file exists", func() {
 			JustBeforeEach(func() {
-				memoryFs.Create("ci.dev.yml")
+				_, err := memoryFs.Create("ci.dev.yml")
+				Expect(err).To(Not(HaveOccurred()))
 			})
 			FIt("should not return an error", func() {
 				mockExporter.EXPECT().ExportDockerArtifacts("ci.dev.yml", "./export", "alpine:latest", []string{}).Return(nil)
