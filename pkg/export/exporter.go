@@ -8,7 +8,22 @@ import (
 	templates "github.com/codesphere-cloud/cs-go/tmpl/export"
 )
 
-func ExportDockerArtifacts(fs *cs.FileSystem, inputPath string, outputPath string, baseImage string, envVars []string) error {
+type Exporter interface {
+	// ExportDockerArtifacts exports Docker artifacts based on the provided input path, output path, base image, and environment variables.
+	ExportDockerArtifacts(inputPath string, outputPath string, baseImage string, envVars []string) error
+}
+
+type ExporterService struct {
+	fs *cs.FileSystem
+}
+
+func NewExporterService(fs *cs.FileSystem) Exporter {
+	return &ExporterService{
+		fs: fs,
+	}
+}
+
+func (e *ExporterService) ExportDockerArtifacts(inputPath string, outputPath string, baseImage string, envVars []string) error {
 	// Get map from yml file
 	ymlContent, err := ci.ReadYmlFile(inputPath)
 	if err != nil {
@@ -42,7 +57,7 @@ func ExportDockerArtifacts(fs *cs.FileSystem, inputPath string, outputPath strin
 			PrepareSteps: ymlContent.Prepare.Steps,
 			RunSteps:     service.Steps,
 		}
-		err = templates.CreateDockerfile(fs, config)
+		err = templates.CreateDockerfile(e.fs, config)
 		if err != nil {
 			return fmt.Errorf("error creating dockerfile for service %s: %s", serviceName, err)
 		}
@@ -55,7 +70,7 @@ func ExportDockerArtifacts(fs *cs.FileSystem, inputPath string, outputPath strin
 		OutputPath: outputPath,
 		Services:   ymlContent.Run,
 	}
-	err = templates.CreateNginxConfig(fs, configNginx)
+	err = templates.CreateNginxConfig(e.fs, configNginx)
 	if err != nil {
 		return fmt.Errorf("error creating nginx config file: %s", err)
 	}
@@ -68,7 +83,7 @@ func ExportDockerArtifacts(fs *cs.FileSystem, inputPath string, outputPath strin
 		Services:   ymlContent.Run,
 		EnvVars:    envVars,
 	}
-	err = templates.CreateDockerCompose(fs, configDockerCompose)
+	err = templates.CreateDockerCompose(e.fs, configDockerCompose)
 	if err != nil {
 		return fmt.Errorf("error creating docker compose file: %s", err)
 	}

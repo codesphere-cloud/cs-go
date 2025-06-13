@@ -7,6 +7,7 @@ import (
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/export"
+	"github.com/codesphere-cloud/cs-go/pkg/git"
 	"github.com/spf13/cobra"
 )
 
@@ -24,9 +25,16 @@ type GenerateDockerfileOpts struct {
 }
 
 func (c *GenerateDockerfileCmd) RunE(_ *cobra.Command, args []string) error {
-	fs := cs.NewOSFileSystem(".")
+	client, err := NewClient(c.Opts.GlobalOptions)
+	if err != nil {
+		return fmt.Errorf("failed to create Codesphere client: %w", err)
+	}
 
-	if err := c.GenerateDockerfile(fs); err != nil {
+	fs := cs.NewOSFileSystem(".")
+	exp := export.NewExporterService(fs)
+	git := git.NewGitService(fs)
+
+	if err := c.GenerateDockerfile(client, fs, exp, git); err != nil {
 		return fmt.Errorf("failed to generate dockerfile: %w", err)
 	}
 
@@ -85,16 +93,17 @@ func AddGenerateDockerfileCmd(generate *cobra.Command) {
 	dockerfile.cmd.RunE = dockerfile.RunE
 }
 
-func (c *GenerateDockerfileCmd) GenerateDockerfile(fs *cs.FileSystem) error {
+func (c *GenerateDockerfileCmd) GenerateDockerfile(client Client, fs *cs.FileSystem, exporter export.Exporter, git git.Git) error {
 	if c.Opts.Input == nil || *c.Opts.Input == "" {
 		return errors.New("input file is required")
 	}
-	if c.Opts.Output == nil || *c.Opts.Output == "" {
-		return errors.New("output path is required")
+	if c.Opts.BaseImage == nil || *c.Opts.BaseImage == "" {
+		return errors.New("baseimage is required")
 	}
 
 	if !fs.FileExists(*c.Opts.Input) {
-		if err := c.CloneRepository(fs); err != nil {
+		fmt.Printf("Input file %s not found, attempting to clone repository...\n", *c.Opts.Input)
+		if err := c.CloneRepository(client, fs, git); err != nil {
 			return fmt.Errorf("failed to clone repository: %w", err)
 		}
 		if !fs.FileExists(*c.Opts.Input) {
@@ -102,8 +111,12 @@ func (c *GenerateDockerfileCmd) GenerateDockerfile(fs *cs.FileSystem) error {
 		}
 	}
 
-	envs := append([]string{}, *c.Opts.Env...)
-	err := export.ExportDockerArtifacts(fs, *c.Opts.Input, *c.Opts.Output, *c.Opts.BaseImage, envs)
+	envs := []string{}
+	if c.Opts.Env != nil {
+		envs = append([]string{}, *c.Opts.Env...)
+	}
+
+	err := exporter.ExportDockerArtifacts(*c.Opts.Input, *c.Opts.Output, *c.Opts.BaseImage, envs)
 	if err != nil {
 		return fmt.Errorf("failed to export docker artifacts: %w", err)
 	}
@@ -111,12 +124,7 @@ func (c *GenerateDockerfileCmd) GenerateDockerfile(fs *cs.FileSystem) error {
 	return nil
 }
 
-func (c *GenerateDockerfileCmd) CloneRepository(fs *cs.FileSystem) error {
-	client, err := NewClient(c.Opts.GlobalOptions)
-	if err != nil {
-		return fmt.Errorf("failed to create Codesphere client: %w", err)
-	}
-
+func (c *GenerateDockerfileCmd) CloneRepository(client Client, fs *cs.FileSystem, git git.Git) error {
 	wsId, err := c.Opts.GetWorkspaceId()
 	if err != nil {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
@@ -126,7 +134,7 @@ func (c *GenerateDockerfileCmd) CloneRepository(fs *cs.FileSystem) error {
 	if err != nil {
 		return fmt.Errorf("failed to get workspace: %w", err)
 	}
-	if ws.GitUrl.Get() == nil {
+	if ws.GitUrl.Get() == nil || *ws.GitUrl.Get() == "" {
 		return errors.New("workspace does not have a git repository")
 	}
 
@@ -136,7 +144,7 @@ func (c *GenerateDockerfileCmd) CloneRepository(fs *cs.FileSystem) error {
 		repoBranch = *ws.InitialBranch.Get()
 	}
 
-	_, err = cs.CloneRepository(fs, repoUrl, repoBranch)
+	_, err = git.CloneRepository(fs, repoUrl, repoBranch)
 	if err != nil {
 		return fmt.Errorf("failed to clone repository %s: %w", repoUrl, err)
 	}
