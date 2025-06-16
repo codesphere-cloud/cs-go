@@ -6,6 +6,7 @@ package io
 import (
 	"bufio"
 	"fmt"
+	"net/http"
 	"os"
 	"regexp"
 	"strings"
@@ -65,4 +66,28 @@ func (p *Prompt) InputPrompt(prompt string) string {
 			return input
 		}
 	}
+}
+
+type HttpServer interface {
+	HandleFunc(pattern string, handler func(http.ResponseWriter, *http.Request))
+	Handle(pattern string, handler http.Handler)
+	Redirect(w http.ResponseWriter, r *http.Request, url string, code int)
+	ListenAndServe(addr string, handler http.Handler) error
+}
+
+type RealHttpServer struct{}
+
+func (*RealHttpServer) HandleFunc(pattern string, handler func(http.ResponseWriter, *http.Request)) {
+	http.HandleFunc(pattern, handler)
+}
+
+func (*RealHttpServer) Handle(pattern string, handler http.Handler) {
+	http.Handle(pattern, handler)
+}
+func (*RealHttpServer) Redirect(w http.ResponseWriter, r *http.Request, url string, code int) {
+	http.Redirect(w, r, url, code)
+}
+
+func (*RealHttpServer) ListenAndServe(addr string, handler http.Handler) error {
+	return http.ListenAndServe(addr, handler)
 }
