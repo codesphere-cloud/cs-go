@@ -10,6 +10,12 @@ License: MIT
 License URL: https://github.com/beorn7/perks/blob/v1.0.1/LICENSE
  
 ----------
+Module: github.com/blang/semver
+Version: v3.5.1
+License: MIT
+License URL: https://github.com/blang/semver/blob/v3.5.1/LICENSE
+ 
+----------
 Module: github.com/cespare/xxhash/v2
 Version: v2.3.0
 License: MIT
@@ -32,6 +38,36 @@ Module: github.com/davecgh/go-spew/spew
 Version: v1.1.1
 License: ISC
 License URL: https://github.com/davecgh/go-spew/blob/v1.1.1/LICENSE
+ 
+----------
+Module: github.com/google/go-github/v30/github
+Version: v30.1.0
+License: BSD-3-Clause
+License URL: https://github.com/google/go-github/blob/v30.1.0/LICENSE
+ 
+----------
+Module: github.com/google/go-querystring/query
+Version: v1.0.0
+License: BSD-3-Clause
+License URL: https://github.com/google/go-querystring/blob/v1.0.0/LICENSE
+ 
+----------
+Module: github.com/inconshreveable/go-update
+Version: v0.0.0-20160112193335-8152e7eb6ccf
+License: Apache-2.0
+License URL: https://github.com/inconshreveable/go-update/blob/8152e7eb6ccf/LICENSE
+ 
+----------
+Module: github.com/inconshreveable/go-update/internal/binarydist
+Version: v0.0.0-20160112193335-8152e7eb6ccf
+License: MIT
+License URL: https://github.com/inconshreveable/go-update/blob/8152e7eb6ccf/internal/binarydist/License
+ 
+----------
+Module: github.com/inconshreveable/go-update/internal/osext
+Version: v0.0.0-20160112193335-8152e7eb6ccf
+License: BSD-3-Clause
+License URL: https://github.com/inconshreveable/go-update/blob/8152e7eb6ccf/internal/osext/LICENSE
  
 ----------
 Module: github.com/jedib0t/go-pretty/v6
@@ -88,6 +124,12 @@ License: Apache-2.0
 License URL: https://github.com/prometheus/procfs/blob/v0.15.1/LICENSE
  
 ----------
+Module: github.com/rhysd/go-github-selfupdate/selfupdate
+Version: v1.2.3
+License: MIT
+License URL: https://github.com/rhysd/go-github-selfupdate/blob/v1.2.3/LICENSE
+ 
+----------
 Module: github.com/rivo/uniseg
 Version: v0.4.7
 License: MIT
@@ -122,6 +164,30 @@ Module: github.com/stretchr/testify
 Version: v1.10.0
 License: MIT
 License URL: https://github.com/stretchr/testify/blob/v1.10.0/LICENSE
+ 
+----------
+Module: github.com/tcnksm/go-gitconfig
+Version: v0.1.2
+License: MIT
+License URL: https://github.com/tcnksm/go-gitconfig/blob/v0.1.2/LICENSE
+ 
+----------
+Module: github.com/ulikunitz/xz
+Version: v0.5.9
+License: BSD-3-Clause
+License URL: https://github.com/ulikunitz/xz/blob/v0.5.9/LICENSE
+ 
+----------
+Module: golang.org/x/crypto
+Version: v0.36.0
+License: BSD-3-Clause
+License URL: https://cs.opensource.google/go/x/crypto/+/v0.36.0:LICENSE
+ 
+----------
+Module: golang.org/x/oauth2
+Version: v0.24.0
+License: BSD-3-Clause
+License URL: https://cs.opensource.google/go/x/oauth2/+/v0.24.0:LICENSE
  
 ----------
 Module: golang.org/x/sys/unix
