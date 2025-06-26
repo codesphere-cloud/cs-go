@@ -26,3 +26,7 @@ packages:
     config:
       all: true
     interfaces:
+  github.com/codesphere-cloud/cs-go/pkg/io:
+    config:
+      all: true
+    interfaces:

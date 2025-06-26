@@ -13,7 +13,7 @@ import (
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
 )
 
-var _ = Describe("CreateWorkspace", func() {
+var _ = Describe("DeleteWorkspace", func() {
 	var (
 		mockEnv    *cmd.MockEnv
 		mockClient *cmd.MockClient
