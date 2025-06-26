@@ -27,5 +27,6 @@ Manage and debug resources deployed in Codesphere via command line.
 * [cs open](cs_open.md)	 - Open the Codesphere IDE
 * [cs set-env](cs_set-env.md)	 - Set environment varariables
 * [cs start](cs_start.md)	 - Start workspace pipeline
+* [cs update](cs_update.md)	 - Update Codesphere CLI
 * [cs version](cs_version.md)	 - Print version
 
