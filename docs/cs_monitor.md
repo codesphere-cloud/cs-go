@@ -25,14 +25,26 @@ $ cs monitor -- npm start
 
 # monitor application from local binary on port 3000, expose metrics on port 8080
 $ cs monitor --address 8080 -- ./my-app -p 3000 
+
+# forward health-check to application health endpoint
+$ cs monitor --forward http://localhost:8080/my-healthcheck -- ./my-app --healthcheck :8080
+
+# forward health-check to application health endpoint, ignore invalid TLS certs
+$ cs monitor --forward --insecure-skip-verify -- ./my-app --healthcheck https://localhost:8443
+
+# forward health-check to application health endpoint, using custom CA cert, e.g. for self-signed certs
+$ cs monitor --forward --ca-cert-file ca.crt -- ./my-app --healthcheck https://localhost:8443
 ```
 
 ### Options
 
 ```
-      --address string     Custom listen address for the metrics endpoint (default ":3000")
-  -h, --help               help for monitor
-      --max-restarts int   Maximum number of restarts before exiting (default -1)
+      --address string         Custom listen address for the metrics endpoint (default ":3000")
+      --ca-cert-file string    TLS CA certificate (only relevant for --forward option when healthcheck is exposed as HTTPS enpoint with custom certificate)
+      --forward string         Forward healthcheck requests to application health endpoint
+  -h, --help                   help for monitor
+      --insecure-skip-verify   Skip TLS validation (only relevant for --forward option when healthcheck is exposed as HTTPS endpoint with custom certificate)
+      --max-restarts int       Maximum number of restarts before exiting (default -1)
 ```
 
 ### Options inherited from parent commands
