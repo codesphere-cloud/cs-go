@@ -26,6 +26,9 @@ var _ = Describe("Monitor", func() {
 		listenAddress  string
 		maxRestarts    int
 		currentTime    time.Time
+		forward        string
+		skipTLS        bool
+		caCertFile     string
 	)
 
 	BeforeEach(func() {
@@ -34,6 +37,8 @@ var _ = Describe("Monitor", func() {
 		mockExec = csio.NewMockExec(GinkgoT())
 		maxRestarts = 0 //to make tests finite
 		listenAddress = ":3000"
+		skipTLS = true
+
 	})
 	JustBeforeEach(func() {
 		c = &cmd.MonitorCmd{
@@ -41,8 +46,11 @@ var _ = Describe("Monitor", func() {
 			Http: mockHttpServer,
 			Exec: mockExec,
 			Opts: cmd.MonitorOpts{
-				ListenAddress: &listenAddress,
-				MaxRestarts:   &maxRestarts,
+				ListenAddress:      &listenAddress,
+				MaxRestarts:        &maxRestarts,
+				Forward:            &forward,
+				InsecureSkipVerify: &skipTLS,
+				CaCertFile:         &caCertFile,
 			},
 		}
 
@@ -54,57 +62,80 @@ var _ = Describe("Monitor", func() {
 			currentTime = currentTime.Add(t)
 		}).Maybe()
 
-		mockHttpServer.EXPECT().Handle(mock.Anything, mock.Anything)
-		mockHttpServer.EXPECT().HandleFunc(mock.Anything, mock.Anything)
 		mockHttpServer.EXPECT().ListenAndServe(mock.Anything, mock.Anything).Return(nil).Maybe()
 	})
 
-	Context("Command exits after 10 seconds with exit code 0", func() {
-		It("Doesn't return an error", func() {
-			mockExec.EXPECT().ExecuteCommand(mock.Anything, mock.Anything).RunAndReturn(
-				func(ctx context.Context, args []string) (int, error) {
-					mockTime.Sleep(10 * time.Second)
-					return 0, nil
+	Context("With default healthcheck endpoint", func() {
+		JustBeforeEach(func() {
+			mockHttpServer.EXPECT().Handle(mock.Anything, mock.Anything)
+			mockHttpServer.EXPECT().HandleFunc(mock.Anything, mock.Anything)
+		})
+		Context("Command exits after 10 seconds with exit code 0", func() {
+			It("Doesn't return an error", func() {
+				mockExec.EXPECT().ExecuteCommand(mock.Anything, mock.Anything).RunAndReturn(
+					func(ctx context.Context, args []string) (int, error) {
+						mockTime.Sleep(10 * time.Second)
+						return 0, nil
+					})
+
+				err := c.RunCommandWithHealthcheck(context.TODO(), []string{"fake-sleep", "10s"})
+				Expect(err).NotTo(HaveOccurred())
+			})
+		})
+		Context("Command exits after 0.3 seconds", func() {
+			BeforeEach(func() {
+				maxRestarts = 1
+			})
+			Context("Command doesn't return an error", func() {
+				It("Restarts immediately", func() {
+					mockExec.EXPECT().ExecuteCommand(mock.Anything, mock.Anything).RunAndReturn(
+						func(ctx context.Context, args []string) (int, error) {
+							fmt.Println("lol")
+							mockTime.Sleep(300 * time.Millisecond)
+							return 0, nil
+						}).Twice()
+
+					err := c.RunCommandWithHealthcheck(context.TODO(), []string{"fake-sleep", "300ms"})
+					Expect(err).NotTo(HaveOccurred())
+
 				})
 
-			err := c.RunCommandWithMetrics(context.TODO(), []string{"fake-sleep", "10s"})
-			Expect(err).NotTo(HaveOccurred())
+			})
+			Context("Command immediately returns an error", func() {
+				It("Restarts after a delay of 5 seconds", func() {
+
+					mockExec.EXPECT().ExecuteCommand(mock.Anything, mock.Anything).RunAndReturn(
+						func(ctx context.Context, args []string) (int, error) {
+							return 1, nil
+						}).Twice()
+
+					startTime := currentTime
+					err := c.RunCommandWithHealthcheck(context.TODO(), []string{"fake-exit", "1"})
+					endTime := currentTime
+
+					Expect(err).NotTo(HaveOccurred())
+					Expect(endTime.Sub(startTime)).To(Equal(5 * time.Second))
+				})
+			})
 		})
 	})
-	Context("Command exits after 0.3 seconds", func() {
+
+	Context("With healthcheck forwarding", func() {
 		BeforeEach(func() {
-			maxRestarts = 1
+			forward = "http://localhost:3000"
 		})
-		Context("Command doesn't return an error", func() {
-			It("Restarts immediately", func() {
+		Context("Command exits after 10 seconds with exit code 0", func() {
+			It("Doesn't return an error", func() {
 				mockExec.EXPECT().ExecuteCommand(mock.Anything, mock.Anything).RunAndReturn(
 					func(ctx context.Context, args []string) (int, error) {
-						fmt.Println("lol")
-						mockTime.Sleep(300 * time.Millisecond)
+						mockTime.Sleep(10 * time.Second)
 						return 0, nil
-					}).Twice()
+					})
 
-				err := c.RunCommandWithMetrics(context.TODO(), []string{"fake-sleep", "300ms"})
+				err := c.RunCommandWithHealthcheck(context.TODO(), []string{"fake-sleep", "10s"})
 				Expect(err).NotTo(HaveOccurred())
-
-			})
-
-		})
-		Context("Command immediately returns an error", func() {
-			It("Restarts after a delay of 5 seconds", func() {
-
-				mockExec.EXPECT().ExecuteCommand(mock.Anything, mock.Anything).RunAndReturn(
-					func(ctx context.Context, args []string) (int, error) {
-						return 1, nil
-					}).Twice()
-
-				startTime := currentTime
-				err := c.RunCommandWithMetrics(context.TODO(), []string{"fake-exit", "1"})
-				endTime := currentTime
-
-				Expect(err).NotTo(HaveOccurred())
-				Expect(endTime.Sub(startTime)).To(Equal(5 * time.Second))
 			})
 		})
 	})
+
 })
