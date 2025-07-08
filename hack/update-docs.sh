@@ -5,9 +5,11 @@
 
 set -euo pipefail
 
-make generate-license
 make docs
+make generate-license
 if [[ $(git status --porcelain) ]]; then
+  git status
+  git diff
   git add .
   git config --global user.name "${GITHUB_ACTOR}"
   git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
