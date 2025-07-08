@@ -303,7 +303,7 @@ func AddMonitorCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 		Http: &csio.RealHttpServer{},
 		Exec: &csio.RealExec{},
 	}
-	monitor.Opts.ListenAddress = monitor.Cmd.Flags().String("address", ":3000", "Custom listen address for the metrics endpoint (not evaluated when --forward option is used)")
+	monitor.Opts.ListenAddress = monitor.Cmd.Flags().String("address", ":3000", "Custom listen address for the endpoint (metrics endpoint or forwarding port when --forward option is used)")
 	monitor.Opts.MaxRestarts = monitor.Cmd.Flags().Int("max-restarts", -1, "Maximum number of restarts before exiting")
 	monitor.Opts.Forward = monitor.Cmd.Flags().String("forward", "", "Forward healthcheck requests to application health endpoint")
 	monitor.Opts.InsecureSkipVerify = monitor.Cmd.Flags().Bool("insecure-skip-verify", false, "Skip TLS validation (only relevant for --forward option when healthcheck is exposed as HTTPS endpoint with custom certificate)")
