@@ -40,6 +40,18 @@ License: ISC
 License URL: https://github.com/davecgh/go-spew/blob/v1.1.1/LICENSE
  
 ----------
+Module: github.com/go-logr/logr
+Version: v1.4.3
+License: Apache-2.0
+License URL: https://github.com/go-logr/logr/blob/v1.4.3/LICENSE
+ 
+----------
+Module: github.com/google/go-cmp/cmp
+Version: v0.7.0
+License: BSD-3-Clause
+License URL: https://github.com/google/go-cmp/blob/v0.7.0/LICENSE
+ 
+----------
 Module: github.com/google/go-github/v30/github
 Version: v30.1.0
 License: BSD-3-Clause
@@ -86,6 +98,18 @@ Module: github.com/munnerz/goautoneg
 Version: v0.0.0-20191010083416-a7dc8b61c822
 License: BSD-3-Clause
 License URL: https://github.com/munnerz/goautoneg/blob/a7dc8b61c822/LICENSE
+ 
+----------
+Module: github.com/onsi/ginkgo/v2
+Version: v2.23.4
+License: MIT
+License URL: https://github.com/onsi/ginkgo/blob/v2.23.4/LICENSE
+ 
+----------
+Module: github.com/onsi/gomega
+Version: v1.37.0
+License: MIT
+License URL: https://github.com/onsi/gomega/blob/v1.37.0/LICENSE
  
 ----------
 Module: github.com/pmezard/go-difflib/difflib
@@ -179,9 +203,15 @@ License URL: https://github.com/ulikunitz/xz/blob/v0.5.9/LICENSE
  
 ----------
 Module: golang.org/x/crypto
-Version: v0.36.0
+Version: v0.38.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/crypto/+/v0.36.0:LICENSE
+License URL: https://cs.opensource.google/go/x/crypto/+/v0.38.0:LICENSE
+ 
+----------
+Module: golang.org/x/net/html
+Version: v0.40.0
+License: BSD-3-Clause
+License URL: https://cs.opensource.google/go/x/net/+/v0.40.0:LICENSE
  
 ----------
 Module: golang.org/x/oauth2
@@ -191,21 +221,21 @@ License URL: https://cs.opensource.google/go/x/oauth2/+/v0.24.0:LICENSE
  
 ----------
 Module: golang.org/x/sys/unix
-Version: v0.32.0
+Version: v0.33.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/sys/+/v0.32.0:LICENSE
+License URL: https://cs.opensource.google/go/x/sys/+/v0.33.0:LICENSE
  
 ----------
 Module: golang.org/x/text
-Version: v0.23.0
+Version: v0.25.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/text/+/v0.23.0:LICENSE
+License URL: https://cs.opensource.google/go/x/text/+/v0.25.0:LICENSE
  
 ----------
 Module: google.golang.org/protobuf
-Version: v1.36.5
+Version: v1.36.6
 License: BSD-3-Clause
-License URL: https://github.com/protocolbuffers/protobuf-go/blob/v1.36.5/LICENSE
+License URL: https://github.com/protocolbuffers/protobuf-go/blob/v1.36.6/LICENSE
  
 ----------
 Module: gopkg.in/validator.v2
