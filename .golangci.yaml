@@ -1,0 +1,13 @@
+version: "2"
+linters:
+  settings:
+    staticcheck:
+      dot-import-whitelist: ["github.com/onsi/ginkgo/v2", "github.com/onsi/gomega"]
+    revive:
+      rules:
+      - name: dot-imports
+        severity: warning
+        disabled: true
+        exclude: [""]
+        arguments:
+        - allowed-packages: ["github.com/onsi/ginkgo/v2", "github.com/onsi/gomega"]
