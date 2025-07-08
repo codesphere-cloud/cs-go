@@ -11,7 +11,10 @@ lint: install-build-deps
 
 test:
 	# -count=1 to disable caching test results
-	go test ./... -count=1
+	go test ./api/... ./cli/... ./pkg/... -count=1
+
+test-int: build
+	go test ./int/... -count=1
 
 generate: install-build-deps
 	go generate ./...

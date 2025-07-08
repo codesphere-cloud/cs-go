@@ -29,7 +29,7 @@ import (
 )
 
 type MonitorCmd struct {
-	cmd  *cobra.Command
+	Cmd  *cobra.Command
 	Opts MonitorOpts
 	Time api.Time
 	Http csio.HttpServer
@@ -99,7 +99,7 @@ func (c *MonitorCmd) RunCommandWithHealthcheck(ctx context.Context, cmdArgs []st
 
 			totalRestarts.WithLabelValues(strReturnCode).Inc()
 
-			slog.Info("command exited", "return code", returnCode, "duration", duration)
+			slog.Info("command exited", "returnCode", returnCode, "duration", duration)
 
 			if *c.Opts.MaxRestarts >= 0 && *c.Opts.MaxRestarts < (i+1) {
 				slog.Info("maximum number of restarts reached, exiting.")
@@ -107,7 +107,7 @@ func (c *MonitorCmd) RunCommandWithHealthcheck(ctx context.Context, cmdArgs []st
 			}
 			// Delay in case of fast non-zero exit
 			if returnCode != 0 && duration < 1*time.Second {
-				slog.Info("command exited with non-zero code in less than 1 second. Waiting 5 seconds before next restart", "return code", returnCode, "command duration", duration)
+				slog.Info("command exited with non-zero code in less than 1 second. Waiting 5 seconds before next restart", "returnCode", returnCode, "commandDuration", duration)
 				c.Time.Sleep(5 * time.Second)
 			}
 			slog.Info("cs monitor: restarting.")
@@ -154,7 +154,7 @@ func (c *MonitorCmd) startHttpProxy() {
 		panic(fmt.Errorf("failed to create proxy: %w", err))
 	}
 
-	slog.Info("HTTP proxy listening", "listen address", *c.Opts.ListenAddress, "target URL", proxy.targetURL.String())
+	slog.Info("HTTP proxy listening", "listen address", *c.Opts.ListenAddress, "targetURL", proxy.targetURL.String())
 
 	go func() {
 		err := c.Http.ListenAndServe(*c.Opts.ListenAddress, proxy)
@@ -196,7 +196,7 @@ func (c *MonitorCmd) NewProxy() (*Proxy, error) {
 			return nil, fmt.Errorf("failed to parse CA certificate from '%s'", *c.Opts.CaCertFile)
 		}
 		tlsConfig.RootCAs = caCertPool
-		slog.Info("Loaded custom CA certificate to trust target server", "ca file", c.Opts.CaCertFile)
+		slog.Info("Loaded custom CA certificate to trust target server", "caFile", c.Opts.CaCertFile)
 	}
 
 	// Create a custom Transport to use our TLS configuration
@@ -276,7 +276,7 @@ func (p *Proxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func AddMonitorCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 	monitor := MonitorCmd{
-		cmd: &cobra.Command{
+		Cmd: &cobra.Command{
 			Use:   "monitor",
 			Short: "Monitor a command and report health information",
 			Long: csio.Long(`Loops over running a command and report information in a health endpoint.
@@ -300,11 +300,11 @@ func AddMonitorCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 		Http: &csio.RealHttpServer{},
 		Exec: &csio.RealExec{},
 	}
-	monitor.Opts.ListenAddress = monitor.cmd.Flags().String("address", ":3000", "Custom listen address for the metrics endpoint")
-	monitor.Opts.MaxRestarts = monitor.cmd.Flags().Int("max-restarts", -1, "Maximum number of restarts before exiting")
-	monitor.Opts.Forward = monitor.cmd.Flags().String("forward", "", "Forward healthcheck requests to application health endpoint")
-	monitor.Opts.InsecureSkipVerify = monitor.cmd.Flags().Bool("insecure-skip-verify", false, "Skip TLS validation (only relevant for --forward option when healthcheck is exposed as HTTPS endpoint with custom certificate)")
-	monitor.Opts.CaCertFile = monitor.cmd.Flags().String("ca-cert-file", "", "TLS CA certificate (only relevant for --forward option when healthcheck is exposed as HTTPS enpoint with custom certificate)")
-	rootCmd.AddCommand(monitor.cmd)
-	monitor.cmd.RunE = monitor.RunE
+	monitor.Opts.ListenAddress = monitor.Cmd.Flags().String("address", ":3000", "Custom listen address for the metrics endpoint")
+	monitor.Opts.MaxRestarts = monitor.Cmd.Flags().Int("max-restarts", -1, "Maximum number of restarts before exiting")
+	monitor.Opts.Forward = monitor.Cmd.Flags().String("forward", "", "Forward healthcheck requests to application health endpoint")
+	monitor.Opts.InsecureSkipVerify = monitor.Cmd.Flags().Bool("insecure-skip-verify", false, "Skip TLS validation (only relevant for --forward option when healthcheck is exposed as HTTPS endpoint with custom certificate)")
+	monitor.Opts.CaCertFile = monitor.Cmd.Flags().String("ca-cert-file", "", "TLS CA certificate (only relevant for --forward option when healthcheck is exposed as HTTPS enpoint with custom certificate)")
+	rootCmd.AddCommand(monitor.Cmd)
+	monitor.Cmd.RunE = monitor.RunE
 }
