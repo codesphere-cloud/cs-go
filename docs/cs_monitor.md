@@ -13,6 +13,9 @@ The monitor command keeps restarting an application and reports the metrics abou
 Metrics reported are
 * cs_monitor_total_restarts_total - Total number of command executions completed
 
+With the Forwarding option, instead of providing a healthcheck endpoint, requests are forwarded to the specified application endpoint. 
+This is useful if the application does provide own healthcheck output but not on the default localhost:3000/
+
 ```
 cs monitor [flags]
 ```
@@ -24,7 +27,7 @@ cs monitor [flags]
 $ cs monitor -- npm start
 
 # monitor application from local binary on port 3000, expose metrics on port 8080
-$ cs monitor --address 8080 -- ./my-app -p 3000 
+$ cs monitor --address :8080 -- ./my-app -p 3000 
 
 # forward health-check to application health endpoint
 $ cs monitor --forward http://localhost:8080/my-healthcheck -- ./my-app --healthcheck :8080
@@ -39,7 +42,7 @@ $ cs monitor --forward --ca-cert-file ca.crt -- ./my-app --healthcheck https://l
 ### Options
 
 ```
-      --address string         Custom listen address for the metrics endpoint (default ":3000")
+      --address string         Custom listen address for the endpoint (metrics endpoint or forwarding port when --forward option is used) (default ":3000")
       --ca-cert-file string    TLS CA certificate (only relevant for --forward option when healthcheck is exposed as HTTPS enpoint with custom certificate)
       --forward string         Forward healthcheck requests to application health endpoint
   -h, --help                   help for monitor
