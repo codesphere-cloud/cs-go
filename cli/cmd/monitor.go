@@ -286,10 +286,13 @@ func AddMonitorCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 
 				The monitor command keeps restarting an application and reports the metrics about the restarts in prometheus metrics format.
 				Metrics reported are
-				* cs_monitor_total_restarts_total - Total number of command executions completed`),
+				* cs_monitor_total_restarts_total - Total number of command executions completed
+				
+				With the Forwarding option, instead of providing a healthcheck endpoint, requests are forwarded to the specified application endpoint. 
+				This is useful if the application does provide own healthcheck output but not on the default localhost:3000/`),
 			Example: csio.FormatExampleCommands("monitor", []csio.Example{
 				{Cmd: "-- npm start", Desc: "monitor application that ist started by npm"},
-				{Cmd: "--address 8080 -- ./my-app -p 3000 ", Desc: "monitor application from local binary on port 3000, expose metrics on port 8080"},
+				{Cmd: "--address :8080 -- ./my-app -p 3000 ", Desc: "monitor application from local binary on port 3000, expose metrics on port 8080"},
 				{Cmd: "--forward http://localhost:8080/my-healthcheck -- ./my-app --healthcheck :8080", Desc: "forward health-check to application health endpoint"},
 				{Cmd: "--forward --insecure-skip-verify -- ./my-app --healthcheck https://localhost:8443", Desc: "forward health-check to application health endpoint, ignore invalid TLS certs"},
 				{Cmd: "--forward --ca-cert-file ca.crt -- ./my-app --healthcheck https://localhost:8443", Desc: "forward health-check to application health endpoint, using custom CA cert, e.g. for self-signed certs"},
@@ -300,7 +303,7 @@ func AddMonitorCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 		Http: &csio.RealHttpServer{},
 		Exec: &csio.RealExec{},
 	}
-	monitor.Opts.ListenAddress = monitor.Cmd.Flags().String("address", ":3000", "Custom listen address for the metrics endpoint")
+	monitor.Opts.ListenAddress = monitor.Cmd.Flags().String("address", ":3000", "Custom listen address for the endpoint (metrics endpoint or forwarding port when --forward option is used)")
 	monitor.Opts.MaxRestarts = monitor.Cmd.Flags().Int("max-restarts", -1, "Maximum number of restarts before exiting")
 	monitor.Opts.Forward = monitor.Cmd.Flags().String("forward", "", "Forward healthcheck requests to application health endpoint")
 	monitor.Opts.InsecureSkipVerify = monitor.Cmd.Flags().Bool("insecure-skip-verify", false, "Skip TLS validation (only relevant for --forward option when healthcheck is exposed as HTTPS endpoint with custom certificate)")
