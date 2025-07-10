@@ -10,7 +10,6 @@ import (
 )
 
 type Exporter interface {
-	// ExportDockerArtifacts exports Docker artifacts based on the provided input path, output path, base image, and environment variables.
 	ExportDockerArtifacts(inputPath string, outputPath string, baseImage string, envVars []string) error
 }
 
@@ -24,6 +23,7 @@ func NewExporterService(fs *cs.FileSystem) Exporter {
 	}
 }
 
+// ExportDockerArtifacts exports Docker artifacts based on the provided input path, output path, base image, and environment variables.
 func (e *ExporterService) ExportDockerArtifacts(inputPath string, outputPath string, baseImage string, envVars []string) error {
 	// Get map from yml file
 	ymlContent, err := ci.ReadYmlFile(inputPath)
@@ -94,8 +94,8 @@ func (e *ExporterService) ExportDockerArtifacts(inputPath string, outputPath str
 		return fmt.Errorf("error writing nginx config file: %s", err)
 	}
 
-	// Create Docker compose file
-	fmt.Printf("Creating docker compose file\n")
+	// Create docker-compose file
+	fmt.Printf("Creating docker-compose file\n")
 
 	configDockerCompose := templates.DockerComposeTemplateConfig{
 		Services: ymlContent.Run,

@@ -19,6 +19,7 @@ type GenerateDockerfileCmd struct {
 type GenerateDockerfileOpts struct {
 	GlobalOptions
 	Input     *string
+	Branch    *string
 	BaseImage *string
 	Output    *string
 	Env       *[]string
@@ -46,32 +47,11 @@ func (c *GenerateDockerfileCmd) RunE(_ *cobra.Command, args []string) error {
 	return nil
 }
 
-const shortDesc string = "Generates a dockerfile based on a ci.yml of a workspace"
-
-func longDesc() string {
-	return shortDesc + `.
-
-  If the input file is not found, cs will attempt to clone the repository of the workspace
-  on your local machine to run the artifact generation.
-  For that a folder will be generated containing the repository and the generated artifacts.
-
-  The export then generates a subdirectory containing the following artifacts:
-
-  ./<service-n> Each service is exported to a separate folder.
-  ./<service-n>/Dockerfile Dockerfile to build the container of the service.
-  ./<service-n>/entrypoint.sh Entrypoint of the container (run stage of Codesphere workspace).
-  ./docker-compose.yml Environment to allow running the services with docker-compose.
-  ./export/nginx.conf Configuration for NGINX, which is used by as router between services.
-  
-
-  Codesphere recommends adding the generated artifacts to the source code repository.`
-}
-
 func AddGenerateDockerfileCmd(generate *cobra.Command) {
 	dockerfile := GenerateDockerfileCmd{
 		cmd: &cobra.Command{
 			Use:   "dockerfile",
-			Short: shortDesc,
+			Short: "Generates a dockerfile based on a ci.yml of a workspace",
 			Long: io.Long(`If the input file is not found, cs will attempt to clone the repository of the workspace
 				on your local machine to run the artifact generation.
 				For that a folder will be generated containing the repository and the generated artifacts.
@@ -92,6 +72,7 @@ func AddGenerateDockerfileCmd(generate *cobra.Command) {
 		},
 	}
 	dockerfile.Opts.Input = dockerfile.cmd.Flags().StringP("input", "i", "ci.yml", "CI profile to use as input for generation")
+	dockerfile.Opts.Branch = dockerfile.cmd.Flags().StringP("branch", "b", "main", "Branch of the repository to clone if the input file is not found")
 	dockerfile.Opts.BaseImage = dockerfile.cmd.Flags().StringP("baseimage", "b", "", "Base image for the dockerfile")
 	dockerfile.Opts.Output = dockerfile.cmd.Flags().StringP("output", "o", "./export", "Output path of the folder including generated artifacts")
 	dockerfile.Opts.Env = dockerfile.cmd.Flags().StringArrayP("env", "e", []string{}, "Env vars to put into generated artifacts")
@@ -142,7 +123,9 @@ func (c *GenerateDockerfileCmd) CloneRepository(client Client, fs *cs.FileSystem
 
 	repoUrl := *ws.GitUrl.Get()
 	repoBranch := "main"
-	if ws.InitialBranch.Get() != nil {
+	if c.Opts.Branch != nil && *c.Opts.Branch != "" {
+		repoBranch = *c.Opts.Branch
+	} else if ws.InitialBranch.Get() != nil {
 		repoBranch = *ws.InitialBranch.Get()
 	}
 
