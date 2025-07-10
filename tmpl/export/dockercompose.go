@@ -1,45 +1,43 @@
 package export
 
 import (
+	"bytes"
 	_ "embed"
 	"fmt"
+	"strings"
 	"text/template"
 
 	"github.com/codesphere-cloud/cs-go/pkg/ci"
-	"github.com/codesphere-cloud/cs-go/pkg/cs"
 )
 
 //go:embed dockercompose.tmpl
-var DockerComposeTemplateFile string
+var dockerComposeTemplateFile string
 
 type DockerComposeTemplateConfig struct {
-	OutputPath string
-	// Docker compose configuration
 	Services map[string]ci.Service
 	EnvVars  []string
 }
 
-func CreateDockerCompose(fs *cs.FileSystem, config DockerComposeTemplateConfig) error {
-	err := fs.CreateDirectory(config.OutputPath)
-	if err != nil {
-		return fmt.Errorf("error creating directory: %w", err)
+func CreateDockerCompose(config DockerComposeTemplateConfig) ([]byte, error) {
+	if len(config.Services) == 0 {
+		return nil, fmt.Errorf("at least one service is required")
+	}
+	for serviceName := range config.Services {
+		if len(strings.TrimSpace(serviceName)) == 0 {
+			return nil, fmt.Errorf("service name cannot be empty")
+		}
 	}
 
-	// Create the docker compose file
-	t, err := template.New("dockercompose.tmpl").Parse(DockerComposeTemplateFile)
+	t, err := template.New("dockercompose.tmpl").Parse(dockerComposeTemplateFile)
 	if err != nil {
-		return fmt.Errorf("error parsing docker compose template: %w", err)
+		return nil, fmt.Errorf("error parsing docker compose template: %w", err)
 	}
 
-	f, err := fs.CreateFile(config.OutputPath + "/docker-compose.yml")
+	var buf bytes.Buffer
+	err = t.Execute(&buf, config)
 	if err != nil {
-		return fmt.Errorf("error creating docker compose file: %w", err)
+		return nil, fmt.Errorf("error executing docker compose template: %w", err)
 	}
 
-	err = t.Execute(f, config)
-	if err != nil {
-		return fmt.Errorf("error executing docker compose template: %w", err)
-	}
-
-	return f.Close()
+	return buf.Bytes(), nil
 }

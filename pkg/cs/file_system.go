@@ -3,6 +3,7 @@ package cs
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/go-git/go-billy/v5"
 	"github.com/go-git/go-billy/v5/memfs"
@@ -74,4 +75,37 @@ func (f *FileSystem) CreateFile(filename string) (billy.File, error) {
 	}
 
 	return file, nil
+}
+
+// WriteFile creates a file at the specified path and writes data to it.
+// If the directory does not exist, it will be created.
+// If the file in the directory already exists, it returns an error.
+func (f *FileSystem) WriteFile(path string, filename string, data []byte) error {
+	if !f.DirExists(path) {
+		err := f.CreateDirectory(path)
+		if err != nil {
+			return fmt.Errorf("error creating directory: %v", err)
+		}
+	}
+
+	if f.FileExists(filepath.Join(path, filename)) {
+		return fmt.Errorf("file already exists: %s", filepath.Join(path, filename))
+	}
+
+	file, err := f.CreateFile(filepath.Join(path, filename))
+	if err != nil {
+		return fmt.Errorf("error creating file: %v", err)
+	}
+
+	_, err = file.Write(data)
+	if err != nil {
+		return fmt.Errorf("error writing to file: %v", err)
+	}
+
+	err = file.Close()
+	if err != nil {
+		return fmt.Errorf("error closing file: %v", err)
+	}
+
+	return nil
 }

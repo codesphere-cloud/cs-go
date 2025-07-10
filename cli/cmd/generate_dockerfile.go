@@ -3,11 +3,11 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"os"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/export"
 	"github.com/codesphere-cloud/cs-go/pkg/git"
+	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
 )
 
@@ -67,21 +67,28 @@ func longDesc() string {
   Codesphere recommends adding the generated artifacts to the source code repository.`
 }
 
-func example() string {
-	return `  # Generate dockerfile for workspace 1234
-  ` + os.Args[0] + ` generate dockerfile -w 1234
-
-  # Generate dockerfile for workspace 1234 based on ci profile ci.prod.yml
-  ` + os.Args[0] + ` generate dockerfile -w 1234 -i ci.prod.yml`
-}
-
 func AddGenerateDockerfileCmd(generate *cobra.Command) {
 	dockerfile := GenerateDockerfileCmd{
 		cmd: &cobra.Command{
-			Use:     "dockerfile",
-			Short:   shortDesc,
-			Long:    longDesc(),
-			Example: example(),
+			Use:   "dockerfile",
+			Short: shortDesc,
+			Long: io.Long(`If the input file is not found, cs will attempt to clone the repository of the workspace
+				on your local machine to run the artifact generation.
+				For that a folder will be generated containing the repository and the generated artifacts.
+
+				The export then generates a subdirectory containing the following artifacts:
+
+				./<service-n> Each service is exported to a separate folder.
+				./<service-n>/Dockerfile Dockerfile to build the container of the service.
+				./<service-n>/entrypoint.sh Entrypoint of the container (run stage of Codesphere workspace).
+				./docker-compose.yml Environment to allow running the services with docker-compose.
+				./export/nginx.conf Configuration for NGINX, which is used by as router between services.
+
+				Codesphere recommends adding the generated artifacts to the source code repository.`),
+			Example: io.FormatExampleCommands("generate dockerfile", []io.Example{
+				{Cmd: "-w 1234", Desc: "Generate dockerfile for workspace 1234"},
+				{Cmd: "-w 1234 -i ci.prod.yml", Desc: "Generate dockerfile for workspace 1234 based on ci profile ci.prod.yml"},
+			}),
 		},
 	}
 	dockerfile.Opts.Input = dockerfile.cmd.Flags().StringP("input", "i", "ci.yml", "CI profile to use as input for generation")
@@ -111,12 +118,7 @@ func (c *GenerateDockerfileCmd) GenerateDockerfile(client Client, fs *cs.FileSys
 		}
 	}
 
-	envs := []string{}
-	if c.Opts.Env != nil {
-		envs = append([]string{}, *c.Opts.Env...)
-	}
-
-	err := exporter.ExportDockerArtifacts(*c.Opts.Input, *c.Opts.Output, *c.Opts.BaseImage, envs)
+	err := exporter.ExportDockerArtifacts(*c.Opts.Input, *c.Opts.Output, *c.Opts.BaseImage, *c.Opts.Env)
 	if err != nil {
 		return fmt.Errorf("failed to export docker artifacts: %w", err)
 	}

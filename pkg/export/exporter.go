@@ -2,6 +2,7 @@ package export
 
 import (
 	"fmt"
+	"path/filepath"
 
 	"github.com/codesphere-cloud/cs-go/pkg/ci"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
@@ -43,49 +44,70 @@ func (e *ExporterService) ExportDockerArtifacts(inputPath string, outputPath str
 				IsPublic: service.IsPublic,
 			}}
 			ymlContent.Run[serviceName] = service
-			fmt.Printf("updated old service %s: %v\n", serviceName, service)
+			fmt.Printf("Updated old service %s: %v\n", serviceName, service)
 		}
 	}
 
-	// Create Dockerfiles
+	// Create Dockerfiles and entrypoints for each service
 	for serviceName, service := range ymlContent.Run {
-		fmt.Printf("creating dockerfile for service %s\n", serviceName)
+		fmt.Printf("Creating dockerfile and entrypoint for service %s\n", serviceName)
+		servicePath := filepath.Join(outputPath, serviceName)
 
-		config := templates.DockerTemplateConfig{
-			OutputPath:   outputPath + "/" + serviceName,
+		configDocker := templates.DockerTemplateConfig{
 			BaseImage:    baseImage,
 			PrepareSteps: ymlContent.Prepare.Steps,
-			RunSteps:     service.Steps,
 		}
-		err = templates.CreateDockerfile(e.fs, config)
+		dockerfile, err := templates.CreateDockerfile(configDocker)
 		if err != nil {
 			return fmt.Errorf("error creating dockerfile for service %s: %s", serviceName, err)
+		}
+		err = e.fs.WriteFile(servicePath, "Dockerfile", dockerfile)
+		if err != nil {
+			return fmt.Errorf("error writing dockerfile for service %s: %s", serviceName, err)
+		}
+
+		configEntrypoint := templates.EntrypointTemplateConfig{
+			RunSteps: service.Steps,
+		}
+		entrypointFile, err := templates.CreateEntrypoint(configEntrypoint)
+		if err != nil {
+			return fmt.Errorf("error creating dockerfile for service %s: %s", serviceName, err)
+		}
+		err = e.fs.WriteFile(servicePath, "entrypoint.sh", entrypointFile)
+		if err != nil {
+			return fmt.Errorf("error writing entrypoint for service %s: %s", serviceName, err)
 		}
 	}
 
 	// Create nginx config
-	fmt.Printf("creating nginx config file\n")
+	fmt.Printf("Creating nginx config file\n")
 
 	configNginx := templates.NginxConfigTemplateConfig{
-		OutputPath: outputPath,
-		Services:   ymlContent.Run,
+		Services: ymlContent.Run,
 	}
-	err = templates.CreateNginxConfig(e.fs, configNginx)
+	nginxFile, err := templates.CreateNginxConfig(configNginx)
 	if err != nil {
 		return fmt.Errorf("error creating nginx config file: %s", err)
 	}
+	err = e.fs.WriteFile(outputPath, "nginx.conf", nginxFile)
+	if err != nil {
+		return fmt.Errorf("error writing nginx config file: %s", err)
+	}
 
 	// Create Docker compose file
-	fmt.Printf("creating docker compose file\n")
+	fmt.Printf("Creating docker compose file\n")
 
 	configDockerCompose := templates.DockerComposeTemplateConfig{
-		OutputPath: outputPath,
-		Services:   ymlContent.Run,
-		EnvVars:    envVars,
+		Services: ymlContent.Run,
+		EnvVars:  envVars,
 	}
-	err = templates.CreateDockerCompose(e.fs, configDockerCompose)
+	dockerComposeFile, err := templates.CreateDockerCompose(configDockerCompose)
 	if err != nil {
 		return fmt.Errorf("error creating docker compose file: %s", err)
+	}
+	err = e.fs.WriteFile(outputPath, "docker-compose.yml", dockerComposeFile)
+	if err != nil {
+		return fmt.Errorf("error writing docker compose file: %s", err)
 	}
 
 	return nil
