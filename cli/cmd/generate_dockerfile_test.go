@@ -49,7 +49,7 @@ var _ = Describe("GenerateDockerfile", func() {
 	})
 
 	Context("the baseimage is not provided", func() {
-		FIt("should return an error", func() {
+		It("should return an error", func() {
 			err := c.GenerateDockerfile(mockClient, memoryFs, mockExporter, mockGit)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("baseimage is required"))
@@ -69,7 +69,7 @@ var _ = Describe("GenerateDockerfile", func() {
 				_, err := memoryFs.Create("ci.dev.yml")
 				Expect(err).To(Not(HaveOccurred()))
 			})
-			FIt("should not return an error", func() {
+			It("should not return an error", func() {
 				mockExporter.EXPECT().ExportDockerArtifacts("ci.dev.yml", "./export", "alpine:latest", []string{}).Return(nil)
 				err := c.GenerateDockerfile(mockClient, memoryFs, mockExporter, mockGit)
 				Expect(err).To(Not(HaveOccurred()))
@@ -84,7 +84,7 @@ var _ = Describe("GenerateDockerfile", func() {
 					GitUrl: *openapi_client.NewNullableString(&emptyRepoStr),
 				}
 			})
-			FIt("should return an error", func() {
+			It("should return an error", func() {
 				mockClient.EXPECT().GetWorkspace(wsId).Return(ws, nil)
 				err := c.GenerateDockerfile(mockClient, memoryFs, mockExporter, mockGit)
 				Expect(err).To(HaveOccurred())
@@ -99,7 +99,7 @@ var _ = Describe("GenerateDockerfile", func() {
 					GitUrl: *openapi_client.NewNullableString(&repoStr),
 				}
 			})
-			FIt("should return an error", func() {
+			It("should return an error", func() {
 				mockClient.EXPECT().GetWorkspace(wsId).Return(ws, nil)
 				mockGit.EXPECT().CloneRepository(memoryFs, repoStr, "main").Return(nil, nil)
 				err := c.GenerateDockerfile(mockClient, memoryFs, mockExporter, mockGit)
