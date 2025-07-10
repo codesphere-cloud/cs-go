@@ -59,11 +59,11 @@ func (e *ExporterService) ExportDockerArtifacts(inputPath string, outputPath str
 		}
 		dockerfile, err := templates.CreateDockerfile(configDocker)
 		if err != nil {
-			return fmt.Errorf("error creating dockerfile for service %s: %s", serviceName, err)
+			return fmt.Errorf("error creating dockerfile for service %s: %w", serviceName, err)
 		}
 		err = e.fs.WriteFile(servicePath, "Dockerfile", dockerfile)
 		if err != nil {
-			return fmt.Errorf("error writing dockerfile for service %s: %s", serviceName, err)
+			return fmt.Errorf("error writing dockerfile for service %s: %w", serviceName, err)
 		}
 
 		configEntrypoint := templates.EntrypointTemplateConfig{
@@ -71,11 +71,11 @@ func (e *ExporterService) ExportDockerArtifacts(inputPath string, outputPath str
 		}
 		entrypointFile, err := templates.CreateEntrypoint(configEntrypoint)
 		if err != nil {
-			return fmt.Errorf("error creating dockerfile for service %s: %s", serviceName, err)
+			return fmt.Errorf("error creating dockerfile for service %s: %w", serviceName, err)
 		}
 		err = e.fs.WriteFile(servicePath, "entrypoint.sh", entrypointFile)
 		if err != nil {
-			return fmt.Errorf("error writing entrypoint for service %s: %s", serviceName, err)
+			return fmt.Errorf("error writing entrypoint for service %s: %w", serviceName, err)
 		}
 	}
 
