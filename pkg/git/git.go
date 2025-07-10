@@ -26,7 +26,7 @@ func (g *GitService) CloneRepository(fs *cs.FileSystem, url string, path string)
 		URL: url,
 	})
 	if err != nil {
-		return nil, fmt.Errorf("error cloning repository: %v", err)
+		return nil, fmt.Errorf("error cloning repository: %w", err)
 	}
 
 	return repo, nil

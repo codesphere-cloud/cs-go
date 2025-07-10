@@ -58,7 +58,7 @@ func (f *FileSystem) CreateDirectory(dirname string) error {
 
 	err := os.MkdirAll(dirname, 0755)
 	if err != nil {
-		return fmt.Errorf("error creating directory: %v", err)
+		return fmt.Errorf("error creating directory: %w", err)
 	}
 
 	return nil
@@ -71,7 +71,7 @@ func (f *FileSystem) CreateFile(filename string) (billy.File, error) {
 
 	file, err := f.Create(filename)
 	if err != nil {
-		return nil, fmt.Errorf("error creating file: %v", err)
+		return nil, fmt.Errorf("error creating file: %w", err)
 	}
 
 	return file, nil
@@ -84,7 +84,7 @@ func (f *FileSystem) WriteFile(path string, filename string, data []byte) error 
 	if !f.DirExists(path) {
 		err := f.CreateDirectory(path)
 		if err != nil {
-			return fmt.Errorf("error creating directory: %v", err)
+			return fmt.Errorf("error creating directory: %w", err)
 		}
 	}
 
@@ -94,17 +94,17 @@ func (f *FileSystem) WriteFile(path string, filename string, data []byte) error 
 
 	file, err := f.CreateFile(filepath.Join(path, filename))
 	if err != nil {
-		return fmt.Errorf("error creating file: %v", err)
+		return fmt.Errorf("error creating file: %w", err)
 	}
 
 	_, err = file.Write(data)
 	if err != nil {
-		return fmt.Errorf("error writing to file: %v", err)
+		return fmt.Errorf("error writing to file: %w", err)
 	}
 
 	err = file.Close()
 	if err != nil {
-		return fmt.Errorf("error closing file: %v", err)
+		return fmt.Errorf("error closing file: %w", err)
 	}
 
 	return nil
