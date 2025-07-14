@@ -2,19 +2,23 @@
 # SPDX-License-Identifier: Apache-2.0
 
 all: false
-dir: '{{.InterfaceDir}}'
+dir: "{{.InterfaceDir}}"
 force-file-write: true
-filename: 'mocks.go'
+filename: "mocks.go"
 formatter: gofmt
 log-level: info
-structname: '{{.Mock}}{{.InterfaceName}}'
-pkgname: '{{.SrcPackageName}}'
+structname: "{{.Mock}}{{.InterfaceName}}"
+pkgname: "{{.SrcPackageName}}"
 recursive: false
 require-template-schema-exists: true
 template: testify
-template-schema: '{{.Template}}.schema.json'
+template-schema: "{{.Template}}.schema.json"
 packages:
   github.com/codesphere-cloud/cs-go/cli/cmd:
+    config:
+      all: true
+    interfaces:
+  github.com/codesphere-cloud/cs-go/pkg/export:
     config:
       all: true
     interfaces:

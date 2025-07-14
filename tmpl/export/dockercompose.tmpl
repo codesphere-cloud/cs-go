@@ -1,0 +1,22 @@
+version: '3.8'{{$envvars := .EnvVars}}
+services:{{range $key, $val := .Services}}
+    {{$key}}:
+        build:
+            context: ./{{$key}}
+        environment:{{range $envvar := $envvars}}
+            - {{$envvar}}{{end}}
+        networks:
+            - server{{end}}
+    nginx:
+        image: nginx:1-alpine
+        ports:
+            - 8089:80
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf
+        depends_on:{{range $key, $val := .Services}}
+            - {{$key}}{{end}}
+        networks:
+            - server
+
+networks:
+    server:
