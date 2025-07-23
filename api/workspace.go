@@ -168,3 +168,15 @@ func (client Client) DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, erro
 	}
 	return workspace, nil
 }
+
+func (c Client) GitPull(workspaceId int, remote string, branch string) error {
+	if remote == "" {
+		req := c.api.WorkspacesAPI.WorkspacesGitPull(c.ctx, float32(workspaceId))
+		_, err := req.Execute()
+		return err
+	}
+
+	req := c.api.WorkspacesAPI.WorkspacesGitPull2(c.ctx, float32(workspaceId), remote, branch)
+	_, err := req.Execute()
+	return err
+}
