@@ -55,7 +55,7 @@ func AddExecCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 		Opts: ExecOptions{GlobalOptions: opts},
 	}
 	exec.Opts.EnvVar = exec.cmd.Flags().StringArrayP("env", "e", []string{}, "Additional environment variables to pass to the command in the form key=val")
-	exec.Opts.WorkDir = exec.cmd.Flags().StringP("workdir", "d", ".", "Working directory for the command")
+	exec.Opts.WorkDir = exec.cmd.Flags().StringP("workdir", "d", "", "Working directory for the command")
 	rootCmd.AddCommand(exec.cmd)
 	exec.cmd.RunE = exec.RunE
 }
@@ -72,9 +72,6 @@ func (c *ExecCmd) ExecCommand(client Client, command string) error {
 	}
 
 	stdout, stderr, err := client.ExecCommand(wsId, command, *c.Opts.WorkDir, envVarMap)
-	if err != nil {
-		return fmt.Errorf("failed to exec command: %w", err)
-	}
 
 	fmt.Println("STDOUT:")
 	fmt.Println(stdout)
@@ -82,5 +79,5 @@ func (c *ExecCmd) ExecCommand(client Client, command string) error {
 		fmt.Println("STDERR:")
 		fmt.Fprintln(os.Stderr, stderr)
 	}
-	return nil
+	return err
 }

@@ -56,9 +56,14 @@ func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string
 }
 
 func (c *Client) ExecCommand(workspaceId int, command string, workdir string, env map[string]string) (string, string, error) {
+
+	workdirP := &workdir
+	if workdir == "" {
+		workdirP = nil
+	}
 	cmd := openapi_client.WorkspacesExecuteCommandRequest{
 		Command:    command,
-		WorkingDir: &workdir,
+		WorkingDir: workdirP,
 		Env:        &env,
 	}
 
@@ -66,9 +71,12 @@ func (c *Client) ExecCommand(workspaceId int, command string, workdir string, en
 	res, _, err := req.Execute()
 
 	if err != nil {
-		return "", "", fmt.Errorf("failed to execute command: %w", err)
+		err = fmt.Errorf("failed to execute command: %w, %v", err, (string)(err.(*openapi_client.GenericOpenAPIError).Body()))
 	}
-	return res.Output, res.Error, nil
+	if res == nil {
+		return "", "", err
+	}
+	return res.Output, res.Error, err
 }
 
 func (c *Client) StartPipelineStage(wsId int, profile string, stage string) error {
