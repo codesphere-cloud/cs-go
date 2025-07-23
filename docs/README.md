@@ -21,6 +21,7 @@ Manage and debug resources deployed in Codesphere via command line.
 * [cs delete](cs_delete.md)	 - Delete Codesphere resources
 * [cs exec](cs_exec.md)	 - Run a command in Codesphere workspace
 * [cs generate](cs_generate.md)	 - Generate codesphere artifacts
+* [cs git](cs_git.md)	 - Interacting with the git repository of the workspace
 * [cs licenses](cs_licenses.md)	 - Print license information
 * [cs list](cs_list.md)	 - List resources
 * [cs log](cs_log.md)	 - Retrieve run logs from services

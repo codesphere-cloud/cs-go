@@ -32,7 +32,7 @@ $ cs exec -e FOO=bar -- 'echo $FOO'
 ```
   -e, --env stringArray   Additional environment variables to pass to the command in the form key=val
   -h, --help              help for exec
-  -d, --workdir string    Working directory for the command (default ".")
+  -d, --workdir string    Working directory for the command
 ```
 
 ### Options inherited from parent commands
