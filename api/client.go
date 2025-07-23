@@ -5,6 +5,7 @@ package api
 
 import (
 	"context"
+	"net/http"
 	"net/url"
 
 	"github.com/codesphere-cloud/cs-go/api/openapi_client"
@@ -46,10 +47,33 @@ func NewClientWithCustomDeps(ctx context.Context, opts Configuration, api *opena
 
 func NewClient(ctx context.Context, opts Configuration) *Client {
 	cfg := openapi_client.NewConfiguration()
+	cfg.HTTPClient = NewHttpClient()
 	cfg.Servers = []openapi_client.ServerConfiguration{{
 		URL: opts.BaseUrl.String(),
 	}}
 	return NewClientWithCustomDeps(ctx, opts, openapi_client.NewAPIClient(cfg), &RealTime{})
+}
+
+// NewHttpClient creates a http client to use for API calls.
+// The default http.Client only copies a few "safe" headers
+// This custom CheckRedirect ensures all headers are transferred,
+// including authorization headers which are necessary for DC redirects
+func NewHttpClient() *http.Client {
+	return &http.Client{
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			// Prevent infinite redirects, same as in the default client
+			if len(via) >= 10 {
+				return http.ErrUseLastResponse
+			}
+
+			for key, values := range via[0].Header {
+				for _, value := range values {
+					req.Header.Add(key, value)
+				}
+			}
+			return nil
+		},
+	}
 }
 
 func (c *Client) ListDataCenters() ([]DataCenter, error) {
