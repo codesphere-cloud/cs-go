@@ -101,6 +101,31 @@ var _ = Describe("Workspace", func() {
 			Expect(err).NotTo(HaveOccurred())
 		})
 	})
+	Context("GitPull", func() {
+		It("sends request to pull without remote and origin", func() {
+			wsApiMock.EXPECT().WorkspacesGitPull(mock.Anything, float32(ws.Id)).
+				Return(openapi_client.ApiWorkspacesGitPullRequest{
+					ApiService: wsApiMock,
+				})
+			wsApiMock.EXPECT().WorkspacesGitPullExecute(mock.Anything).Return(nil, nil)
+
+			err := client.GitPull(ws.Id, "", "")
+
+			Expect(err).NotTo(HaveOccurred())
+		})
+
+		It("sends request to pull with remote and origin when specified", func() {
+			wsApiMock.EXPECT().WorkspacesGitPull2(mock.Anything, float32(ws.Id), "origin", "my-branch").
+				Return(openapi_client.ApiWorkspacesGitPull2Request{
+					ApiService: wsApiMock,
+				})
+			wsApiMock.EXPECT().WorkspacesGitPull2Execute(mock.Anything).Return(nil, nil)
+
+			err := client.GitPull(ws.Id, "origin", "my-branch")
+
+			Expect(err).NotTo(HaveOccurred())
+		})
+	})
 
 	Context("DeployWorkspace", func() {
 		BeforeEach(func() {

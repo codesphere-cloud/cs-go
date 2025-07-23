@@ -311,6 +311,53 @@ func (_c *MockClient_GetWorkspace_Call) RunAndReturn(run func(workspaceId int) (
 	return _c
 }
 
+// GitPull provides a mock function for the type MockClient
+func (_mock *MockClient) GitPull(wsId int, remote string, branch string) error {
+	ret := _mock.Called(wsId, remote, branch)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GitPull")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(int, string, string) error); ok {
+		r0 = returnFunc(wsId, remote, branch)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockClient_GitPull_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GitPull'
+type MockClient_GitPull_Call struct {
+	*mock.Call
+}
+
+// GitPull is a helper method to define mock.On call
+//   - wsId
+//   - remote
+//   - branch
+func (_e *MockClient_Expecter) GitPull(wsId interface{}, remote interface{}, branch interface{}) *MockClient_GitPull_Call {
+	return &MockClient_GitPull_Call{Call: _e.mock.On("GitPull", wsId, remote, branch)}
+}
+
+func (_c *MockClient_GitPull_Call) Run(run func(wsId int, remote string, branch string)) *MockClient_GitPull_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(int), args[1].(string), args[2].(string))
+	})
+	return _c
+}
+
+func (_c *MockClient_GitPull_Call) Return(err error) *MockClient_GitPull_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockClient_GitPull_Call) RunAndReturn(run func(wsId int, remote string, branch string) error) *MockClient_GitPull_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // ListTeams provides a mock function for the type MockClient
 func (_mock *MockClient) ListTeams() ([]api.Team, error) {
 	ret := _mock.Called()

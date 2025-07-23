@@ -24,6 +24,7 @@ type Client interface {
 	DeleteWorkspace(wsId int) error
 	StartPipelineStage(wsId int, profile string, stage string) error
 	GetPipelineState(wsId int, stage string) ([]api.PipelineStatus, error)
+	GitPull(wsId int, remote string, branch string) error
 }
 
 func NewClient(opts GlobalOptions) (Client, error) {
