@@ -26,6 +26,8 @@ type StartPipelineOpts struct {
 	Timeout *time.Duration
 }
 
+const IdeServer string = "codesphere-ide"
+
 func (c *StartPipelineCmd) RunE(_ *cobra.Command, args []string) error {
 
 	workspaceId, err := c.Opts.GetWorkspaceId()
@@ -124,7 +126,7 @@ func (c *StartPipelineCmd) waitForPipelineStage(client Client, wsId int, stage s
 			continue
 		}
 
-		if allFinished(status) {
+		if c.allFinished(status) {
 			fmt.Println("(finished)")
 			break
 		}
@@ -152,16 +154,22 @@ func (c *StartPipelineCmd) waitForPipelineStage(client Client, wsId int, stage s
 
 func allRunning(status []api.PipelineStatus) bool {
 	for _, s := range status {
-		if s.State != "running" {
+		// Run stage is only running customer servers, ignore IDE server
+		if s.Server != IdeServer && s.State != "running" {
 			return false
 		}
 	}
 	return true
 }
 
-func allFinished(status []api.PipelineStatus) bool {
+func (c *StartPipelineCmd) allFinished(status []api.PipelineStatus) bool {
+	io.Verboseln(*c.Opts.Verbose, "====")
 	for _, s := range status {
-		if s.State != "success" {
+		io.Verbosef(*c.Opts.Verbose, "Server: %s, State: %s, Replica: %s\n", s.Server, s.State, s.Replica)
+	}
+	for _, s := range status {
+		// Prepare and Test stage is only running in the IDE server, ignore customer servers
+		if s.Server == IdeServer && s.State != "success" {
 			return false
 		}
 	}

@@ -23,6 +23,7 @@ var _ = Describe("StartPipeline", func() {
 		timeout    time.Duration
 		stages     []string
 		profile    string
+		verbose    bool
 	)
 
 	BeforeEach(func() {
@@ -31,6 +32,7 @@ var _ = Describe("StartPipeline", func() {
 		wsId = 21
 		profile = ""
 		timeout = 30 * time.Second
+		verbose = false
 	})
 
 	JustBeforeEach(func() {
@@ -38,6 +40,7 @@ var _ = Describe("StartPipeline", func() {
 			Opts: cmd.StartPipelineOpts{
 				GlobalOptions: cmd.GlobalOptions{
 					WorkspaceId: &wsId,
+					Verbose:     &verbose,
 				},
 				Profile: &profile,
 				Timeout: &timeout,
@@ -67,10 +70,10 @@ var _ = Describe("StartPipeline", func() {
 
 		BeforeEach(func() {
 			stages = []string{"prepare", "test", "run"}
-			reportedStatusSuccess = PipelineStatus("success")
-			reportedStatusRunning = PipelineStatus("running")
-			reportedStatusWaiting = PipelineStatus("waiting")
-			reportedStatusFailure = PipelineStatus("failure")
+			reportedStatusSuccess = PreparePipelineStatus("success")
+			reportedStatusRunning = RunPipelineStatus("running")
+			reportedStatusWaiting = PreparePipelineStatus("waiting")
+			reportedStatusFailure = RunPipelineStatus("failure")
 		})
 
 		Context("stages start sequentially", func() {
@@ -159,10 +162,25 @@ var _ = Describe("StartPipeline", func() {
 	})
 })
 
-func PipelineStatus(state string) []api.PipelineStatus {
+func PreparePipelineStatus(state string) []api.PipelineStatus {
+	return []api.PipelineStatus{{
+		State:   "waiting",
+		Replica: "0",
+		Server:  "A",
+	}, {
+		State:   state,
+		Replica: "0",
+		Server:  "codesphere-ide",
+	}}
+}
+func RunPipelineStatus(state string) []api.PipelineStatus {
 	return []api.PipelineStatus{{
 		State:   state,
 		Replica: "0",
 		Server:  "A",
+	}, {
+		State:   "waiting",
+		Replica: "0",
+		Server:  "codesphere-ide",
 	}}
 }

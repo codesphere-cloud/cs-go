@@ -91,3 +91,15 @@ func (*RealHttpServer) Redirect(w http.ResponseWriter, r *http.Request, url stri
 func (*RealHttpServer) ListenAndServe(addr string, handler http.Handler) error {
 	return http.ListenAndServe(addr, handler)
 }
+
+func Verbosef(verbose bool, format string, args ...interface{}) {
+	if verbose {
+		fmt.Printf(format, args...)
+	}
+}
+
+func Verboseln(verbose bool, output ...interface{}) {
+	if verbose {
+		fmt.Println(output...)
+	}
+}
