@@ -16,6 +16,7 @@ type GlobalOptions struct {
 	TeamId      *int
 	WorkspaceId *int
 	Env         Env
+	Verbose     *bool
 }
 
 type Env interface {
@@ -73,6 +74,7 @@ func GetRootCmd() *cobra.Command {
 	opts.ApiUrl = rootCmd.PersistentFlags().StringP("api", "a", "", "URL of Codesphere API (can also be CS_API)")
 	opts.TeamId = rootCmd.PersistentFlags().IntP("team", "t", -1, "Team ID (relevant for some commands, can also be CS_TEAM_ID)")
 	opts.WorkspaceId = rootCmd.PersistentFlags().IntP("workspace", "w", -1, "Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID)")
+	opts.Verbose = rootCmd.PersistentFlags().BoolP("verbose", "v", false, "Verbose output")
 
 	AddExecCmd(rootCmd, opts)
 	AddLogCmd(rootCmd, opts)
