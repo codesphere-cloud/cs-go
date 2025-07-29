@@ -1,24 +1,24 @@
 // Copyright (c) Codesphere Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-package export_test
+package docker_test
 
 import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
 	"github.com/codesphere-cloud/cs-go/pkg/ci"
-	"github.com/codesphere-cloud/cs-go/tmpl/export"
+	"github.com/codesphere-cloud/cs-go/tmpl/docker"
 )
 
 var _ = Describe("CreateDockerfile", func() {
 	var (
-		dockerConfig export.DockerTemplateConfig
+		dockerConfig docker.DockerTemplateConfig
 	)
 
 	Context("The baseimage is not provided", func() {
 		JustBeforeEach(func() {
-			dockerConfig = export.DockerTemplateConfig{
+			dockerConfig = docker.DockerTemplateConfig{
 				PrepareSteps: []ci.Step{
 					{
 						Name:    "Install dependencies",
@@ -32,7 +32,7 @@ var _ = Describe("CreateDockerfile", func() {
 			}
 		})
 		It("should return an error", func() {
-			_, err := export.CreateDockerfile(dockerConfig)
+			_, err := docker.CreateDockerfile(dockerConfig)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("base image is required"))
 		})
@@ -40,7 +40,7 @@ var _ = Describe("CreateDockerfile", func() {
 
 	Context("All values are provided", func() {
 		JustBeforeEach(func() {
-			dockerConfig = export.DockerTemplateConfig{
+			dockerConfig = docker.DockerTemplateConfig{
 				BaseImage: "node:20",
 				PrepareSteps: []ci.Step{
 					{
@@ -55,7 +55,7 @@ var _ = Describe("CreateDockerfile", func() {
 			}
 		})
 		It("Creates a Dockerfile with the correct base image and prepare steps", func() {
-			dockerfile, err := export.CreateDockerfile(dockerConfig)
+			dockerfile, err := docker.CreateDockerfile(dockerConfig)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(string(dockerfile)).To(ContainSubstring("FROM node:20"))
 			Expect(string(dockerfile)).To(ContainSubstring("RUN npm install"))

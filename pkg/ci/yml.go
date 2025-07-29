@@ -1,12 +1,10 @@
-// Copyright (c) Codesphere Inc.
-// SPDX-License-Identifier: Apache-2.0
-
 package ci
 
 import (
 	"fmt"
-	"os"
 
+	"github.com/go-git/go-billy/v5"
+	"github.com/go-git/go-billy/v5/util"
 	"gopkg.in/yaml.v2"
 )
 
@@ -51,14 +49,24 @@ type Port struct {
 	IsPublic bool `yaml:"isPublic"`
 }
 
-func ReadYmlFile(inputPath string) (*CiYml, error) {
-	ymlFile, err := os.ReadFile(inputPath)
+func ReadYmlFile(fs billy.Filesystem, path string) (*CiYml, error) {
+	ymlFile, err := fs.Open(path)
 	if err != nil {
 		return nil, fmt.Errorf("error reading yml file: %w", err)
 	}
 
+	ymlFileBytes, err := util.ReadFile(fs, ymlFile.Name())
+	if err != nil {
+		return nil, fmt.Errorf("error reading yml file: %w", err)
+	}
+
+	err = ymlFile.Close()
+	if err != nil {
+		return nil, fmt.Errorf("error closing yml file: %w", err)
+	}
+
 	ymlContent := &CiYml{}
-	err = yaml.Unmarshal(ymlFile, &ymlContent)
+	err = yaml.Unmarshal(ymlFileBytes, &ymlContent)
 	if err != nil {
 		return nil, fmt.Errorf("error unmarshalling yml file: %w", err)
 	}

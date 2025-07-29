@@ -1,30 +1,30 @@
 // Copyright (c) Codesphere Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-package export_test
+package docker_test
 
 import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
 	"github.com/codesphere-cloud/cs-go/pkg/ci"
-	"github.com/codesphere-cloud/cs-go/tmpl/export"
+	"github.com/codesphere-cloud/cs-go/tmpl/docker"
 )
 
 var _ = Describe("CreateNginxConfig", func() {
 	var (
-		nginxConfig export.NginxConfigTemplateConfig
+		nginxConfig docker.NginxConfigTemplateConfig
 	)
 
 	BeforeEach(func() {
-		nginxConfig = export.NginxConfigTemplateConfig{
+		nginxConfig = docker.NginxConfigTemplateConfig{
 			Services: map[string]ci.Service{},
 		}
 	})
 
 	Context("No services are provided", func() {
 		It("should return an error", func() {
-			_, err := export.CreateNginxConfig(nginxConfig)
+			_, err := docker.CreateNginxConfig(nginxConfig)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("at least one service is required"))
 		})
@@ -37,7 +37,7 @@ var _ = Describe("CreateNginxConfig", func() {
 			}
 		})
 		It("should return an error", func() {
-			_, err := export.CreateNginxConfig(nginxConfig)
+			_, err := docker.CreateNginxConfig(nginxConfig)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("service name cannot be empty"))
 		})
@@ -59,7 +59,7 @@ var _ = Describe("CreateNginxConfig", func() {
 			}
 		})
 		It("should return an error", func() {
-			_, err := export.CreateNginxConfig(nginxConfig)
+			_, err := docker.CreateNginxConfig(nginxConfig)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("path cannot be empty"))
 		})
@@ -81,7 +81,7 @@ var _ = Describe("CreateNginxConfig", func() {
 			}
 		})
 		It("Creates an Nginx config with the correct services", func() {
-			config, err := export.CreateNginxConfig(nginxConfig)
+			config, err := docker.CreateNginxConfig(nginxConfig)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(string(config)).To(ContainSubstring("location / {"))
 			Expect(string(config)).To(ContainSubstring("proxy_pass http://web:3000/;"))
@@ -104,7 +104,7 @@ var _ = Describe("CreateNginxConfig", func() {
 			}
 		})
 		It("Creates an Nginx config with the correct services", func() {
-			config, err := export.CreateNginxConfig(nginxConfig)
+			config, err := docker.CreateNginxConfig(nginxConfig)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(string(config)).To(ContainSubstring("location /api/ {"))
 			Expect(string(config)).To(ContainSubstring("proxy_pass http://web:3000/;"))
@@ -127,7 +127,7 @@ var _ = Describe("CreateNginxConfig", func() {
 			}
 		})
 		It("Creates an Nginx config without the private service", func() {
-			config, err := export.CreateNginxConfig(nginxConfig)
+			config, err := docker.CreateNginxConfig(nginxConfig)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(string(config)).ToNot(ContainSubstring("location /private {"))
 			Expect(string(config)).ToNot(ContainSubstring("proxy_pass http://web:3000/;"))
