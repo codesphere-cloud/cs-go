@@ -1,0 +1,44 @@
+FROM {{.BaseImage}}
+
+
+RUN apt-get update \
+ && apt-get install -y curl \
+ && apt-get install -y  bzip2 \ 
+ && apt-get install -y xz-utils \
+ && apt-get install -y git \
+ && apt-get install -y wget \
+ && mkdir -p /nix /etc/nix \
+ && chmod a+rwx /nix \
+ && echo 'sandbox = false' > /etc/nix/nix.conf \
+ && echo 'build-users-group =' >> /etc/nix/nix.conf
+
+RUN addgroup appusers
+RUN adduser user --home /home/user --ingroup appusers --disabled-password --gecos "" --shell /bin/bash
+
+RUN chown -R user:appusers /home/user
+
+USER user
+ENV USER user
+
+COPY --chown=user:appusers . /home/user/app
+COPY --chown=user:appusers  {{.Entrypoint}} /home/user/entrypoint.sh
+RUN chmod 700 /home/user/entrypoint.sh
+
+# Install Nix in single-user mode (no daemon)
+RUN curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
+
+# Set up the Nix environment
+RUN echo ". /home/user/.nix-profile/etc/profile.d/nix.sh" >> /home/user/.bashrc
+
+
+WORKDIR /home/user/app
+
+RUN find .
+
+# Execute Prepare Stage
+{{range $val := .PrepareSteps}}
+{{if gt (len $val.Name) 0}}# {{$val.Name}}{{end}}
+RUN {{$val.Command}}{{end}}
+
+# Execute Run Stage
+ENTRYPOINT ["/home/user/entrypoint.sh"]

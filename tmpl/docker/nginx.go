@@ -1,7 +1,7 @@
 // Copyright (c) Codesphere Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-package export
+package docker
 
 import (
 	"bytes"
@@ -50,4 +50,12 @@ func CreateNginxConfig(config NginxConfigTemplateConfig) ([]byte, error) {
 	}
 
 	return buf.Bytes(), nil
+}
+
+func CreateNginxDockerfile() []byte {
+	dockerfile := `FROM nginx:latest
+
+COPY nginx.conf /etc/nginx/nginx.conf
+`
+	return []byte(dockerfile)
 }

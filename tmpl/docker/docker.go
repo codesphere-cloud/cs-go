@@ -1,24 +1,32 @@
 // Copyright (c) Codesphere Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-package export
+package docker
 
 import (
 	"bytes"
 	_ "embed"
 	"fmt"
+	"regexp"
 	"strings"
 	"text/template"
 
 	"github.com/codesphere-cloud/cs-go/pkg/ci"
 )
 
-//go:embed docker.tmpl
+//go:embed docker_ubuntu.tmpl
 var dockerTemplateFile string
+
+//go:embed docker_fedora.tmpl
+var dockerFedoraTemplateFile string
+
+//go:embed docker_alpine.tmpl
+var dockerAlpineTemplateFile string
 
 type DockerTemplateConfig struct {
 	BaseImage    string
 	PrepareSteps []ci.Step
+	Entrypoint   string
 }
 
 func CreateDockerfile(config DockerTemplateConfig) ([]byte, error) {
@@ -26,7 +34,18 @@ func CreateDockerfile(config DockerTemplateConfig) ([]byte, error) {
 		return nil, fmt.Errorf("base image is required")
 	}
 
-	dockerTemplate, err := template.New("dockerTemplate").Parse(dockerTemplateFile)
+	templ := dockerTemplateFile
+	alpineRe := regexp.MustCompile(".*alpine.*")
+	fedoraRe := regexp.MustCompile(".*(fedora)|(coreos)|(rhel).*")
+	if alpineRe.MatchString(config.BaseImage) {
+		templ = dockerAlpineTemplateFile
+		fmt.Println("Alpine found in " + config.BaseImage)
+	}
+	if fedoraRe.MatchString(config.BaseImage) {
+		templ = dockerFedoraTemplateFile
+		fmt.Println("Fedora found in " + config.BaseImage)
+	}
+	dockerTemplate, err := template.New("dockerTemplate").Parse(templ)
 	if err != nil {
 		return nil, fmt.Errorf("error parsing docker template: %w", err)
 	}

@@ -18,7 +18,7 @@ packages:
     config:
       all: true
     interfaces:
-  github.com/codesphere-cloud/cs-go/pkg/export:
+  github.com/codesphere-cloud/cs-go/pkg/exporter:
     config:
       all: true
     interfaces:
@@ -31,6 +31,10 @@ packages:
       all: true
     interfaces:
   github.com/codesphere-cloud/cs-go/pkg/io:
+    config:
+      all: true
+    interfaces:
+  github.com/codesphere-cloud/cs-go/pkg/git:
     config:
       all: true
     interfaces:

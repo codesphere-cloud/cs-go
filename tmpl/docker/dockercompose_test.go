@@ -1,30 +1,30 @@
 // Copyright (c) Codesphere Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-package export_test
+package docker_test
 
 import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
 	"github.com/codesphere-cloud/cs-go/pkg/ci"
-	"github.com/codesphere-cloud/cs-go/tmpl/export"
+	"github.com/codesphere-cloud/cs-go/tmpl/docker"
 )
 
 var _ = Describe("CreateDockerCompose", func() {
 	var (
-		dockerComposeConfig export.DockerComposeTemplateConfig
+		dockerComposeConfig docker.DockerComposeTemplateConfig
 	)
 
 	Context("No services are provided", func() {
 		JustBeforeEach(func() {
-			dockerComposeConfig = export.DockerComposeTemplateConfig{
+			dockerComposeConfig = docker.DockerComposeTemplateConfig{
 				Services: map[string]ci.Service{},
 				EnvVars:  []string{"NODE_ENV=production"},
 			}
 		})
 		It("should return an error", func() {
-			_, err := export.CreateDockerCompose(dockerComposeConfig)
+			_, err := docker.CreateDockerCompose(dockerComposeConfig)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("at least one service is required"))
 		})
@@ -32,7 +32,7 @@ var _ = Describe("CreateDockerCompose", func() {
 
 	Context("Empty service name is provided", func() {
 		JustBeforeEach(func() {
-			dockerComposeConfig = export.DockerComposeTemplateConfig{
+			dockerComposeConfig = docker.DockerComposeTemplateConfig{
 				Services: map[string]ci.Service{
 					"": {},
 				},
@@ -40,7 +40,7 @@ var _ = Describe("CreateDockerCompose", func() {
 			}
 		})
 		It("should return an error", func() {
-			_, err := export.CreateDockerCompose(dockerComposeConfig)
+			_, err := docker.CreateDockerCompose(dockerComposeConfig)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("service name cannot be empty"))
 		})
@@ -48,7 +48,7 @@ var _ = Describe("CreateDockerCompose", func() {
 
 	Context("All values are provided", func() {
 		JustBeforeEach(func() {
-			dockerComposeConfig = export.DockerComposeTemplateConfig{
+			dockerComposeConfig = docker.DockerComposeTemplateConfig{
 				// We test only with empty services as only the key is used in the template
 				Services: map[string]ci.Service{
 					"web": {},
@@ -57,7 +57,7 @@ var _ = Describe("CreateDockerCompose", func() {
 			}
 		})
 		It("Creates a Docker Compose file with the correct services and environment variables", func() {
-			dockerCompose, err := export.CreateDockerCompose(dockerComposeConfig)
+			dockerCompose, err := docker.CreateDockerCompose(dockerComposeConfig)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(string(dockerCompose)).To(ContainSubstring("services:"))
 			Expect(string(dockerCompose)).To(ContainSubstring("web:"))
