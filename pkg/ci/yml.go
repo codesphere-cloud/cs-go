@@ -74,5 +74,23 @@ func ReadYmlFile(fs billy.Filesystem, path string) (*CiYml, error) {
 		return nil, fmt.Errorf("error unmarshalling yml file: %w", err)
 	}
 
+	// Update old services (path directly in network) to network with array of paths
+	for serviceName, service := range ymlContent.Run {
+		if service.Network.Path != "" {
+			service.Network.Paths = []Path{{
+				Port:      3000,
+				Path:      service.Network.Path,
+				StripPath: service.Network.StripPath,
+			}}
+			service.Network.Ports = []Port{{
+				Port:     3000,
+				IsPublic: service.IsPublic,
+			}}
+			service.Network.Path = ""
+			ymlContent.Run[serviceName] = service
+			fmt.Printf("Updated old service %s: %v\n", serviceName, service)
+		}
+	}
+
 	return ymlContent, nil
 }

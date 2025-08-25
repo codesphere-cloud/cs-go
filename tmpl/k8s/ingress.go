@@ -26,20 +26,6 @@ func GenerateIngressTemplate(ciYml *ci.CiYml, namespace string, host string, ing
 	var ingressPaths []networking.HTTPIngressPath
 	for serviceName, service := range ciYml.Run {
 		if service.IsPublic {
-			if service.Network.Path != "" {
-				ingressPaths = append(ingressPaths, networking.HTTPIngressPath{
-					Path:     service.Network.Path,
-					PathType: &pathType,
-					Backend: networking.IngressBackend{
-						Service: &networking.IngressServiceBackend{
-							Name: serviceName,
-							Port: networking.ServiceBackendPort{
-								Number: intstr.FromInt(3000).IntVal,
-							},
-						},
-					},
-				})
-			}
 			for _, path := range service.Network.Paths {
 				ingressPaths = append(ingressPaths, networking.HTTPIngressPath{
 					Path:     path.Path,
