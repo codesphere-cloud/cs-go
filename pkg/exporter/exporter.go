@@ -76,23 +76,6 @@ func (e *ExporterService) ExportDockerArtifacts() error {
 		return fmt.Errorf("yml content is not set, call ReadYmlFile first")
 	}
 
-	// Update old services (path directly in network) to network with array of paths
-	for serviceName, service := range e.ymlContent.Run {
-		if service.Network.Path != "" {
-			service.Network.Paths = []ci.Path{{
-				Port:      3000,
-				Path:      service.Network.Path,
-				StripPath: service.Network.StripPath,
-			}}
-			service.Network.Ports = []ci.Port{{
-				Port:     3000,
-				IsPublic: service.IsPublic,
-			}}
-			e.ymlContent.Run[serviceName] = service
-			fmt.Printf("Updated old service %s: %v\n", serviceName, service)
-		}
-	}
-
 	// Create Dockerfiles and entrypoints for each service
 	for serviceName, service := range e.ymlContent.Run {
 		fmt.Printf("Creating dockerfile and entrypoint for service %s\n", serviceName)
