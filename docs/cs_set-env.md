@@ -1,6 +1,6 @@
 ## cs set-env
 
-Set environment varariables
+Set environment variables
 
 ### Synopsis
 
