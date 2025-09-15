@@ -4,10 +4,11 @@
 package cmd_test
 
 import (
+	"path"
+
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/stretchr/testify/mock"
-	"path"
 
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
 	"github.com/codesphere-cloud/cs-go/pkg/ci"

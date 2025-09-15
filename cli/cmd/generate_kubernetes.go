@@ -58,7 +58,14 @@ func AddGenerateKubernetesCmd(generate *cobra.Command, opts *GenerateOpts) {
 				./<service-n>/<service-n>.yml Kubernetes deployment and service resource to run a pod for the service.
 				./ingress.yml ingress resource to route traffic to the different services.
 
-				Codesphere recommends adding the generated artifacts to the source code repository.`),
+				Codesphere recommends adding the generated artifacts to the source code repository.
+
+				Limitations:
+				- Environment variables have to be set explicitly as the Codesphere environment has its own way to provide env variables.
+				- The workspace ID, team ID etc. are not automatically available and have to be set explicitly.
+				- Hardcoded workspace urls don't work outside of the Codesphere environment.
+				- Each dockerfile of your services contain all prepare steps. To have the smallest image possible you would have to delete all unused steps in each service.
+				`),
 			Example: io.FormatExampleCommands("generate kubernetes", []io.Example{
 				{Cmd: "-w 1234", Desc: "Generate kubernetes for workspace 1234"},
 				{Cmd: "-w 1234 -i ci.prod.yml", Desc: "Generate kubernetes for workspace 1234 based on ci profile ci.prod.yml"},
