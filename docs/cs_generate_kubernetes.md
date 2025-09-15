@@ -17,6 +17,13 @@ It then generates following artifacts inside the output folder:
 
 Codesphere recommends adding the generated artifacts to the source code repository.
 
+Limitations:
+- Environment variables have to be set explicitly as the Codesphere environment has its own way to provide env variables.
+- The workspace ID, team ID etc. are not automatically available and have to be set explicitly.
+- Hardcoded workspace urls don't work outside of the Codesphere environment.
+- Each dockerfile of your services contain all prepare steps. To have the smallest image possible you would have to delete all unused steps in each service.
+
+
 ```
 cs generate kubernetes [flags]
 ```
