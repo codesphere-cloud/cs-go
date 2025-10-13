@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/codesphere-cloud/cs-go/api/errors"
 	"github.com/codesphere-cloud/cs-go/api/openapi_client"
 )
 
@@ -78,27 +79,27 @@ func NewHttpClient() *http.Client {
 
 func (c *Client) ListDataCenters() ([]DataCenter, error) {
 	datacenters, _, err := c.api.MetadataAPI.MetadataGetDatacenters(c.ctx).Execute()
-	return datacenters, err
+	return datacenters, errors.FormatAPIError(err)
 }
 
 func (c *Client) ListDomains(teamId int) ([]Domain, error) {
 	domains, _, err := c.api.DomainsAPI.DomainsListDomains(c.ctx, float32(teamId)).Execute()
-	return domains, err
+	return domains, errors.FormatAPIError(err)
 }
 
 func (c *Client) GetDomain(teamId int, domainName string) (*Domain, error) {
 	domain, _, err := c.api.DomainsAPI.DomainsGetDomain(c.ctx, float32(teamId), domainName).Execute()
-	return domain, err
+	return domain, errors.FormatAPIError(err)
 }
 
 func (c *Client) CreateDomain(teamId int, domainName string) (*Domain, error) {
 	domain, _, err := c.api.DomainsAPI.DomainsCreateDomain(c.ctx, float32(teamId), domainName).Execute()
-	return domain, err
+	return domain, errors.FormatAPIError(err)
 }
 
 func (c *Client) DeleteDomain(teamId int, domainName string) error {
 	_, err := c.api.DomainsAPI.DomainsDeleteDomain(c.ctx, float32(teamId), domainName).Execute()
-	return err
+	return errors.FormatAPIError(err)
 }
 
 func (c *Client) UpdateDomain(
@@ -108,7 +109,7 @@ func (c *Client) UpdateDomain(
 		DomainsUpdateDomain(c.ctx, float32(teamId), domainName).
 		DomainsGetDomain200ResponseCustomConfig(args).
 		Execute()
-	return domain, err
+	return domain, errors.FormatAPIError(err)
 }
 
 func (c *Client) VerifyDomain(
@@ -116,7 +117,7 @@ func (c *Client) VerifyDomain(
 ) (*DomainVerificationStatus, error) {
 	status, _, err := c.api.DomainsAPI.
 		DomainsVerifyDomain(c.ctx, float32(teamId), domainName).Execute()
-	return status, err
+	return status, errors.FormatAPIError(err)
 }
 
 func (c *Client) UpdateWorkspaceConnections(
@@ -133,5 +134,5 @@ func (c *Client) UpdateWorkspaceConnections(
 	domain, _, err := c.api.DomainsAPI.
 		DomainsUpdateWorkspaceConnections(c.ctx, float32(teamId), domainName).
 		RequestBody(req).Execute()
-	return domain, err
+	return domain, errors.FormatAPIError(err)
 }

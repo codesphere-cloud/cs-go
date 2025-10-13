@@ -14,6 +14,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/codesphere-cloud/cs-go/api/errors"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	csio "github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
@@ -37,13 +38,6 @@ type LogEntry struct {
 	Timestamp string `json:"timestamp"`
 	Kind      string `json:"kind"`
 	Data      string `json:"data"`
-}
-
-type ErrResponse struct {
-	Status  int    `json:"status"`
-	Title   string `json:"title"`
-	Detail  string `json:"detail"`
-	TraceId string `json:"traceId"`
 }
 
 type SSE struct {
@@ -245,13 +239,13 @@ func printLogsOfEndpoint(prefix string, endpoint string) error {
 		var log []LogEntry
 		err := json.Unmarshal([]byte(sse.data), &log)
 		if err != nil {
-			var errRes ErrResponse
+			var errRes errors.APIErrorResponse
 			err = json.Unmarshal([]byte(sse.data), &errRes)
 			if err != nil {
 				return fmt.Errorf("error reading error json: %w", err)
 			}
 			return fmt.Errorf(
-				"server responded with error: %d %s: %s",
+				"API error %d %s: %s",
 				errRes.Status, errRes.Title, errRes.Detail,
 			)
 		}

@@ -4,8 +4,11 @@
 package errors
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
+
+	"github.com/codesphere-cloud/cs-go/api/openapi_client"
 )
 
 type TimedOutError struct {
@@ -48,4 +51,34 @@ func Duplicated(msg string) *DuplicatedError {
 	return &DuplicatedError{
 		msg: msg,
 	}
+}
+
+type APIErrorResponse struct {
+	Status  int    `json:"status"`
+	Title   string `json:"title"`
+	Detail  string `json:"detail"`
+	TraceId string `json:"traceId"`
+}
+
+func FormatAPIError(err error) error {
+	if err == nil {
+		return nil
+	}
+
+	openAPIErr, ok := err.(*openapi_client.GenericOpenAPIError)
+	if !ok {
+		return err
+	}
+
+	body := openAPIErr.Body()
+	if len(body) == 0 {
+		return err
+	}
+
+	var apiErr APIErrorResponse
+	if json.Unmarshal(body, &apiErr) != nil {
+		return err
+	}
+
+	return fmt.Errorf("API error %d %s: %s", apiErr.Status, apiErr.Title, apiErr.Detail)
 }

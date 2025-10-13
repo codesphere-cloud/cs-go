@@ -8,6 +8,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/codesphere-cloud/cs-go/api/errors"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 
@@ -79,5 +80,5 @@ func (c *ExecCmd) ExecCommand(client Client, command string) error {
 		fmt.Println("STDERR:")
 		fmt.Fprintln(os.Stderr, stderr)
 	}
-	return err
+	return errors.FormatAPIError(err)
 }
