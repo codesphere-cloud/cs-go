@@ -28,5 +28,5 @@ func (client *Client) PlanByName(name string) (WorkspacePlan, error) {
 
 func (c *Client) ListWorkspacePlans() ([]WorkspacePlan, error) {
 	plans, _, err := c.api.MetadataAPI.MetadataGetWorkspacePlans(c.ctx).Execute()
-	return plans, err
+	return plans, cserrors.FormatAPIError(err)
 }

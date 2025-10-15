@@ -14,31 +14,31 @@ import (
 
 func (c *Client) ListWorkspaces(teamId int) ([]Workspace, error) {
 	workspaces, _, err := c.api.WorkspacesAPI.WorkspacesListWorkspaces(c.ctx, float32(teamId)).Execute()
-	return workspaces, err
+	return workspaces, errors.FormatAPIError(err)
 }
 
 func (c *Client) GetWorkspace(workspaceId int) (Workspace, error) {
 	workspace, _, err := c.api.WorkspacesAPI.WorkspacesGetWorkspace(c.ctx, float32(workspaceId)).Execute()
 
 	if workspace != nil {
-		return *workspace, err
+		return *workspace, errors.FormatAPIError(err)
 	}
-	return Workspace{}, err
+	return Workspace{}, errors.FormatAPIError(err)
 }
 
 func (c *Client) DeleteWorkspace(workspaceId int) error {
 	_, err := c.api.WorkspacesAPI.WorkspacesDeleteWorkspace(c.ctx, float32(workspaceId)).Execute()
-	return err
+	return errors.FormatAPIError(err)
 }
 
 func (c *Client) WorkspaceStatus(workspaceId int) (*WorkspaceStatus, error) {
 	status, _, err := c.api.WorkspacesAPI.WorkspacesGetWorkspaceStatus(c.ctx, float32(workspaceId)).Execute()
-	return status, err
+	return status, errors.FormatAPIError(err)
 }
 
 func (c *Client) CreateWorkspace(args CreateWorkspaceArgs) (*Workspace, error) {
 	workspace, _, err := c.api.WorkspacesAPI.WorkspacesCreateWorkspace(c.ctx).WorkspacesCreateWorkspaceRequest(args).Execute()
-	return workspace, err
+	return workspace, errors.FormatAPIError(err)
 }
 
 func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string) error {
@@ -52,7 +52,7 @@ func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string
 
 	req := c.api.WorkspacesAPI.WorkspacesSetEnvVar(c.ctx, float32(workspaceId)).WorkspacesListEnvVars200ResponseInner(vars)
 	_, err := c.api.WorkspacesAPI.WorkspacesSetEnvVarExecute(req)
-	return err
+	return errors.FormatAPIError(err)
 }
 
 func (c *Client) ExecCommand(workspaceId int, command string, workdir string, env map[string]string) (string, string, error) {
@@ -71,29 +71,29 @@ func (c *Client) ExecCommand(workspaceId int, command string, workdir string, en
 	res, _, err := req.Execute()
 
 	if err != nil {
-		err = fmt.Errorf("failed to execute command: %w, %v", err, (string)(err.(*openapi_client.GenericOpenAPIError).Body()))
+		return "", "", errors.FormatAPIError(err)
 	}
 	if res == nil {
-		return "", "", err
+		return "", "", errors.FormatAPIError(err)
 	}
-	return res.Output, res.Error, err
+	return res.Output, res.Error, errors.FormatAPIError(err)
 }
 
 func (c *Client) StartPipelineStage(wsId int, profile string, stage string) error {
 	if profile == "ci.yml" || profile == "" {
 		req := c.api.WorkspacesAPI.WorkspacesStartPipelineStage(c.ctx, float32(wsId), stage)
 		_, err := req.Execute()
-		return err
+		return errors.FormatAPIError(err)
 	}
 	req := c.api.WorkspacesAPI.WorkspacesStartPipelineStage1(c.ctx, float32(wsId), stage, profile)
 	_, err := req.Execute()
-	return err
+	return errors.FormatAPIError(err)
 }
 
 func (c *Client) GetPipelineState(wsId int, stage string) ([]PipelineStatus, error) {
 	req := c.api.WorkspacesAPI.WorkspacesPipelineStatus(c.ctx, float32(wsId), stage)
 	res, _, err := req.Execute()
-	return res, err
+	return res, errors.FormatAPIError(err)
 }
 
 // Waits for a given workspace to be running.
@@ -108,7 +108,7 @@ func (client *Client) WaitForWorkspaceRunning(workspace *Workspace, timeout time
 
 		if err != nil {
 			// TODO: log error and retry until timeout is reached.
-			return err
+			return errors.FormatAPIError(err)
 		}
 		if status.IsRunning {
 			return nil
@@ -173,10 +173,10 @@ func (c Client) GitPull(workspaceId int, remote string, branch string) error {
 	if remote == "" {
 		req := c.api.WorkspacesAPI.WorkspacesGitPull(c.ctx, float32(workspaceId))
 		_, err := req.Execute()
-		return err
+		return errors.FormatAPIError(err)
 	}
 
 	req := c.api.WorkspacesAPI.WorkspacesGitPull2(c.ctx, float32(workspaceId), remote, branch)
 	_, err := req.Execute()
-	return err
+	return errors.FormatAPIError(err)
 }
