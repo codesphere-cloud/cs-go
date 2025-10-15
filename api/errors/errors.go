@@ -80,5 +80,5 @@ func FormatAPIError(err error) error {
 		return err
 	}
 
-	return fmt.Errorf("API error %d %s: %s", apiErr.Status, apiErr.Title, apiErr.Detail)
+	return fmt.Errorf("codesphere API returned error %d (%s): %s", apiErr.Status, apiErr.Title, apiErr.Detail)
 }
