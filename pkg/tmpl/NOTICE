@@ -10,6 +10,12 @@ License: BSD-3-Clause
 License URL: https://github.com/imdario/mergo/blob/v1.0.1/LICENSE
  
 ----------
+Module: github.com/Masterminds/semver/v3
+Version: v3.4.0
+License: MIT
+License URL: https://github.com/Masterminds/semver/blob/v3.4.0/LICENSE.txt
+ 
+----------
 Module: github.com/ProtonMail/go-crypto
 Version: v1.1.6
 License: BSD-3-Clause
@@ -209,15 +215,15 @@ License URL: https://github.com/munnerz/goautoneg/blob/a7dc8b61c822/LICENSE
  
 ----------
 Module: github.com/onsi/ginkgo/v2
-Version: v2.23.4
+Version: v2.25.1
 License: MIT
-License URL: https://github.com/onsi/ginkgo/blob/v2.23.4/LICENSE
+License URL: https://github.com/onsi/ginkgo/blob/v2.25.1/LICENSE
  
 ----------
 Module: github.com/onsi/gomega
-Version: v1.37.0
+Version: v1.38.2
 License: MIT
-License URL: https://github.com/onsi/gomega/blob/v1.37.0/LICENSE
+License URL: https://github.com/onsi/gomega/blob/v1.38.2/LICENSE
  
 ----------
 Module: github.com/pjbgf/sha1cd
@@ -293,15 +299,15 @@ License URL: https://github.com/skeema/knownhosts/blob/v1.3.1/LICENSE
  
 ----------
 Module: github.com/spf13/cobra
-Version: v1.9.1
+Version: v1.10.1
 License: Apache-2.0
-License URL: https://github.com/spf13/cobra/blob/v1.9.1/LICENSE.txt
+License URL: https://github.com/spf13/cobra/blob/v1.10.1/LICENSE.txt
  
 ----------
 Module: github.com/spf13/pflag
-Version: v1.0.6
+Version: v1.0.9
 License: BSD-3-Clause
-License URL: https://github.com/spf13/pflag/blob/v1.0.6/LICENSE
+License URL: https://github.com/spf13/pflag/blob/v1.0.9/LICENSE
  
 ----------
 Module: github.com/stretchr/objx
@@ -344,6 +350,12 @@ Module: go.yaml.in/yaml/v2
 Version: v2.4.2
 License: Apache-2.0
 License URL: https://github.com/yaml/go-yaml/blob/v2.4.2/LICENSE
+ 
+----------
+Module: go.yaml.in/yaml/v3
+Version: v3.0.4
+License: MIT
+License URL: https://github.com/yaml/go-yaml/blob/v3.0.4/LICENSE
  
 ----------
 Module: golang.org/x/crypto
@@ -431,21 +443,21 @@ License URL: https://github.com/kubernetes/apimachinery/blob/v0.34.1/third_party
  
 ----------
 Module: k8s.io/cli-runtime/pkg/printers
-Version: v0.33.3
+Version: v0.34.1
 License: Apache-2.0
-License URL: https://github.com/kubernetes/cli-runtime/blob/v0.33.3/LICENSE
+License URL: https://github.com/kubernetes/cli-runtime/blob/v0.34.1/LICENSE
  
 ----------
 Module: k8s.io/client-go/third_party/forked/golang/template
-Version: v0.33.3
+Version: v0.34.1
 License: BSD-3-Clause
-License URL: https://github.com/kubernetes/client-go/blob/v0.33.3/third_party/forked/golang/LICENSE
+License URL: https://github.com/kubernetes/client-go/blob/v0.34.1/third_party/forked/golang/LICENSE
  
 ----------
 Module: k8s.io/client-go/util/jsonpath
-Version: v0.33.3
+Version: v0.34.1
 License: Apache-2.0
-License URL: https://github.com/kubernetes/client-go/blob/v0.33.3/LICENSE
+License URL: https://github.com/kubernetes/client-go/blob/v0.34.1/LICENSE
  
 ----------
 Module: k8s.io/klog/v2
