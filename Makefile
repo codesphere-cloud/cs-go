@@ -49,8 +49,8 @@ endif
 		${OPENAPI_DIR}/test
 	make generate
 
-release-binaries:
-	goreleaser release --verbose --skip=validate --skip=publish --clean
+release-binaries: install-build-deps
+	goreleaser release --verbose --skip=validate --skip=publish --clean --snapshot
  
 generate-api: generate-client format
 
@@ -78,3 +78,7 @@ endif
 ifeq (, $(shell which golangci-lint))
 	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.1.2
 endif
+ifeq (, $(shell which goreleaser))
+	go install github.com/goreleaser/goreleaser/v2@latest
+endif
+
