@@ -186,8 +186,8 @@ type WorkspacesAPI interface {
 	WorkspacesListEnvVars(ctx context.Context, workspaceId float32) ApiWorkspacesListEnvVarsRequest
 
 	// WorkspacesListEnvVarsExecute executes the request
-	//  @return []WorkspacesListEnvVars200ResponseInner
-	WorkspacesListEnvVarsExecute(r ApiWorkspacesListEnvVarsRequest) ([]WorkspacesListEnvVars200ResponseInner, *http.Response, error)
+	//  @return []WorkspacesCreateWorkspaceRequestEnvInner
+	WorkspacesListEnvVarsExecute(r ApiWorkspacesListEnvVarsRequest) ([]WorkspacesCreateWorkspaceRequestEnvInner, *http.Response, error)
 
 	/*
 		WorkspacesListWorkspaces listWorkspaces
@@ -1900,7 +1900,7 @@ type ApiWorkspacesListEnvVarsRequest struct {
 	workspaceId float32
 }
 
-func (r ApiWorkspacesListEnvVarsRequest) Execute() ([]WorkspacesListEnvVars200ResponseInner, *http.Response, error) {
+func (r ApiWorkspacesListEnvVarsRequest) Execute() ([]WorkspacesCreateWorkspaceRequestEnvInner, *http.Response, error) {
 	return r.ApiService.WorkspacesListEnvVarsExecute(r)
 }
 
@@ -1921,13 +1921,13 @@ func (a *WorkspacesAPIService) WorkspacesListEnvVars(ctx context.Context, worksp
 
 // Execute executes the request
 //
-//	@return []WorkspacesListEnvVars200ResponseInner
-func (a *WorkspacesAPIService) WorkspacesListEnvVarsExecute(r ApiWorkspacesListEnvVarsRequest) ([]WorkspacesListEnvVars200ResponseInner, *http.Response, error) {
+//	@return []WorkspacesCreateWorkspaceRequestEnvInner
+func (a *WorkspacesAPIService) WorkspacesListEnvVarsExecute(r ApiWorkspacesListEnvVarsRequest) ([]WorkspacesCreateWorkspaceRequestEnvInner, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue []WorkspacesListEnvVars200ResponseInner
+		localVarReturnValue []WorkspacesCreateWorkspaceRequestEnvInner
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WorkspacesAPIService.WorkspacesListEnvVars")
@@ -2622,14 +2622,14 @@ func (a *WorkspacesAPIService) WorkspacesServerLogsExecute(r ApiWorkspacesServer
 }
 
 type ApiWorkspacesSetEnvVarRequest struct {
-	ctx                                   context.Context
-	ApiService                            WorkspacesAPI
-	workspaceId                           float32
-	workspacesListEnvVars200ResponseInner *[]WorkspacesListEnvVars200ResponseInner
+	ctx                                      context.Context
+	ApiService                               WorkspacesAPI
+	workspaceId                              float32
+	workspacesCreateWorkspaceRequestEnvInner *[]WorkspacesCreateWorkspaceRequestEnvInner
 }
 
-func (r ApiWorkspacesSetEnvVarRequest) WorkspacesListEnvVars200ResponseInner(workspacesListEnvVars200ResponseInner []WorkspacesListEnvVars200ResponseInner) ApiWorkspacesSetEnvVarRequest {
-	r.workspacesListEnvVars200ResponseInner = &workspacesListEnvVars200ResponseInner
+func (r ApiWorkspacesSetEnvVarRequest) WorkspacesCreateWorkspaceRequestEnvInner(workspacesCreateWorkspaceRequestEnvInner []WorkspacesCreateWorkspaceRequestEnvInner) ApiWorkspacesSetEnvVarRequest {
+	r.workspacesCreateWorkspaceRequestEnvInner = &workspacesCreateWorkspaceRequestEnvInner
 	return r
 }
 
@@ -2690,7 +2690,7 @@ func (a *WorkspacesAPIService) WorkspacesSetEnvVarExecute(r ApiWorkspacesSetEnvV
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.workspacesListEnvVars200ResponseInner
+	localVarPostBody = r.workspacesCreateWorkspaceRequestEnvInner
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err

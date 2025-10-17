@@ -941,6 +941,115 @@ func (_c *MockMetadataAPI_MetadataGetDatacentersExecute_Call) RunAndReturn(run f
 	return _c
 }
 
+// MetadataGetWorkspaceBaseImages provides a mock function for the type MockMetadataAPI
+func (_mock *MockMetadataAPI) MetadataGetWorkspaceBaseImages(ctx context.Context) ApiMetadataGetWorkspaceBaseImagesRequest {
+	ret := _mock.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for MetadataGetWorkspaceBaseImages")
+	}
+
+	var r0 ApiMetadataGetWorkspaceBaseImagesRequest
+	if returnFunc, ok := ret.Get(0).(func(context.Context) ApiMetadataGetWorkspaceBaseImagesRequest); ok {
+		r0 = returnFunc(ctx)
+	} else {
+		r0 = ret.Get(0).(ApiMetadataGetWorkspaceBaseImagesRequest)
+	}
+	return r0
+}
+
+// MockMetadataAPI_MetadataGetWorkspaceBaseImages_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'MetadataGetWorkspaceBaseImages'
+type MockMetadataAPI_MetadataGetWorkspaceBaseImages_Call struct {
+	*mock.Call
+}
+
+// MetadataGetWorkspaceBaseImages is a helper method to define mock.On call
+//   - ctx
+func (_e *MockMetadataAPI_Expecter) MetadataGetWorkspaceBaseImages(ctx interface{}) *MockMetadataAPI_MetadataGetWorkspaceBaseImages_Call {
+	return &MockMetadataAPI_MetadataGetWorkspaceBaseImages_Call{Call: _e.mock.On("MetadataGetWorkspaceBaseImages", ctx)}
+}
+
+func (_c *MockMetadataAPI_MetadataGetWorkspaceBaseImages_Call) Run(run func(ctx context.Context)) *MockMetadataAPI_MetadataGetWorkspaceBaseImages_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context))
+	})
+	return _c
+}
+
+func (_c *MockMetadataAPI_MetadataGetWorkspaceBaseImages_Call) Return(apiMetadataGetWorkspaceBaseImagesRequest ApiMetadataGetWorkspaceBaseImagesRequest) *MockMetadataAPI_MetadataGetWorkspaceBaseImages_Call {
+	_c.Call.Return(apiMetadataGetWorkspaceBaseImagesRequest)
+	return _c
+}
+
+func (_c *MockMetadataAPI_MetadataGetWorkspaceBaseImages_Call) RunAndReturn(run func(ctx context.Context) ApiMetadataGetWorkspaceBaseImagesRequest) *MockMetadataAPI_MetadataGetWorkspaceBaseImages_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// MetadataGetWorkspaceBaseImagesExecute provides a mock function for the type MockMetadataAPI
+func (_mock *MockMetadataAPI) MetadataGetWorkspaceBaseImagesExecute(r ApiMetadataGetWorkspaceBaseImagesRequest) ([]MetadataGetWorkspaceBaseImages200ResponseInner, *http.Response, error) {
+	ret := _mock.Called(r)
+
+	if len(ret) == 0 {
+		panic("no return value specified for MetadataGetWorkspaceBaseImagesExecute")
+	}
+
+	var r0 []MetadataGetWorkspaceBaseImages200ResponseInner
+	var r1 *http.Response
+	var r2 error
+	if returnFunc, ok := ret.Get(0).(func(ApiMetadataGetWorkspaceBaseImagesRequest) ([]MetadataGetWorkspaceBaseImages200ResponseInner, *http.Response, error)); ok {
+		return returnFunc(r)
+	}
+	if returnFunc, ok := ret.Get(0).(func(ApiMetadataGetWorkspaceBaseImagesRequest) []MetadataGetWorkspaceBaseImages200ResponseInner); ok {
+		r0 = returnFunc(r)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]MetadataGetWorkspaceBaseImages200ResponseInner)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(ApiMetadataGetWorkspaceBaseImagesRequest) *http.Response); ok {
+		r1 = returnFunc(r)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*http.Response)
+		}
+	}
+	if returnFunc, ok := ret.Get(2).(func(ApiMetadataGetWorkspaceBaseImagesRequest) error); ok {
+		r2 = returnFunc(r)
+	} else {
+		r2 = ret.Error(2)
+	}
+	return r0, r1, r2
+}
+
+// MockMetadataAPI_MetadataGetWorkspaceBaseImagesExecute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'MetadataGetWorkspaceBaseImagesExecute'
+type MockMetadataAPI_MetadataGetWorkspaceBaseImagesExecute_Call struct {
+	*mock.Call
+}
+
+// MetadataGetWorkspaceBaseImagesExecute is a helper method to define mock.On call
+//   - r
+func (_e *MockMetadataAPI_Expecter) MetadataGetWorkspaceBaseImagesExecute(r interface{}) *MockMetadataAPI_MetadataGetWorkspaceBaseImagesExecute_Call {
+	return &MockMetadataAPI_MetadataGetWorkspaceBaseImagesExecute_Call{Call: _e.mock.On("MetadataGetWorkspaceBaseImagesExecute", r)}
+}
+
+func (_c *MockMetadataAPI_MetadataGetWorkspaceBaseImagesExecute_Call) Run(run func(r ApiMetadataGetWorkspaceBaseImagesRequest)) *MockMetadataAPI_MetadataGetWorkspaceBaseImagesExecute_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(ApiMetadataGetWorkspaceBaseImagesRequest))
+	})
+	return _c
+}
+
+func (_c *MockMetadataAPI_MetadataGetWorkspaceBaseImagesExecute_Call) Return(metadataGetWorkspaceBaseImages200ResponseInners []MetadataGetWorkspaceBaseImages200ResponseInner, response *http.Response, err error) *MockMetadataAPI_MetadataGetWorkspaceBaseImagesExecute_Call {
+	_c.Call.Return(metadataGetWorkspaceBaseImages200ResponseInners, response, err)
+	return _c
+}
+
+func (_c *MockMetadataAPI_MetadataGetWorkspaceBaseImagesExecute_Call) RunAndReturn(run func(r ApiMetadataGetWorkspaceBaseImagesRequest) ([]MetadataGetWorkspaceBaseImages200ResponseInner, *http.Response, error)) *MockMetadataAPI_MetadataGetWorkspaceBaseImagesExecute_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // MetadataGetWorkspacePlans provides a mock function for the type MockMetadataAPI
 func (_mock *MockMetadataAPI) MetadataGetWorkspacePlans(ctx context.Context) ApiMetadataGetWorkspacePlansRequest {
 	ret := _mock.Called(ctx)
@@ -2848,24 +2957,24 @@ func (_c *MockWorkspacesAPI_WorkspacesListEnvVars_Call) RunAndReturn(run func(ct
 }
 
 // WorkspacesListEnvVarsExecute provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesListEnvVarsExecute(r ApiWorkspacesListEnvVarsRequest) ([]WorkspacesListEnvVars200ResponseInner, *http.Response, error) {
+func (_mock *MockWorkspacesAPI) WorkspacesListEnvVarsExecute(r ApiWorkspacesListEnvVarsRequest) ([]WorkspacesCreateWorkspaceRequestEnvInner, *http.Response, error) {
 	ret := _mock.Called(r)
 
 	if len(ret) == 0 {
 		panic("no return value specified for WorkspacesListEnvVarsExecute")
 	}
 
-	var r0 []WorkspacesListEnvVars200ResponseInner
+	var r0 []WorkspacesCreateWorkspaceRequestEnvInner
 	var r1 *http.Response
 	var r2 error
-	if returnFunc, ok := ret.Get(0).(func(ApiWorkspacesListEnvVarsRequest) ([]WorkspacesListEnvVars200ResponseInner, *http.Response, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(ApiWorkspacesListEnvVarsRequest) ([]WorkspacesCreateWorkspaceRequestEnvInner, *http.Response, error)); ok {
 		return returnFunc(r)
 	}
-	if returnFunc, ok := ret.Get(0).(func(ApiWorkspacesListEnvVarsRequest) []WorkspacesListEnvVars200ResponseInner); ok {
+	if returnFunc, ok := ret.Get(0).(func(ApiWorkspacesListEnvVarsRequest) []WorkspacesCreateWorkspaceRequestEnvInner); ok {
 		r0 = returnFunc(r)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]WorkspacesListEnvVars200ResponseInner)
+			r0 = ret.Get(0).([]WorkspacesCreateWorkspaceRequestEnvInner)
 		}
 	}
 	if returnFunc, ok := ret.Get(1).(func(ApiWorkspacesListEnvVarsRequest) *http.Response); ok {
@@ -2901,12 +3010,12 @@ func (_c *MockWorkspacesAPI_WorkspacesListEnvVarsExecute_Call) Run(run func(r Ap
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesListEnvVarsExecute_Call) Return(workspacesListEnvVars200ResponseInners []WorkspacesListEnvVars200ResponseInner, response *http.Response, err error) *MockWorkspacesAPI_WorkspacesListEnvVarsExecute_Call {
-	_c.Call.Return(workspacesListEnvVars200ResponseInners, response, err)
+func (_c *MockWorkspacesAPI_WorkspacesListEnvVarsExecute_Call) Return(workspacesCreateWorkspaceRequestEnvInners []WorkspacesCreateWorkspaceRequestEnvInner, response *http.Response, err error) *MockWorkspacesAPI_WorkspacesListEnvVarsExecute_Call {
+	_c.Call.Return(workspacesCreateWorkspaceRequestEnvInners, response, err)
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesListEnvVarsExecute_Call) RunAndReturn(run func(r ApiWorkspacesListEnvVarsRequest) ([]WorkspacesListEnvVars200ResponseInner, *http.Response, error)) *MockWorkspacesAPI_WorkspacesListEnvVarsExecute_Call {
+func (_c *MockWorkspacesAPI_WorkspacesListEnvVarsExecute_Call) RunAndReturn(run func(r ApiWorkspacesListEnvVarsRequest) ([]WorkspacesCreateWorkspaceRequestEnvInner, *http.Response, error)) *MockWorkspacesAPI_WorkspacesListEnvVarsExecute_Call {
 	_c.Call.Return(run)
 	return _c
 }

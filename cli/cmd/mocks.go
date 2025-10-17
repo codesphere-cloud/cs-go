@@ -404,6 +404,61 @@ func (_c *MockClient_GitPull_Call) RunAndReturn(run func(wsId int, remote string
 	return _c
 }
 
+// ListBaseimages provides a mock function for the type MockClient
+func (_mock *MockClient) ListBaseimages() ([]api.Baseimage, error) {
+	ret := _mock.Called()
+
+	if len(ret) == 0 {
+		panic("no return value specified for ListBaseimages")
+	}
+
+	var r0 []api.Baseimage
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func() ([]api.Baseimage, error)); ok {
+		return returnFunc()
+	}
+	if returnFunc, ok := ret.Get(0).(func() []api.Baseimage); ok {
+		r0 = returnFunc()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]api.Baseimage)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func() error); ok {
+		r1 = returnFunc()
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockClient_ListBaseimages_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListBaseimages'
+type MockClient_ListBaseimages_Call struct {
+	*mock.Call
+}
+
+// ListBaseimages is a helper method to define mock.On call
+func (_e *MockClient_Expecter) ListBaseimages() *MockClient_ListBaseimages_Call {
+	return &MockClient_ListBaseimages_Call{Call: _e.mock.On("ListBaseimages")}
+}
+
+func (_c *MockClient_ListBaseimages_Call) Run(run func()) *MockClient_ListBaseimages_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run()
+	})
+	return _c
+}
+
+func (_c *MockClient_ListBaseimages_Call) Return(vs []api.Baseimage, err error) *MockClient_ListBaseimages_Call {
+	_c.Call.Return(vs, err)
+	return _c
+}
+
+func (_c *MockClient_ListBaseimages_Call) RunAndReturn(run func() ([]api.Baseimage, error)) *MockClient_ListBaseimages_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // ListTeams provides a mock function for the type MockClient
 func (_mock *MockClient) ListTeams() ([]api.Team, error) {
 	ret := _mock.Called()

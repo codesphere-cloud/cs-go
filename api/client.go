@@ -136,3 +136,8 @@ func (c *Client) UpdateWorkspaceConnections(
 		RequestBody(req).Execute()
 	return domain, errors.FormatAPIError(err)
 }
+
+func (c *Client) ListBaseimages() ([]Baseimage, error) {
+	baseimages, _, err := c.api.MetadataAPI.MetadataGetWorkspaceBaseImages(c.ctx).Execute()
+	return baseimages, errors.FormatAPIError(err)
+}

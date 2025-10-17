@@ -4,8 +4,9 @@
 package api
 
 import (
-	openapi "github.com/codesphere-cloud/cs-go/api/openapi_client"
 	"time"
+
+	openapi "github.com/codesphere-cloud/cs-go/api/openapi_client"
 )
 
 type DataCenter = openapi.MetadataGetDatacenters200ResponseInner
@@ -16,6 +17,7 @@ type UpdateDomainArgs = openapi.DomainsGetDomain200ResponseCustomConfig
 type PathToWorkspaces = map[string][]*Workspace
 
 type Workspace = openapi.WorkspacesGetWorkspace200Response
+type Baseimage = openapi.MetadataGetWorkspaceBaseImages200ResponseInner
 type WorkspaceStatus = openapi.WorkspacesGetWorkspaceStatus200Response
 type CreateWorkspaceArgs = openapi.WorkspacesCreateWorkspaceRequest
 type WorkspacePlan = openapi.MetadataGetWorkspacePlans200ResponseInner

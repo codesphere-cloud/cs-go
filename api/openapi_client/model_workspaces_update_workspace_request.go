@@ -20,10 +20,12 @@ var _ MappedNullable = &WorkspacesUpdateWorkspaceRequest{}
 
 // WorkspacesUpdateWorkspaceRequest struct for WorkspacesUpdateWorkspaceRequest
 type WorkspacesUpdateWorkspaceRequest struct {
-	PlanId    *int           `json:"planId,omitempty"`
-	Name      *string        `json:"name,omitempty"`
-	Replicas  *int           `json:"replicas,omitempty"`
-	VpnConfig NullableString `json:"vpnConfig,omitempty"`
+	PlanId     *int           `json:"planId,omitempty"`
+	BaseImage  *string        `json:"baseImage,omitempty"`
+	Name       *string        `json:"name,omitempty"`
+	Replicas   *int           `json:"replicas,omitempty"`
+	VpnConfig  NullableString `json:"vpnConfig,omitempty"`
+	Restricted *bool          `json:"restricted,omitempty"`
 }
 
 // NewWorkspacesUpdateWorkspaceRequest instantiates a new WorkspacesUpdateWorkspaceRequest object
@@ -73,6 +75,38 @@ func (o *WorkspacesUpdateWorkspaceRequest) HasPlanId() bool {
 // SetPlanId gets a reference to the given int and assigns it to the PlanId field.
 func (o *WorkspacesUpdateWorkspaceRequest) SetPlanId(v int) {
 	o.PlanId = &v
+}
+
+// GetBaseImage returns the BaseImage field value if set, zero value otherwise.
+func (o *WorkspacesUpdateWorkspaceRequest) GetBaseImage() string {
+	if o == nil || IsNil(o.BaseImage) {
+		var ret string
+		return ret
+	}
+	return *o.BaseImage
+}
+
+// GetBaseImageOk returns a tuple with the BaseImage field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WorkspacesUpdateWorkspaceRequest) GetBaseImageOk() (*string, bool) {
+	if o == nil || IsNil(o.BaseImage) {
+		return nil, false
+	}
+	return o.BaseImage, true
+}
+
+// HasBaseImage returns a boolean if a field has been set.
+func (o *WorkspacesUpdateWorkspaceRequest) HasBaseImage() bool {
+	if o != nil && !IsNil(o.BaseImage) {
+		return true
+	}
+
+	return false
+}
+
+// SetBaseImage gets a reference to the given string and assigns it to the BaseImage field.
+func (o *WorkspacesUpdateWorkspaceRequest) SetBaseImage(v string) {
+	o.BaseImage = &v
 }
 
 // GetName returns the Name field value if set, zero value otherwise.
@@ -182,6 +216,38 @@ func (o *WorkspacesUpdateWorkspaceRequest) UnsetVpnConfig() {
 	o.VpnConfig.Unset()
 }
 
+// GetRestricted returns the Restricted field value if set, zero value otherwise.
+func (o *WorkspacesUpdateWorkspaceRequest) GetRestricted() bool {
+	if o == nil || IsNil(o.Restricted) {
+		var ret bool
+		return ret
+	}
+	return *o.Restricted
+}
+
+// GetRestrictedOk returns a tuple with the Restricted field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WorkspacesUpdateWorkspaceRequest) GetRestrictedOk() (*bool, bool) {
+	if o == nil || IsNil(o.Restricted) {
+		return nil, false
+	}
+	return o.Restricted, true
+}
+
+// HasRestricted returns a boolean if a field has been set.
+func (o *WorkspacesUpdateWorkspaceRequest) HasRestricted() bool {
+	if o != nil && !IsNil(o.Restricted) {
+		return true
+	}
+
+	return false
+}
+
+// SetRestricted gets a reference to the given bool and assigns it to the Restricted field.
+func (o *WorkspacesUpdateWorkspaceRequest) SetRestricted(v bool) {
+	o.Restricted = &v
+}
+
 func (o WorkspacesUpdateWorkspaceRequest) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -195,6 +261,9 @@ func (o WorkspacesUpdateWorkspaceRequest) ToMap() (map[string]interface{}, error
 	if !IsNil(o.PlanId) {
 		toSerialize["planId"] = o.PlanId
 	}
+	if !IsNil(o.BaseImage) {
+		toSerialize["baseImage"] = o.BaseImage
+	}
 	if !IsNil(o.Name) {
 		toSerialize["name"] = o.Name
 	}
@@ -203,6 +272,9 @@ func (o WorkspacesUpdateWorkspaceRequest) ToMap() (map[string]interface{}, error
 	}
 	if o.VpnConfig.IsSet() {
 		toSerialize["vpnConfig"] = o.VpnConfig.Get()
+	}
+	if !IsNil(o.Restricted) {
+		toSerialize["restricted"] = o.Restricted
 	}
 	return toSerialize, nil
 }
