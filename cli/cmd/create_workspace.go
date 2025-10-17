@@ -7,6 +7,8 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"slices"
+	"strings"
 	"time"
 
 	"github.com/codesphere-cloud/cs-go/api"
@@ -22,13 +24,14 @@ type CreateWorkspaceCmd struct {
 
 type CreateWorkspaceOpts struct {
 	GlobalOptions
-	Repo    *string
-	Vpn     *string
-	Env     *[]string
-	Plan    *int
-	Private *bool
-	Timeout *time.Duration
-	Branch  *string
+	Repo      *string
+	Vpn       *string
+	Env       *[]string
+	Plan      *int
+	Private   *bool
+	Timeout   *time.Duration
+	Branch    *string
+	Baseimage *string
 }
 
 func (c *CreateWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
@@ -104,6 +107,7 @@ func AddCreateWorkspaceCmd(create *cobra.Command, opts GlobalOptions) {
 	workspace.Opts.Private = workspace.cmd.Flags().BoolP("private", "P", false, "Use private repository")
 	workspace.Opts.Timeout = workspace.cmd.Flags().Duration("timeout", 10*time.Minute, "Time to wait for the workspace to start (e.g. 5m for 5 minutes)")
 	workspace.Opts.Branch = workspace.cmd.Flags().StringP("branch", "b", "", "branch to check out")
+	workspace.Opts.Baseimage = workspace.cmd.Flags().String("base-image", "", "Base image to use for the workspace, e.g. 'ubuntu-24.04'")
 
 	create.AddCommand(workspace.cmd)
 	workspace.cmd.RunE = workspace.RunE
@@ -140,6 +144,24 @@ func (c *CreateWorkspaceCmd) CreateWorkspace(client Client, teamId int, wsName s
 
 	if c.Opts.Branch != nil && *c.Opts.Branch != "" {
 		args.Branch = c.Opts.Branch
+	}
+
+	if c.Opts.Baseimage != nil && *c.Opts.Baseimage != "" {
+		baseimages, err := client.ListBaseimages()
+		if err != nil {
+			return nil, fmt.Errorf("failed to list base images: %w", err)
+		}
+
+		baseimageNames := make([]string, len(baseimages))
+		for i, bi := range baseimages {
+			baseimageNames[i] = bi.GetId()
+		}
+
+		if !slices.Contains(baseimageNames, *c.Opts.Baseimage) {
+			return nil, fmt.Errorf("base image '%s' not found, available options are: %s", *c.Opts.Baseimage, strings.Join(baseimageNames, ", "))
+		}
+
+		args.BaseImage = c.Opts.Baseimage
 	}
 
 	ws, err := client.DeployWorkspace(args)

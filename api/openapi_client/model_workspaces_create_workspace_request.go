@@ -22,16 +22,20 @@ var _ MappedNullable = &WorkspacesCreateWorkspaceRequest{}
 
 // WorkspacesCreateWorkspaceRequest struct for WorkspacesCreateWorkspaceRequest
 type WorkspacesCreateWorkspaceRequest struct {
-	TeamId            int     `json:"teamId"`
-	Name              string  `json:"name"`
-	PlanId            int     `json:"planId"`
-	IsPrivateRepo     bool    `json:"isPrivateRepo"`
-	Replicas          int     `json:"replicas"`
-	GitUrl            *string `json:"gitUrl,omitempty"`
-	InitialBranch     *string `json:"initialBranch,omitempty"`
-	SourceWorkspaceId *int    `json:"sourceWorkspaceId,omitempty"`
-	WelcomeMessage    *string `json:"welcomeMessage,omitempty"`
-	VpnConfig         *string `json:"vpnConfig,omitempty"`
+	TeamId            int                                        `json:"teamId"`
+	Name              string                                     `json:"name"`
+	PlanId            int                                        `json:"planId"`
+	IsPrivateRepo     bool                                       `json:"isPrivateRepo"`
+	Replicas          int                                        `json:"replicas"`
+	BaseImage         *string                                    `json:"baseImage,omitempty"`
+	GitUrl            *string                                    `json:"gitUrl,omitempty"`
+	InitialBranch     *string                                    `json:"initialBranch,omitempty"`
+	CloneDepth        *int                                       `json:"cloneDepth,omitempty"`
+	SourceWorkspaceId *int                                       `json:"sourceWorkspaceId,omitempty"`
+	WelcomeMessage    *string                                    `json:"welcomeMessage,omitempty"`
+	VpnConfig         *string                                    `json:"vpnConfig,omitempty"`
+	Restricted        *bool                                      `json:"restricted,omitempty"`
+	Env               []WorkspacesCreateWorkspaceRequestEnvInner `json:"env,omitempty"`
 }
 
 type _WorkspacesCreateWorkspaceRequest WorkspacesCreateWorkspaceRequest
@@ -178,6 +182,38 @@ func (o *WorkspacesCreateWorkspaceRequest) SetReplicas(v int) {
 	o.Replicas = v
 }
 
+// GetBaseImage returns the BaseImage field value if set, zero value otherwise.
+func (o *WorkspacesCreateWorkspaceRequest) GetBaseImage() string {
+	if o == nil || IsNil(o.BaseImage) {
+		var ret string
+		return ret
+	}
+	return *o.BaseImage
+}
+
+// GetBaseImageOk returns a tuple with the BaseImage field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WorkspacesCreateWorkspaceRequest) GetBaseImageOk() (*string, bool) {
+	if o == nil || IsNil(o.BaseImage) {
+		return nil, false
+	}
+	return o.BaseImage, true
+}
+
+// HasBaseImage returns a boolean if a field has been set.
+func (o *WorkspacesCreateWorkspaceRequest) HasBaseImage() bool {
+	if o != nil && !IsNil(o.BaseImage) {
+		return true
+	}
+
+	return false
+}
+
+// SetBaseImage gets a reference to the given string and assigns it to the BaseImage field.
+func (o *WorkspacesCreateWorkspaceRequest) SetBaseImage(v string) {
+	o.BaseImage = &v
+}
+
 // GetGitUrl returns the GitUrl field value if set, zero value otherwise.
 func (o *WorkspacesCreateWorkspaceRequest) GetGitUrl() string {
 	if o == nil || IsNil(o.GitUrl) {
@@ -240,6 +276,38 @@ func (o *WorkspacesCreateWorkspaceRequest) HasInitialBranch() bool {
 // SetInitialBranch gets a reference to the given string and assigns it to the InitialBranch field.
 func (o *WorkspacesCreateWorkspaceRequest) SetInitialBranch(v string) {
 	o.InitialBranch = &v
+}
+
+// GetCloneDepth returns the CloneDepth field value if set, zero value otherwise.
+func (o *WorkspacesCreateWorkspaceRequest) GetCloneDepth() int {
+	if o == nil || IsNil(o.CloneDepth) {
+		var ret int
+		return ret
+	}
+	return *o.CloneDepth
+}
+
+// GetCloneDepthOk returns a tuple with the CloneDepth field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WorkspacesCreateWorkspaceRequest) GetCloneDepthOk() (*int, bool) {
+	if o == nil || IsNil(o.CloneDepth) {
+		return nil, false
+	}
+	return o.CloneDepth, true
+}
+
+// HasCloneDepth returns a boolean if a field has been set.
+func (o *WorkspacesCreateWorkspaceRequest) HasCloneDepth() bool {
+	if o != nil && !IsNil(o.CloneDepth) {
+		return true
+	}
+
+	return false
+}
+
+// SetCloneDepth gets a reference to the given int and assigns it to the CloneDepth field.
+func (o *WorkspacesCreateWorkspaceRequest) SetCloneDepth(v int) {
+	o.CloneDepth = &v
 }
 
 // GetSourceWorkspaceId returns the SourceWorkspaceId field value if set, zero value otherwise.
@@ -338,6 +406,70 @@ func (o *WorkspacesCreateWorkspaceRequest) SetVpnConfig(v string) {
 	o.VpnConfig = &v
 }
 
+// GetRestricted returns the Restricted field value if set, zero value otherwise.
+func (o *WorkspacesCreateWorkspaceRequest) GetRestricted() bool {
+	if o == nil || IsNil(o.Restricted) {
+		var ret bool
+		return ret
+	}
+	return *o.Restricted
+}
+
+// GetRestrictedOk returns a tuple with the Restricted field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WorkspacesCreateWorkspaceRequest) GetRestrictedOk() (*bool, bool) {
+	if o == nil || IsNil(o.Restricted) {
+		return nil, false
+	}
+	return o.Restricted, true
+}
+
+// HasRestricted returns a boolean if a field has been set.
+func (o *WorkspacesCreateWorkspaceRequest) HasRestricted() bool {
+	if o != nil && !IsNil(o.Restricted) {
+		return true
+	}
+
+	return false
+}
+
+// SetRestricted gets a reference to the given bool and assigns it to the Restricted field.
+func (o *WorkspacesCreateWorkspaceRequest) SetRestricted(v bool) {
+	o.Restricted = &v
+}
+
+// GetEnv returns the Env field value if set, zero value otherwise.
+func (o *WorkspacesCreateWorkspaceRequest) GetEnv() []WorkspacesCreateWorkspaceRequestEnvInner {
+	if o == nil || IsNil(o.Env) {
+		var ret []WorkspacesCreateWorkspaceRequestEnvInner
+		return ret
+	}
+	return o.Env
+}
+
+// GetEnvOk returns a tuple with the Env field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WorkspacesCreateWorkspaceRequest) GetEnvOk() ([]WorkspacesCreateWorkspaceRequestEnvInner, bool) {
+	if o == nil || IsNil(o.Env) {
+		return nil, false
+	}
+	return o.Env, true
+}
+
+// HasEnv returns a boolean if a field has been set.
+func (o *WorkspacesCreateWorkspaceRequest) HasEnv() bool {
+	if o != nil && !IsNil(o.Env) {
+		return true
+	}
+
+	return false
+}
+
+// SetEnv gets a reference to the given []WorkspacesCreateWorkspaceRequestEnvInner and assigns it to the Env field.
+func (o *WorkspacesCreateWorkspaceRequest) SetEnv(v []WorkspacesCreateWorkspaceRequestEnvInner) {
+	o.Env = v
+}
+
 func (o WorkspacesCreateWorkspaceRequest) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -353,11 +485,17 @@ func (o WorkspacesCreateWorkspaceRequest) ToMap() (map[string]interface{}, error
 	toSerialize["planId"] = o.PlanId
 	toSerialize["isPrivateRepo"] = o.IsPrivateRepo
 	toSerialize["replicas"] = o.Replicas
+	if !IsNil(o.BaseImage) {
+		toSerialize["baseImage"] = o.BaseImage
+	}
 	if !IsNil(o.GitUrl) {
 		toSerialize["gitUrl"] = o.GitUrl
 	}
 	if !IsNil(o.InitialBranch) {
 		toSerialize["initialBranch"] = o.InitialBranch
+	}
+	if !IsNil(o.CloneDepth) {
+		toSerialize["cloneDepth"] = o.CloneDepth
 	}
 	if !IsNil(o.SourceWorkspaceId) {
 		toSerialize["sourceWorkspaceId"] = o.SourceWorkspaceId
@@ -367,6 +505,12 @@ func (o WorkspacesCreateWorkspaceRequest) ToMap() (map[string]interface{}, error
 	}
 	if !IsNil(o.VpnConfig) {
 		toSerialize["vpnConfig"] = o.VpnConfig
+	}
+	if !IsNil(o.Restricted) {
+		toSerialize["restricted"] = o.Restricted
+	}
+	if !IsNil(o.Env) {
+		toSerialize["env"] = o.Env
 	}
 	return toSerialize, nil
 }

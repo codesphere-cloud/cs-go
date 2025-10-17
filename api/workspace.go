@@ -42,15 +42,16 @@ func (c *Client) CreateWorkspace(args CreateWorkspaceArgs) (*Workspace, error) {
 }
 
 func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string) error {
-	vars := []openapi_client.WorkspacesListEnvVars200ResponseInner{}
+	vars := []openapi_client.WorkspacesCreateWorkspaceRequestEnvInner{}
 	for k, v := range envVars {
-		vars = append(vars, openapi_client.WorkspacesListEnvVars200ResponseInner{
+		vars = append(vars, openapi_client.WorkspacesCreateWorkspaceRequestEnvInner{
 			Name:  k,
 			Value: v,
 		})
 	}
 
-	req := c.api.WorkspacesAPI.WorkspacesSetEnvVar(c.ctx, float32(workspaceId)).WorkspacesListEnvVars200ResponseInner(vars)
+	req := c.api.WorkspacesAPI.WorkspacesSetEnvVar(c.ctx, float32(workspaceId))
+	req.WorkspacesCreateWorkspaceRequestEnvInner(vars)
 	_, err := c.api.WorkspacesAPI.WorkspacesSetEnvVarExecute(req)
 	return errors.FormatAPIError(err)
 }
@@ -145,6 +146,7 @@ type DeployWorkspaceArgs struct {
 	IsPrivateRepo bool
 	GitUrl        *string //must be nil to use default
 	Branch        *string //must be nil to use default
+	BaseImage     *string //must be nil to use default
 
 	Timeout time.Duration
 }
@@ -160,6 +162,7 @@ func (client Client) DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, erro
 		IsPrivateRepo:     args.IsPrivateRepo,
 		GitUrl:            args.GitUrl,
 		InitialBranch:     args.Branch,
+		BaseImage:         args.BaseImage,
 		SourceWorkspaceId: nil,
 		WelcomeMessage:    nil,
 		Replicas:          1,

@@ -28,6 +28,7 @@ type WorkspacesGetWorkspace200Response struct {
 	IsPrivateRepo     bool           `json:"isPrivateRepo"`
 	Replicas          int            `json:"replicas"`
 	Id                int            `json:"id"`
+	BaseImage         *string        `json:"baseImage,omitempty"`
 	DataCenterId      int            `json:"dataCenterId"`
 	UserId            int            `json:"userId"`
 	GitUrl            NullableString `json:"gitUrl"`
@@ -35,6 +36,9 @@ type WorkspacesGetWorkspace200Response struct {
 	SourceWorkspaceId NullableInt    `json:"sourceWorkspaceId"`
 	WelcomeMessage    NullableString `json:"welcomeMessage"`
 	VpnConfig         NullableString `json:"vpnConfig"`
+	Restricted        bool           `json:"restricted"`
+	CollectTraces     bool           `json:"collectTraces"`
+	PersistentLogs    bool           `json:"persistentLogs"`
 }
 
 type _WorkspacesGetWorkspace200Response WorkspacesGetWorkspace200Response
@@ -43,7 +47,7 @@ type _WorkspacesGetWorkspace200Response WorkspacesGetWorkspace200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWorkspacesGetWorkspace200Response(teamId int, name string, planId int, isPrivateRepo bool, replicas int, id int, dataCenterId int, userId int, gitUrl NullableString, initialBranch NullableString, sourceWorkspaceId NullableInt, welcomeMessage NullableString, vpnConfig NullableString) *WorkspacesGetWorkspace200Response {
+func NewWorkspacesGetWorkspace200Response(teamId int, name string, planId int, isPrivateRepo bool, replicas int, id int, dataCenterId int, userId int, gitUrl NullableString, initialBranch NullableString, sourceWorkspaceId NullableInt, welcomeMessage NullableString, vpnConfig NullableString, restricted bool, collectTraces bool, persistentLogs bool) *WorkspacesGetWorkspace200Response {
 	this := WorkspacesGetWorkspace200Response{}
 	this.TeamId = teamId
 	this.Name = name
@@ -58,6 +62,9 @@ func NewWorkspacesGetWorkspace200Response(teamId int, name string, planId int, i
 	this.SourceWorkspaceId = sourceWorkspaceId
 	this.WelcomeMessage = welcomeMessage
 	this.VpnConfig = vpnConfig
+	this.Restricted = restricted
+	this.CollectTraces = collectTraces
+	this.PersistentLogs = persistentLogs
 	return &this
 }
 
@@ -211,6 +218,38 @@ func (o *WorkspacesGetWorkspace200Response) GetIdOk() (*int, bool) {
 // SetId sets field value
 func (o *WorkspacesGetWorkspace200Response) SetId(v int) {
 	o.Id = v
+}
+
+// GetBaseImage returns the BaseImage field value if set, zero value otherwise.
+func (o *WorkspacesGetWorkspace200Response) GetBaseImage() string {
+	if o == nil || IsNil(o.BaseImage) {
+		var ret string
+		return ret
+	}
+	return *o.BaseImage
+}
+
+// GetBaseImageOk returns a tuple with the BaseImage field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WorkspacesGetWorkspace200Response) GetBaseImageOk() (*string, bool) {
+	if o == nil || IsNil(o.BaseImage) {
+		return nil, false
+	}
+	return o.BaseImage, true
+}
+
+// HasBaseImage returns a boolean if a field has been set.
+func (o *WorkspacesGetWorkspace200Response) HasBaseImage() bool {
+	if o != nil && !IsNil(o.BaseImage) {
+		return true
+	}
+
+	return false
+}
+
+// SetBaseImage gets a reference to the given string and assigns it to the BaseImage field.
+func (o *WorkspacesGetWorkspace200Response) SetBaseImage(v string) {
+	o.BaseImage = &v
 }
 
 // GetDataCenterId returns the DataCenterId field value
@@ -391,6 +430,78 @@ func (o *WorkspacesGetWorkspace200Response) SetVpnConfig(v string) {
 	o.VpnConfig.Set(&v)
 }
 
+// GetRestricted returns the Restricted field value
+func (o *WorkspacesGetWorkspace200Response) GetRestricted() bool {
+	if o == nil {
+		var ret bool
+		return ret
+	}
+
+	return o.Restricted
+}
+
+// GetRestrictedOk returns a tuple with the Restricted field value
+// and a boolean to check if the value has been set.
+func (o *WorkspacesGetWorkspace200Response) GetRestrictedOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Restricted, true
+}
+
+// SetRestricted sets field value
+func (o *WorkspacesGetWorkspace200Response) SetRestricted(v bool) {
+	o.Restricted = v
+}
+
+// GetCollectTraces returns the CollectTraces field value
+func (o *WorkspacesGetWorkspace200Response) GetCollectTraces() bool {
+	if o == nil {
+		var ret bool
+		return ret
+	}
+
+	return o.CollectTraces
+}
+
+// GetCollectTracesOk returns a tuple with the CollectTraces field value
+// and a boolean to check if the value has been set.
+func (o *WorkspacesGetWorkspace200Response) GetCollectTracesOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.CollectTraces, true
+}
+
+// SetCollectTraces sets field value
+func (o *WorkspacesGetWorkspace200Response) SetCollectTraces(v bool) {
+	o.CollectTraces = v
+}
+
+// GetPersistentLogs returns the PersistentLogs field value
+func (o *WorkspacesGetWorkspace200Response) GetPersistentLogs() bool {
+	if o == nil {
+		var ret bool
+		return ret
+	}
+
+	return o.PersistentLogs
+}
+
+// GetPersistentLogsOk returns a tuple with the PersistentLogs field value
+// and a boolean to check if the value has been set.
+func (o *WorkspacesGetWorkspace200Response) GetPersistentLogsOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.PersistentLogs, true
+}
+
+// SetPersistentLogs sets field value
+func (o *WorkspacesGetWorkspace200Response) SetPersistentLogs(v bool) {
+	o.PersistentLogs = v
+}
+
 func (o WorkspacesGetWorkspace200Response) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -407,6 +518,9 @@ func (o WorkspacesGetWorkspace200Response) ToMap() (map[string]interface{}, erro
 	toSerialize["isPrivateRepo"] = o.IsPrivateRepo
 	toSerialize["replicas"] = o.Replicas
 	toSerialize["id"] = o.Id
+	if !IsNil(o.BaseImage) {
+		toSerialize["baseImage"] = o.BaseImage
+	}
 	toSerialize["dataCenterId"] = o.DataCenterId
 	toSerialize["userId"] = o.UserId
 	toSerialize["gitUrl"] = o.GitUrl.Get()
@@ -414,6 +528,9 @@ func (o WorkspacesGetWorkspace200Response) ToMap() (map[string]interface{}, erro
 	toSerialize["sourceWorkspaceId"] = o.SourceWorkspaceId.Get()
 	toSerialize["welcomeMessage"] = o.WelcomeMessage.Get()
 	toSerialize["vpnConfig"] = o.VpnConfig.Get()
+	toSerialize["restricted"] = o.Restricted
+	toSerialize["collectTraces"] = o.CollectTraces
+	toSerialize["persistentLogs"] = o.PersistentLogs
 	return toSerialize, nil
 }
 
@@ -435,6 +552,9 @@ func (o *WorkspacesGetWorkspace200Response) UnmarshalJSON(data []byte) (err erro
 		"sourceWorkspaceId",
 		"welcomeMessage",
 		"vpnConfig",
+		"restricted",
+		"collectTraces",
+		"persistentLogs",
 	}
 
 	allProperties := make(map[string]interface{})
