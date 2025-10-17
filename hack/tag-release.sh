@@ -44,5 +44,7 @@ git tag "$NEWTAG"
 git push origin "$NEWTAG"
 
 echo "Triggering release of version $NEWTAG"
+
+go clean -modcache
 go install github.com/goreleaser/goreleaser/v2@latest
 goreleaser release --clean
