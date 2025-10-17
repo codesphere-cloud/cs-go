@@ -24,6 +24,9 @@ jobs:
       - name: Build
         run: make build
 
+      - name: Goreleaser Dry-run
+        run: make release-binaries
+
       - name: Test
         run: make test
 
