@@ -79,6 +79,17 @@ func (c *Client) ExecCommand(workspaceId int, command string, workdir string, en
 	return res.Output, res.Error, errors.FormatAPIError(err)
 }
 
+func (c *Client) DeployLandscape(wsId int, profile string) error {
+	if profile == "ci.yml" || profile == "" {
+		req := c.api.WorkspacesAPI.WorkspacesDeployLandscape(c.ctx, float32(wsId))
+		_, err := req.Execute()
+		return errors.FormatAPIError(err)
+	}
+	req := c.api.WorkspacesAPI.WorkspacesDeployLandscape1(c.ctx, float32(wsId), profile)
+	_, err := req.Execute()
+	return errors.FormatAPIError(err)
+}
+
 func (c *Client) StartPipelineStage(wsId int, profile string, stage string) error {
 	if profile == "ci.yml" || profile == "" {
 		req := c.api.WorkspacesAPI.WorkspacesStartPipelineStage(c.ctx, float32(wsId), stage)

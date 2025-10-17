@@ -89,6 +89,7 @@ func GetRootCmd() *cobra.Command {
 	AddMonitorCmd(rootCmd, opts)
 	AddStartCmd(rootCmd, opts)
 	AddGitCmd(rootCmd, opts)
+	AddSyncCmd(rootCmd, &opts)
 	AddUpdateCmd(rootCmd)
 	AddGoCmd(rootCmd)
 

@@ -81,6 +81,52 @@ func (_c *MockClient_DeleteWorkspace_Call) RunAndReturn(run func(wsId int) error
 	return _c
 }
 
+// DeployLandscape provides a mock function for the type MockClient
+func (_mock *MockClient) DeployLandscape(wsId int, profile string) error {
+	ret := _mock.Called(wsId, profile)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeployLandscape")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(int, string) error); ok {
+		r0 = returnFunc(wsId, profile)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockClient_DeployLandscape_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeployLandscape'
+type MockClient_DeployLandscape_Call struct {
+	*mock.Call
+}
+
+// DeployLandscape is a helper method to define mock.On call
+//   - wsId
+//   - profile
+func (_e *MockClient_Expecter) DeployLandscape(wsId interface{}, profile interface{}) *MockClient_DeployLandscape_Call {
+	return &MockClient_DeployLandscape_Call{Call: _e.mock.On("DeployLandscape", wsId, profile)}
+}
+
+func (_c *MockClient_DeployLandscape_Call) Run(run func(wsId int, profile string)) *MockClient_DeployLandscape_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(int), args[1].(string))
+	})
+	return _c
+}
+
+func (_c *MockClient_DeployLandscape_Call) Return(err error) *MockClient_DeployLandscape_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockClient_DeployLandscape_Call) RunAndReturn(run func(wsId int, profile string) error) *MockClient_DeployLandscape_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // DeployWorkspace provides a mock function for the type MockClient
 func (_mock *MockClient) DeployWorkspace(args api.DeployWorkspaceArgs) (*api.Workspace, error) {
 	ret := _mock.Called(args)

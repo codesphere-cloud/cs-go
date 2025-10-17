@@ -25,6 +25,7 @@ type Client interface {
 	StartPipelineStage(wsId int, profile string, stage string) error
 	GetPipelineState(wsId int, stage string) ([]api.PipelineStatus, error)
 	GitPull(wsId int, remote string, branch string) error
+	DeployLandscape(wsId int, profile string) error
 }
 
 func NewClient(opts GlobalOptions) (Client, error) {
