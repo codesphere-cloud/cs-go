@@ -45,6 +45,7 @@ $ cs create workspace my-workspace -r https://github.com/my-org/my-private-proje
 ### Options
 
 ```
+      --base-image string   Base image to use for the workspace, e.g. 'ubuntu-24.04'
   -b, --branch string       branch to check out
   -e, --env stringArray     Environment variables to set in the workspace in key=value form (e.g. --env DEPLOYMENT=prod)
   -h, --help                help for workspace

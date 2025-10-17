@@ -1,22 +1,26 @@
-## cs list
+## cs list baseimages
 
-List resources
+List baseimages
 
 ### Synopsis
 
-List resources available in Codesphere
+List baseimages available in Codesphere for workspace creation
+
+```
+cs list baseimages [flags]
+```
 
 ### Examples
 
 ```
-# List all workspaces
-$ cs list workspaces
+# List all baseimages
+$ cs list baseimages 
 ```
 
 ### Options
 
 ```
-  -h, --help   help for list
+  -h, --help   help for baseimages
 ```
 
 ### Options inherited from parent commands
@@ -30,9 +34,5 @@ $ cs list workspaces
 
 ### SEE ALSO
 
-* [cs](cs.md)	 - The Codesphere CLI
-* [cs list baseimages](cs_list_baseimages.md)	 - List baseimages
-* [cs list plans](cs_list_plans.md)	 - List available plans
-* [cs list teams](cs_list_teams.md)	 - List teams
-* [cs list workspaces](cs_list_workspaces.md)	 - List workspaces
+* [cs list](cs_list.md)	 - List resources
 
