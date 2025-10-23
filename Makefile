@@ -76,9 +76,9 @@ ifeq (, $(shell which copywrite))
 	go install github.com/hashicorp/copywrite@v0.22.0
 endif
 ifeq (, $(shell which golangci-lint))
-	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.1.2
+	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.5.0
 endif
 ifeq (, $(shell which goreleaser))
-	go install github.com/goreleaser/goreleaser/v2@latest
+	go install github.com/goreleaser/goreleaser/v2@v2.11.2
 endif
 
