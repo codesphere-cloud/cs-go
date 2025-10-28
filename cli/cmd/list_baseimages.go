@@ -6,7 +6,6 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/jedib0t/go-pretty/v6/table"
 
@@ -40,7 +39,16 @@ func (l *ListBaseimagesCmd) RunE(_ *cobra.Command, args []string) (err error) {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
-	baseimages, err := l.ListBaseimages(client)
+	err = l.ListBaseimages(client)
+	if err != nil {
+		return fmt.Errorf("failed to list baseimages: %w", err)
+	}
+
+	return nil
+}
+
+func (l *ListBaseimagesCmd) ListBaseimages(client Client) error {
+	baseimages, err := client.ListBaseimages()
 	if err != nil {
 		return fmt.Errorf("failed to list baseimages: %w", err)
 	}
@@ -53,12 +61,4 @@ func (l *ListBaseimagesCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	t.Render()
 
 	return nil
-}
-
-func (l *ListBaseimagesCmd) ListBaseimages(client Client) ([]api.Baseimage, error) {
-	baseimages, err := client.ListBaseimages()
-	if err != nil {
-		return nil, fmt.Errorf("failed to list baseimages: %w", err)
-	}
-	return baseimages, nil
 }
