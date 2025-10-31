@@ -357,6 +357,62 @@ func (_c *MockClient_GetWorkspace_Call) RunAndReturn(run func(workspaceId int) (
 	return _c
 }
 
+// GetWorkspaceDomains provides a mock function for the type MockClient
+func (_mock *MockClient) GetWorkspaceDomains(workspaceId int) (*api.WorkspaceDomains, error) {
+	ret := _mock.Called(workspaceId)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetWorkspaceDomains")
+	}
+
+	var r0 *api.WorkspaceDomains
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(int) (*api.WorkspaceDomains, error)); ok {
+		return returnFunc(workspaceId)
+	}
+	if returnFunc, ok := ret.Get(0).(func(int) *api.WorkspaceDomains); ok {
+		r0 = returnFunc(workspaceId)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*api.WorkspaceDomains)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(int) error); ok {
+		r1 = returnFunc(workspaceId)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockClient_GetWorkspaceDomains_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetWorkspaceDomains'
+type MockClient_GetWorkspaceDomains_Call struct {
+	*mock.Call
+}
+
+// GetWorkspaceDomains is a helper method to define mock.On call
+//   - workspaceId
+func (_e *MockClient_Expecter) GetWorkspaceDomains(workspaceId interface{}) *MockClient_GetWorkspaceDomains_Call {
+	return &MockClient_GetWorkspaceDomains_Call{Call: _e.mock.On("GetWorkspaceDomains", workspaceId)}
+}
+
+func (_c *MockClient_GetWorkspaceDomains_Call) Run(run func(workspaceId int)) *MockClient_GetWorkspaceDomains_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(int))
+	})
+	return _c
+}
+
+func (_c *MockClient_GetWorkspaceDomains_Call) Return(workspaceDomains *api.WorkspaceDomains, err error) *MockClient_GetWorkspaceDomains_Call {
+	_c.Call.Return(workspaceDomains, err)
+	return _c
+}
+
+func (_c *MockClient_GetWorkspaceDomains_Call) RunAndReturn(run func(workspaceId int) (*api.WorkspaceDomains, error)) *MockClient_GetWorkspaceDomains_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // GitPull provides a mock function for the type MockClient
 func (_mock *MockClient) GitPull(wsId int, remote string, branch string) error {
 	ret := _mock.Called(wsId, remote, branch)

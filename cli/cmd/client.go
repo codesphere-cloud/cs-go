@@ -18,6 +18,7 @@ type Client interface {
 	ListWorkspaces(teamId int) ([]api.Workspace, error)
 	ListBaseimages() ([]api.Baseimage, error)
 	GetWorkspace(workspaceId int) (api.Workspace, error)
+	GetWorkspaceDomains(workspaceId int) (*api.WorkspaceDomains, error)
 	SetEnvVarOnWorkspace(workspaceId int, vars map[string]string) error
 	ExecCommand(workspaceId int, command string, workdir string, env map[string]string) (string, string, error)
 	ListWorkspacePlans() ([]api.WorkspacePlan, error)
