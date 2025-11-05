@@ -15,14 +15,12 @@ import (
 var _ = Describe("GetDomainsCmd", func() {
 	var (
 		mockClient *cmd.MockClient
-		c          cmd.GetDomainsCmd
 		wsId       int
 		domains    *api.WorkspaceDomains
 	)
 
 	BeforeEach(func() {
 		mockClient = cmd.NewMockClient(GinkgoT())
-		c = cmd.GetDomainsCmd{}
 		wsId = 123
 		domains = &api.WorkspaceDomains{
 			DevDomain:     "123-3000.test.codesphere.com",
@@ -30,11 +28,11 @@ var _ = Describe("GetDomainsCmd", func() {
 		}
 	})
 
-	Context("GetDomains", func() {
+	Context("GetWorkspaceDomains", func() {
 		It("retrieves workspace domains successfully", func() {
 			mockClient.EXPECT().GetWorkspaceDomains(wsId).Return(domains, nil)
 
-			result, err := c.GetDomains(mockClient, wsId)
+			result, err := mockClient.GetWorkspaceDomains(wsId)
 
 			Expect(err).ToNot(HaveOccurred())
 			Expect(result).To(Equal(domains))
@@ -46,7 +44,7 @@ var _ = Describe("GetDomainsCmd", func() {
 			expectedErr := errors.New("workspace not found")
 			mockClient.EXPECT().GetWorkspaceDomains(wsId).Return(nil, expectedErr)
 
-			result, err := c.GetDomains(mockClient, wsId)
+			result, err := mockClient.GetWorkspaceDomains(wsId)
 
 			Expect(err).To(HaveOccurred())
 			Expect(result).To(BeNil())
@@ -59,7 +57,7 @@ var _ = Describe("GetDomainsCmd", func() {
 			}
 			mockClient.EXPECT().GetWorkspaceDomains(wsId).Return(domainsNoCustm, nil)
 
-			result, err := c.GetDomains(mockClient, wsId)
+			result, err := mockClient.GetWorkspaceDomains(wsId)
 
 			Expect(err).ToNot(HaveOccurred())
 			Expect(result.DevDomain).To(Equal("123-3000.test.codesphere.com"))

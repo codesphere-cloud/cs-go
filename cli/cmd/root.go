@@ -79,7 +79,6 @@ func GetRootCmd() *cobra.Command {
 	AddExecCmd(rootCmd, opts)
 	AddLogCmd(rootCmd, opts)
 	AddListCmd(rootCmd, opts)
-	AddGetCmd(rootCmd, opts)
 	AddSetEnvVarCmd(rootCmd, opts)
 	AddVersionCmd(rootCmd)
 	AddLicensesCmd(rootCmd)
