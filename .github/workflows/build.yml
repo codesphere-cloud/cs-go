@@ -30,5 +30,6 @@ jobs:
       - name: Test
         run: make test
 
-      - name: Integration Test
-        run: make test-int
+  integration-tests:
+    uses: ./.github/workflows/integration-test.yml
+    secrets: inherit

@@ -100,6 +100,34 @@ The `cs` CLI organizes its functionality into several top-level commands, each w
 
 See our [Usage Documentation](docs) for usage information about the specific subcommands.
 
+## Development
+
+### Running Tests
+
+The project has both unit tests and integration tests:
+
+#### Unit Tests
+
+Run unit tests for the API, CLI, and package code:
+
+```bash
+make test
+```
+
+#### Integration Tests
+
+Integration tests verify the CLI works correctly against live Codesphere environments. These tests require valid credentials and will create/delete real workspaces.
+
+**Prerequisites:**
+- `CS_TOKEN` - Your Codesphere API token
+- `CS_TEAM_ID` - Your team ID
+
+Run integration tests:
+
+```bash
+make test-int
+```
+
 ## Go SDK
 
 ## Community & Contributions
