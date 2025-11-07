@@ -11,6 +11,9 @@ List resources available in Codesphere
 ```
 # List all workspaces
 $ cs list workspaces
+
+# List domains for a workspace
+$ cs list domains --workspace-id <workspace-id>
 ```
 
 ### Options
@@ -32,6 +35,7 @@ $ cs list workspaces
 
 * [cs](cs.md)	 - The Codesphere CLI
 * [cs list baseimages](cs_list_baseimages.md)	 - List baseimages
+* [cs list domains](cs_list_domains.md)	 - Get domains for a workspace
 * [cs list plans](cs_list_plans.md)	 - List available plans
 * [cs list teams](cs_list_teams.md)	 - List teams
 * [cs list workspaces](cs_list_workspaces.md)	 - List workspaces
