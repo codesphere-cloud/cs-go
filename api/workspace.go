@@ -194,3 +194,59 @@ func (c Client) GitPull(workspaceId int, remote string, branch string) error {
 	_, err := req.Execute()
 	return errors.FormatAPIError(err)
 }
+
+type WorkspaceDomains struct {
+	DevDomain     string
+	CustomDomains []string
+}
+
+func (c *Client) GetWorkspaceDomains(workspaceId int) (*WorkspaceDomains, error) {
+	workspace, err := c.GetWorkspace(workspaceId)
+	if err != nil {
+		return nil, err
+	}
+
+	dc, err := c.getDataCenterById(workspace.DataCenterId)
+	if err != nil {
+		return nil, err
+	}
+
+	devDomain := fmt.Sprintf("%d-3000.%s.codesphere.com", workspaceId, dc.Name)
+
+	domains, err := c.ListDomains(workspace.TeamId)
+	if err != nil {
+		return nil, err
+	}
+
+	customDomains := []string{}
+	for _, domain := range domains {
+		for _, workspaceIds := range domain.Workspaces {
+			for _, wsId := range workspaceIds {
+				if wsId == workspaceId {
+					customDomains = append(customDomains, domain.Name)
+					break
+				}
+			}
+		}
+	}
+
+	return &WorkspaceDomains{
+		DevDomain:     devDomain,
+		CustomDomains: customDomains,
+	}, nil
+}
+
+func (c *Client) getDataCenterById(dcId int) (*DataCenter, error) {
+	datacenters, err := c.ListDataCenters()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, dc := range datacenters {
+		if dc.Id == dcId {
+			return &dc, nil
+		}
+	}
+
+	return nil, errors.NotFound(fmt.Sprintf("datacenter with id %d not found", dcId))
+}
