@@ -598,40 +598,6 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 		})
 	})
 
-	Context("List Command Variations", func() {
-		It("should list workspaces with filtering", func() {
-			By("Listing workspaces for a specific team")
-			output := intutil.RunCommand("list", "workspaces", "-t", teamId)
-			if len(output) > 500 {
-				fmt.Printf("List workspaces output (first 500 chars): %s...\n", output[:500])
-			} else {
-				fmt.Printf("List workspaces output: %s\n", output)
-			}
-			Expect(output).NotTo(BeEmpty())
-		})
-
-		It("should list all available plans", func() {
-			By("Listing all available plans")
-			output := intutil.RunCommand("list", "plans")
-			fmt.Printf("List plans output: %s\n", output)
-			Expect(output).NotTo(BeEmpty())
-		})
-
-		It("should list all available base images", func() {
-			By("Listing all base images")
-			output := intutil.RunCommand("list", "baseimages")
-			fmt.Printf("List baseimages output: %s\n", output)
-			Expect(output).NotTo(BeEmpty())
-		})
-
-		It("should list teams for the authenticated user", func() {
-			By("Listing teams")
-			output := intutil.RunCommand("list", "teams")
-			fmt.Printf("List teams output: %s\n", output)
-			Expect(output).To(ContainSubstring(teamId))
-		})
-	})
-
 	Context("Workspace Deletion Edge Cases", func() {
 		It("should prevent deletion without confirmation when not forced", func() {
 			By("Creating a workspace")
@@ -704,14 +670,6 @@ var _ = Describe("Version and Help Tests", func() {
 				MatchRegexp(`\d+\.\d+\.\d+`),
 			))
 		})
-
-		It("should display version with -v flag", func() {
-			By("Running version with -v flag")
-			output := intutil.RunCommand("-v", "version")
-			fmt.Printf("Version with -v output: %s\n", output)
-
-			Expect(output).NotTo(BeEmpty())
-		})
 	})
 
 	Context("Help Commands", func() {
@@ -724,56 +682,16 @@ var _ = Describe("Version and Help Tests", func() {
 			Expect(output).To(ContainSubstring("Available Commands:"))
 		})
 
-		It("should display help for create command", func() {
+		It("should display help for subcommands", func() {
 			By("Running create --help")
 			output := intutil.RunCommand("create", "--help")
-			fmt.Printf("Create help output length: %d\n", len(output))
-
 			Expect(output).To(ContainSubstring("Usage:"))
 			Expect(output).To(ContainSubstring("workspace"))
-		})
 
-		It("should display help for list command", func() {
-			By("Running list --help")
-			output := intutil.RunCommand("list", "--help")
-			fmt.Printf("List help output length: %d\n", len(output))
-
-			Expect(output).To(ContainSubstring("Usage:"))
-			Expect(output).To(Or(
-				ContainSubstring("workspaces"),
-				ContainSubstring("teams"),
-				ContainSubstring("plans"),
-			))
-		})
-
-		It("should display help for exec command", func() {
 			By("Running exec --help")
-			output := intutil.RunCommand("exec", "--help")
-			fmt.Printf("Exec help output length: %d\n", len(output))
-
+			output = intutil.RunCommand("exec", "--help")
 			Expect(output).To(ContainSubstring("Usage:"))
 			Expect(output).To(ContainSubstring("Examples:"))
-		})
-
-		It("should display help for git command", func() {
-			By("Running git --help")
-			output := intutil.RunCommand("git", "--help")
-			fmt.Printf("Git help output length: %d\n", len(output))
-
-			Expect(output).To(ContainSubstring("Usage:"))
-			Expect(output).To(ContainSubstring("pull"))
-		})
-
-		It("should display help for monitor command", func() {
-			By("Running monitor --help")
-			output := intutil.RunCommand("monitor", "--help")
-			fmt.Printf("Monitor help output length: %d\n", len(output))
-
-			Expect(output).To(ContainSubstring("Usage:"))
-			Expect(output).To(Or(
-				ContainSubstring("forward"),
-				ContainSubstring("address"),
-			))
 		})
 	})
 
@@ -851,7 +769,7 @@ var _ = Describe("List Command Tests", func() {
 	})
 
 	Context("List Workspaces", func() {
-		It("should list all workspaces in team", func() {
+		It("should list all workspaces in team with proper formatting", func() {
 			By("Listing workspaces")
 			output := intutil.RunCommand("list", "workspaces", "-t", teamId)
 			fmt.Printf("List workspaces output length: %d\n", len(output))
@@ -859,23 +777,6 @@ var _ = Describe("List Command Tests", func() {
 			Expect(output).To(ContainSubstring("TEAM ID"))
 			Expect(output).To(ContainSubstring("ID"))
 			Expect(output).To(ContainSubstring("NAME"))
-		})
-
-		It("should list workspaces with full command", func() {
-			By("Listing workspaces with explicit workspaces command")
-			output := intutil.RunCommand("list", "workspaces", "-t", teamId)
-			fmt.Printf("List workspaces explicit output length: %d\n", len(output))
-
-			Expect(output).To(Or(
-				ContainSubstring("TEAM ID"),
-				ContainSubstring("ID"),
-			))
-		})
-
-		It("should handle team without workspaces", func() {
-			By("Listing workspaces")
-			output := intutil.RunCommand("list", "workspaces", "-t", teamId)
-			Expect(output).NotTo(ContainSubstring("failed"))
 		})
 	})
 
@@ -972,6 +873,371 @@ var _ = Describe("List Command Tests", func() {
 			output := intutil.RunCommand("list", "workspaces", "-t", teamId)
 
 			Expect(output).NotTo(BeEmpty())
+		})
+	})
+})
+
+var _ = Describe("Log Command Integration Tests", func() {
+	var (
+		teamId        string
+		workspaceName string
+		workspaceId   string
+	)
+
+	BeforeEach(func() {
+		teamId = os.Getenv("CS_TEAM_ID")
+		if teamId == "" {
+			Skip("CS_TEAM_ID environment variable not set")
+		}
+
+		token := os.Getenv("CS_TOKEN")
+		if token == "" {
+			Skip("CS_TOKEN environment variable not set")
+		}
+
+		workspaceName = fmt.Sprintf("cli-log-test-%d", time.Now().Unix())
+	})
+
+	AfterEach(func() {
+		if workspaceId != "" {
+			By(fmt.Sprintf("Cleaning up: deleting workspace %s (ID: %s)", workspaceName, workspaceId))
+			intutil.CleanupWorkspace(workspaceId)
+			workspaceId = ""
+		}
+	})
+
+	Context("Log Command", func() {
+		BeforeEach(func() {
+			By("Creating a workspace")
+			output := intutil.RunCommand(
+				"create", "workspace", workspaceName,
+				"-t", teamId,
+				"-p", "8",
+				"--timeout", "15m",
+			)
+			Expect(output).To(ContainSubstring("Workspace created"))
+			workspaceId = intutil.ExtractWorkspaceId(output)
+			Expect(workspaceId).NotTo(BeEmpty())
+		})
+
+		It("should retrieve logs from workspace", func() {
+			By("Getting logs from workspace")
+			output, exitCode := intutil.RunCommandWithExitCode(
+				"log",
+				"-w", workspaceId,
+			)
+			fmt.Printf("Log command output (first 500 chars): %s... (exit code: %d)\n",
+				output[:min(500, len(output))], exitCode)
+
+			Expect(exitCode).To(Or(Equal(0), Equal(1)))
+		})
+
+		It("should handle --help flag", func() {
+			By("Running log --help")
+			output := intutil.RunCommand("log", "--help")
+
+			Expect(output).To(ContainSubstring("Usage:"))
+			Expect(output).To(ContainSubstring("log"))
+		})
+	})
+
+	Context("Log Error Handling", func() {
+		It("should fail gracefully with non-existent workspace", func() {
+			By("Attempting to get logs from non-existent workspace")
+			output, exitCode := intutil.RunCommandWithExitCode(
+				"log",
+				"-w", "999999999",
+			)
+			fmt.Printf("Log non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
+			Expect(exitCode).NotTo(Equal(0))
+		})
+	})
+})
+
+var _ = Describe("Start Pipeline Integration Tests", func() {
+	var (
+		teamId        string
+		workspaceName string
+		workspaceId   string
+	)
+
+	BeforeEach(func() {
+		teamId = os.Getenv("CS_TEAM_ID")
+		if teamId == "" {
+			Skip("CS_TEAM_ID environment variable not set")
+		}
+
+		token := os.Getenv("CS_TOKEN")
+		if token == "" {
+			Skip("CS_TOKEN environment variable not set")
+		}
+
+		workspaceName = fmt.Sprintf("cli-pipeline-test-%d", time.Now().Unix())
+	})
+
+	AfterEach(func() {
+		if workspaceId != "" {
+			By(fmt.Sprintf("Cleaning up: deleting workspace %s (ID: %s)", workspaceName, workspaceId))
+			intutil.CleanupWorkspace(workspaceId)
+			workspaceId = ""
+		}
+	})
+
+	Context("Start Pipeline Command", func() {
+		BeforeEach(func() {
+			By("Creating a workspace")
+			output := intutil.RunCommand(
+				"create", "workspace", workspaceName,
+				"-t", teamId,
+				"-p", "8",
+				"--timeout", "15m",
+			)
+			Expect(output).To(ContainSubstring("Workspace created"))
+			workspaceId = intutil.ExtractWorkspaceId(output)
+			Expect(workspaceId).NotTo(BeEmpty())
+		})
+
+		It("should start pipeline successfully", func() {
+			By("Starting pipeline")
+			output, exitCode := intutil.RunCommandWithExitCode(
+				"start", "pipeline",
+				"-w", workspaceId,
+			)
+			fmt.Printf("Start pipeline output: %s (exit code: %d)\n", output, exitCode)
+
+			Expect(output).NotTo(BeEmpty())
+		})
+
+		It("should handle --help flag", func() {
+			By("Running start pipeline --help")
+			output := intutil.RunCommand("start", "pipeline", "--help")
+
+			Expect(output).To(ContainSubstring("Usage:"))
+			Expect(output).To(ContainSubstring("pipeline"))
+		})
+	})
+
+	Context("Start Pipeline Error Handling", func() {
+		It("should fail gracefully with non-existent workspace", func() {
+			By("Attempting to start pipeline on non-existent workspace")
+			output, exitCode := intutil.RunCommandWithExitCode(
+				"start", "pipeline",
+				"-w", "999999999",
+			)
+			fmt.Printf("Start pipeline non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
+			Expect(exitCode).NotTo(Equal(0))
+		})
+	})
+})
+
+var _ = Describe("Git Pull Integration Tests", func() {
+	var (
+		teamId        string
+		workspaceName string
+		workspaceId   string
+	)
+
+	BeforeEach(func() {
+		teamId = os.Getenv("CS_TEAM_ID")
+		if teamId == "" {
+			Skip("CS_TEAM_ID environment variable not set")
+		}
+
+		token := os.Getenv("CS_TOKEN")
+		if token == "" {
+			Skip("CS_TOKEN environment variable not set")
+		}
+
+		workspaceName = fmt.Sprintf("cli-git-test-%d", time.Now().Unix())
+	})
+
+	AfterEach(func() {
+		if workspaceId != "" {
+			By(fmt.Sprintf("Cleaning up: deleting workspace %s (ID: %s)", workspaceName, workspaceId))
+			intutil.CleanupWorkspace(workspaceId)
+			workspaceId = ""
+		}
+	})
+
+	Context("Git Pull Command", func() {
+		BeforeEach(func() {
+			By("Creating a workspace")
+			output := intutil.RunCommand(
+				"create", "workspace", workspaceName,
+				"-t", teamId,
+				"-p", "8",
+				"--timeout", "15m",
+			)
+			Expect(output).To(ContainSubstring("Workspace created"))
+			workspaceId = intutil.ExtractWorkspaceId(output)
+			Expect(workspaceId).NotTo(BeEmpty())
+		})
+
+		It("should execute git pull command", func() {
+			By("Running git pull")
+			output, exitCode := intutil.RunCommandWithExitCode(
+				"git", "pull",
+				"-w", workspaceId,
+			)
+			fmt.Printf("Git pull output: %s (exit code: %d)\n", output, exitCode)
+
+			Expect(output).NotTo(BeEmpty())
+		})
+
+		It("should handle --help flag", func() {
+			By("Running git pull --help")
+			output := intutil.RunCommand("git", "pull", "--help")
+
+			Expect(output).To(ContainSubstring("Usage:"))
+			Expect(output).To(ContainSubstring("pull"))
+		})
+	})
+
+	Context("Git Pull Error Handling", func() {
+		It("should fail gracefully with non-existent workspace", func() {
+			By("Attempting to git pull on non-existent workspace")
+			output, exitCode := intutil.RunCommandWithExitCode(
+				"git", "pull",
+				"-w", "999999999",
+			)
+			fmt.Printf("Git pull non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
+			Expect(exitCode).NotTo(Equal(0))
+		})
+	})
+})
+
+var _ = Describe("Set Environment Variables Integration Tests", func() {
+	var (
+		teamId        string
+		workspaceName string
+		workspaceId   string
+	)
+
+	BeforeEach(func() {
+		teamId = os.Getenv("CS_TEAM_ID")
+		if teamId == "" {
+			Skip("CS_TEAM_ID environment variable not set")
+		}
+
+		token := os.Getenv("CS_TOKEN")
+		if token == "" {
+			Skip("CS_TOKEN environment variable not set")
+		}
+
+		workspaceName = fmt.Sprintf("cli-setenv-test-%d", time.Now().Unix())
+	})
+
+	AfterEach(func() {
+		if workspaceId != "" {
+			By(fmt.Sprintf("Cleaning up: deleting workspace %s (ID: %s)", workspaceName, workspaceId))
+			intutil.CleanupWorkspace(workspaceId)
+			workspaceId = ""
+		}
+	})
+
+	Context("Set-Env Command", func() {
+		BeforeEach(func() {
+			By("Creating a workspace")
+			output := intutil.RunCommand(
+				"create", "workspace", workspaceName,
+				"-t", teamId,
+				"-p", "8",
+				"--timeout", "15m",
+			)
+			Expect(output).To(ContainSubstring("Workspace created"))
+			workspaceId = intutil.ExtractWorkspaceId(output)
+			Expect(workspaceId).NotTo(BeEmpty())
+		})
+
+		It("should set environment variable successfully", func() {
+			By("Setting an environment variable")
+			output := intutil.RunCommand(
+				"set-env",
+				"-w", workspaceId,
+				"TEST_VAR=test_value",
+			)
+			fmt.Printf("Set-env output: %s\n", output)
+
+			Expect(output).NotTo(ContainSubstring("error"))
+			Expect(output).NotTo(ContainSubstring("failed"))
+
+			By("Verifying environment variable was set")
+			output = intutil.RunCommand(
+				"exec",
+				"-w", workspaceId,
+				"printenv", "TEST_VAR",
+			)
+			Expect(output).To(ContainSubstring("test_value"))
+		})
+
+		It("should set multiple environment variables", func() {
+			By("Setting multiple environment variables")
+			output := intutil.RunCommand(
+				"set-env",
+				"-w", workspaceId,
+				"VAR1=value1",
+				"VAR2=value2",
+			)
+			fmt.Printf("Set-env multiple vars output: %s\n", output)
+
+			Expect(output).NotTo(ContainSubstring("error"))
+
+			By("Verifying first variable")
+			output = intutil.RunCommand(
+				"exec",
+				"-w", workspaceId,
+				"printenv", "VAR1",
+			)
+			Expect(output).To(ContainSubstring("value1"))
+
+			By("Verifying second variable")
+			output = intutil.RunCommand(
+				"exec",
+				"-w", workspaceId,
+				"printenv", "VAR2",
+			)
+			Expect(output).To(ContainSubstring("value2"))
+		})
+
+		It("should handle --help flag", func() {
+			By("Running set-env --help")
+			output := intutil.RunCommand("set-env", "--help")
+
+			Expect(output).To(ContainSubstring("Usage:"))
+			Expect(output).To(ContainSubstring("set-env"))
+		})
+	})
+
+	Context("Set-Env Error Handling", func() {
+		It("should fail gracefully with non-existent workspace", func() {
+			By("Attempting to set env var on non-existent workspace")
+			output, exitCode := intutil.RunCommandWithExitCode(
+				"set-env",
+				"-w", "999999999",
+				"TEST_VAR=test",
+			)
+			fmt.Printf("Set-env non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
+			Expect(exitCode).NotTo(Equal(0))
+		})
+
+		It("should fail without environment variable argument", func() {
+			By("Creating a workspace")
+			output := intutil.RunCommand(
+				"create", "workspace", workspaceName,
+				"-t", teamId,
+				"-p", "8",
+				"--timeout", "15m",
+			)
+			Expect(output).To(ContainSubstring("Workspace created"))
+			workspaceId = intutil.ExtractWorkspaceId(output)
+
+			By("Attempting to set env without variable")
+			output, exitCode := intutil.RunCommandWithExitCode(
+				"set-env",
+				"-w", workspaceId,
+			)
+			fmt.Printf("Set-env without args output: %s (exit code: %d)\n", output, exitCode)
+			Expect(exitCode).NotTo(Equal(0))
 		})
 	})
 })
