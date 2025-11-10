@@ -23,7 +23,7 @@ var _ = Describe("GetDomainsCmd", func() {
 		mockClient = cmd.NewMockClient(GinkgoT())
 		wsId = 123
 		domains = &api.WorkspaceDomains{
-			DevDomain:     "123-3000.test.codesphere.com",
+			DevDomain:     "https://123-3000.dev.1.codesphere.com/",
 			CustomDomains: []string{"custom1.example.com", "custom2.example.com"},
 		}
 	})
@@ -36,7 +36,7 @@ var _ = Describe("GetDomainsCmd", func() {
 
 			Expect(err).ToNot(HaveOccurred())
 			Expect(result).To(Equal(domains))
-			Expect(result.DevDomain).To(Equal("123-3000.test.codesphere.com"))
+			Expect(result.DevDomain).To(Equal("https://123-3000.dev.1.codesphere.com/"))
 			Expect(result.CustomDomains).To(HaveLen(2))
 		})
 
@@ -52,7 +52,7 @@ var _ = Describe("GetDomainsCmd", func() {
 
 		It("handles workspace with only devDomain", func() {
 			domainsNoCustm := &api.WorkspaceDomains{
-				DevDomain:     "123-3000.test.codesphere.com",
+				DevDomain:     "https://123-3000.dev.1.codesphere.com/",
 				CustomDomains: []string{},
 			}
 			mockClient.EXPECT().GetWorkspaceDomains(wsId).Return(domainsNoCustm, nil)
@@ -60,7 +60,7 @@ var _ = Describe("GetDomainsCmd", func() {
 			result, err := mockClient.GetWorkspaceDomains(wsId)
 
 			Expect(err).ToNot(HaveOccurred())
-			Expect(result.DevDomain).To(Equal("123-3000.test.codesphere.com"))
+			Expect(result.DevDomain).To(Equal("https://123-3000.dev.1.codesphere.com/"))
 			Expect(result.CustomDomains).To(BeEmpty())
 		})
 	})

@@ -211,7 +211,7 @@ func (c *Client) GetWorkspaceDomains(workspaceId int) (*WorkspaceDomains, error)
 		return nil, err
 	}
 
-	devDomain := fmt.Sprintf("%d-3000.%s.codesphere.com", workspaceId, dc.Name)
+	devDomain := fmt.Sprintf("https://%d-3000.dev.%d.codesphere.com/", workspaceId, dc.Id)
 
 	domains, err := c.ListDomains(workspace.TeamId)
 	if err != nil {
