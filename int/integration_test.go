@@ -356,16 +356,7 @@ var _ = Describe("Open Workspace Integration Tests", func() {
 	)
 
 	BeforeEach(func() {
-		teamId = os.Getenv("CS_TEAM_ID")
-		if teamId == "" {
-			Skip("CS_TEAM_ID environment variable not set")
-		}
-
-		token := os.Getenv("CS_TOKEN")
-		if token == "" {
-			Skip("CS_TOKEN environment variable not set")
-		}
-
+		teamId, _ = intutil.SkipIfMissingEnvVars()
 		workspaceName = fmt.Sprintf("cli-open-test-%d", time.Now().Unix())
 	})
 
@@ -449,16 +440,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 	)
 
 	BeforeEach(func() {
-		teamId = os.Getenv("CS_TEAM_ID")
-		if teamId == "" {
-			Skip("CS_TEAM_ID environment variable not set")
-		}
-
-		token := os.Getenv("CS_TOKEN")
-		if token == "" {
-			Skip("CS_TOKEN environment variable not set")
-		}
-
+		teamId, _ = intutil.SkipIfMissingEnvVars()
 		workspaceName = fmt.Sprintf("cli-edge-test-%d", time.Now().Unix())
 	})
 
@@ -693,6 +675,25 @@ var _ = Describe("Version and Help Tests", func() {
 			Expect(output).To(ContainSubstring("Usage:"))
 			Expect(output).To(ContainSubstring("Examples:"))
 		})
+
+		It("should display help for command-specific flags", func() {
+			testCases := []struct {
+				command     []string
+				shouldMatch string
+			}{
+				{[]string{"log", "--help"}, "log"},
+				{[]string{"start", "pipeline", "--help"}, "pipeline"},
+				{[]string{"git", "pull", "--help"}, "pull"},
+				{[]string{"set-env", "--help"}, "set-env"},
+			}
+
+			for _, tc := range testCases {
+				By(fmt.Sprintf("Testing %v", tc.command))
+				output := intutil.RunCommand(tc.command...)
+				Expect(output).To(ContainSubstring("Usage:"))
+				Expect(output).To(ContainSubstring(tc.shouldMatch))
+			}
+		})
 	})
 
 	Context("Invalid Commands", func() {
@@ -757,15 +758,7 @@ var _ = Describe("List Command Tests", func() {
 	var teamId string
 
 	BeforeEach(func() {
-		teamId = os.Getenv("CS_TEAM_ID")
-		if teamId == "" {
-			Skip("CS_TEAM_ID environment variable not set")
-		}
-
-		token := os.Getenv("CS_TOKEN")
-		if token == "" {
-			Skip("CS_TOKEN environment variable not set")
-		}
+		teamId, _ = intutil.SkipIfMissingEnvVars()
 	})
 
 	Context("List Workspaces", func() {
@@ -885,16 +878,7 @@ var _ = Describe("Log Command Integration Tests", func() {
 	)
 
 	BeforeEach(func() {
-		teamId = os.Getenv("CS_TEAM_ID")
-		if teamId == "" {
-			Skip("CS_TEAM_ID environment variable not set")
-		}
-
-		token := os.Getenv("CS_TOKEN")
-		if token == "" {
-			Skip("CS_TOKEN environment variable not set")
-		}
-
+		teamId, _ = intutil.SkipIfMissingEnvVars()
 		workspaceName = fmt.Sprintf("cli-log-test-%d", time.Now().Unix())
 	})
 
@@ -931,14 +915,6 @@ var _ = Describe("Log Command Integration Tests", func() {
 
 			Expect(exitCode).To(Or(Equal(0), Equal(1)))
 		})
-
-		It("should handle --help flag", func() {
-			By("Running log --help")
-			output := intutil.RunCommand("log", "--help")
-
-			Expect(output).To(ContainSubstring("Usage:"))
-			Expect(output).To(ContainSubstring("log"))
-		})
 	})
 
 	Context("Log Error Handling", func() {
@@ -962,16 +938,7 @@ var _ = Describe("Start Pipeline Integration Tests", func() {
 	)
 
 	BeforeEach(func() {
-		teamId = os.Getenv("CS_TEAM_ID")
-		if teamId == "" {
-			Skip("CS_TEAM_ID environment variable not set")
-		}
-
-		token := os.Getenv("CS_TOKEN")
-		if token == "" {
-			Skip("CS_TOKEN environment variable not set")
-		}
-
+		teamId, _ = intutil.SkipIfMissingEnvVars()
 		workspaceName = fmt.Sprintf("cli-pipeline-test-%d", time.Now().Unix())
 	})
 
@@ -1007,14 +974,6 @@ var _ = Describe("Start Pipeline Integration Tests", func() {
 
 			Expect(output).NotTo(BeEmpty())
 		})
-
-		It("should handle --help flag", func() {
-			By("Running start pipeline --help")
-			output := intutil.RunCommand("start", "pipeline", "--help")
-
-			Expect(output).To(ContainSubstring("Usage:"))
-			Expect(output).To(ContainSubstring("pipeline"))
-		})
 	})
 
 	Context("Start Pipeline Error Handling", func() {
@@ -1038,16 +997,7 @@ var _ = Describe("Git Pull Integration Tests", func() {
 	)
 
 	BeforeEach(func() {
-		teamId = os.Getenv("CS_TEAM_ID")
-		if teamId == "" {
-			Skip("CS_TEAM_ID environment variable not set")
-		}
-
-		token := os.Getenv("CS_TOKEN")
-		if token == "" {
-			Skip("CS_TOKEN environment variable not set")
-		}
-
+		teamId, _ = intutil.SkipIfMissingEnvVars()
 		workspaceName = fmt.Sprintf("cli-git-test-%d", time.Now().Unix())
 	})
 
@@ -1083,14 +1033,6 @@ var _ = Describe("Git Pull Integration Tests", func() {
 
 			Expect(output).NotTo(BeEmpty())
 		})
-
-		It("should handle --help flag", func() {
-			By("Running git pull --help")
-			output := intutil.RunCommand("git", "pull", "--help")
-
-			Expect(output).To(ContainSubstring("Usage:"))
-			Expect(output).To(ContainSubstring("pull"))
-		})
 	})
 
 	Context("Git Pull Error Handling", func() {
@@ -1114,16 +1056,7 @@ var _ = Describe("Set Environment Variables Integration Tests", func() {
 	)
 
 	BeforeEach(func() {
-		teamId = os.Getenv("CS_TEAM_ID")
-		if teamId == "" {
-			Skip("CS_TEAM_ID environment variable not set")
-		}
-
-		token := os.Getenv("CS_TOKEN")
-		if token == "" {
-			Skip("CS_TOKEN environment variable not set")
-		}
-
+		teamId, _ = intutil.SkipIfMissingEnvVars()
 		workspaceName = fmt.Sprintf("cli-setenv-test-%d", time.Now().Unix())
 	})
 
@@ -1197,14 +1130,6 @@ var _ = Describe("Set Environment Variables Integration Tests", func() {
 				"printenv", "VAR2",
 			)
 			Expect(output).To(ContainSubstring("value2"))
-		})
-
-		It("should handle --help flag", func() {
-			By("Running set-env --help")
-			output := intutil.RunCommand("set-env", "--help")
-
-			Expect(output).To(ContainSubstring("Usage:"))
-			Expect(output).To(ContainSubstring("set-env"))
 		})
 	})
 
