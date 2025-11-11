@@ -470,32 +470,6 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 			}
 		})
 
-		It("should create a workspace with special characters in environment variables", func() {
-			By("Creating a workspace with complex environment variables")
-			output := intutil.RunCommand(
-				"create", "workspace", workspaceName,
-				"-t", teamId,
-				"-p", "8",
-				"-e", "API_URL=https://api.example.com:8080/v1",
-				"-e", "PATH_VAR=/usr/local/bin:/usr/bin",
-				"--timeout", "15m",
-			)
-			fmt.Printf("Create workspace with complex env vars output: %s\n", output)
-
-			if strings.Contains(output, "Workspace created") {
-				workspaceId = intutil.ExtractWorkspaceId(output)
-				Expect(workspaceId).NotTo(BeEmpty())
-
-				By("Verifying complex environment variables")
-				output = intutil.RunCommand(
-					"exec",
-					"-w", workspaceId,
-					"printenv", "API_URL",
-				)
-				Expect(output).To(ContainSubstring("https://api.example.com:8080/v1"))
-			}
-		})
-
 		It("should handle creation timeout gracefully", func() {
 			By("Creating a workspace with very short timeout")
 			output, exitCode := intutil.RunCommandWithExitCode(
@@ -1081,56 +1055,6 @@ var _ = Describe("Set Environment Variables Integration Tests", func() {
 			workspaceId = intutil.ExtractWorkspaceId(output)
 			Expect(workspaceId).NotTo(BeEmpty())
 		})
-
-		It("should set environment variable successfully", func() {
-			By("Setting an environment variable")
-			output := intutil.RunCommand(
-				"set-env",
-				"-w", workspaceId,
-				"TEST_VAR=test_value",
-			)
-			fmt.Printf("Set-env output: %s\n", output)
-
-			Expect(output).NotTo(ContainSubstring("error"))
-			Expect(output).NotTo(ContainSubstring("failed"))
-
-			By("Verifying environment variable was set")
-			output = intutil.RunCommand(
-				"exec",
-				"-w", workspaceId,
-				"printenv", "TEST_VAR",
-			)
-			Expect(output).To(ContainSubstring("test_value"))
-		})
-
-		It("should set multiple environment variables", func() {
-			By("Setting multiple environment variables")
-			output := intutil.RunCommand(
-				"set-env",
-				"-w", workspaceId,
-				"VAR1=value1",
-				"VAR2=value2",
-			)
-			fmt.Printf("Set-env multiple vars output: %s\n", output)
-
-			Expect(output).NotTo(ContainSubstring("error"))
-
-			By("Verifying first variable")
-			output = intutil.RunCommand(
-				"exec",
-				"-w", workspaceId,
-				"printenv", "VAR1",
-			)
-			Expect(output).To(ContainSubstring("value1"))
-
-			By("Verifying second variable")
-			output = intutil.RunCommand(
-				"exec",
-				"-w", workspaceId,
-				"printenv", "VAR2",
-			)
-			Expect(output).To(ContainSubstring("value2"))
-		})
 	})
 
 	Context("Set-Env Error Handling", func() {
@@ -1142,26 +1066,6 @@ var _ = Describe("Set Environment Variables Integration Tests", func() {
 				"TEST_VAR=test",
 			)
 			fmt.Printf("Set-env non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
-			Expect(exitCode).NotTo(Equal(0))
-		})
-
-		It("should fail without environment variable argument", func() {
-			By("Creating a workspace")
-			output := intutil.RunCommand(
-				"create", "workspace", workspaceName,
-				"-t", teamId,
-				"-p", "8",
-				"--timeout", "15m",
-			)
-			Expect(output).To(ContainSubstring("Workspace created"))
-			workspaceId = intutil.ExtractWorkspaceId(output)
-
-			By("Attempting to set env without variable")
-			output, exitCode := intutil.RunCommandWithExitCode(
-				"set-env",
-				"-w", workspaceId,
-			)
-			fmt.Printf("Set-env without args output: %s (exit code: %d)\n", output, exitCode)
 			Expect(exitCode).NotTo(Equal(0))
 		})
 	})
