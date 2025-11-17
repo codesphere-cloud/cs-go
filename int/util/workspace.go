@@ -9,8 +9,9 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
+	"time"
 
-	. "github.com/onsi/gomega"
+	"github.com/codesphere-cloud/cs-go/api"
 )
 
 func CheckBillingStatus(teamId string) (bool, string) {
@@ -84,18 +85,8 @@ func CleanupWorkspace(workspaceId string) {
 	}
 }
 
-func WaitForWorkspaceRunning(workspaceId, teamId string) {
-	Eventually(func() string {
-		output := RunCommand("list", "workspaces", "-t", teamId)
-		return output
-	}, "20m", "30s").Should(And(
-		ContainSubstring(workspaceId),
-		Or(
-			ContainSubstring("running"),
-			ContainSubstring("Running"),
-			ContainSubstring("RUNNING"),
-		),
-	))
+func WaitForWorkspaceRunning(client *api.Client, workspaceId int, timeout time.Duration) error {
+	return client.WaitForWorkspaceRunning(&api.Workspace{Id: workspaceId}, timeout)
 }
 
 func VerifyWorkspaceExists(workspaceId, teamId string) bool {

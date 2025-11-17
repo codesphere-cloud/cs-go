@@ -27,11 +27,9 @@ var _ = AfterSuite(func() {
 	GinkgoWriter.Println("Running global cleanup for any orphaned test workspaces...")
 
 	prefixes := []string{
-		"cli-test-",
 		"cli-git-test-",
 		"cli-pipeline-test-",
 		"cli-log-test-",
-		"cli-sync-test-",
 		"cli-open-test-",
 		"cli-setenv-test-",
 		"cli-edge-test-",
