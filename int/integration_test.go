@@ -402,7 +402,7 @@ var _ = Describe("Open Workspace Integration Tests", func() {
 			By("Attempting to open non-existent workspace")
 			output, exitCode := intutil.RunCommandWithExitCode(
 				"open", "workspace",
-				"-w", "999999999",
+				"-w", "99999999",
 			)
 			fmt.Printf("Open non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
 			Expect(exitCode).NotTo(Equal(0))
@@ -896,7 +896,7 @@ var _ = Describe("Log Command Integration Tests", func() {
 			By("Attempting to get logs from non-existent workspace")
 			output, exitCode := intutil.RunCommandWithExitCode(
 				"log",
-				"-w", "999999999",
+				"-w", "99999999",
 			)
 			fmt.Printf("Log non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
 			Expect(exitCode).NotTo(Equal(0))
@@ -955,7 +955,7 @@ var _ = Describe("Start Pipeline Integration Tests", func() {
 			By("Attempting to start pipeline on non-existent workspace")
 			output, exitCode := intutil.RunCommandWithExitCode(
 				"start", "pipeline",
-				"-w", "999999999",
+				"-w", "99999999",
 			)
 			fmt.Printf("Start pipeline non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
 			Expect(exitCode).NotTo(Equal(0))
@@ -1014,7 +1014,7 @@ var _ = Describe("Git Pull Integration Tests", func() {
 			By("Attempting to git pull on non-existent workspace")
 			output, exitCode := intutil.RunCommandWithExitCode(
 				"git", "pull",
-				"-w", "999999999",
+				"-w", "99999999",
 			)
 			fmt.Printf("Git pull non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
 			Expect(exitCode).NotTo(Equal(0))
@@ -1062,7 +1062,7 @@ var _ = Describe("Set Environment Variables Integration Tests", func() {
 			By("Attempting to set env var on non-existent workspace")
 			output, exitCode := intutil.RunCommandWithExitCode(
 				"set-env",
-				"-w", "999999999",
+				"-w", "99999999",
 				"TEST_VAR=test",
 			)
 			fmt.Printf("Set-env non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
