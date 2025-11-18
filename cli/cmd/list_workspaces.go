@@ -46,20 +46,13 @@ func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	}
 
 	t := io.GetTableWriter()
-	t.AppendHeader(table.Row{"Team ID", "ID", "Name", "Repository", "Dev Domain"})
+	t.AppendHeader(table.Row{"Team ID", "ID", "Name", "Repository"})
 	for _, w := range workspaces {
 		gitUrl := ""
 		if w.GitUrl.Get() != nil {
 			gitUrl = *w.GitUrl.Get()
 		}
-
-		devDomain := ""
-		domains, err := client.GetWorkspaceDomains(w.Id)
-		if err == nil && domains != nil {
-			devDomain = domains.DevDomain
-		}
-
-		t.AppendRow(table.Row{w.TeamId, w.Id, w.Name, gitUrl, devDomain})
+		t.AppendRow(table.Row{w.TeamId, w.Id, w.Name, gitUrl})
 	}
 	t.Render()
 
