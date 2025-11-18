@@ -6,6 +6,7 @@ package util
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -44,6 +45,8 @@ func RunCommand(args ...string) string {
 
 func RunCommandWithExitCode(args ...string) (string, int) {
 	command := exec.Command("../cs", args...)
+
+	command.Env = os.Environ()
 
 	var outputBuffer bytes.Buffer
 	command.Stdout = &outputBuffer
