@@ -4,6 +4,7 @@
 package cmd_test
 
 import (
+	"errors"
 	"time"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -16,22 +17,24 @@ import (
 
 var _ = Describe("CreateWorkspace", func() {
 	var (
-		mockEnv    *cmd.MockEnv
-		mockClient *cmd.MockClient
-		c          *cmd.CreateWorkspaceCmd
-		teamId     int
-		wsName     string
-		env        []string
-		repoStr    string
-		repo       *string
-		vpn        *string
-		vpnStr     string
-		plan       int
-		private    bool
-		timeout    time.Duration
-		branchStr  string
-		branch     *string
-		deployArgs api.DeployWorkspaceArgs
+		mockEnv      *cmd.MockEnv
+		mockClient   *cmd.MockClient
+		c            *cmd.CreateWorkspaceCmd
+		teamId       int
+		wsName       string
+		env          []string
+		repoStr      string
+		repo         *string
+		vpn          *string
+		vpnStr       string
+		plan         int
+		private      bool
+		timeout      time.Duration
+		branchStr    string
+		branch       *string
+		baseimageStr string
+		baseimage    *string
+		deployArgs   api.DeployWorkspaceArgs
 	)
 
 	BeforeEach(func() {
@@ -45,6 +48,8 @@ var _ = Describe("CreateWorkspace", func() {
 		timeout = 30 * time.Second
 		branchStr = "fake-branch"
 		branch = nil
+		baseimageStr = "ubuntu-24.04"
+		baseimage = nil
 	})
 
 	JustBeforeEach(func() {
@@ -58,13 +63,14 @@ var _ = Describe("CreateWorkspace", func() {
 					Env:    mockEnv,
 					TeamId: &teamId,
 				},
-				Env:     &env,
-				Repo:    repo,
-				Vpn:     vpn,
-				Plan:    &plan,
-				Private: &private,
-				Timeout: &timeout,
-				Branch:  branch,
+				Env:       &env,
+				Repo:      repo,
+				Vpn:       vpn,
+				Plan:      &plan,
+				Private:   &private,
+				Timeout:   &timeout,
+				Branch:    branch,
+				Baseimage: baseimage,
 			},
 		}
 		envMap, err := cs.ArgToEnvVarMap(env)
@@ -79,11 +85,11 @@ var _ = Describe("CreateWorkspace", func() {
 			IsPrivateRepo: private,
 			Timeout:       timeout,
 			Branch:        branch,
+			BaseImage:     baseimage,
 		}
 	})
 
 	Context("Minimal values are set", func() {
-
 		It("Creates the workspace", func() {
 			mockClient.EXPECT().DeployWorkspace(deployArgs).Return(&api.Workspace{Name: wsName}, nil)
 			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
@@ -110,4 +116,68 @@ var _ = Describe("CreateWorkspace", func() {
 		})
 	})
 
+	Context("Baseimage is specified", func() {
+		BeforeEach(func() {
+			baseimage = &baseimageStr
+		})
+
+		It("validates baseimage exists and creates workspace", func() {
+			supportedUntil, _ := time.Parse("2006-01-02", "2025-12-31")
+			availableBaseimages := []api.Baseimage{
+				{Id: "ubuntu-20.04", Name: "Ubuntu 20.04", SupportedUntil: supportedUntil},
+				{Id: "ubuntu-24.04", Name: "Ubuntu 24.04", SupportedUntil: supportedUntil},
+				{Id: "node-18", Name: "Node.js 18", SupportedUntil: supportedUntil},
+			}
+			mockClient.EXPECT().ListBaseimages().Return(availableBaseimages, nil)
+			mockClient.EXPECT().DeployWorkspace(deployArgs).Return(&api.Workspace{Name: wsName}, nil)
+
+			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			Expect(err).ToNot(HaveOccurred())
+			Expect(ws.Name).To(Equal(wsName))
+		})
+
+		It("fails when baseimage does not exist", func() {
+			supportedUntil, _ := time.Parse("2006-01-02", "2025-12-31")
+			availableBaseimages := []api.Baseimage{
+				{Id: "ubuntu-20.04", Name: "Ubuntu 20.04", SupportedUntil: supportedUntil},
+				{Id: "node-18", Name: "Node.js 18", SupportedUntil: supportedUntil},
+			}
+			mockClient.EXPECT().ListBaseimages().Return(availableBaseimages, nil)
+
+			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(ContainSubstring("base image 'ubuntu-24.04' not found"))
+			Expect(err.Error()).To(ContainSubstring("available options are: ubuntu-20.04, node-18"))
+			Expect(ws).To(BeNil())
+		})
+
+		It("fails when ListBaseimages returns error", func() {
+			mockClient.EXPECT().ListBaseimages().Return([]api.Baseimage{}, errors.New("API error"))
+
+			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(ContainSubstring("failed to list base images: API error"))
+			Expect(ws).To(BeNil())
+		})
+	})
+
+	Context("Error handling", func() {
+		It("fails when environment variables are malformed", func() {
+			env = []string{"invalid-env-var"}
+
+			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(ContainSubstring("failed to parse environment variables"))
+			Expect(ws).To(BeNil())
+		})
+
+		It("fails when DeployWorkspace returns error", func() {
+			mockClient.EXPECT().DeployWorkspace(deployArgs).Return(nil, errors.New("deployment failed"))
+
+			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(ContainSubstring("failed to create workspace: deployment failed"))
+			Expect(ws).To(BeNil())
+		})
+	})
 })

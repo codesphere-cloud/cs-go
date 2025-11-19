@@ -161,9 +161,9 @@ License URL: https://github.com/jbenet/go-context/blob/d14ea06fba99/LICENSE
  
 ----------
 Module: github.com/jedib0t/go-pretty/v6
-Version: v6.6.9
+Version: v6.7.2
 License: MIT
-License URL: https://github.com/jedib0t/go-pretty/blob/v6.6.9/LICENSE
+License URL: https://github.com/jedib0t/go-pretty/blob/v6.7.2/LICENSE
  
 ----------
 Module: github.com/json-iterator/go
@@ -443,39 +443,39 @@ License URL: https://github.com/go-yaml/yaml/blob/v3.0.1/LICENSE
  
 ----------
 Module: k8s.io/api
-Version: v0.34.1
+Version: v0.34.2
 License: Apache-2.0
-License URL: https://github.com/kubernetes/api/blob/v0.34.1/LICENSE
+License URL: https://github.com/kubernetes/api/blob/v0.34.2/LICENSE
  
 ----------
 Module: k8s.io/apimachinery/pkg
-Version: v0.34.1
+Version: v0.34.2
 License: Apache-2.0
-License URL: https://github.com/kubernetes/apimachinery/blob/v0.34.1/LICENSE
+License URL: https://github.com/kubernetes/apimachinery/blob/v0.34.2/LICENSE
  
 ----------
 Module: k8s.io/apimachinery/third_party/forked/golang/reflect
-Version: v0.34.1
+Version: v0.34.2
 License: BSD-3-Clause
-License URL: https://github.com/kubernetes/apimachinery/blob/v0.34.1/third_party/forked/golang/LICENSE
+License URL: https://github.com/kubernetes/apimachinery/blob/v0.34.2/third_party/forked/golang/LICENSE
  
 ----------
 Module: k8s.io/cli-runtime/pkg/printers
-Version: v0.34.1
+Version: v0.34.2
 License: Apache-2.0
-License URL: https://github.com/kubernetes/cli-runtime/blob/v0.34.1/LICENSE
+License URL: https://github.com/kubernetes/cli-runtime/blob/v0.34.2/LICENSE
  
 ----------
 Module: k8s.io/client-go/third_party/forked/golang/template
-Version: v0.34.1
+Version: v0.34.2
 License: BSD-3-Clause
-License URL: https://github.com/kubernetes/client-go/blob/v0.34.1/third_party/forked/golang/LICENSE
+License URL: https://github.com/kubernetes/client-go/blob/v0.34.2/third_party/forked/golang/LICENSE
  
 ----------
 Module: k8s.io/client-go/util/jsonpath
-Version: v0.34.1
+Version: v0.34.2
 License: Apache-2.0
-License URL: https://github.com/kubernetes/client-go/blob/v0.34.1/LICENSE
+License URL: https://github.com/kubernetes/client-go/blob/v0.34.2/LICENSE
  
 ----------
 Module: k8s.io/klog/v2

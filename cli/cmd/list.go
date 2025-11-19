@@ -20,7 +20,6 @@ func AddListCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 			Long:  `List resources available in Codesphere`,
 			Example: io.FormatExampleCommands("list", []io.Example{
 				{Cmd: "workspaces", Desc: "List all workspaces"},
-				{Cmd: "domains --workspace-id <workspace-id>", Desc: "List domains for a workspace"},
 			}),
 		},
 	}
@@ -29,5 +28,4 @@ func AddListCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 	AddListBaseimagesCmd(l.cmd, opts)
 	addListTeamsCmd(l.cmd, opts)
 	AddListPlansCmd(l.cmd, opts)
-	addGetDomainsCmd(l.cmd, opts)
 }
