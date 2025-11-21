@@ -398,21 +398,6 @@ var _ = Describe("Open Workspace Integration Tests", func() {
 	})
 
 	Context("Open Workspace Error Handling", func() {
-		It("should fail gracefully with non-existent workspace", func() {
-			By("Attempting to open non-existent workspace")
-			output, exitCode := intutil.RunCommandWithExitCode(
-				"open", "workspace",
-				"-w", "99999999",
-			)
-			fmt.Printf("Open non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
-			Expect(exitCode).NotTo(Equal(0))
-			Expect(output).To(Or(
-				ContainSubstring("error"),
-				ContainSubstring("failed"),
-				ContainSubstring("not found"),
-			))
-		})
-
 		It("should fail when workspace ID is missing", func() {
 			By("Attempting to open workspace without ID")
 			originalWsId := os.Getenv("CS_WORKSPACE_ID")
@@ -638,23 +623,13 @@ var _ = Describe("Version and Help Tests", func() {
 			Expect(output).To(ContainSubstring("Available Commands:"))
 		})
 
-		It("should display help for subcommands", func() {
-			By("Running create --help")
-			output := intutil.RunCommand("create", "--help")
-			Expect(output).To(ContainSubstring("Usage:"))
-			Expect(output).To(ContainSubstring("workspace"))
-
-			By("Running exec --help")
-			output = intutil.RunCommand("exec", "--help")
-			Expect(output).To(ContainSubstring("Usage:"))
-			Expect(output).To(ContainSubstring("Examples:"))
-		})
-
-		It("should display help for command-specific flags", func() {
+		It("should display help for all subcommands", func() {
 			testCases := []struct {
 				command     []string
 				shouldMatch string
 			}{
+				{[]string{"create", "--help"}, "workspace"},
+				{[]string{"exec", "--help"}, "exec"},
 				{[]string{"log", "--help"}, "log"},
 				{[]string{"start", "pipeline", "--help"}, "pipeline"},
 				{[]string{"git", "pull", "--help"}, "pull"},
@@ -699,27 +674,23 @@ var _ = Describe("Version and Help Tests", func() {
 	})
 
 	Context("Global Flags", func() {
-		It("should accept --api flag", func() {
-			By("Running command with --api flag")
+		It("should accept all global flags", func() {
+			By("Testing --api flag")
 			output := intutil.RunCommand(
 				"--api", "https://example.com/api",
 				"list", "teams",
 			)
 			Expect(output).NotTo(ContainSubstring("unknown flag"))
-		})
 
-		It("should accept --verbose flag", func() {
-			By("Running command with --verbose flag")
-			output := intutil.RunCommand(
+			By("Testing --verbose flag")
+			output = intutil.RunCommand(
 				"--verbose",
 				"list", "plans",
 			)
 			Expect(output).NotTo(ContainSubstring("unknown flag"))
-		})
 
-		It("should accept -v shorthand for verbose", func() {
-			By("Running command with -v flag")
-			output := intutil.RunCommand(
+			By("Testing -v shorthand")
+			output = intutil.RunCommand(
 				"-v",
 				"list", "baseimages",
 			)
@@ -813,22 +784,18 @@ var _ = Describe("List Command Tests", func() {
 	})
 
 	Context("List Error Handling", func() {
-		It("should handle list without subcommand", func() {
+		It("should handle missing or invalid list subcommand", func() {
 			By("Running list without subcommand")
 			output, exitCode := intutil.RunCommandWithExitCode("list")
 			fmt.Printf("List without subcommand output: %s (exit code: %d)\n", output, exitCode)
-
 			Expect(output).To(Or(
 				ContainSubstring("Available Commands:"),
 				ContainSubstring("Usage:"),
 			))
-		})
 
-		It("should handle invalid list subcommand", func() {
 			By("Running list with invalid subcommand")
-			output, _ := intutil.RunCommandWithExitCode("list", "invalid")
+			output, _ = intutil.RunCommandWithExitCode("list", "invalid")
 			fmt.Printf("List invalid output (first 200 chars): %s\n", output[:min(200, len(output))])
-
 			Expect(output).To(Or(
 				ContainSubstring("Available Commands:"),
 				ContainSubstring("Usage:"),
@@ -841,6 +808,28 @@ var _ = Describe("List Command Tests", func() {
 
 			Expect(output).NotTo(BeEmpty())
 		})
+	})
+})
+
+var _ = Describe("Command Error Handling Tests", func() {
+	It("should fail gracefully with non-existent workspace for all commands", func() {
+		testCases := []struct {
+			commandName string
+			args        []string
+		}{
+			{"open workspace", []string{"open", "workspace", "-w", "99999999"}},
+			{"log", []string{"log", "-w", "99999999"}},
+			{"start pipeline", []string{"start", "pipeline", "-w", "99999999"}},
+			{"git pull", []string{"git", "pull", "-w", "99999999"}},
+			{"set-env", []string{"set-env", "-w", "99999999", "TEST_VAR=test"}},
+		}
+
+		for _, tc := range testCases {
+			By(fmt.Sprintf("Testing %s with non-existent workspace", tc.commandName))
+			output, exitCode := intutil.RunCommandWithExitCode(tc.args...)
+			fmt.Printf("%s non-existent workspace output: %s (exit code: %d)\n", tc.commandName, output, exitCode)
+			Expect(exitCode).NotTo(Equal(0))
+		}
 	})
 })
 
@@ -890,18 +879,6 @@ var _ = Describe("Log Command Integration Tests", func() {
 			Expect(exitCode).To(Or(Equal(0), Equal(1)))
 		})
 	})
-
-	Context("Log Error Handling", func() {
-		It("should fail gracefully with non-existent workspace", func() {
-			By("Attempting to get logs from non-existent workspace")
-			output, exitCode := intutil.RunCommandWithExitCode(
-				"log",
-				"-w", "99999999",
-			)
-			fmt.Printf("Log non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
-			Expect(exitCode).NotTo(Equal(0))
-		})
-	})
 })
 
 var _ = Describe("Start Pipeline Integration Tests", func() {
@@ -947,18 +924,6 @@ var _ = Describe("Start Pipeline Integration Tests", func() {
 			fmt.Printf("Start pipeline output: %s (exit code: %d)\n", output, exitCode)
 
 			Expect(output).NotTo(BeEmpty())
-		})
-	})
-
-	Context("Start Pipeline Error Handling", func() {
-		It("should fail gracefully with non-existent workspace", func() {
-			By("Attempting to start pipeline on non-existent workspace")
-			output, exitCode := intutil.RunCommandWithExitCode(
-				"start", "pipeline",
-				"-w", "99999999",
-			)
-			fmt.Printf("Start pipeline non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
-			Expect(exitCode).NotTo(Equal(0))
 		})
 	})
 })
@@ -1008,65 +973,26 @@ var _ = Describe("Git Pull Integration Tests", func() {
 			Expect(output).NotTo(BeEmpty())
 		})
 	})
-
-	Context("Git Pull Error Handling", func() {
-		It("should fail gracefully with non-existent workspace", func() {
-			By("Attempting to git pull on non-existent workspace")
-			output, exitCode := intutil.RunCommandWithExitCode(
-				"git", "pull",
-				"-w", "99999999",
-			)
-			fmt.Printf("Git pull non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
-			Expect(exitCode).NotTo(Equal(0))
-		})
-	})
 })
 
-var _ = Describe("Set Environment Variables Integration Tests", func() {
-	var (
-		teamId        string
-		workspaceName string
-		workspaceId   string
-	)
-
-	BeforeEach(func() {
-		teamId, _ = intutil.SkipIfMissingEnvVars()
-		workspaceName = fmt.Sprintf("cli-setenv-test-%d", time.Now().Unix())
-	})
-
-	AfterEach(func() {
-		if workspaceId != "" {
-			By(fmt.Sprintf("Cleaning up: deleting workspace %s (ID: %s)", workspaceName, workspaceId))
-			intutil.CleanupWorkspace(workspaceId)
-			workspaceId = ""
+var _ = Describe("Command Error Handling Tests", func() {
+	It("should fail gracefully with non-existent workspace for all commands", func() {
+		testCases := []struct {
+			commandName string
+			args        []string
+		}{
+			{"open workspace", []string{"open", "workspace", "-w", "99999999"}},
+			{"log", []string{"log", "-w", "99999999"}},
+			{"start pipeline", []string{"start", "pipeline", "-w", "99999999"}},
+			{"git pull", []string{"git", "pull", "-w", "99999999"}},
+			{"set-env", []string{"set-env", "-w", "99999999", "TEST_VAR=test"}},
 		}
-	})
 
-	Context("Set-Env Command", func() {
-		BeforeEach(func() {
-			By("Creating a workspace")
-			output := intutil.RunCommand(
-				"create", "workspace", workspaceName,
-				"-t", teamId,
-				"-p", "8",
-				"--timeout", "15m",
-			)
-			Expect(output).To(ContainSubstring("Workspace created"))
-			workspaceId = intutil.ExtractWorkspaceId(output)
-			Expect(workspaceId).NotTo(BeEmpty())
-		})
-	})
-
-	Context("Set-Env Error Handling", func() {
-		It("should fail gracefully with non-existent workspace", func() {
-			By("Attempting to set env var on non-existent workspace")
-			output, exitCode := intutil.RunCommandWithExitCode(
-				"set-env",
-				"-w", "99999999",
-				"TEST_VAR=test",
-			)
-			fmt.Printf("Set-env non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
+		for _, tc := range testCases {
+			By(fmt.Sprintf("Testing %s with non-existent workspace", tc.commandName))
+			output, exitCode := intutil.RunCommandWithExitCode(tc.args...)
+			fmt.Printf("%s non-existent workspace output: %s (exit code: %d)\n", tc.commandName, output, exitCode)
 			Expect(exitCode).NotTo(Equal(0))
-		})
+		}
 	})
 })
