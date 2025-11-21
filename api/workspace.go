@@ -50,8 +50,8 @@ func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string
 		})
 	}
 
-	req := c.api.WorkspacesAPI.WorkspacesSetEnvVar(c.ctx, float32(workspaceId))
-	req.WorkspacesCreateWorkspaceRequestEnvInner(vars)
+	req := c.api.WorkspacesAPI.WorkspacesSetEnvVar(c.ctx, float32(workspaceId)).
+		WorkspacesCreateWorkspaceRequestEnvInner(vars)
 	_, err := c.api.WorkspacesAPI.WorkspacesSetEnvVarExecute(req)
 	return errors.FormatAPIError(err)
 }

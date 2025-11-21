@@ -14,7 +14,7 @@ test:
 	go test ./api/... ./cli/... ./pkg/... -count=1
 
 test-int: build
-	go test ./int/... -count=1
+	go test ./int/... -count=1 -v
 
 generate: install-build-deps
 	go generate ./...

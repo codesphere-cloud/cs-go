@@ -73,5 +73,11 @@ func (c *DeleteWorkspaceCmd) DeleteWorkspace(client Client, wsId int) error {
 		}
 	}
 
-	return client.DeleteWorkspace(wsId)
+	err = client.DeleteWorkspace(wsId)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Workspace %d deleted successfully\n", wsId)
+	return nil
 }

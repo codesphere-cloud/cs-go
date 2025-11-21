@@ -54,6 +54,12 @@ func AddSyncLandscapeCmd(sync *cobra.Command, opts *GlobalOptions) {
 }
 
 func (c *SyncLandscapeCmd) SyncLandscape(client Client, wsId int) error {
-	return client.DeployLandscape(wsId, c.Opts.Profile)
+	err := client.DeployLandscape(wsId, c.Opts.Profile)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Landscape synced successfully for workspace %d\n", wsId)
+	return nil
 	//TODO: Wait for deployment to be synced if possible
 }

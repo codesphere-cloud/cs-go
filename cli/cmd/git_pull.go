@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
 )
@@ -31,7 +32,14 @@ func (c *GitPullCmd) RunE(_ *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
-	return client.GitPull(wsId, *c.Opts.Remote, *c.Opts.Branch)
+
+	err = client.GitPull(wsId, *c.Opts.Remote, *c.Opts.Branch)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Git pull completed successfully for workspace %d\n", wsId)
+	return nil
 }
 
 func AddGitPullCmd(git *cobra.Command, opts GlobalOptions) {
@@ -51,7 +59,7 @@ func AddGitPullCmd(git *cobra.Command, opts GlobalOptions) {
 	}
 
 	git.AddCommand(pull.cmd)
-	pull.Opts.Branch = git.Flags().String("branch", "", "Branch to pull")
-	pull.Opts.Remote = git.Flags().String("remote", "", "Remote to pull from")
+	pull.Opts.Branch = pull.cmd.Flags().String("branch", "", "Branch to pull")
+	pull.Opts.Remote = pull.cmd.Flags().String("remote", "", "Remote to pull from")
 	pull.cmd.RunE = pull.RunE
 }
