@@ -6,26 +6,8 @@ on:
       - main
 
 jobs:
-  docs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-tags: true
-          fetch-depth: 0
-          ssh-key: ${{ secrets.ACTION_KEY }}
-
-      - name: Set up Go
-        uses: actions/setup-go@v6
-        with:
-          go-version: '1.25'
-
-      - name: Update docs & licenses
-        run: hack/update-docs.sh
-
   tag:
     runs-on: ubuntu-latest
-    needs: docs
     steps:
       - uses: actions/checkout@v5
         with:
