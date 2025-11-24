@@ -161,9 +161,9 @@ License URL: https://github.com/jbenet/go-context/blob/d14ea06fba99/LICENSE
  
 ----------
 Module: github.com/jedib0t/go-pretty/v6
-Version: v6.7.2
+Version: v6.7.5
 License: MIT
-License URL: https://github.com/jedib0t/go-pretty/blob/v6.7.2/LICENSE
+License URL: https://github.com/jedib0t/go-pretty/blob/v6.7.5/LICENSE
  
 ----------
 Module: github.com/json-iterator/go
@@ -359,21 +359,21 @@ License URL: https://github.com/yaml/go-yaml/blob/v3.0.4/LICENSE
  
 ----------
 Module: golang.org/x/crypto
-Version: v0.41.0
+Version: v0.45.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/crypto/+/v0.41.0:LICENSE
+License URL: https://cs.opensource.google/go/x/crypto/+/v0.45.0:LICENSE
  
 ----------
 Module: golang.org/x/mod/semver
-Version: v0.27.0
+Version: v0.29.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/mod/+/v0.27.0:LICENSE
+License URL: https://cs.opensource.google/go/x/mod/+/v0.29.0:LICENSE
  
 ----------
 Module: golang.org/x/net
-Version: v0.43.0
+Version: v0.47.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/net/+/v0.43.0:LICENSE
+License URL: https://cs.opensource.google/go/x/net/+/v0.47.0:LICENSE
  
 ----------
 Module: golang.org/x/oauth2
@@ -383,27 +383,27 @@ License URL: https://cs.opensource.google/go/x/oauth2/+/v0.30.0:LICENSE
  
 ----------
 Module: golang.org/x/sync/errgroup
-Version: v0.16.0
+Version: v0.18.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/sync/+/v0.16.0:LICENSE
+License URL: https://cs.opensource.google/go/x/sync/+/v0.18.0:LICENSE
  
 ----------
 Module: golang.org/x/sys
-Version: v0.35.0
+Version: v0.38.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/sys/+/v0.35.0:LICENSE
+License URL: https://cs.opensource.google/go/x/sys/+/v0.38.0:LICENSE
  
 ----------
 Module: golang.org/x/text
-Version: v0.28.0
+Version: v0.31.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/text/+/v0.28.0:LICENSE
+License URL: https://cs.opensource.google/go/x/text/+/v0.31.0:LICENSE
  
 ----------
 Module: golang.org/x/tools
-Version: v0.36.0
+Version: v0.38.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/tools/+/v0.36.0:LICENSE
+License URL: https://cs.opensource.google/go/x/tools/+/v0.38.0:LICENSE
  
 ----------
 Module: google.golang.org/protobuf
