@@ -20,6 +20,53 @@ import (
 	. "github.com/onsi/gomega"
 )
 
+func runCommandWithRetry(args ...string) string {
+	var output string
+	var exitCode int
+	maxRetries := 3
+
+	for i := 0; i <= maxRetries; i++ {
+		if i > 0 {
+			fmt.Printf("Retrying command... (Attempt %d/%d)\n", i, maxRetries)
+			time.Sleep(5 * time.Second)
+		}
+
+		output, exitCode = intutil.RunCommandWithExitCode(args...)
+
+		if exitCode == 0 {
+			return output
+		}
+
+		isTransient := strings.Contains(output, "Internal Server Error") ||
+			strings.Contains(output, "Bad Gateway") ||
+			strings.Contains(output, "500") ||
+			strings.Contains(output, "502")
+
+		if !isTransient {
+			return output
+		}
+
+		fmt.Printf("Encountered transient error: %s\n", output)
+	}
+
+	return output
+}
+
+func robustCleanup(workspaceName, workspaceId string) {
+	if workspaceId == "" {
+		return
+	}
+	By(fmt.Sprintf("Cleaning up: deleting workspace %s (ID: %s)", workspaceName, workspaceId))
+
+	output := runCommandWithRetry("delete", "workspace", "-w", workspaceId, "--yes")
+
+	if strings.Contains(output, "Error") && !strings.Contains(output, "Not found") {
+		fmt.Printf("Warning: Failed to cleanup workspace %s: %s\n", workspaceId, output)
+	} else {
+		fmt.Printf("Cleanup workspace %s: success (or already deleted)\n", workspaceId)
+	}
+}
+
 var _ = Describe("cs monitor", func() {
 	var (
 		certsDir              string
@@ -361,17 +408,14 @@ var _ = Describe("Open Workspace Integration Tests", func() {
 	})
 
 	AfterEach(func() {
-		if workspaceId != "" {
-			By(fmt.Sprintf("Cleaning up: deleting workspace %s (ID: %s)", workspaceName, workspaceId))
-			intutil.CleanupWorkspace(workspaceId)
-			workspaceId = ""
-		}
+		robustCleanup(workspaceName, workspaceId)
+		workspaceId = ""
 	})
 
 	Context("Open Workspace Command", func() {
 		BeforeEach(func() {
 			By("Creating a workspace")
-			output := intutil.RunCommand(
+			output := runCommandWithRetry(
 				"create", "workspace", workspaceName,
 				"-t", teamId,
 				"-p", "8",
@@ -386,7 +430,7 @@ var _ = Describe("Open Workspace Integration Tests", func() {
 
 		It("should open workspace successfully", func() {
 			By("Opening the workspace")
-			output := intutil.RunCommand(
+			output := runCommandWithRetry(
 				"open", "workspace",
 				"-w", workspaceId,
 			)
@@ -430,18 +474,15 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 	})
 
 	AfterEach(func() {
-		if workspaceId != "" {
-			By(fmt.Sprintf("Cleaning up: deleting workspace %s (ID: %s)", workspaceName, workspaceId))
-			intutil.CleanupWorkspace(workspaceId)
-			workspaceId = ""
-		}
+		robustCleanup(workspaceName, workspaceId)
+		workspaceId = ""
 	})
 
 	Context("Workspace Creation Edge Cases", func() {
 		It("should create a workspace with a very long name", func() {
 			longName := fmt.Sprintf("cli-very-long-workspace-name-test-%d", time.Now().Unix())
 			By("Creating a workspace with a long name")
-			output := intutil.RunCommand(
+			output := runCommandWithRetry(
 				"create", "workspace", longName,
 				"-t", teamId,
 				"-p", "8",
@@ -479,7 +520,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 	Context("Exec Command Edge Cases", func() {
 		BeforeEach(func() {
 			By("Creating a workspace")
-			output := intutil.RunCommand(
+			output := runCommandWithRetry(
 				"create", "workspace", workspaceName,
 				"-t", teamId,
 				"-p", "8",
@@ -492,7 +533,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 
 		It("should execute commands with multiple arguments", func() {
 			By("Executing a command with multiple arguments")
-			output := intutil.RunCommand(
+			output := runCommandWithRetry(
 				"exec",
 				"-w", workspaceId,
 				"--",
@@ -505,7 +546,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 
 		It("should handle commands that output to stderr", func() {
 			By("Executing a command that writes to stderr")
-			output := intutil.RunCommand(
+			output := runCommandWithRetry(
 				"exec",
 				"-w", workspaceId,
 				"--",
@@ -528,7 +569,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 
 		It("should execute long-running commands", func() {
 			By("Executing a command that takes a few seconds")
-			output := intutil.RunCommand(
+			output := runCommandWithRetry(
 				"exec",
 				"-w", workspaceId,
 				"--",
@@ -542,7 +583,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 	Context("Workspace Deletion Edge Cases", func() {
 		It("should prevent deletion without confirmation when not forced", func() {
 			By("Creating a workspace")
-			output := intutil.RunCommand(
+			output := runCommandWithRetry(
 				"create", "workspace", workspaceName,
 				"-t", teamId,
 				"-p", "8",
@@ -565,7 +606,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 
 		It("should fail gracefully when deleting already deleted workspace", func() {
 			By("Creating and deleting a workspace")
-			output := intutil.RunCommand(
+			output := runCommandWithRetry(
 				"create", "workspace", workspaceName,
 				"-t", teamId,
 				"-p", "8",
@@ -574,7 +615,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 			Expect(output).To(ContainSubstring("Workspace created"))
 			tempWsId := intutil.ExtractWorkspaceId(output)
 
-			output = intutil.RunCommand(
+			output = runCommandWithRetry(
 				"delete", "workspace",
 				"-w", tempWsId,
 				"--yes",
@@ -709,7 +750,7 @@ var _ = Describe("List Command Tests", func() {
 	Context("List Workspaces", func() {
 		It("should list all workspaces in team with proper formatting", func() {
 			By("Listing workspaces")
-			output := intutil.RunCommand("list", "workspaces", "-t", teamId)
+			output := runCommandWithRetry("list", "workspaces", "-t", teamId)
 			fmt.Printf("List workspaces output length: %d\n", len(output))
 
 			Expect(output).To(ContainSubstring("TEAM ID"))
@@ -721,7 +762,7 @@ var _ = Describe("List Command Tests", func() {
 	Context("List Plans", func() {
 		It("should list all available plans", func() {
 			By("Listing plans")
-			output := intutil.RunCommand("list", "plans")
+			output := runCommandWithRetry("list", "plans")
 			fmt.Printf("List plans output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("ID"))
@@ -734,7 +775,7 @@ var _ = Describe("List Command Tests", func() {
 
 		It("should show plan details like CPU and RAM", func() {
 			By("Listing plans with details")
-			output := intutil.RunCommand("list", "plans")
+			output := runCommandWithRetry("list", "plans")
 			fmt.Printf("Plan details output length: %d\n", len(output))
 
 			Expect(output).To(ContainSubstring("CPU"))
@@ -745,7 +786,7 @@ var _ = Describe("List Command Tests", func() {
 	Context("List Base Images", func() {
 		It("should list available base images", func() {
 			By("Listing base images")
-			output := intutil.RunCommand("list", "baseimages")
+			output := runCommandWithRetry("list", "baseimages")
 			fmt.Printf("List baseimages output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("ID"))
@@ -754,7 +795,7 @@ var _ = Describe("List Command Tests", func() {
 
 		It("should show Ubuntu images", func() {
 			By("Checking for Ubuntu in base images")
-			output := intutil.RunCommand("list", "baseimages")
+			output := runCommandWithRetry("list", "baseimages")
 
 			Expect(output).To(ContainSubstring("Ubuntu"))
 		})
@@ -763,7 +804,7 @@ var _ = Describe("List Command Tests", func() {
 	Context("List Teams", func() {
 		It("should list teams user has access to", func() {
 			By("Listing teams")
-			output := intutil.RunCommand("list", "teams")
+			output := runCommandWithRetry("list", "teams")
 			fmt.Printf("List teams output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("ID"))
@@ -773,7 +814,7 @@ var _ = Describe("List Command Tests", func() {
 
 		It("should show team role", func() {
 			By("Checking team roles")
-			output := intutil.RunCommand("list", "teams")
+			output := runCommandWithRetry("list", "teams")
 
 			Expect(output).To(Or(
 				ContainSubstring("Admin"),
@@ -804,7 +845,7 @@ var _ = Describe("List Command Tests", func() {
 
 		It("should require team ID for workspace listing when not set globally", func() {
 			By("Listing workspaces without team ID in specific contexts")
-			output := intutil.RunCommand("list", "workspaces", "-t", teamId)
+			output := runCommandWithRetry("list", "workspaces", "-t", teamId)
 
 			Expect(output).NotTo(BeEmpty())
 		})
@@ -846,17 +887,14 @@ var _ = Describe("Log Command Integration Tests", func() {
 	})
 
 	AfterEach(func() {
-		if workspaceId != "" {
-			By(fmt.Sprintf("Cleaning up: deleting workspace %s (ID: %s)", workspaceName, workspaceId))
-			intutil.CleanupWorkspace(workspaceId)
-			workspaceId = ""
-		}
+		robustCleanup(workspaceName, workspaceId)
+		workspaceId = ""
 	})
 
 	Context("Log Command", func() {
 		BeforeEach(func() {
 			By("Creating a workspace")
-			output := intutil.RunCommand(
+			output := runCommandWithRetry(
 				"create", "workspace", workspaceName,
 				"-t", teamId,
 				"-p", "8",
@@ -894,17 +932,14 @@ var _ = Describe("Start Pipeline Integration Tests", func() {
 	})
 
 	AfterEach(func() {
-		if workspaceId != "" {
-			By(fmt.Sprintf("Cleaning up: deleting workspace %s (ID: %s)", workspaceName, workspaceId))
-			intutil.CleanupWorkspace(workspaceId)
-			workspaceId = ""
-		}
+		robustCleanup(workspaceName, workspaceId)
+		workspaceId = ""
 	})
 
 	Context("Start Pipeline Command", func() {
 		BeforeEach(func() {
 			By("Creating a workspace")
-			output := intutil.RunCommand(
+			output := runCommandWithRetry(
 				"create", "workspace", workspaceName,
 				"-t", teamId,
 				"-p", "8",
@@ -941,17 +976,14 @@ var _ = Describe("Git Pull Integration Tests", func() {
 	})
 
 	AfterEach(func() {
-		if workspaceId != "" {
-			By(fmt.Sprintf("Cleaning up: deleting workspace %s (ID: %s)", workspaceName, workspaceId))
-			intutil.CleanupWorkspace(workspaceId)
-			workspaceId = ""
-		}
+		robustCleanup(workspaceName, workspaceId)
+		workspaceId = ""
 	})
 
 	Context("Git Pull Command", func() {
 		BeforeEach(func() {
 			By("Creating a workspace")
-			output := intutil.RunCommand(
+			output := runCommandWithRetry(
 				"create", "workspace", workspaceName,
 				"-t", teamId,
 				"-p", "8",
