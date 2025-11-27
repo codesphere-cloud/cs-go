@@ -67,5 +67,6 @@ func (l *SetEnvVarCmd) SetEnvironmentVariables(client Client) (err error) {
 		return fmt.Errorf("failed to set environment variables %v: %w", envVarMap, err)
 	}
 
+	fmt.Printf("Environment variables set successfully on workspace %d\n", wsId)
 	return nil
 }

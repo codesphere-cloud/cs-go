@@ -12,9 +12,7 @@ like pulling or switching to a specific branch.
 ### Options
 
 ```
-      --branch string   Branch to pull
-  -h, --help            help for git
-      --remote string   Remote to pull from
+  -h, --help   help for git
 ```
 
 ### Options inherited from parent commands
