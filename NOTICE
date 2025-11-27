@@ -95,9 +95,9 @@ License URL: https://github.com/go-git/go-billy/blob/v5.6.2/LICENSE
  
 ----------
 Module: github.com/go-git/go-git/v5
-Version: v5.16.3
+Version: v5.16.4
 License: Apache-2.0
-License URL: https://github.com/go-git/go-git/blob/v5.16.3/LICENSE
+License URL: https://github.com/go-git/go-git/blob/v5.16.4/LICENSE
  
 ----------
 Module: github.com/go-logr/logr
