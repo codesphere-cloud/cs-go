@@ -25,7 +25,9 @@ $ cs pull --remote origin --branch staging
 ### Options
 
 ```
-  -h, --help   help for pull
+      --branch string   Branch to pull
+  -h, --help            help for pull
+      --remote string   Remote to pull from
 ```
 
 ### Options inherited from parent commands
