@@ -127,7 +127,7 @@ func (c *GenerateDockerCmd) GenerateDocker(fs *cs.FileSystem, exp exporter.Expor
 func (c *GenerateDockerCmd) CloneRepository(client Client, fs *cs.FileSystem, git git.Git, clonedir string) error {
 	fmt.Printf("Cloning repository into %s...\n", clonedir)
 
-	wsId, err := c.Opts.Env.GetWorkspaceId()
+	wsId, err := c.Opts.GetWorkspaceId()
 	if err != nil {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
 	}
