@@ -71,9 +71,9 @@ License URL: https://github.com/cyphar/filepath-securejoin/blob/v0.6.1/COPYING.m
  
 ----------
 Module: github.com/davecgh/go-spew/spew
-Version: v1.1.1
+Version: v1.1.2-0.20180830191138-d8f796af33cc
 License: ISC
-License URL: https://github.com/davecgh/go-spew/blob/v1.1.1/LICENSE
+License URL: https://github.com/davecgh/go-spew/blob/d8f796af33cc/LICENSE
  
 ----------
 Module: github.com/emirpasic/gods
@@ -245,9 +245,9 @@ License URL: https://github.com/pjbgf/sha1cd/blob/v0.5.0/LICENSE
  
 ----------
 Module: github.com/pmezard/go-difflib/difflib
-Version: v1.0.0
+Version: v1.0.1-0.20181226105442-5d4384ee4fb2
 License: BSD-3-Clause
-License URL: https://github.com/pmezard/go-difflib/blob/v1.0.0/LICENSE
+License URL: https://github.com/pmezard/go-difflib/blob/5d4384ee4fb2/LICENSE
  
 ----------
 Module: github.com/prometheus/client_golang/internal/github.com/golang/gddo/httputil
@@ -305,9 +305,9 @@ License URL: https://github.com/skeema/knownhosts/blob/v1.3.2/LICENSE
  
 ----------
 Module: github.com/spf13/cobra
-Version: v1.10.1
+Version: v1.10.2
 License: Apache-2.0
-License URL: https://github.com/spf13/cobra/blob/v1.10.1/LICENSE.txt
+License URL: https://github.com/spf13/cobra/blob/v1.10.2/LICENSE.txt
  
 ----------
 Module: github.com/spf13/pflag
