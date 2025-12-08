@@ -305,9 +305,9 @@ License URL: https://github.com/skeema/knownhosts/blob/v1.3.2/LICENSE
  
 ----------
 Module: github.com/spf13/cobra
-Version: v1.10.1
+Version: v1.10.2
 License: Apache-2.0
-License URL: https://github.com/spf13/cobra/blob/v1.10.1/LICENSE.txt
+License URL: https://github.com/spf13/cobra/blob/v1.10.2/LICENSE.txt
  
 ----------
 Module: github.com/spf13/pflag
