@@ -3,7 +3,7 @@
 
 package cmd
 
-//go:generate mockery
+//go:generate go tool mockery
 
 import (
 	"context"
