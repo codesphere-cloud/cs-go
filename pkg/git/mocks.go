@@ -71,17 +71,38 @@ type MockGit_CloneRepository_Call struct {
 }
 
 // CloneRepository is a helper method to define mock.On call
-//   - fs
-//   - url
-//   - branch
-//   - path
+//   - fs *cs.FileSystem
+//   - url string
+//   - branch string
+//   - path string
 func (_e *MockGit_Expecter) CloneRepository(fs interface{}, url interface{}, branch interface{}, path interface{}) *MockGit_CloneRepository_Call {
 	return &MockGit_CloneRepository_Call{Call: _e.mock.On("CloneRepository", fs, url, branch, path)}
 }
 
 func (_c *MockGit_CloneRepository_Call) Run(run func(fs *cs.FileSystem, url string, branch string, path string)) *MockGit_CloneRepository_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*cs.FileSystem), args[1].(string), args[2].(string), args[3].(string))
+		var arg0 *cs.FileSystem
+		if args[0] != nil {
+			arg0 = args[0].(*cs.FileSystem)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 string
+		if args[3] != nil {
+			arg3 = args[3].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+		)
 	})
 	return _c
 }
