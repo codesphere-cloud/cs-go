@@ -7,7 +7,7 @@ format:
 	go fmt ./...
 
 lint: install-build-deps
-	golangci-lint run
+	go tool golangci-lint run
 
 test:
 	# -count=1 to disable caching test results
@@ -66,18 +66,18 @@ generate-license: generate
 	copywrite headers apply
 
 install-build-deps:
-ifeq (, $(shell which mockery))
-	go install github.com/vektra/mockery/v3@v3.2.1
-endif
+# ifeq (, $(shell which mockery))
+# 	go install github.com/vektra/mockery/v3@v3.2.1
+# endif
 ifeq (, $(shell which go-licenses))
 	go install github.com/google/go-licenses@v1.6.0
 endif
 ifeq (, $(shell which copywrite))
 	go install github.com/hashicorp/copywrite@v0.22.0
 endif
-ifeq (, $(shell which golangci-lint))
-	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.5.0
-endif
+# ifeq (, $(shell which golangci-lint))
+# 	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.5.0
+# endif
 ifeq (, $(shell which goreleaser))
 	go install github.com/goreleaser/goreleaser/v2@v2.11.2
 endif
