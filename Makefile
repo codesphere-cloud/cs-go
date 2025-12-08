@@ -17,6 +17,7 @@ test-int: build
 	go test ./int/... -count=1 -v
 
 generate: install-build-deps
+# 	go tool mockery
 	go generate ./...
 
 build:
