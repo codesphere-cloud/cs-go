@@ -8,7 +8,7 @@ import (
 
 	"github.com/go-git/go-billy/v5"
 	"github.com/go-git/go-billy/v5/util"
-	"gopkg.in/yaml.v2"
+	"github.com/yaml/go-yaml"
 )
 
 type CiYml struct {
