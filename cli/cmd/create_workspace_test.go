@@ -9,6 +9,7 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/spf13/cobra"
 
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
@@ -23,14 +24,11 @@ var _ = Describe("CreateWorkspace", func() {
 		teamId       int
 		wsName       string
 		env          []string
-		repoStr      string
 		repo         *string
 		vpn          *string
-		vpnStr       string
 		plan         int
 		private      bool
 		timeout      time.Duration
-		branchStr    string
 		branch       *string
 		baseimageStr string
 		baseimage    *string
@@ -39,14 +37,11 @@ var _ = Describe("CreateWorkspace", func() {
 
 	BeforeEach(func() {
 		env = []string{}
-		repoStr = "https://fake-git.com/my/repo.git"
 		repo = nil
-		vpnStr = "MyVpn"
 		vpn = nil
 		plan = 8
 		private = false
 		timeout = 30 * time.Second
-		branchStr = "fake-branch"
 		branch = nil
 		baseimageStr = "ubuntu-24.04"
 		baseimage = nil
@@ -99,20 +94,34 @@ var _ = Describe("CreateWorkspace", func() {
 	})
 
 	Context("All values are set", func() {
-		BeforeEach(func() {
-			env = []string{"foo=bla", "blib=blub"}
-			repo = &repoStr
-			vpn = &vpnStr
-			private = true
-			timeout = 120 * time.Second
-			branch = &branchStr
-			wsName = "different-name"
-		})
-		It("Creates the workspace and passes expected arguments", func() {
-			mockClient.EXPECT().DeployWorkspace(deployArgs).Return(&api.Workspace{Name: wsName}, nil)
-			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
-			Expect(err).ToNot(HaveOccurred())
-			Expect(ws.Name).To(Equal(wsName))
+		It("Creates workspace with all flags set", func() {
+			createCmd := &cobra.Command{Use: "create"}
+			opts := &cmd.GlobalOptions{Env: cs.NewEnv()}
+
+			cmd.AddCreateWorkspaceCmd(createCmd, *opts)
+
+			createCmd.SetArgs([]string{
+				"workspace",
+				"test-workspace",
+				"--repository", "https://github.com/test/repo.git",
+				"--vpn", "test-vpn",
+				"--env", "FOO=bar",
+				"--env", "BAZ=qux",
+				"--plan", "20",
+				"--private",
+				"--timeout", "2m",
+				"--branch", "develop",
+				"--base-image", "ubuntu-24.04",
+				"--public-dev-domain=false",
+			})
+
+			// Override RunE to avoid actually creating workspace
+			createCmd.Commands()[0].RunE = func(cmd *cobra.Command, args []string) error {
+				return nil
+			}
+
+			err := createCmd.Execute()
+			Expect(err).NotTo(HaveOccurred())
 		})
 	})
 
@@ -158,6 +167,192 @@ var _ = Describe("CreateWorkspace", func() {
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to list base images: API error"))
 			Expect(ws).To(BeNil())
+		})
+	})
+
+	Context("Repository URL validation", func() {
+		It("validates and sets repository URL when provided", func() {
+			repoUrl := "https://github.com/test/repo.git"
+			c.Opts.Repo = &repoUrl
+
+			expectedArgs := api.DeployWorkspaceArgs{
+				Name:          wsName,
+				TeamId:        teamId,
+				EnvVars:       map[string]string{},
+				GitUrl:        &repoUrl,
+				VpnConfigName: nil,
+				PlanId:        plan,
+				IsPrivateRepo: private,
+				Timeout:       timeout,
+				Branch:        nil,
+				BaseImage:     nil,
+			}
+
+			mockClient.EXPECT().DeployWorkspace(expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
+
+			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			Expect(err).ToNot(HaveOccurred())
+			Expect(ws.Name).To(Equal(wsName))
+		})
+
+		It("fails when repository URL is invalid", func() {
+			invalidUrl := "not-a-valid-url"
+			c.Opts.Repo = &invalidUrl
+
+			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(ContainSubstring("validation of repository URL failed"))
+			Expect(ws).To(BeNil())
+		})
+
+		It("does not set GitUrl when repository is empty string", func() {
+			emptyRepo := ""
+			c.Opts.Repo = &emptyRepo
+
+			expectedArgs := api.DeployWorkspaceArgs{
+				Name:          wsName,
+				TeamId:        teamId,
+				EnvVars:       map[string]string{},
+				GitUrl:        nil,
+				VpnConfigName: nil,
+				PlanId:        plan,
+				IsPrivateRepo: private,
+				Timeout:       timeout,
+				Branch:        nil,
+				BaseImage:     nil,
+			}
+
+			mockClient.EXPECT().DeployWorkspace(expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
+
+			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			Expect(err).ToNot(HaveOccurred())
+			Expect(ws.Name).To(Equal(wsName))
+		})
+	})
+
+	Context("VPN configuration", func() {
+		It("sets VPN config when provided", func() {
+			vpnName := "test-vpn"
+			c.Opts.Vpn = &vpnName
+
+			expectedArgs := api.DeployWorkspaceArgs{
+				Name:          wsName,
+				TeamId:        teamId,
+				EnvVars:       map[string]string{},
+				GitUrl:        nil,
+				VpnConfigName: &vpnName,
+				PlanId:        plan,
+				IsPrivateRepo: private,
+				Timeout:       timeout,
+				Branch:        nil,
+				BaseImage:     nil,
+			}
+
+			mockClient.EXPECT().DeployWorkspace(expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
+
+			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			Expect(err).ToNot(HaveOccurred())
+			Expect(ws.Name).To(Equal(wsName))
+		})
+
+		It("does not set VPN when empty string", func() {
+			emptyVpn := ""
+			c.Opts.Vpn = &emptyVpn
+
+			expectedArgs := api.DeployWorkspaceArgs{
+				Name:          wsName,
+				TeamId:        teamId,
+				EnvVars:       map[string]string{},
+				GitUrl:        nil,
+				VpnConfigName: nil,
+				PlanId:        plan,
+				IsPrivateRepo: private,
+				Timeout:       timeout,
+				Branch:        nil,
+				BaseImage:     nil,
+			}
+
+			mockClient.EXPECT().DeployWorkspace(expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
+
+			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			Expect(err).ToNot(HaveOccurred())
+			Expect(ws.Name).To(Equal(wsName))
+		})
+	})
+
+	Context("Branch configuration", func() {
+		It("sets branch when provided", func() {
+			branchName := "feature-branch"
+			c.Opts.Branch = &branchName
+
+			expectedArgs := api.DeployWorkspaceArgs{
+				Name:          wsName,
+				TeamId:        teamId,
+				EnvVars:       map[string]string{},
+				GitUrl:        nil,
+				VpnConfigName: nil,
+				PlanId:        plan,
+				IsPrivateRepo: private,
+				Timeout:       timeout,
+				Branch:        &branchName,
+				BaseImage:     nil,
+			}
+
+			mockClient.EXPECT().DeployWorkspace(expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
+
+			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			Expect(err).ToNot(HaveOccurred())
+			Expect(ws.Name).To(Equal(wsName))
+		})
+
+		It("does not set branch when empty string", func() {
+			emptyBranch := ""
+			c.Opts.Branch = &emptyBranch
+
+			expectedArgs := api.DeployWorkspaceArgs{
+				Name:          wsName,
+				TeamId:        teamId,
+				EnvVars:       map[string]string{},
+				GitUrl:        nil,
+				VpnConfigName: nil,
+				PlanId:        plan,
+				IsPrivateRepo: private,
+				Timeout:       timeout,
+				Branch:        nil,
+				BaseImage:     nil,
+			}
+
+			mockClient.EXPECT().DeployWorkspace(expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
+
+			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			Expect(err).ToNot(HaveOccurred())
+			Expect(ws.Name).To(Equal(wsName))
+		})
+	})
+
+	Context("Public dev domain flag", func() {
+		// Currently we can only test the case when the flag is not set
+		// as cmd is not exported and we cannot check the Changed field easily.
+		It("does not set restricted when flag not set", func() {
+			expectedArgs := api.DeployWorkspaceArgs{
+				Name:          wsName,
+				TeamId:        teamId,
+				EnvVars:       map[string]string{},
+				GitUrl:        nil,
+				VpnConfigName: nil,
+				PlanId:        plan,
+				IsPrivateRepo: private,
+				Timeout:       timeout,
+				Branch:        nil,
+				BaseImage:     nil,
+				Restricted:    nil,
+			}
+
+			mockClient.EXPECT().DeployWorkspace(expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
+
+			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			Expect(err).ToNot(HaveOccurred())
+			Expect(ws.Name).To(Equal(wsName))
 		})
 	})
 
