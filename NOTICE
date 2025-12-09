@@ -40,10 +40,16 @@ License: MIT
 License URL: https://github.com/cespare/xxhash/blob/v2.3.0/LICENSE.txt
  
 ----------
-Module: github.com/clipperhouse/uax29/v2
-Version: v2.2.0
+Module: github.com/clipperhouse/stringish
+Version: v0.1.1
 License: MIT
-License URL: https://github.com/clipperhouse/uax29/blob/v2.2.0/LICENSE
+License URL: https://github.com/clipperhouse/stringish/blob/v0.1.1/LICENSE
+ 
+----------
+Module: github.com/clipperhouse/uax29/v2
+Version: v2.3.0
+License: MIT
+License URL: https://github.com/clipperhouse/uax29/blob/v2.3.0/LICENSE
  
 ----------
 Module: github.com/cloudflare/circl
@@ -71,9 +77,9 @@ License URL: https://github.com/cyphar/filepath-securejoin/blob/v0.6.1/COPYING.m
  
 ----------
 Module: github.com/davecgh/go-spew/spew
-Version: v1.1.1
+Version: v1.1.2-0.20180830191138-d8f796af33cc
 License: ISC
-License URL: https://github.com/davecgh/go-spew/blob/v1.1.1/LICENSE
+License URL: https://github.com/davecgh/go-spew/blob/d8f796af33cc/LICENSE
  
 ----------
 Module: github.com/emirpasic/gods
@@ -245,9 +251,9 @@ License URL: https://github.com/pjbgf/sha1cd/blob/v0.5.0/LICENSE
  
 ----------
 Module: github.com/pmezard/go-difflib/difflib
-Version: v1.0.0
+Version: v1.0.1-0.20181226105442-5d4384ee4fb2
 License: BSD-3-Clause
-License URL: https://github.com/pmezard/go-difflib/blob/v1.0.0/LICENSE
+License URL: https://github.com/pmezard/go-difflib/blob/5d4384ee4fb2/LICENSE
  
 ----------
 Module: github.com/prometheus/client_golang/internal/github.com/golang/gddo/httputil
@@ -352,6 +358,12 @@ License: Apache-2.0
 License URL: https://github.com/xanzy/ssh-agent/blob/v0.3.3/LICENSE
  
 ----------
+Module: github.com/yaml/go-yaml
+Version: v2.1.0
+License: Apache-2.0
+License URL: https://github.com/yaml/go-yaml/blob/v2.1.0/LICENSE
+ 
+----------
 Module: go.yaml.in/yaml/v2
 Version: v2.4.3
 License: Apache-2.0
@@ -434,12 +446,6 @@ Module: gopkg.in/warnings.v0
 Version: v0.1.2
 License: BSD-2-Clause
 License URL: https://github.com/go-warnings/warnings/blob/v0.1.2/LICENSE
- 
-----------
-Module: gopkg.in/yaml.v2
-Version: v2.4.0
-License: Apache-2.0
-License URL: https://github.com/go-yaml/yaml/blob/v2.4.0/LICENSE
  
 ----------
 Module: gopkg.in/yaml.v3

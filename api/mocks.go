@@ -92,14 +92,20 @@ type MockTime_Sleep_Call struct {
 }
 
 // Sleep is a helper method to define mock.On call
-//   - duration
+//   - duration time.Duration
 func (_e *MockTime_Expecter) Sleep(duration interface{}) *MockTime_Sleep_Call {
 	return &MockTime_Sleep_Call{Call: _e.mock.On("Sleep", duration)}
 }
 
 func (_c *MockTime_Sleep_Call) Run(run func(duration time.Duration)) *MockTime_Sleep_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(time.Duration))
+		var arg0 time.Duration
+		if args[0] != nil {
+			arg0 = args[0].(time.Duration)
+		}
+		run(
+			arg0,
+		)
 	})
 	return _c
 }
