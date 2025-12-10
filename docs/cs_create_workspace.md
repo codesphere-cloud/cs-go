@@ -23,6 +23,9 @@ cs create workspace [flags]
 # Create an empty workspace, using plan 20
 $ cs create workspace my-workspace -p 20
 
+# Create a workspace with a publicly exposed development domain
+$ cs create workspace my-workspace --public-dev-domain=false
+
 # Create a workspace from a git repository
 $ cs create workspace my-workspace -r https://github.com/codesphere-cloud/landingpage-temp.git
 
@@ -51,6 +54,7 @@ $ cs create workspace my-workspace -r https://github.com/my-org/my-private-proje
   -h, --help                help for workspace
   -p, --plan int            Plan ID for the workspace (default 8)
   -P, --private             Use private repository
+      --public-dev-domain   Whether to create enable a public development domain (defaults to the public api default)
   -r, --repository string   Git repository to create the workspace from
       --timeout duration    Time to wait for the workspace to start (e.g. 5m for 5 minutes) (default 10m0s)
       --vpn string          Vpn config to use

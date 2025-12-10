@@ -24,14 +24,15 @@ type CreateWorkspaceCmd struct {
 
 type CreateWorkspaceOpts struct {
 	GlobalOptions
-	Repo      *string
-	Vpn       *string
-	Env       *[]string
-	Plan      *int
-	Private   *bool
-	Timeout   *time.Duration
-	Branch    *string
-	Baseimage *string
+	Repo            *string
+	Vpn             *string
+	Env             *[]string
+	Plan            *int
+	Private         *bool
+	Timeout         *time.Duration
+	Branch          *string
+	Baseimage       *string
+	PublicDevDomain *bool
 }
 
 func (c *CreateWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
@@ -63,6 +64,7 @@ func (c *CreateWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
 	if ws.InitialBranch.Get() != nil {
 		branch = *ws.InitialBranch.Get()
 	}
+
 	fmt.Println("Workspace created:")
 	fmt.Printf("\nID: %d\n", ws.Id)
 	fmt.Printf("Name: %s\n", ws.Name)
@@ -90,6 +92,7 @@ func AddCreateWorkspaceCmd(create *cobra.Command, opts GlobalOptions) {
 			`),
 			Example: io.FormatExampleCommands("create workspace my-workspace", []io.Example{
 				{Cmd: "-p 20", Desc: "Create an empty workspace, using plan 20"},
+				{Cmd: "--public-dev-domain=false", Desc: "Create a workspace with a publicly exposed development domain"},
 				{Cmd: "-r https://github.com/codesphere-cloud/landingpage-temp.git", Desc: "Create a workspace from a git repository"},
 				{Cmd: "-r https://github.com/codesphere-cloud/landingpage-temp.git -e DEPLOYMENT=prod -e A=B", Desc: "Create a workspace and set environment variables"},
 				{Cmd: "-r https://github.com/codesphere-cloud/landingpage-temp.git --vpn myVpn", Desc: "Create a workspace and connect to VPN myVpn"},
@@ -108,6 +111,7 @@ func AddCreateWorkspaceCmd(create *cobra.Command, opts GlobalOptions) {
 	workspace.Opts.Timeout = workspace.cmd.Flags().Duration("timeout", 10*time.Minute, "Time to wait for the workspace to start (e.g. 5m for 5 minutes)")
 	workspace.Opts.Branch = workspace.cmd.Flags().StringP("branch", "b", "", "branch to check out")
 	workspace.Opts.Baseimage = workspace.cmd.Flags().String("base-image", "", "Base image to use for the workspace, e.g. 'ubuntu-24.04'")
+	workspace.Opts.PublicDevDomain = workspace.cmd.Flags().Bool("public-dev-domain", false, "Whether to create enable a public development domain (defaults to the public api default)")
 
 	create.AddCommand(workspace.cmd)
 	workspace.cmd.RunE = workspace.RunE
@@ -162,6 +166,11 @@ func (c *CreateWorkspaceCmd) CreateWorkspace(client Client, teamId int, wsName s
 		}
 
 		args.BaseImage = c.Opts.Baseimage
+	}
+
+	if c.cmd != nil && c.cmd.Flag("public-dev-domain").Changed && c.Opts.PublicDevDomain != nil {
+		public := !*c.Opts.PublicDevDomain
+		args.Restricted = &public
 	}
 
 	ws, err := client.DeployWorkspace(args)

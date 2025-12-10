@@ -147,6 +147,7 @@ type DeployWorkspaceArgs struct {
 	GitUrl        *string //must be nil to use default
 	Branch        *string //must be nil to use default
 	BaseImage     *string //must be nil to use default
+	Restricted    *bool   //must be nil to use default
 
 	Timeout time.Duration
 }
@@ -163,6 +164,7 @@ func (client Client) DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, erro
 		GitUrl:            args.GitUrl,
 		InitialBranch:     args.Branch,
 		BaseImage:         args.BaseImage,
+		Restricted:        args.Restricted,
 		SourceWorkspaceId: nil,
 		WelcomeMessage:    nil,
 		Replicas:          1,
