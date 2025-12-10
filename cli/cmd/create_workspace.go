@@ -169,7 +169,7 @@ func (c *CreateWorkspaceCmd) CreateWorkspace(client Client, teamId int, wsName s
 	}
 
 	if c.cmd != nil && c.cmd.Flag("public-dev-domain").Changed && c.Opts.PublicDevDomain != nil {
-		var public bool = !*c.Opts.PublicDevDomain
+		public := !*c.Opts.PublicDevDomain
 		args.Restricted = &public
 	}
 
