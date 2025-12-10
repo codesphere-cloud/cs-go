@@ -23,7 +23,7 @@ cs create workspace [flags]
 # Create an empty workspace, using plan 20
 $ cs create workspace my-workspace -p 20
 
-# Create a workspace with a publicly accessible API
+# Create a workspace with a publicly exposed development domain
 $ cs create workspace my-workspace --public-dev-domain=false
 
 # Create a workspace from a git repository
