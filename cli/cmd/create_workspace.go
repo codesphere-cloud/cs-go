@@ -92,7 +92,7 @@ func AddCreateWorkspaceCmd(create *cobra.Command, opts GlobalOptions) {
 			`),
 			Example: io.FormatExampleCommands("create workspace my-workspace", []io.Example{
 				{Cmd: "-p 20", Desc: "Create an empty workspace, using plan 20"},
-				{Cmd: "--public-dev-domain=false", Desc: "Create a workspace with a publicly accessible API"},
+				{Cmd: "--public-dev-domain=false", Desc: "Create a workspace with a publicly exposed development domain"},
 				{Cmd: "-r https://github.com/codesphere-cloud/landingpage-temp.git", Desc: "Create a workspace from a git repository"},
 				{Cmd: "-r https://github.com/codesphere-cloud/landingpage-temp.git -e DEPLOYMENT=prod -e A=B", Desc: "Create a workspace and set environment variables"},
 				{Cmd: "-r https://github.com/codesphere-cloud/landingpage-temp.git --vpn myVpn", Desc: "Create a workspace and connect to VPN myVpn"},
