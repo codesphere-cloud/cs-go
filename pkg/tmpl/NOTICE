@@ -101,9 +101,9 @@ License URL: https://github.com/go-git/gcfg/blob/3a3c6141e376/LICENSE
  
 ----------
 Module: github.com/go-git/go-billy/v5
-Version: v5.6.2
+Version: v5.7.0
 License: Apache-2.0
-License URL: https://github.com/go-git/go-billy/blob/v5.6.2/LICENSE
+License URL: https://github.com/go-git/go-billy/blob/v5.7.0/LICENSE
  
 ----------
 Module: github.com/go-git/go-git/v5
@@ -233,15 +233,15 @@ License URL: https://github.com/munnerz/goautoneg/blob/a7dc8b61c822/LICENSE
  
 ----------
 Module: github.com/onsi/ginkgo/v2
-Version: v2.27.2
+Version: v2.27.3
 License: MIT
-License URL: https://github.com/onsi/ginkgo/blob/v2.27.2/LICENSE
+License URL: https://github.com/onsi/ginkgo/blob/v2.27.3/LICENSE
  
 ----------
 Module: github.com/onsi/gomega
-Version: v1.38.2
+Version: v1.38.3
 License: MIT
-License URL: https://github.com/onsi/gomega/blob/v1.38.2/LICENSE
+License URL: https://github.com/onsi/gomega/blob/v1.38.3/LICENSE
  
 ----------
 Module: github.com/pjbgf/sha1cd
