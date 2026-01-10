@@ -175,7 +175,7 @@ require (
 	github.com/dimchansky/utfbom v1.1.1 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/dlclark/regexp2 v1.11.5 // indirect
-	github.com/docker/cli v29.1.3+incompatible // indirect
+	github.com/docker/cli v29.2.0-rc.1.0.20251223174200-874b831c0e49+incompatible // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
 	github.com/docker/docker v28.5.2+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.9.4 // indirect
@@ -264,7 +264,7 @@ require (
 	github.com/gordonklaus/ineffassign v0.2.0 // indirect
 	github.com/goreleaser/chglog v0.7.4 // indirect
 	github.com/goreleaser/fileglob v1.4.0 // indirect
-	github.com/goreleaser/goreleaser/v2 v2.13.2 // indirect
+	github.com/goreleaser/goreleaser/v2 v2.13.3 // indirect
 	github.com/goreleaser/nfpm/v2 v2.44.1 // indirect
 	github.com/goreleaser/quill v0.0.0-20251224035235-ab943733386f // indirect
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674 // indirect
