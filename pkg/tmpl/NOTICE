@@ -233,9 +233,9 @@ License URL: https://github.com/onsi/ginkgo/blob/v2.27.5/LICENSE
  
 ----------
 Module: github.com/onsi/gomega
-Version: v1.38.3
+Version: v1.39.0
 License: MIT
-License URL: https://github.com/onsi/gomega/blob/v1.38.3/LICENSE
+License URL: https://github.com/onsi/gomega/blob/v1.39.0/LICENSE
  
 ----------
 Module: github.com/pjbgf/sha1cd
