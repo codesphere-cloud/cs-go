@@ -12,7 +12,7 @@ import (
 	"github.com/codesphere-cloud/cs-go/pkg/exporter"
 )
 
-const ymlContent = `schemaVersion: v0.2
+const ymlContent = `
 schemaVersion: v0.2
 prepare:
   steps:
