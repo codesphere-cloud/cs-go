@@ -107,7 +107,7 @@ func (c *Client) UpdateDomain(
 ) (*Domain, error) {
 	domain, _, err := c.api.DomainsAPI.
 		DomainsUpdateDomain(c.ctx, float32(teamId), domainName).
-		DomainsGetDomain200ResponseCustomConfig(args).
+		DomainsUpdateDomainRequest(args).
 		Execute()
 	return domain, errors.FormatAPIError(err)
 }
