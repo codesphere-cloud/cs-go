@@ -6,6 +6,7 @@ package exporter_test
 import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	mock "github.com/stretchr/testify/mock"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/exporter"
@@ -67,23 +68,23 @@ var _ = Describe("GenerateDockerfile", func() {
 			It("should generate files and don't return an error", func() {
 				_, err := e.ReadYmlFile(defaultInput)
 				Expect(err).To(Not(HaveOccurred()))
-				// err = e.ExportDockerArtifacts()
-				// Expect(err).To(Not(HaveOccurred()))
+				err = e.ExportDockerArtifacts()
+				Expect(err).To(Not(HaveOccurred()))
 
-				// Expect(memoryFs.DirExists("workspace-repo/export")).To(BeTrue())
-				// Expect(memoryFs.FileExists("workspace-repo/export/docker-compose.yml")).To(BeTrue())
+				Expect(memoryFs.DirExists("workspace-repo/export")).To(BeTrue())
+				Expect(memoryFs.FileExists("workspace-repo/export/docker-compose.yml")).To(BeTrue())
 
-				// Expect(memoryFs.DirExists("workspace-repo/export/frontend")).To(BeTrue())
-				// Expect(memoryFs.FileExists("workspace-repo/export/frontend/Dockerfile")).To(BeTrue())
-				// Expect(memoryFs.FileExists("workspace-repo/export/frontend/entrypoint.sh")).To(BeTrue())
+				Expect(memoryFs.DirExists("workspace-repo/export/frontend")).To(BeTrue())
+				Expect(memoryFs.FileExists("workspace-repo/export/frontend/Dockerfile")).To(BeTrue())
+				Expect(memoryFs.FileExists("workspace-repo/export/frontend/entrypoint.sh")).To(BeTrue())
 
-				// err = e.ExportKubernetesArtifacts("registry", "image", mock.Anything, mock.Anything, mock.Anything, mock.Anything)
-				// Expect(err).To(Not(HaveOccurred()))
+				err = e.ExportKubernetesArtifacts("registry", "image", mock.Anything, mock.Anything, mock.Anything, mock.Anything)
+				Expect(err).To(Not(HaveOccurred()))
 
-				// Expect(memoryFs.DirExists("workspace-repo/export/kubernetes")).To(BeTrue())
-				// Expect(memoryFs.FileExists("workspace-repo/export/kubernetes/ingress.yml")).To(BeTrue())
+				Expect(memoryFs.DirExists("workspace-repo/export/kubernetes")).To(BeTrue())
+				Expect(memoryFs.FileExists("workspace-repo/export/kubernetes/ingress.yml")).To(BeTrue())
 
-				// Expect(memoryFs.FileExists("workspace-repo/export/kubernetes/service-frontend.yml")).To(BeTrue())
+				Expect(memoryFs.FileExists("workspace-repo/export/kubernetes/service-frontend.yml")).To(BeTrue())
 			})
 		})
 	})
