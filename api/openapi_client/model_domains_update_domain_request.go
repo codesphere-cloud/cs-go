@@ -16,35 +16,36 @@ import (
 	"encoding/json"
 )
 
-// checks if the DomainsGetDomain200ResponseCustomConfig type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &DomainsGetDomain200ResponseCustomConfig{}
+// checks if the DomainsUpdateDomainRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &DomainsUpdateDomainRequest{}
 
-// DomainsGetDomain200ResponseCustomConfig struct for DomainsGetDomain200ResponseCustomConfig
-type DomainsGetDomain200ResponseCustomConfig struct {
+// DomainsUpdateDomainRequest struct for DomainsUpdateDomainRequest
+type DomainsUpdateDomainRequest struct {
 	MaxBodySizeMb *float32 `json:"maxBodySizeMb,omitempty"`
 	MaxConnectionTimeoutS *float32 `json:"maxConnectionTimeoutS,omitempty"`
 	UseRegex *bool `json:"useRegex,omitempty"`
+	Restricted *bool `json:"restricted,omitempty"`
 }
 
-// NewDomainsGetDomain200ResponseCustomConfig instantiates a new DomainsGetDomain200ResponseCustomConfig object
+// NewDomainsUpdateDomainRequest instantiates a new DomainsUpdateDomainRequest object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDomainsGetDomain200ResponseCustomConfig() *DomainsGetDomain200ResponseCustomConfig {
-	this := DomainsGetDomain200ResponseCustomConfig{}
+func NewDomainsUpdateDomainRequest() *DomainsUpdateDomainRequest {
+	this := DomainsUpdateDomainRequest{}
 	return &this
 }
 
-// NewDomainsGetDomain200ResponseCustomConfigWithDefaults instantiates a new DomainsGetDomain200ResponseCustomConfig object
+// NewDomainsUpdateDomainRequestWithDefaults instantiates a new DomainsUpdateDomainRequest object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewDomainsGetDomain200ResponseCustomConfigWithDefaults() *DomainsGetDomain200ResponseCustomConfig {
-	this := DomainsGetDomain200ResponseCustomConfig{}
+func NewDomainsUpdateDomainRequestWithDefaults() *DomainsUpdateDomainRequest {
+	this := DomainsUpdateDomainRequest{}
 	return &this
 }
 
 // GetMaxBodySizeMb returns the MaxBodySizeMb field value if set, zero value otherwise.
-func (o *DomainsGetDomain200ResponseCustomConfig) GetMaxBodySizeMb() float32 {
+func (o *DomainsUpdateDomainRequest) GetMaxBodySizeMb() float32 {
 	if o == nil || IsNil(o.MaxBodySizeMb) {
 		var ret float32
 		return ret
@@ -54,7 +55,7 @@ func (o *DomainsGetDomain200ResponseCustomConfig) GetMaxBodySizeMb() float32 {
 
 // GetMaxBodySizeMbOk returns a tuple with the MaxBodySizeMb field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *DomainsGetDomain200ResponseCustomConfig) GetMaxBodySizeMbOk() (*float32, bool) {
+func (o *DomainsUpdateDomainRequest) GetMaxBodySizeMbOk() (*float32, bool) {
 	if o == nil || IsNil(o.MaxBodySizeMb) {
 		return nil, false
 	}
@@ -62,7 +63,7 @@ func (o *DomainsGetDomain200ResponseCustomConfig) GetMaxBodySizeMbOk() (*float32
 }
 
 // HasMaxBodySizeMb returns a boolean if a field has been set.
-func (o *DomainsGetDomain200ResponseCustomConfig) HasMaxBodySizeMb() bool {
+func (o *DomainsUpdateDomainRequest) HasMaxBodySizeMb() bool {
 	if o != nil && !IsNil(o.MaxBodySizeMb) {
 		return true
 	}
@@ -71,12 +72,12 @@ func (o *DomainsGetDomain200ResponseCustomConfig) HasMaxBodySizeMb() bool {
 }
 
 // SetMaxBodySizeMb gets a reference to the given float32 and assigns it to the MaxBodySizeMb field.
-func (o *DomainsGetDomain200ResponseCustomConfig) SetMaxBodySizeMb(v float32) {
+func (o *DomainsUpdateDomainRequest) SetMaxBodySizeMb(v float32) {
 	o.MaxBodySizeMb = &v
 }
 
 // GetMaxConnectionTimeoutS returns the MaxConnectionTimeoutS field value if set, zero value otherwise.
-func (o *DomainsGetDomain200ResponseCustomConfig) GetMaxConnectionTimeoutS() float32 {
+func (o *DomainsUpdateDomainRequest) GetMaxConnectionTimeoutS() float32 {
 	if o == nil || IsNil(o.MaxConnectionTimeoutS) {
 		var ret float32
 		return ret
@@ -86,7 +87,7 @@ func (o *DomainsGetDomain200ResponseCustomConfig) GetMaxConnectionTimeoutS() flo
 
 // GetMaxConnectionTimeoutSOk returns a tuple with the MaxConnectionTimeoutS field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *DomainsGetDomain200ResponseCustomConfig) GetMaxConnectionTimeoutSOk() (*float32, bool) {
+func (o *DomainsUpdateDomainRequest) GetMaxConnectionTimeoutSOk() (*float32, bool) {
 	if o == nil || IsNil(o.MaxConnectionTimeoutS) {
 		return nil, false
 	}
@@ -94,7 +95,7 @@ func (o *DomainsGetDomain200ResponseCustomConfig) GetMaxConnectionTimeoutSOk() (
 }
 
 // HasMaxConnectionTimeoutS returns a boolean if a field has been set.
-func (o *DomainsGetDomain200ResponseCustomConfig) HasMaxConnectionTimeoutS() bool {
+func (o *DomainsUpdateDomainRequest) HasMaxConnectionTimeoutS() bool {
 	if o != nil && !IsNil(o.MaxConnectionTimeoutS) {
 		return true
 	}
@@ -103,12 +104,12 @@ func (o *DomainsGetDomain200ResponseCustomConfig) HasMaxConnectionTimeoutS() boo
 }
 
 // SetMaxConnectionTimeoutS gets a reference to the given float32 and assigns it to the MaxConnectionTimeoutS field.
-func (o *DomainsGetDomain200ResponseCustomConfig) SetMaxConnectionTimeoutS(v float32) {
+func (o *DomainsUpdateDomainRequest) SetMaxConnectionTimeoutS(v float32) {
 	o.MaxConnectionTimeoutS = &v
 }
 
 // GetUseRegex returns the UseRegex field value if set, zero value otherwise.
-func (o *DomainsGetDomain200ResponseCustomConfig) GetUseRegex() bool {
+func (o *DomainsUpdateDomainRequest) GetUseRegex() bool {
 	if o == nil || IsNil(o.UseRegex) {
 		var ret bool
 		return ret
@@ -118,7 +119,7 @@ func (o *DomainsGetDomain200ResponseCustomConfig) GetUseRegex() bool {
 
 // GetUseRegexOk returns a tuple with the UseRegex field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *DomainsGetDomain200ResponseCustomConfig) GetUseRegexOk() (*bool, bool) {
+func (o *DomainsUpdateDomainRequest) GetUseRegexOk() (*bool, bool) {
 	if o == nil || IsNil(o.UseRegex) {
 		return nil, false
 	}
@@ -126,7 +127,7 @@ func (o *DomainsGetDomain200ResponseCustomConfig) GetUseRegexOk() (*bool, bool) 
 }
 
 // HasUseRegex returns a boolean if a field has been set.
-func (o *DomainsGetDomain200ResponseCustomConfig) HasUseRegex() bool {
+func (o *DomainsUpdateDomainRequest) HasUseRegex() bool {
 	if o != nil && !IsNil(o.UseRegex) {
 		return true
 	}
@@ -135,11 +136,43 @@ func (o *DomainsGetDomain200ResponseCustomConfig) HasUseRegex() bool {
 }
 
 // SetUseRegex gets a reference to the given bool and assigns it to the UseRegex field.
-func (o *DomainsGetDomain200ResponseCustomConfig) SetUseRegex(v bool) {
+func (o *DomainsUpdateDomainRequest) SetUseRegex(v bool) {
 	o.UseRegex = &v
 }
 
-func (o DomainsGetDomain200ResponseCustomConfig) MarshalJSON() ([]byte, error) {
+// GetRestricted returns the Restricted field value if set, zero value otherwise.
+func (o *DomainsUpdateDomainRequest) GetRestricted() bool {
+	if o == nil || IsNil(o.Restricted) {
+		var ret bool
+		return ret
+	}
+	return *o.Restricted
+}
+
+// GetRestrictedOk returns a tuple with the Restricted field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DomainsUpdateDomainRequest) GetRestrictedOk() (*bool, bool) {
+	if o == nil || IsNil(o.Restricted) {
+		return nil, false
+	}
+	return o.Restricted, true
+}
+
+// HasRestricted returns a boolean if a field has been set.
+func (o *DomainsUpdateDomainRequest) HasRestricted() bool {
+	if o != nil && !IsNil(o.Restricted) {
+		return true
+	}
+
+	return false
+}
+
+// SetRestricted gets a reference to the given bool and assigns it to the Restricted field.
+func (o *DomainsUpdateDomainRequest) SetRestricted(v bool) {
+	o.Restricted = &v
+}
+
+func (o DomainsUpdateDomainRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -147,7 +180,7 @@ func (o DomainsGetDomain200ResponseCustomConfig) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o DomainsGetDomain200ResponseCustomConfig) ToMap() (map[string]interface{}, error) {
+func (o DomainsUpdateDomainRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	if !IsNil(o.MaxBodySizeMb) {
 		toSerialize["maxBodySizeMb"] = o.MaxBodySizeMb
@@ -158,41 +191,44 @@ func (o DomainsGetDomain200ResponseCustomConfig) ToMap() (map[string]interface{}
 	if !IsNil(o.UseRegex) {
 		toSerialize["useRegex"] = o.UseRegex
 	}
+	if !IsNil(o.Restricted) {
+		toSerialize["restricted"] = o.Restricted
+	}
 	return toSerialize, nil
 }
 
-type NullableDomainsGetDomain200ResponseCustomConfig struct {
-	value *DomainsGetDomain200ResponseCustomConfig
+type NullableDomainsUpdateDomainRequest struct {
+	value *DomainsUpdateDomainRequest
 	isSet bool
 }
 
-func (v NullableDomainsGetDomain200ResponseCustomConfig) Get() *DomainsGetDomain200ResponseCustomConfig {
+func (v NullableDomainsUpdateDomainRequest) Get() *DomainsUpdateDomainRequest {
 	return v.value
 }
 
-func (v *NullableDomainsGetDomain200ResponseCustomConfig) Set(val *DomainsGetDomain200ResponseCustomConfig) {
+func (v *NullableDomainsUpdateDomainRequest) Set(val *DomainsUpdateDomainRequest) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableDomainsGetDomain200ResponseCustomConfig) IsSet() bool {
+func (v NullableDomainsUpdateDomainRequest) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableDomainsGetDomain200ResponseCustomConfig) Unset() {
+func (v *NullableDomainsUpdateDomainRequest) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableDomainsGetDomain200ResponseCustomConfig(val *DomainsGetDomain200ResponseCustomConfig) *NullableDomainsGetDomain200ResponseCustomConfig {
-	return &NullableDomainsGetDomain200ResponseCustomConfig{value: val, isSet: true}
+func NewNullableDomainsUpdateDomainRequest(val *DomainsUpdateDomainRequest) *NullableDomainsUpdateDomainRequest {
+	return &NullableDomainsUpdateDomainRequest{value: val, isSet: true}
 }
 
-func (v NullableDomainsGetDomain200ResponseCustomConfig) MarshalJSON() ([]byte, error) {
+func (v NullableDomainsUpdateDomainRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableDomainsGetDomain200ResponseCustomConfig) UnmarshalJSON(src []byte) error {
+func (v *NullableDomainsUpdateDomainRequest) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
