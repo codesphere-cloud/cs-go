@@ -33,4 +33,5 @@ Manage and debug resources deployed in Codesphere via command line.
 * [cs sync](cs_sync.md)	 - Sync Codesphere resources
 * [cs update](cs_update.md)	 - Update Codesphere CLI
 * [cs version](cs_version.md)	 - Print version
+* [cs wake-up](cs_wake-up.md)	 - Wake up an on-demand workspace
 
