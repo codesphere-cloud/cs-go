@@ -1020,6 +1020,7 @@ var _ = Describe("Wake Up Workspace Integration Tests", func() {
 			output := intutil.RunCommand(
 				"wake-up",
 				"-w", workspaceId,
+				"--insecure",
 			)
 			fmt.Printf("Wake up workspace output: %s\n", output)
 
@@ -1033,6 +1034,7 @@ var _ = Describe("Wake Up Workspace Integration Tests", func() {
 				"wake-up",
 				"-w", workspaceId,
 				"--timeout", "5s",
+				"--insecure",
 			)
 			fmt.Printf("Wake up with timeout output: %s (exit code: %d)\n", output, exitCode)
 
@@ -1046,7 +1048,7 @@ var _ = Describe("Wake Up Workspace Integration Tests", func() {
 			defer func() { _ = os.Setenv("CS_WORKSPACE_ID", originalWsId) }()
 
 			By("Waking up workspace using environment variable")
-			output := intutil.RunCommand("wake-up")
+			output := intutil.RunCommand("wake-up", "--insecure")
 			fmt.Printf("Wake up with env var output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("Waking up workspace"))
