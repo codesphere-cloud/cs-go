@@ -7,6 +7,7 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -73,7 +74,7 @@ func (c *WakeUpCmd) WakeUpWorkspace(client Client, wsId int, token string) error
 	// Construct the services domain: ${WORKSPACE_ID}-3000.${DEV_DOMAIN}
 	servicesDomain := fmt.Sprintf("https://%d-3000.%s", wsId, *workspace.DevDomain)
 
-	fmt.Printf("Waking up workspace %d (%s)...\n", wsId, workspace.Name)
+	log.Printf("Waking up workspace %d (%s)...\n", wsId, workspace.Name)
 	timeout := 120 * time.Second
 	if c.Timeout != nil {
 		timeout = *c.Timeout
@@ -90,7 +91,7 @@ func (c *WakeUpCmd) WakeUpWorkspace(client Client, wsId int, token string) error
 		return fmt.Errorf("failed to wake up workspace: %w", err)
 	}
 
-	fmt.Printf("Successfully woke up workspace %d\n", wsId)
+	log.Printf("Successfully woke up workspace %d\n", wsId)
 	return nil
 }
 
@@ -123,7 +124,9 @@ func makeWakeUpRequest(ctx context.Context, servicesDomain string, token string,
 	if err != nil {
 		return fmt.Errorf("failed to make request: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 
 	// 4xx errors are considered failures
 	if resp.StatusCode >= 400 && resp.StatusCode < 500 {
