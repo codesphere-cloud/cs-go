@@ -67,12 +67,11 @@ func (c *WakeUpCmd) WakeUpWorkspace(client Client, wsId int, token string) error
 		return fmt.Errorf("failed to get workspace: %w", err)
 	}
 
-	if workspace.DevDomain == nil {
-		return fmt.Errorf("workspace %d does not have a development domain configured", wsId)
-	}
-
 	// Construct the services domain: ${WORKSPACE_ID}-3000.${DEV_DOMAIN}
-	servicesDomain := fmt.Sprintf("https://%d-3000.%s", wsId, *workspace.DevDomain)
+	servicesDomain, err := ConstructWorkspaceServiceURL(workspace, 3000, "")
+	if err != nil {
+		return err
+	}
 
 	log.Printf("Waking up workspace %d (%s)...\n", wsId, workspace.Name)
 	timeout := 120 * time.Second

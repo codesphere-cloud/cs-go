@@ -823,6 +823,7 @@ var _ = Describe("Command Error Handling Tests", func() {
 			{"git pull", []string{"git", "pull", "-w", "99999999"}},
 			{"set-env", []string{"set-env", "-w", "99999999", "TEST_VAR=test"}},
 			{"wake-up", []string{"wake-up", "-w", "99999999"}},
+			{"curl", []string{"curl", "/", "-w", "99999999"}},
 		}
 
 		for _, tc := range testCases {
@@ -1129,6 +1130,169 @@ var _ = Describe("Wake Up Workspace Integration Tests", func() {
 
 			Expect(output).To(ContainSubstring("Wake up an on-demand workspace"))
 			Expect(output).To(ContainSubstring("--timeout"))
+			Expect(output).To(ContainSubstring("-w, --workspace"))
+		})
+	})
+})
+
+var _ = Describe("Curl Workspace Integration Tests", func() {
+	var (
+		teamId        string
+		workspaceName string
+		workspaceId   string
+	)
+
+	BeforeEach(func() {
+		teamId, _ = intutil.SkipIfMissingEnvVars()
+		workspaceName = fmt.Sprintf("cli-curl-test-%d", time.Now().Unix())
+	})
+
+	AfterEach(func() {
+		if workspaceId != "" {
+			By(fmt.Sprintf("Cleaning up: deleting workspace %s (ID: %s)", workspaceName, workspaceId))
+			intutil.CleanupWorkspace(workspaceId)
+			workspaceId = ""
+		}
+	})
+
+	Context("Curl Command", func() {
+		BeforeEach(func() {
+			By("Creating a workspace for curl testing")
+			output := intutil.RunCommand(
+				"create", "workspace", workspaceName,
+				"-t", teamId,
+				"-p", "8",
+				"--timeout", "15m",
+			)
+			fmt.Printf("Create workspace output: %s\n", output)
+
+			Expect(output).To(ContainSubstring("Workspace created"))
+			workspaceId = intutil.ExtractWorkspaceId(output)
+			Expect(workspaceId).NotTo(BeEmpty())
+
+			By("Waiting for workspace to be fully provisioned")
+			time.Sleep(5 * time.Second)
+		})
+
+		It("should send authenticated request to workspace", func() {
+			By("Sending curl request to workspace root")
+			output := intutil.RunCommand(
+				"curl", "/",
+				"-w", workspaceId,
+				"--insecure",
+				"--", "-s", "-o", "/dev/null", "-w", "%{http_code}",
+			)
+			fmt.Printf("Curl workspace output: %s\n", output)
+
+			Expect(output).To(ContainSubstring("Sending request to workspace"))
+			Expect(output).To(ContainSubstring(workspaceId))
+		})
+
+		It("should support custom port", func() {
+			By("Sending curl request to custom port")
+			output, exitCode := intutil.RunCommandWithExitCode(
+				"curl", "/",
+				"-w", workspaceId,
+				"-p", "3001",
+				"--insecure",
+				"--", "-s", "-o", "/dev/null", "-w", "%{http_code}",
+			)
+			fmt.Printf("Curl with custom port output: %s (exit code: %d)\n", output, exitCode)
+
+			Expect(output).To(ContainSubstring("Sending request to workspace"))
+		})
+
+		It("should pass through curl arguments", func() {
+			By("Sending HEAD request using curl -I flag")
+			output := intutil.RunCommand(
+				"curl", "/",
+				"-w", workspaceId,
+				"--insecure",
+				"--", "-I",
+			)
+			fmt.Printf("Curl with -I flag output: %s\n", output)
+
+			Expect(output).To(ContainSubstring("Sending request to workspace"))
+		})
+
+		It("should work with workspace ID from environment variable", func() {
+			By("Setting CS_WORKSPACE_ID environment variable")
+			originalWsId := os.Getenv("CS_WORKSPACE_ID")
+			_ = os.Setenv("CS_WORKSPACE_ID", workspaceId)
+			defer func() { _ = os.Setenv("CS_WORKSPACE_ID", originalWsId) }()
+
+			By("Sending curl request using environment variable")
+			output := intutil.RunCommand(
+				"curl", "/",
+				"--insecure",
+				"--", "-s", "-o", "/dev/null", "-w", "%{http_code}",
+			)
+			fmt.Printf("Curl with env var output: %s\n", output)
+
+			Expect(output).To(ContainSubstring("Sending request to workspace"))
+			Expect(output).To(ContainSubstring(workspaceId))
+		})
+	})
+
+	Context("Curl Error Handling", func() {
+		It("should fail when workspace ID is missing", func() {
+			By("Attempting to curl without workspace ID")
+			originalWsId := os.Getenv("CS_WORKSPACE_ID")
+			_ = os.Unsetenv("CS_WORKSPACE_ID")
+			defer func() { _ = os.Setenv("CS_WORKSPACE_ID", originalWsId) }()
+
+			output, exitCode := intutil.RunCommandWithExitCode("curl", "/")
+			fmt.Printf("Curl without workspace ID output: %s (exit code: %d)\n", output, exitCode)
+
+			Expect(exitCode).NotTo(Equal(0))
+			Expect(output).To(Or(
+				ContainSubstring("workspace"),
+				ContainSubstring("required"),
+				ContainSubstring("not set"),
+			))
+		})
+
+		It("should fail gracefully with non-existent workspace", func() {
+			By("Attempting to curl non-existent workspace")
+			output, exitCode := intutil.RunCommandWithExitCode(
+				"curl", "/",
+				"-w", "99999999",
+			)
+			fmt.Printf("Curl non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
+
+			Expect(exitCode).NotTo(Equal(0))
+			Expect(output).To(Or(
+				ContainSubstring("failed to get workspace"),
+				ContainSubstring("not found"),
+				ContainSubstring("404"),
+			))
+		})
+
+		It("should require path argument", func() {
+			By("Attempting to curl without path")
+			output, exitCode := intutil.RunCommandWithExitCode(
+				"curl",
+				"-w", "1234",
+			)
+			fmt.Printf("Curl without path output: %s (exit code: %d)\n", output, exitCode)
+
+			Expect(exitCode).NotTo(Equal(0))
+			Expect(output).To(Or(
+				ContainSubstring("path"),
+				ContainSubstring("required"),
+				ContainSubstring("argument"),
+			))
+		})
+	})
+
+	Context("Curl Command Help", func() {
+		It("should display help information", func() {
+			By("Running curl --help")
+			output := intutil.RunCommand("curl", "--help")
+			fmt.Printf("Curl help output: %s\n", output)
+
+			Expect(output).To(ContainSubstring("Send authenticated HTTP requests"))
+			Expect(output).To(ContainSubstring("--port"))
 			Expect(output).To(ContainSubstring("-w, --workspace"))
 		})
 	})
