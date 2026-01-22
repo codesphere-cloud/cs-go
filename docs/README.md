@@ -19,6 +19,7 @@ Manage and debug resources deployed in Codesphere via command line.
 ### SEE ALSO
 
 * [cs create](cs_create.md)	 - Create codesphere resource
+* [cs curl](cs_curl.md)	 - Send authenticated HTTP requests to workspace dev domain
 * [cs delete](cs_delete.md)	 - Delete Codesphere resources
 * [cs exec](cs_exec.md)	 - Run a command in Codesphere workspace
 * [cs generate](cs_generate.md)	 - Generate codesphere artifacts
