@@ -92,6 +92,10 @@ func WaitForWorkspaceRunning(client *api.Client, workspaceId int, timeout time.D
 	return client.WaitForWorkspaceRunning(&api.Workspace{Id: workspaceId}, timeout)
 }
 
+func ScaleWorkspace(client *api.Client, workspaceId int, replicas int) error {
+	return client.ScaleWorkspace(workspaceId, replicas)
+}
+
 func VerifyWorkspaceExists(workspaceId, teamId string) bool {
 	output := RunCommand("list", "workspaces", "-t", teamId)
 	return strings.Contains(output, workspaceId)
