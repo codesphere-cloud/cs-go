@@ -60,20 +60,14 @@ type MockClient_DeleteWorkspace_Call struct {
 }
 
 // DeleteWorkspace is a helper method to define mock.On call
-//   - wsId int
+//   - wsId
 func (_e *MockClient_Expecter) DeleteWorkspace(wsId interface{}) *MockClient_DeleteWorkspace_Call {
 	return &MockClient_DeleteWorkspace_Call{Call: _e.mock.On("DeleteWorkspace", wsId)}
 }
 
 func (_c *MockClient_DeleteWorkspace_Call) Run(run func(wsId int)) *MockClient_DeleteWorkspace_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 int
-		if args[0] != nil {
-			arg0 = args[0].(int)
-		}
-		run(
-			arg0,
-		)
+		run(args[0].(int))
 	})
 	return _c
 }
@@ -111,26 +105,15 @@ type MockClient_DeployLandscape_Call struct {
 }
 
 // DeployLandscape is a helper method to define mock.On call
-//   - wsId int
-//   - profile string
+//   - wsId
+//   - profile
 func (_e *MockClient_Expecter) DeployLandscape(wsId interface{}, profile interface{}) *MockClient_DeployLandscape_Call {
 	return &MockClient_DeployLandscape_Call{Call: _e.mock.On("DeployLandscape", wsId, profile)}
 }
 
 func (_c *MockClient_DeployLandscape_Call) Run(run func(wsId int, profile string)) *MockClient_DeployLandscape_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 int
-		if args[0] != nil {
-			arg0 = args[0].(int)
-		}
-		var arg1 string
-		if args[1] != nil {
-			arg1 = args[1].(string)
-		}
-		run(
-			arg0,
-			arg1,
-		)
+		run(args[0].(int), args[1].(string))
 	})
 	return _c
 }
@@ -179,20 +162,14 @@ type MockClient_DeployWorkspace_Call struct {
 }
 
 // DeployWorkspace is a helper method to define mock.On call
-//   - args api.DeployWorkspaceArgs
+//   - args
 func (_e *MockClient_Expecter) DeployWorkspace(args interface{}) *MockClient_DeployWorkspace_Call {
 	return &MockClient_DeployWorkspace_Call{Call: _e.mock.On("DeployWorkspace", args)}
 }
 
 func (_c *MockClient_DeployWorkspace_Call) Run(run func(args api.DeployWorkspaceArgs)) *MockClient_DeployWorkspace_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 api.DeployWorkspaceArgs
-		if args[0] != nil {
-			arg0 = args[0].(api.DeployWorkspaceArgs)
-		}
-		run(
-			arg0,
-		)
+		run(args[0].(api.DeployWorkspaceArgs))
 	})
 	return _c
 }
@@ -245,38 +222,17 @@ type MockClient_ExecCommand_Call struct {
 }
 
 // ExecCommand is a helper method to define mock.On call
-//   - workspaceId int
-//   - command string
-//   - workdir string
-//   - env map[string]string
+//   - workspaceId
+//   - command
+//   - workdir
+//   - env
 func (_e *MockClient_Expecter) ExecCommand(workspaceId interface{}, command interface{}, workdir interface{}, env interface{}) *MockClient_ExecCommand_Call {
 	return &MockClient_ExecCommand_Call{Call: _e.mock.On("ExecCommand", workspaceId, command, workdir, env)}
 }
 
 func (_c *MockClient_ExecCommand_Call) Run(run func(workspaceId int, command string, workdir string, env map[string]string)) *MockClient_ExecCommand_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 int
-		if args[0] != nil {
-			arg0 = args[0].(int)
-		}
-		var arg1 string
-		if args[1] != nil {
-			arg1 = args[1].(string)
-		}
-		var arg2 string
-		if args[2] != nil {
-			arg2 = args[2].(string)
-		}
-		var arg3 map[string]string
-		if args[3] != nil {
-			arg3 = args[3].(map[string]string)
-		}
-		run(
-			arg0,
-			arg1,
-			arg2,
-			arg3,
-		)
+		run(args[0].(int), args[1].(string), args[2].(string), args[3].(map[string]string))
 	})
 	return _c
 }
@@ -325,26 +281,15 @@ type MockClient_GetPipelineState_Call struct {
 }
 
 // GetPipelineState is a helper method to define mock.On call
-//   - wsId int
-//   - stage string
+//   - wsId
+//   - stage
 func (_e *MockClient_Expecter) GetPipelineState(wsId interface{}, stage interface{}) *MockClient_GetPipelineState_Call {
 	return &MockClient_GetPipelineState_Call{Call: _e.mock.On("GetPipelineState", wsId, stage)}
 }
 
 func (_c *MockClient_GetPipelineState_Call) Run(run func(wsId int, stage string)) *MockClient_GetPipelineState_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 int
-		if args[0] != nil {
-			arg0 = args[0].(int)
-		}
-		var arg1 string
-		if args[1] != nil {
-			arg1 = args[1].(string)
-		}
-		run(
-			arg0,
-			arg1,
-		)
+		run(args[0].(int), args[1].(string))
 	})
 	return _c
 }
@@ -355,68 +300,6 @@ func (_c *MockClient_GetPipelineState_Call) Return(vs []api.PipelineStatus, err 
 }
 
 func (_c *MockClient_GetPipelineState_Call) RunAndReturn(run func(wsId int, stage string) ([]api.PipelineStatus, error)) *MockClient_GetPipelineState_Call {
-	_c.Call.Return(run)
-	return _c
-}
-
-// GetTeam provides a mock function for the type MockClient
-func (_mock *MockClient) GetTeam(teamId int) (*api.Team, error) {
-	ret := _mock.Called(teamId)
-
-	if len(ret) == 0 {
-		panic("no return value specified for GetTeam")
-	}
-
-	var r0 *api.Team
-	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(int) (*api.Team, error)); ok {
-		return returnFunc(teamId)
-	}
-	if returnFunc, ok := ret.Get(0).(func(int) *api.Team); ok {
-		r0 = returnFunc(teamId)
-	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*api.Team)
-		}
-	}
-	if returnFunc, ok := ret.Get(1).(func(int) error); ok {
-		r1 = returnFunc(teamId)
-	} else {
-		r1 = ret.Error(1)
-	}
-	return r0, r1
-}
-
-// MockClient_GetTeam_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetTeam'
-type MockClient_GetTeam_Call struct {
-	*mock.Call
-}
-
-// GetTeam is a helper method to define mock.On call
-//   - teamId int
-func (_e *MockClient_Expecter) GetTeam(teamId interface{}) *MockClient_GetTeam_Call {
-	return &MockClient_GetTeam_Call{Call: _e.mock.On("GetTeam", teamId)}
-}
-
-func (_c *MockClient_GetTeam_Call) Run(run func(teamId int)) *MockClient_GetTeam_Call {
-	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 int
-		if args[0] != nil {
-			arg0 = args[0].(int)
-		}
-		run(
-			arg0,
-		)
-	})
-	return _c
-}
-
-func (_c *MockClient_GetTeam_Call) Return(v *api.Team, err error) *MockClient_GetTeam_Call {
-	_c.Call.Return(v, err)
-	return _c
-}
-
-func (_c *MockClient_GetTeam_Call) RunAndReturn(run func(teamId int) (*api.Team, error)) *MockClient_GetTeam_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -453,20 +336,14 @@ type MockClient_GetWorkspace_Call struct {
 }
 
 // GetWorkspace is a helper method to define mock.On call
-//   - workspaceId int
+//   - workspaceId
 func (_e *MockClient_Expecter) GetWorkspace(workspaceId interface{}) *MockClient_GetWorkspace_Call {
 	return &MockClient_GetWorkspace_Call{Call: _e.mock.On("GetWorkspace", workspaceId)}
 }
 
 func (_c *MockClient_GetWorkspace_Call) Run(run func(workspaceId int)) *MockClient_GetWorkspace_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 int
-		if args[0] != nil {
-			arg0 = args[0].(int)
-		}
-		run(
-			arg0,
-		)
+		run(args[0].(int))
 	})
 	return _c
 }
@@ -504,32 +381,16 @@ type MockClient_GitPull_Call struct {
 }
 
 // GitPull is a helper method to define mock.On call
-//   - wsId int
-//   - remote string
-//   - branch string
+//   - wsId
+//   - remote
+//   - branch
 func (_e *MockClient_Expecter) GitPull(wsId interface{}, remote interface{}, branch interface{}) *MockClient_GitPull_Call {
 	return &MockClient_GitPull_Call{Call: _e.mock.On("GitPull", wsId, remote, branch)}
 }
 
 func (_c *MockClient_GitPull_Call) Run(run func(wsId int, remote string, branch string)) *MockClient_GitPull_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 int
-		if args[0] != nil {
-			arg0 = args[0].(int)
-		}
-		var arg1 string
-		if args[1] != nil {
-			arg1 = args[1].(string)
-		}
-		var arg2 string
-		if args[2] != nil {
-			arg2 = args[2].(string)
-		}
-		run(
-			arg0,
-			arg1,
-			arg2,
-		)
+		run(args[0].(int), args[1].(string), args[2].(string))
 	})
 	return _c
 }
@@ -743,20 +604,14 @@ type MockClient_ListWorkspaces_Call struct {
 }
 
 // ListWorkspaces is a helper method to define mock.On call
-//   - teamId int
+//   - teamId
 func (_e *MockClient_Expecter) ListWorkspaces(teamId interface{}) *MockClient_ListWorkspaces_Call {
 	return &MockClient_ListWorkspaces_Call{Call: _e.mock.On("ListWorkspaces", teamId)}
 }
 
 func (_c *MockClient_ListWorkspaces_Call) Run(run func(teamId int)) *MockClient_ListWorkspaces_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 int
-		if args[0] != nil {
-			arg0 = args[0].(int)
-		}
-		run(
-			arg0,
-		)
+		run(args[0].(int))
 	})
 	return _c
 }
@@ -794,26 +649,15 @@ type MockClient_ScaleWorkspace_Call struct {
 }
 
 // ScaleWorkspace is a helper method to define mock.On call
-//   - wsId int
-//   - replicas int
+//   - wsId
+//   - replicas
 func (_e *MockClient_Expecter) ScaleWorkspace(wsId interface{}, replicas interface{}) *MockClient_ScaleWorkspace_Call {
 	return &MockClient_ScaleWorkspace_Call{Call: _e.mock.On("ScaleWorkspace", wsId, replicas)}
 }
 
 func (_c *MockClient_ScaleWorkspace_Call) Run(run func(wsId int, replicas int)) *MockClient_ScaleWorkspace_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 int
-		if args[0] != nil {
-			arg0 = args[0].(int)
-		}
-		var arg1 int
-		if args[1] != nil {
-			arg1 = args[1].(int)
-		}
-		run(
-			arg0,
-			arg1,
-		)
+		run(args[0].(int), args[1].(int))
 	})
 	return _c
 }
@@ -851,26 +695,15 @@ type MockClient_SetEnvVarOnWorkspace_Call struct {
 }
 
 // SetEnvVarOnWorkspace is a helper method to define mock.On call
-//   - workspaceId int
-//   - vars map[string]string
+//   - workspaceId
+//   - vars
 func (_e *MockClient_Expecter) SetEnvVarOnWorkspace(workspaceId interface{}, vars interface{}) *MockClient_SetEnvVarOnWorkspace_Call {
 	return &MockClient_SetEnvVarOnWorkspace_Call{Call: _e.mock.On("SetEnvVarOnWorkspace", workspaceId, vars)}
 }
 
 func (_c *MockClient_SetEnvVarOnWorkspace_Call) Run(run func(workspaceId int, vars map[string]string)) *MockClient_SetEnvVarOnWorkspace_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 int
-		if args[0] != nil {
-			arg0 = args[0].(int)
-		}
-		var arg1 map[string]string
-		if args[1] != nil {
-			arg1 = args[1].(map[string]string)
-		}
-		run(
-			arg0,
-			arg1,
-		)
+		run(args[0].(int), args[1].(map[string]string))
 	})
 	return _c
 }
@@ -908,32 +741,16 @@ type MockClient_StartPipelineStage_Call struct {
 }
 
 // StartPipelineStage is a helper method to define mock.On call
-//   - wsId int
-//   - profile string
-//   - stage string
+//   - wsId
+//   - profile
+//   - stage
 func (_e *MockClient_Expecter) StartPipelineStage(wsId interface{}, profile interface{}, stage interface{}) *MockClient_StartPipelineStage_Call {
 	return &MockClient_StartPipelineStage_Call{Call: _e.mock.On("StartPipelineStage", wsId, profile, stage)}
 }
 
 func (_c *MockClient_StartPipelineStage_Call) Run(run func(wsId int, profile string, stage string)) *MockClient_StartPipelineStage_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 int
-		if args[0] != nil {
-			arg0 = args[0].(int)
-		}
-		var arg1 string
-		if args[1] != nil {
-			arg1 = args[1].(string)
-		}
-		var arg2 string
-		if args[2] != nil {
-			arg2 = args[2].(string)
-		}
-		run(
-			arg0,
-			arg1,
-			arg2,
-		)
+		run(args[0].(int), args[1].(string), args[2].(string))
 	})
 	return _c
 }
@@ -971,26 +788,15 @@ type MockClient_WaitForWorkspaceRunning_Call struct {
 }
 
 // WaitForWorkspaceRunning is a helper method to define mock.On call
-//   - workspace *api.Workspace
-//   - timeout time.Duration
+//   - workspace
+//   - timeout
 func (_e *MockClient_Expecter) WaitForWorkspaceRunning(workspace interface{}, timeout interface{}) *MockClient_WaitForWorkspaceRunning_Call {
 	return &MockClient_WaitForWorkspaceRunning_Call{Call: _e.mock.On("WaitForWorkspaceRunning", workspace, timeout)}
 }
 
 func (_c *MockClient_WaitForWorkspaceRunning_Call) Run(run func(workspace *api.Workspace, timeout time.Duration)) *MockClient_WaitForWorkspaceRunning_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 *api.Workspace
-		if args[0] != nil {
-			arg0 = args[0].(*api.Workspace)
-		}
-		var arg1 time.Duration
-		if args[1] != nil {
-			arg1 = args[1].(time.Duration)
-		}
-		run(
-			arg0,
-			arg1,
-		)
+		run(args[0].(*api.Workspace), args[1].(time.Duration))
 	})
 	return _c
 }
@@ -1039,20 +845,14 @@ type MockClient_WorkspaceStatus_Call struct {
 }
 
 // WorkspaceStatus is a helper method to define mock.On call
-//   - workspaceId int
+//   - workspaceId
 func (_e *MockClient_Expecter) WorkspaceStatus(workspaceId interface{}) *MockClient_WorkspaceStatus_Call {
 	return &MockClient_WorkspaceStatus_Call{Call: _e.mock.On("WorkspaceStatus", workspaceId)}
 }
 
 func (_c *MockClient_WorkspaceStatus_Call) Run(run func(workspaceId int)) *MockClient_WorkspaceStatus_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 int
-		if args[0] != nil {
-			arg0 = args[0].(int)
-		}
-		run(
-			arg0,
-		)
+		run(args[0].(int))
 	})
 	return _c
 }
@@ -1117,20 +917,14 @@ type MockPrompt_InputPrompt_Call struct {
 }
 
 // InputPrompt is a helper method to define mock.On call
-//   - prompt string
+//   - prompt
 func (_e *MockPrompt_Expecter) InputPrompt(prompt interface{}) *MockPrompt_InputPrompt_Call {
 	return &MockPrompt_InputPrompt_Call{Call: _e.mock.On("InputPrompt", prompt)}
 }
 
 func (_c *MockPrompt_InputPrompt_Call) Run(run func(prompt string)) *MockPrompt_InputPrompt_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 string
-		if args[0] != nil {
-			arg0 = args[0].(string)
-		}
-		run(
-			arg0,
-		)
+		run(args[0].(string))
 	})
 	return _c
 }
@@ -1195,20 +989,14 @@ type MockBrowser_OpenIde_Call struct {
 }
 
 // OpenIde is a helper method to define mock.On call
-//   - path string
+//   - path
 func (_e *MockBrowser_Expecter) OpenIde(path interface{}) *MockBrowser_OpenIde_Call {
 	return &MockBrowser_OpenIde_Call{Call: _e.mock.On("OpenIde", path)}
 }
 
 func (_c *MockBrowser_OpenIde_Call) Run(run func(path string)) *MockBrowser_OpenIde_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 string
-		if args[0] != nil {
-			arg0 = args[0].(string)
-		}
-		run(
-			arg0,
-		)
+		run(args[0].(string))
 	})
 	return _c
 }

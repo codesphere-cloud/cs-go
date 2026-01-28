@@ -39,10 +39,6 @@ func (c *CurlCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get API token: %w", err)
 	}
 
-	if len(args) == 0 {
-		return fmt.Errorf("path is required (e.g., / or /api/endpoint)")
-	}
-
 	path := args[0]
 	curlArgs := args[1:]
 

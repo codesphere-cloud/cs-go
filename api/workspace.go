@@ -130,7 +130,6 @@ func (client *Client) WaitForWorkspaceRunning(workspace *Workspace, timeout time
 		status, err := client.WorkspaceStatus(workspace.Id)
 
 		if err != nil {
-			// Retry on error (e.g., 404 if workspace not yet registered) until timeout
 			if client.time.Now().After(maxWaitTime) {
 				return errors.FormatAPIError(err)
 			}

@@ -69,26 +69,15 @@ type MockExec_ExecuteCommand_Call struct {
 }
 
 // ExecuteCommand is a helper method to define mock.On call
-//   - ctx context.Context
-//   - cmdArgs []string
+//   - ctx
+//   - cmdArgs
 func (_e *MockExec_Expecter) ExecuteCommand(ctx interface{}, cmdArgs interface{}) *MockExec_ExecuteCommand_Call {
 	return &MockExec_ExecuteCommand_Call{Call: _e.mock.On("ExecuteCommand", ctx, cmdArgs)}
 }
 
 func (_c *MockExec_ExecuteCommand_Call) Run(run func(ctx context.Context, cmdArgs []string)) *MockExec_ExecuteCommand_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 context.Context
-		if args[0] != nil {
-			arg0 = args[0].(context.Context)
-		}
-		var arg1 []string
-		if args[1] != nil {
-			arg1 = args[1].([]string)
-		}
-		run(
-			arg0,
-			arg1,
-		)
+		run(args[0].(context.Context), args[1].([]string))
 	})
 	return _c
 }
@@ -142,26 +131,15 @@ type MockHttpServer_Handle_Call struct {
 }
 
 // Handle is a helper method to define mock.On call
-//   - pattern string
-//   - handler http.Handler
+//   - pattern
+//   - handler
 func (_e *MockHttpServer_Expecter) Handle(pattern interface{}, handler interface{}) *MockHttpServer_Handle_Call {
 	return &MockHttpServer_Handle_Call{Call: _e.mock.On("Handle", pattern, handler)}
 }
 
 func (_c *MockHttpServer_Handle_Call) Run(run func(pattern string, handler http.Handler)) *MockHttpServer_Handle_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 string
-		if args[0] != nil {
-			arg0 = args[0].(string)
-		}
-		var arg1 http.Handler
-		if args[1] != nil {
-			arg1 = args[1].(http.Handler)
-		}
-		run(
-			arg0,
-			arg1,
-		)
+		run(args[0].(string), args[1].(http.Handler))
 	})
 	return _c
 }
@@ -188,26 +166,15 @@ type MockHttpServer_HandleFunc_Call struct {
 }
 
 // HandleFunc is a helper method to define mock.On call
-//   - pattern string
-//   - handler func(http.ResponseWriter, *http.Request)
+//   - pattern
+//   - handler
 func (_e *MockHttpServer_Expecter) HandleFunc(pattern interface{}, handler interface{}) *MockHttpServer_HandleFunc_Call {
 	return &MockHttpServer_HandleFunc_Call{Call: _e.mock.On("HandleFunc", pattern, handler)}
 }
 
 func (_c *MockHttpServer_HandleFunc_Call) Run(run func(pattern string, handler func(http.ResponseWriter, *http.Request))) *MockHttpServer_HandleFunc_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 string
-		if args[0] != nil {
-			arg0 = args[0].(string)
-		}
-		var arg1 func(http.ResponseWriter, *http.Request)
-		if args[1] != nil {
-			arg1 = args[1].(func(http.ResponseWriter, *http.Request))
-		}
-		run(
-			arg0,
-			arg1,
-		)
+		run(args[0].(string), args[1].(func(http.ResponseWriter, *http.Request)))
 	})
 	return _c
 }
@@ -245,26 +212,15 @@ type MockHttpServer_ListenAndServe_Call struct {
 }
 
 // ListenAndServe is a helper method to define mock.On call
-//   - addr string
-//   - handler http.Handler
+//   - addr
+//   - handler
 func (_e *MockHttpServer_Expecter) ListenAndServe(addr interface{}, handler interface{}) *MockHttpServer_ListenAndServe_Call {
 	return &MockHttpServer_ListenAndServe_Call{Call: _e.mock.On("ListenAndServe", addr, handler)}
 }
 
 func (_c *MockHttpServer_ListenAndServe_Call) Run(run func(addr string, handler http.Handler)) *MockHttpServer_ListenAndServe_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 string
-		if args[0] != nil {
-			arg0 = args[0].(string)
-		}
-		var arg1 http.Handler
-		if args[1] != nil {
-			arg1 = args[1].(http.Handler)
-		}
-		run(
-			arg0,
-			arg1,
-		)
+		run(args[0].(string), args[1].(http.Handler))
 	})
 	return _c
 }
@@ -291,38 +247,17 @@ type MockHttpServer_Redirect_Call struct {
 }
 
 // Redirect is a helper method to define mock.On call
-//   - w http.ResponseWriter
-//   - r *http.Request
-//   - url string
-//   - code int
+//   - w
+//   - r
+//   - url
+//   - code
 func (_e *MockHttpServer_Expecter) Redirect(w interface{}, r interface{}, url interface{}, code interface{}) *MockHttpServer_Redirect_Call {
 	return &MockHttpServer_Redirect_Call{Call: _e.mock.On("Redirect", w, r, url, code)}
 }
 
 func (_c *MockHttpServer_Redirect_Call) Run(run func(w http.ResponseWriter, r *http.Request, url string, code int)) *MockHttpServer_Redirect_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 http.ResponseWriter
-		if args[0] != nil {
-			arg0 = args[0].(http.ResponseWriter)
-		}
-		var arg1 *http.Request
-		if args[1] != nil {
-			arg1 = args[1].(*http.Request)
-		}
-		var arg2 string
-		if args[2] != nil {
-			arg2 = args[2].(string)
-		}
-		var arg3 int
-		if args[3] != nil {
-			arg3 = args[3].(int)
-		}
-		run(
-			arg0,
-			arg1,
-			arg2,
-			arg3,
-		)
+		run(args[0].(http.ResponseWriter), args[1].(*http.Request), args[2].(string), args[3].(int))
 	})
 	return _c
 }
