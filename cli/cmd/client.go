@@ -8,6 +8,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/url"
 	"time"
 
@@ -31,6 +32,11 @@ type Client interface {
 	GetPipelineState(wsId int, stage string) ([]api.PipelineStatus, error)
 	GitPull(wsId int, remote string, branch string) error
 	DeployLandscape(wsId int, profile string) error
+}
+
+// CommandExecutor abstracts command execution for testing
+type CommandExecutor interface {
+	Execute(ctx context.Context, name string, args []string, stdout, stderr io.Writer) error
 }
 
 func NewClient(opts GlobalOptions) (Client, error) {

@@ -6,14 +6,25 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
 	"time"
 
-	"github.com/codesphere-cloud/cs-go/pkg/io"
+	io_pkg "github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
 )
+
+// DefaultCommandExecutor uses os/exec to run commands
+type DefaultCommandExecutor struct{}
+
+func (e *DefaultCommandExecutor) Execute(ctx context.Context, name string, args []string, stdout, stderr io.Writer) error {
+	cmd := exec.CommandContext(ctx, name, args...)
+	cmd.Stdout = stdout
+	cmd.Stderr = stderr
+	return cmd.Run()
+}
 
 type CurlCmd struct {
 	cmd      *cobra.Command
@@ -21,6 +32,7 @@ type CurlCmd struct {
 	Port     *int
 	Timeout  *time.Duration
 	Insecure bool
+	Executor CommandExecutor // Injectable for testing
 }
 
 func (c *CurlCmd) RunE(_ *cobra.Command, args []string) error {
@@ -51,7 +63,7 @@ func AddCurlCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 			Use:   "curl [path] [-- curl-args...]",
 			Short: "Send authenticated HTTP requests to workspace dev domain",
 			Long:  `Send authenticated HTTP requests to a workspace's development domain using curl-like syntax.`,
-			Example: io.FormatExampleCommands("curl", []io.Example{
+			Example: io_pkg.FormatExampleCommands("curl", []io_pkg.Example{
 				{Cmd: "/ -w 1234", Desc: "GET request to workspace root"},
 				{Cmd: "/api/health -w 1234 -p 3001", Desc: "GET request to port 3001"},
 				{Cmd: "/api/data -w 1234 -- -XPOST -d '{\"key\":\"value\"}'", Desc: "POST request with data"},
@@ -60,7 +72,8 @@ func AddCurlCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 			}),
 			Args: cobra.MinimumNArgs(1),
 		},
-		Opts: opts,
+		Opts:     opts,
+		Executor: &DefaultCommandExecutor{},
 	}
 	curl.Port = curl.cmd.Flags().IntP("port", "p", 3000, "Port to connect to")
 	curl.Timeout = curl.cmd.Flags().DurationP("timeout", "", 30*time.Second, "Timeout for the request")
@@ -124,11 +137,7 @@ func (c *CurlCmd) CurlWorkspace(client Client, wsId int, token string, path stri
 	cmdArgs = append(cmdArgs, url)
 
 	// Execute curl command
-	cmd := exec.CommandContext(ctx, cmdArgs[0], cmdArgs[1:]...)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-
-	err = cmd.Run()
+	err = c.Executor.Execute(ctx, cmdArgs[0], cmdArgs[1:], os.Stdout, os.Stderr)
 	if err != nil {
 		if ctx.Err() == context.DeadlineExceeded {
 			return fmt.Errorf("timeout exceeded while requesting workspace %d", wsId)

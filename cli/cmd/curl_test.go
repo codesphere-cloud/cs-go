@@ -8,6 +8,7 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/stretchr/testify/mock"
 
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
@@ -15,18 +16,20 @@ import (
 
 var _ = Describe("Curl", func() {
 	var (
-		mockEnv    *cmd.MockEnv
-		mockClient *cmd.MockClient
-		c          *cmd.CurlCmd
-		wsId       int
-		teamId     int
-		token      string
-		port       int
+		mockEnv      *cmd.MockEnv
+		mockClient   *cmd.MockClient
+		mockExecutor *cmd.MockCommandExecutor
+		c            *cmd.CurlCmd
+		wsId         int
+		teamId       int
+		token        string
+		port         int
 	)
 
 	JustBeforeEach(func() {
 		mockClient = cmd.NewMockClient(GinkgoT())
 		mockEnv = cmd.NewMockEnv(GinkgoT())
+		mockExecutor = cmd.NewMockCommandExecutor(GinkgoT())
 		wsId = 42
 		teamId = 21
 		token = "test-api-token"
@@ -36,7 +39,8 @@ var _ = Describe("Curl", func() {
 				Env:         mockEnv,
 				WorkspaceId: &wsId,
 			},
-			Port: &port,
+			Port:     &port,
+			Executor: mockExecutor,
 		}
 	})
 
@@ -51,10 +55,33 @@ var _ = Describe("Curl", func() {
 			}
 
 			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockExecutor.EXPECT().Execute(
+				mock.Anything,
+				"curl",
+				mock.MatchedBy(func(args []string) bool {
+					// Verify the args contain the expected header, flag, and URL
+					hasHeader := false
+					hasFlag := false
+					hasURL := false
+					for i, arg := range args {
+						if arg == "-H" && i+1 < len(args) && args[i+1] == fmt.Sprintf("x-forward-security: %s", token) {
+							hasHeader = true
+						}
+						if arg == "-I" {
+							hasFlag = true
+						}
+						if arg == "https://42-3000.dev.5.codesphere.com/api/health" {
+							hasURL = true
+						}
+					}
+					return hasHeader && hasFlag && hasURL
+				}),
+				mock.Anything,
+				mock.Anything,
+			).Return(nil)
 
 			err := c.CurlWorkspace(mockClient, wsId, token, "/api/health", []string{"-I"})
 
-			// Should succeed since curl can make the request
 			Expect(err).ToNot(HaveOccurred())
 		})
 
@@ -70,10 +97,70 @@ var _ = Describe("Curl", func() {
 			}
 
 			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockExecutor.EXPECT().Execute(
+				mock.Anything,
+				"curl",
+				mock.MatchedBy(func(args []string) bool {
+					// Verify the URL contains the custom port
+					hasHeader := false
+					hasURL := false
+					for i, arg := range args {
+						if arg == "-H" && i+1 < len(args) && args[i+1] == fmt.Sprintf("x-forward-security: %s", token) {
+							hasHeader = true
+						}
+						if arg == "https://42-3001.dev.5.codesphere.com/custom/path" {
+							hasURL = true
+						}
+					}
+					return hasHeader && hasURL
+				}),
+				mock.Anything,
+				mock.Anything,
+			).Return(nil)
 
 			err := c.CurlWorkspace(mockClient, wsId, token, "/custom/path", []string{})
 
-			// Should succeed since curl can make the request
+			Expect(err).ToNot(HaveOccurred())
+		})
+
+		It("should pass insecure flag when specified", func() {
+			c.Insecure = true
+			devDomain := "42-3000.dev.5.codesphere.com"
+			workspace := api.Workspace{
+				Id:        wsId,
+				TeamId:    teamId,
+				Name:      "test-workspace",
+				DevDomain: &devDomain,
+			}
+
+			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockExecutor.EXPECT().Execute(
+				mock.Anything,
+				"curl",
+				mock.MatchedBy(func(args []string) bool {
+					// Verify the insecure flag is present
+					hasInsecure := false
+					hasHeader := false
+					hasURL := false
+					for i, arg := range args {
+						if arg == "-k" {
+							hasInsecure = true
+						}
+						if arg == "-H" && i+1 < len(args) && args[i+1] == fmt.Sprintf("x-forward-security: %s", token) {
+							hasHeader = true
+						}
+						if arg == "https://42-3000.dev.5.codesphere.com/" {
+							hasURL = true
+						}
+					}
+					return hasInsecure && hasHeader && hasURL
+				}),
+				mock.Anything,
+				mock.Anything,
+			).Return(nil)
+
+			err := c.CurlWorkspace(mockClient, wsId, token, "/", []string{})
+
 			Expect(err).ToNot(HaveOccurred())
 		})
 
@@ -100,6 +187,30 @@ var _ = Describe("Curl", func() {
 
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to get workspace"))
+		})
+
+		It("should return error if command execution fails", func() {
+			devDomain := "42-3000.dev.5.codesphere.com"
+			workspace := api.Workspace{
+				Id:        wsId,
+				TeamId:    teamId,
+				Name:      "test-workspace",
+				DevDomain: &devDomain,
+			}
+
+			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockExecutor.EXPECT().Execute(
+				mock.Anything,
+				mock.Anything,
+				mock.Anything,
+				mock.Anything,
+				mock.Anything,
+			).Return(fmt.Errorf("command failed"))
+
+			err := c.CurlWorkspace(mockClient, wsId, token, "/", []string{})
+
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(ContainSubstring("curl command failed"))
 		})
 	})
 })
