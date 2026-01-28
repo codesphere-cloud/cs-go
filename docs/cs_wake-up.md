@@ -4,7 +4,7 @@ Wake up an on-demand workspace
 
 ### Synopsis
 
-Wake up an on-demand workspace by making an authenticated request to its services domain.
+Wake up an on-demand workspace by scaling it to 1 replica via the API.
 
 ```
 cs wake-up [flags]
@@ -27,7 +27,6 @@ $ cs wake-up -w 1234 --timeout 60s
 
 ```
   -h, --help               help for wake-up
-      --insecure           skip TLS certificate verification (for testing only)
       --timeout duration   Timeout for waking up the workspace (default 2m0s)
 ```
 
