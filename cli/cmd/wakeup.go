@@ -67,13 +67,16 @@ func (c *WakeUpCmd) WakeUpWorkspace(client Client, wsId int, token string) error
 		return fmt.Errorf("failed to get workspace: %w", err)
 	}
 
-	// Construct the services domain: ${WORKSPACE_ID}-3000.${DEV_DOMAIN}
-	servicesDomain, err := ConstructWorkspaceServiceURL(workspace, 3000, "")
+	// Get team to obtain datacenter ID
+	team, err := client.GetTeam(workspace.TeamId)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to get team: %w", err)
 	}
 
-	log.Printf("Waking up workspace %d (%s)...\n", wsId, workspace.Name)
+	// Construct the services domain using datacenter format: ${WORKSPACE_ID}-3000.${DATACENTER_ID}.codesphere.com
+	servicesDomain := fmt.Sprintf("https://%d-3000.%d.codesphere.com", wsId, team.DefaultDataCenterId)
+
+	log.Printf("Waking up workspace %d (%s) at URL: %s\n", wsId, workspace.Name, servicesDomain)
 	timeout := 120 * time.Second
 	if c.Timeout != nil {
 		timeout = *c.Timeout
@@ -88,6 +91,12 @@ func (c *WakeUpCmd) WakeUpWorkspace(client Client, wsId int, token string) error
 			return fmt.Errorf("timeout exceeded while waking up workspace %d", wsId)
 		}
 		return fmt.Errorf("failed to wake up workspace: %w", err)
+	}
+
+	log.Printf("Waiting for workspace %d to be running...\n", wsId)
+	err = client.WaitForWorkspaceRunning(&workspace, timeout)
+	if err != nil {
+		return fmt.Errorf("workspace did not become running: %w", err)
 	}
 
 	log.Printf("Successfully woke up workspace %d\n", wsId)
@@ -111,11 +120,7 @@ func makeWakeUpRequest(ctx context.Context, servicesDomain string, token string,
 		Timeout:   30 * time.Second,
 		Transport: transport,
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			if len(via) >= 10 {
-				return fmt.Errorf("too many redirects")
-			}
-			req.Header.Set("x-forward-security", token)
-			return nil
+			return http.ErrUseLastResponse
 		},
 	}
 
@@ -127,9 +132,12 @@ func makeWakeUpRequest(ctx context.Context, servicesDomain string, token string,
 		_ = resp.Body.Close()
 	}()
 
-	// 4xx errors are considered failures
+	log.Printf("Wake-up request received status: %d %s\n", resp.StatusCode, resp.Status)
+
+	// Accept 2xx, 3xx, and 5xx responses (5xx is expected when workspace is starting)
+	// 4xx errors indicate authentication issues
 	if resp.StatusCode >= 400 && resp.StatusCode < 500 {
-		return fmt.Errorf("received error response: %s", resp.Status)
+		return fmt.Errorf("authentication failed: %s", resp.Status)
 	}
 
 	return nil

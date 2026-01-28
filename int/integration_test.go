@@ -401,8 +401,13 @@ var _ = Describe("Open Workspace Integration Tests", func() {
 		It("should fail when workspace ID is missing", func() {
 			By("Attempting to open workspace without ID")
 			originalWsId := os.Getenv("CS_WORKSPACE_ID")
+			originalWsIdFallback := os.Getenv("WORKSPACE_ID")
 			_ = os.Unsetenv("CS_WORKSPACE_ID")
-			defer func() { _ = os.Setenv("CS_WORKSPACE_ID", originalWsId) }()
+			_ = os.Unsetenv("WORKSPACE_ID")
+			defer func() {
+				_ = os.Setenv("CS_WORKSPACE_ID", originalWsId)
+				_ = os.Setenv("WORKSPACE_ID", originalWsIdFallback)
+			}()
 
 			output, exitCode := intutil.RunCommandWithExitCode(
 				"open", "workspace",
@@ -1061,8 +1066,13 @@ var _ = Describe("Wake Up Workspace Integration Tests", func() {
 		It("should fail when workspace ID is missing", func() {
 			By("Attempting to wake up workspace without ID")
 			originalWsId := os.Getenv("CS_WORKSPACE_ID")
+			originalWsIdFallback := os.Getenv("WORKSPACE_ID")
 			_ = os.Unsetenv("CS_WORKSPACE_ID")
-			defer func() { _ = os.Setenv("CS_WORKSPACE_ID", originalWsId) }()
+			_ = os.Unsetenv("WORKSPACE_ID")
+			defer func() {
+				_ = os.Setenv("CS_WORKSPACE_ID", originalWsId)
+				_ = os.Setenv("WORKSPACE_ID", originalWsIdFallback)
+			}()
 
 			output, exitCode := intutil.RunCommandWithExitCode("wake-up")
 			fmt.Printf("Wake up without workspace ID output: %s (exit code: %d)\n", output, exitCode)
@@ -1238,8 +1248,13 @@ var _ = Describe("Curl Workspace Integration Tests", func() {
 		It("should fail when workspace ID is missing", func() {
 			By("Attempting to curl without workspace ID")
 			originalWsId := os.Getenv("CS_WORKSPACE_ID")
+			originalWsIdFallback := os.Getenv("WORKSPACE_ID")
 			_ = os.Unsetenv("CS_WORKSPACE_ID")
-			defer func() { _ = os.Setenv("CS_WORKSPACE_ID", originalWsId) }()
+			_ = os.Unsetenv("WORKSPACE_ID")
+			defer func() {
+				_ = os.Setenv("CS_WORKSPACE_ID", originalWsId)
+				_ = os.Setenv("WORKSPACE_ID", originalWsIdFallback)
+			}()
 
 			output, exitCode := intutil.RunCommandWithExitCode("curl", "/")
 			fmt.Printf("Curl without workspace ID output: %s (exit code: %d)\n", output, exitCode)

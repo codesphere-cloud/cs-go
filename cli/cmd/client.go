@@ -9,15 +9,19 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"time"
 
 	"github.com/codesphere-cloud/cs-go/api"
 )
 
 type Client interface {
 	ListTeams() ([]api.Team, error)
+	GetTeam(teamId int) (*api.Team, error)
 	ListWorkspaces(teamId int) ([]api.Workspace, error)
 	ListBaseimages() ([]api.Baseimage, error)
 	GetWorkspace(workspaceId int) (api.Workspace, error)
+	WorkspaceStatus(workspaceId int) (*api.WorkspaceStatus, error)
+	WaitForWorkspaceRunning(workspace *api.Workspace, timeout time.Duration) error
 	SetEnvVarOnWorkspace(workspaceId int, vars map[string]string) error
 	ExecCommand(workspaceId int, command string, workdir string, env map[string]string) (string, string, error)
 	ListWorkspacePlans() ([]api.WorkspacePlan, error)

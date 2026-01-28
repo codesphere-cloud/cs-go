@@ -79,15 +79,19 @@ func (c *CurlCmd) CurlWorkspace(client Client, wsId int, token string, path stri
 		return fmt.Errorf("failed to get workspace: %w", err)
 	}
 
+	// Get team to obtain datacenter ID
+	team, err := client.GetTeam(workspace.TeamId)
+	if err != nil {
+		return fmt.Errorf("failed to get team: %w", err)
+	}
+
 	port := 3000
 	if c.Port != nil {
 		port = *c.Port
 	}
 
-	url, err := ConstructWorkspaceServiceURL(workspace, port, path)
-	if err != nil {
-		return err
-	}
+	// Construct URL using datacenter format: ${WORKSPACE_ID}-${PORT}.${DATACENTER_ID}.codesphere.com
+	url := fmt.Sprintf("https://%d-%d.%d.codesphere.com%s", wsId, port, team.DefaultDataCenterId, path)
 
 	log.Printf("Sending request to workspace %d (%s) at %s\n", wsId, workspace.Name, url)
 
@@ -126,10 +130,7 @@ func (c *CurlCmd) CurlWorkspace(client Client, wsId int, token string, path stri
 		if ctx.Err() == context.DeadlineExceeded {
 			return fmt.Errorf("timeout exceeded while requesting workspace %d", wsId)
 		}
-		if exitErr, ok := err.(*exec.ExitError); ok {
-			os.Exit(exitErr.ExitCode())
-		}
-		return fmt.Errorf("failed to execute curl: %w", err)
+		return fmt.Errorf("curl command failed: %w", err)
 	}
 
 	return nil

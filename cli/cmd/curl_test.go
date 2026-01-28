@@ -42,15 +42,19 @@ var _ = Describe("Curl", func() {
 
 	Context("CurlWorkspace", func() {
 		It("should construct the correct URL with default port", func() {
-			devDomain := "team-slug.codesphere.com"
 			workspace := api.Workspace{
-				Id:        wsId,
-				TeamId:    teamId,
-				Name:      "test-workspace",
-				DevDomain: &devDomain,
+				Id:     wsId,
+				TeamId: teamId,
+				Name:   "test-workspace",
+			}
+			team := api.Team{
+				Id:                  teamId,
+				DefaultDataCenterId: 5,
+				Name:                "test-team",
 			}
 
 			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockClient.EXPECT().GetTeam(teamId).Return(&team, nil)
 
 			err := c.CurlWorkspace(mockClient, wsId, token, "/api/health", []string{"-I"})
 
@@ -60,35 +64,39 @@ var _ = Describe("Curl", func() {
 		It("should construct the correct URL with custom port", func() {
 			customPort := 3001
 			c.Port = &customPort
-			devDomain := "team-slug.codesphere.com"
 			workspace := api.Workspace{
-				Id:        wsId,
-				TeamId:    teamId,
-				Name:      "test-workspace",
-				DevDomain: &devDomain,
+				Id:     wsId,
+				TeamId: teamId,
+				Name:   "test-workspace",
+			}
+			team := api.Team{
+				Id:                  teamId,
+				DefaultDataCenterId: 5,
+				Name:                "test-team",
 			}
 
 			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockClient.EXPECT().GetTeam(teamId).Return(&team, nil)
 
 			err := c.CurlWorkspace(mockClient, wsId, token, "/custom/path", []string{})
 
 			Expect(err).To(HaveOccurred())
 		})
 
-		It("should return error if workspace has no dev domain", func() {
+		It("should return error if GetTeam fails", func() {
 			workspace := api.Workspace{
-				Id:        wsId,
-				TeamId:    teamId,
-				Name:      "test-workspace",
-				DevDomain: nil,
+				Id:     wsId,
+				TeamId: teamId,
+				Name:   "test-workspace",
 			}
 
 			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockClient.EXPECT().GetTeam(teamId).Return(nil, fmt.Errorf("team not found"))
 
 			err := c.CurlWorkspace(mockClient, wsId, token, "/", []string{})
 
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(ContainSubstring("does not have a development domain configured"))
+			Expect(err.Error()).To(ContainSubstring("failed to get team"))
 		})
 
 		It("should return error if GetWorkspace fails", func() {
