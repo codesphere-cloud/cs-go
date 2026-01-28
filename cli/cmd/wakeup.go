@@ -4,11 +4,7 @@
 package cmd
 
 import (
-	"context"
-	"crypto/tls"
 	"fmt"
-	"log"
-	"net/http"
 	"time"
 
 	"github.com/codesphere-cloud/cs-go/pkg/io"
@@ -16,10 +12,9 @@ import (
 )
 
 type WakeUpCmd struct {
-	cmd      *cobra.Command
-	Opts     GlobalOptions
-	Timeout  *time.Duration
-	Insecure bool
+	cmd     *cobra.Command
+	Opts    GlobalOptions
+	Timeout *time.Duration
 }
 
 func (c *WakeUpCmd) RunE(_ *cobra.Command, args []string) error {
@@ -33,12 +28,7 @@ func (c *WakeUpCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
 	}
 
-	token, err := c.Opts.Env.GetApiToken()
-	if err != nil {
-		return fmt.Errorf("failed to get API token: %w", err)
-	}
-
-	return c.WakeUpWorkspace(client, wsId, token)
+	return c.WakeUpWorkspace(client, wsId)
 }
 
 func AddWakeUpCmd(rootCmd *cobra.Command, opts GlobalOptions) {
@@ -46,7 +36,7 @@ func AddWakeUpCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 		cmd: &cobra.Command{
 			Use:   "wake-up",
 			Short: "Wake up an on-demand workspace",
-			Long:  `Wake up an on-demand workspace by making an authenticated request to its services domain.`,
+			Long:  `Wake up an on-demand workspace by scaling it to 1 replica via the API.`,
 			Example: io.FormatExampleCommands("wake-up", []io.Example{
 				{Cmd: "-w 1234", Desc: "wake up workspace 1234"},
 				{Cmd: "", Desc: "wake up workspace set by environment variable CS_WORKSPACE_ID"},
@@ -56,89 +46,52 @@ func AddWakeUpCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 		Opts: opts,
 	}
 	wakeup.Timeout = wakeup.cmd.Flags().DurationP("timeout", "", 120*time.Second, "Timeout for waking up the workspace")
-	wakeup.cmd.Flags().BoolVar(&wakeup.Insecure, "insecure", false, "skip TLS certificate verification (for testing only)")
 	rootCmd.AddCommand(wakeup.cmd)
 	wakeup.cmd.RunE = wakeup.RunE
 }
 
-func (c *WakeUpCmd) WakeUpWorkspace(client Client, wsId int, token string) error {
+func (c *WakeUpCmd) WakeUpWorkspace(client Client, wsId int) error {
 	workspace, err := client.GetWorkspace(wsId)
 	if err != nil {
 		return fmt.Errorf("failed to get workspace: %w", err)
 	}
 
-	// Get team to obtain datacenter ID
-	team, err := client.GetTeam(workspace.TeamId)
+	// Check if workspace is already running
+	status, err := client.WorkspaceStatus(wsId)
 	if err != nil {
-		return fmt.Errorf("failed to get team: %w", err)
+		return fmt.Errorf("failed to get workspace status: %w", err)
 	}
 
-	// Construct the services domain using datacenter format: ${WORKSPACE_ID}-3000.${DATACENTER_ID}.codesphere.com
-	servicesDomain := fmt.Sprintf("https://%d-3000.%d.codesphere.com", wsId, team.DefaultDataCenterId)
+	if status.IsRunning {
+		fmt.Printf("Workspace %d (%s) is already running\n", wsId, workspace.Name)
+		return nil
+	}
 
-	log.Printf("Waking up workspace %d (%s) at URL: %s\n", wsId, workspace.Name, servicesDomain)
+	fmt.Printf("Waking up workspace %d (%s)...\n", wsId, workspace.Name)
+
+	// Scale workspace to at least 1 replica to wake it up
+	// If workspace already has replicas configured (but not running), preserve that count
+	targetReplicas := 1
+	if workspace.Replicas > 1 {
+		targetReplicas = workspace.Replicas
+	}
+
+	err = client.ScaleWorkspace(wsId, targetReplicas)
+	if err != nil {
+		return fmt.Errorf("failed to scale workspace: %w", err)
+	}
+
 	timeout := 120 * time.Second
 	if c.Timeout != nil {
 		timeout = *c.Timeout
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
-
-	err = makeWakeUpRequest(ctx, servicesDomain, token, c.Insecure)
-	if err != nil {
-		if ctx.Err() == context.DeadlineExceeded {
-			return fmt.Errorf("timeout exceeded while waking up workspace %d", wsId)
-		}
-		return fmt.Errorf("failed to wake up workspace: %w", err)
-	}
-
-	log.Printf("Waiting for workspace %d to be running...\n", wsId)
+	fmt.Printf("Waiting for workspace %d to be running...\n", wsId)
 	err = client.WaitForWorkspaceRunning(&workspace, timeout)
 	if err != nil {
 		return fmt.Errorf("workspace did not become running: %w", err)
 	}
 
-	log.Printf("Successfully woke up workspace %d\n", wsId)
-	return nil
-}
-
-func makeWakeUpRequest(ctx context.Context, servicesDomain string, token string, insecure bool) error {
-	req, err := http.NewRequestWithContext(ctx, "GET", servicesDomain, nil)
-	if err != nil {
-		return fmt.Errorf("failed to create request: %w", err)
-	}
-
-	req.Header.Set("x-forward-security", token)
-
-	transport := &http.Transport{}
-	if insecure {
-		transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
-	}
-
-	client := &http.Client{
-		Timeout:   30 * time.Second,
-		Transport: transport,
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-	}
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return fmt.Errorf("failed to make request: %w", err)
-	}
-	defer func() {
-		_ = resp.Body.Close()
-	}()
-
-	log.Printf("Wake-up request received status: %d %s\n", resp.StatusCode, resp.Status)
-
-	// Accept 2xx, 3xx, and 5xx responses (5xx is expected when workspace is starting)
-	// 4xx errors indicate authentication issues
-	if resp.StatusCode >= 400 && resp.StatusCode < 500 {
-		return fmt.Errorf("authentication failed: %s", resp.Status)
-	}
-
+	fmt.Printf("Workspace %d is now running\n", wsId)
 	return nil
 }

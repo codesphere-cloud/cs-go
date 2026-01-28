@@ -108,6 +108,17 @@ func (c *Client) GetPipelineState(wsId int, stage string) ([]PipelineStatus, err
 	return res, errors.FormatAPIError(err)
 }
 
+// ScaleWorkspace sets the number of replicas for a workspace.
+// For on-demand workspaces, setting replicas to 1 wakes up the workspace,
+func (c *Client) ScaleWorkspace(wsId int, replicas int) error {
+	req := c.api.WorkspacesAPI.WorkspacesUpdateWorkspace(c.ctx, float32(wsId)).
+		WorkspacesUpdateWorkspaceRequest(openapi_client.WorkspacesUpdateWorkspaceRequest{
+			Replicas: &replicas,
+		})
+	_, err := req.Execute()
+	return errors.FormatAPIError(err)
+}
+
 // Waits for a given workspace to be running.
 //
 // Returns [TimedOut] error if the workspace does not become running in time.

@@ -771,6 +771,63 @@ func (_c *MockClient_ListWorkspaces_Call) RunAndReturn(run func(teamId int) ([]a
 	return _c
 }
 
+// ScaleWorkspace provides a mock function for the type MockClient
+func (_mock *MockClient) ScaleWorkspace(wsId int, replicas int) error {
+	ret := _mock.Called(wsId, replicas)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ScaleWorkspace")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(int, int) error); ok {
+		r0 = returnFunc(wsId, replicas)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockClient_ScaleWorkspace_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ScaleWorkspace'
+type MockClient_ScaleWorkspace_Call struct {
+	*mock.Call
+}
+
+// ScaleWorkspace is a helper method to define mock.On call
+//   - wsId int
+//   - replicas int
+func (_e *MockClient_Expecter) ScaleWorkspace(wsId interface{}, replicas interface{}) *MockClient_ScaleWorkspace_Call {
+	return &MockClient_ScaleWorkspace_Call{Call: _e.mock.On("ScaleWorkspace", wsId, replicas)}
+}
+
+func (_c *MockClient_ScaleWorkspace_Call) Run(run func(wsId int, replicas int)) *MockClient_ScaleWorkspace_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 int
+		if args[0] != nil {
+			arg0 = args[0].(int)
+		}
+		var arg1 int
+		if args[1] != nil {
+			arg1 = args[1].(int)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockClient_ScaleWorkspace_Call) Return(err error) *MockClient_ScaleWorkspace_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockClient_ScaleWorkspace_Call) RunAndReturn(run func(wsId int, replicas int) error) *MockClient_ScaleWorkspace_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // SetEnvVarOnWorkspace provides a mock function for the type MockClient
 func (_mock *MockClient) SetEnvVarOnWorkspace(workspaceId int, vars map[string]string) error {
 	ret := _mock.Called(workspaceId, vars)

@@ -6,9 +6,9 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
+	"strings"
 	"time"
 
 	"github.com/codesphere-cloud/cs-go/pkg/io"
@@ -79,10 +79,9 @@ func (c *CurlCmd) CurlWorkspace(client Client, wsId int, token string, path stri
 		return fmt.Errorf("failed to get workspace: %w", err)
 	}
 
-	// Get team to obtain datacenter ID
-	team, err := client.GetTeam(workspace.TeamId)
-	if err != nil {
-		return fmt.Errorf("failed to get team: %w", err)
+	// Get the dev domain from the workspace
+	if workspace.DevDomain == nil || *workspace.DevDomain == "" {
+		return fmt.Errorf("workspace %d does not have a dev domain configured", wsId)
 	}
 
 	port := 3000
@@ -90,10 +89,18 @@ func (c *CurlCmd) CurlWorkspace(client Client, wsId int, token string, path stri
 		port = *c.Port
 	}
 
-	// Construct URL using datacenter format: ${WORKSPACE_ID}-${PORT}.${DATACENTER_ID}.codesphere.com
-	url := fmt.Sprintf("https://%d-%d.%d.codesphere.com%s", wsId, port, team.DefaultDataCenterId, path)
+	// Use the workspace's dev domain and replace the port if needed
+	// DevDomain format is: {workspace_id}-{port}.{domain}
+	devDomain := *workspace.DevDomain
+	var url string
+	if port != 3000 {
+		// Replace the default port (3000) with the custom port in the dev domain
+		url = fmt.Sprintf("https://%d-%d.%s%s", wsId, port, devDomain[strings.Index(devDomain, ".")+1:], path)
+	} else {
+		url = fmt.Sprintf("https://%s%s", devDomain, path)
+	}
 
-	log.Printf("Sending request to workspace %d (%s) at %s\n", wsId, workspace.Name, url)
+	fmt.Fprintf(os.Stderr, "Sending request to workspace %d (%s) at %s\n", wsId, workspace.Name, url)
 
 	timeout := 30 * time.Second
 	if c.Timeout != nil {

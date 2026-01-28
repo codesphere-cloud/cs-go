@@ -5,9 +5,11 @@ package cmd_test
 
 import (
 	"fmt"
+	"time"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/stretchr/testify/mock"
 
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
@@ -20,7 +22,6 @@ var _ = Describe("WakeUp", func() {
 		c          *cmd.WakeUpCmd
 		wsId       int
 		teamId     int
-		token      string
 	)
 
 	JustBeforeEach(func() {
@@ -28,7 +29,6 @@ var _ = Describe("WakeUp", func() {
 		mockEnv = cmd.NewMockEnv(GinkgoT())
 		wsId = 42
 		teamId = 21
-		token = "test-api-token"
 		c = &cmd.WakeUpCmd{
 			Opts: cmd.GlobalOptions{
 				Env:         mockEnv,
@@ -38,29 +38,26 @@ var _ = Describe("WakeUp", func() {
 	})
 
 	Context("WakeUpWorkspace", func() {
-		It("should construct the correct services domain and wake up the workspace", func() {
+		It("should wake up the workspace by scaling to 1 replica", func() {
 			workspace := api.Workspace{
 				Id:     wsId,
 				TeamId: teamId,
 				Name:   "test-workspace",
 			}
-			team := api.Team{
-				Id:                  teamId,
-				DefaultDataCenterId: 5,
-				Name:                "test-team",
-			}
+			timeout := 120 * time.Second
+			c.Timeout = &timeout
 
 			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
-			mockClient.EXPECT().GetTeam(teamId).Return(&team, nil)
+			mockClient.EXPECT().WorkspaceStatus(wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)
+			mockClient.EXPECT().ScaleWorkspace(wsId, 1).Return(nil)
+			mockClient.EXPECT().WaitForWorkspaceRunning(mock.Anything, mock.Anything).Return(nil)
 
-			err := c.WakeUpWorkspace(mockClient, wsId, token)
+			err := c.WakeUpWorkspace(mockClient, wsId)
 
-			// This will fail because we're making a real HTTP request
-			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(ContainSubstring("failed to wake up workspace"))
+			Expect(err).ToNot(HaveOccurred())
 		})
 
-		It("should return error if GetTeam fails", func() {
+		It("should return early if workspace is already running", func() {
 			workspace := api.Workspace{
 				Id:     wsId,
 				TeamId: teamId,
@@ -68,21 +65,37 @@ var _ = Describe("WakeUp", func() {
 			}
 
 			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
-			mockClient.EXPECT().GetTeam(teamId).Return(nil, fmt.Errorf("team not found"))
+			mockClient.EXPECT().WorkspaceStatus(wsId).Return(&api.WorkspaceStatus{IsRunning: true}, nil)
 
-			err := c.WakeUpWorkspace(mockClient, wsId, token)
+			err := c.WakeUpWorkspace(mockClient, wsId)
 
-			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(ContainSubstring("failed to get team"))
+			Expect(err).ToNot(HaveOccurred())
 		})
 
 		It("should return error if GetWorkspace fails", func() {
 			mockClient.EXPECT().GetWorkspace(wsId).Return(api.Workspace{}, fmt.Errorf("api error"))
 
-			err := c.WakeUpWorkspace(mockClient, wsId, token)
+			err := c.WakeUpWorkspace(mockClient, wsId)
 
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to get workspace"))
+		})
+
+		It("should return error if ScaleWorkspace fails", func() {
+			workspace := api.Workspace{
+				Id:     wsId,
+				TeamId: teamId,
+				Name:   "test-workspace",
+			}
+
+			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockClient.EXPECT().WorkspaceStatus(wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)
+			mockClient.EXPECT().ScaleWorkspace(wsId, 1).Return(fmt.Errorf("scale error"))
+
+			err := c.WakeUpWorkspace(mockClient, wsId)
+
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(ContainSubstring("failed to scale workspace"))
 		})
 	})
 })
