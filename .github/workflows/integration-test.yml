@@ -32,7 +32,7 @@ jobs:
         run: |
           echo "Cleaning up any orphaned test workspaces..."
           # List all workspaces and delete any with test name prefixes
-          ./cs list workspaces -t $CS_TEAM_ID | grep -E "cli-(test|git-test|pipeline-test|log-test|sync-test|open-test|setenv-test|edge-test)-" | awk '{print $2}' | while read ws_id; do
+          ./cs list workspaces -t $CS_TEAM_ID | grep -E "cli-(test|git-test|pipeline-test|log-test|sync-test|open-test|setenv-test|edge-test|wakeup-test|curl-test)-" | awk '{print $2}' | while read ws_id; do
             if [ ! -z "$ws_id" ]; then
               echo "Deleting orphaned workspace: $ws_id"
               ./cs delete workspace -w $ws_id --yes || true
