@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -29,8 +30,8 @@ func (e *DefaultCommandExecutor) Execute(ctx context.Context, name string, args 
 type CurlCmd struct {
 	cmd      *cobra.Command
 	Opts     GlobalOptions
-	Port     *int
-	Timeout  *time.Duration
+	Port     int
+	Timeout  time.Duration
 	Insecure bool
 	Executor CommandExecutor // Injectable for testing
 }
@@ -75,8 +76,8 @@ func AddCurlCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 		Opts:     opts,
 		Executor: &DefaultCommandExecutor{},
 	}
-	curl.Port = curl.cmd.Flags().IntP("port", "p", 3000, "Port to connect to")
-	curl.Timeout = curl.cmd.Flags().DurationP("timeout", "", 30*time.Second, "Timeout for the request")
+	curl.cmd.Flags().IntVarP(&curl.Port, "port", "p", 3000, "Port to connect to")
+	curl.cmd.Flags().DurationVar(&curl.Timeout, "timeout", 30*time.Second, "Timeout for the request")
 	curl.cmd.Flags().BoolVar(&curl.Insecure, "insecure", false, "skip TLS certificate verification (for testing only)")
 	rootCmd.AddCommand(curl.cmd)
 	curl.cmd.RunE = curl.RunE
@@ -93,55 +94,37 @@ func (c *CurlCmd) CurlWorkspace(client Client, wsId int, token string, path stri
 		return fmt.Errorf("workspace %d does not have a dev domain configured", wsId)
 	}
 
-	port := 3000
-	if c.Port != nil {
-		port = *c.Port
-	}
-
 	// Use the workspace's dev domain and replace the port if needed
 	// DevDomain format is: {workspace_id}-{port}.{domain}
 	devDomain := *workspace.DevDomain
 	var url string
-	if port != 3000 {
+	if c.Port != 3000 {
 		// Replace the default port (3000) with the custom port in the dev domain
-		url = fmt.Sprintf("https://%d-%d.%s%s", wsId, port, devDomain[strings.Index(devDomain, ".")+1:], path)
+		url = fmt.Sprintf("https://%d-%d.%s%s", wsId, c.Port, devDomain[strings.Index(devDomain, ".")+1:], path)
 	} else {
 		url = fmt.Sprintf("https://%s%s", devDomain, path)
 	}
 
-	fmt.Fprintf(os.Stderr, "Sending request to workspace %d (%s) at %s\n", wsId, workspace.Name, url)
+	log.Printf("Sending request to workspace %d (%s) at %s\n", wsId, workspace.Name, url)
 
-	timeout := 30 * time.Second
-	if c.Timeout != nil {
-		timeout = *c.Timeout
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	ctx, cancel := context.WithTimeout(context.Background(), c.Timeout)
 	defer cancel()
 
-	// Build curl command
-	cmdArgs := []string{"curl"}
-
-	// Add authentication header
-	cmdArgs = append(cmdArgs, "-H", fmt.Sprintf("x-forward-security: %s", token))
+	// Build curl command with authentication header
+	cmdArgs := []string{"curl", "-H", fmt.Sprintf("x-forward-security: %s", token)}
 
 	// Add insecure flag if specified
 	if c.Insecure {
 		cmdArgs = append(cmdArgs, "-k")
 	}
 
-	// Add user's curl arguments
 	cmdArgs = append(cmdArgs, curlArgs...)
-
-	// Add URL as the last argument
 	cmdArgs = append(cmdArgs, url)
 
-	// Execute curl command
 	err = c.Executor.Execute(ctx, cmdArgs[0], cmdArgs[1:], os.Stdout, os.Stderr)
-	if err != nil {
-		if ctx.Err() == context.DeadlineExceeded {
-			return fmt.Errorf("timeout exceeded while requesting workspace %d", wsId)
-		}
+	if err != nil && err == context.DeadlineExceeded {
+		return fmt.Errorf("timeout exceeded while requesting workspace %d", wsId)
+	} else if err != nil {
 		return fmt.Errorf("curl command failed: %w", err)
 	}
 

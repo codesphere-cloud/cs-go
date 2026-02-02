@@ -44,8 +44,7 @@ var _ = Describe("WakeUp", func() {
 				TeamId: teamId,
 				Name:   "test-workspace",
 			}
-			timeout := 120 * time.Second
-			c.Timeout = &timeout
+			c.Timeout = 120 * time.Second
 
 			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
 			mockClient.EXPECT().WorkspaceStatus(wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)

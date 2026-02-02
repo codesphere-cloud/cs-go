@@ -14,7 +14,7 @@ import (
 type WakeUpCmd struct {
 	cmd     *cobra.Command
 	Opts    GlobalOptions
-	Timeout *time.Duration
+	Timeout time.Duration
 }
 
 func (c *WakeUpCmd) RunE(_ *cobra.Command, args []string) error {
@@ -45,7 +45,7 @@ func AddWakeUpCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 		},
 		Opts: opts,
 	}
-	wakeup.Timeout = wakeup.cmd.Flags().DurationP("timeout", "", 120*time.Second, "Timeout for waking up the workspace")
+	wakeup.cmd.Flags().DurationVar(&wakeup.Timeout, "timeout", 120*time.Second, "Timeout for waking up the workspace")
 	rootCmd.AddCommand(wakeup.cmd)
 	wakeup.cmd.RunE = wakeup.RunE
 }
@@ -81,13 +81,8 @@ func (c *WakeUpCmd) WakeUpWorkspace(client Client, wsId int) error {
 		return fmt.Errorf("failed to scale workspace: %w", err)
 	}
 
-	timeout := 120 * time.Second
-	if c.Timeout != nil {
-		timeout = *c.Timeout
-	}
-
 	fmt.Printf("Waiting for workspace %d to be running...\n", wsId)
-	err = client.WaitForWorkspaceRunning(&workspace, timeout)
+	err = client.WaitForWorkspaceRunning(&workspace, c.Timeout)
 	if err != nil {
 		return fmt.Errorf("workspace did not become running: %w", err)
 	}

@@ -5,6 +5,7 @@ package cmd_test
 
 import (
 	"fmt"
+	"time"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -39,7 +40,8 @@ var _ = Describe("Curl", func() {
 				Env:         mockEnv,
 				WorkspaceId: &wsId,
 			},
-			Port:     &port,
+			Port:     port,
+			Timeout:  30 * time.Second,
 			Executor: mockExecutor,
 		}
 	})
@@ -86,8 +88,7 @@ var _ = Describe("Curl", func() {
 		})
 
 		It("should construct the correct URL with custom port", func() {
-			customPort := 3001
-			c.Port = &customPort
+			c.Port = 3001
 			devDomain := "42-3000.dev.5.codesphere.com"
 			workspace := api.Workspace{
 				Id:        wsId,
