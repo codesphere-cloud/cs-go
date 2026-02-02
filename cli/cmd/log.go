@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	stdlog "log"
 	"log/slog"
 	"net/http"
 	"strings"
@@ -105,7 +106,7 @@ func (l *LogCmd) RunE(_ *cobra.Command, args []string) (err error) {
 }
 
 func (l *LogCmd) printAllLogs() error {
-	fmt.Println("Printing logs of all replicas")
+	stdlog.Println("Printing logs of all replicas")
 
 	replicas, err := cs.GetPipelineStatus(l.scope.workspaceId, *l.scope.stage)
 	if err != nil {
@@ -124,7 +125,7 @@ func (l *LogCmd) printAllLogs() error {
 				prefix := fmt.Sprintf("|%-10s|%s", replica.Server, replica.Replica[len(replica.Replica)-11:])
 				err = l.printLogsOfReplica(prefix)
 				if err != nil {
-					fmt.Printf("Error printling logs: %s\n", err.Error())
+					stdlog.Printf("Error printling logs: %s\n", err.Error())
 				}
 			}()
 		}
@@ -251,7 +252,7 @@ func printLogsOfEndpoint(prefix string, endpoint string) error {
 		}
 
 		for i := 0; i < len(log); i++ {
-			fmt.Printf("%s%s| %s", log[i].Timestamp, prefix, log[i].Data)
+			stdlog.Printf("%s%s| %s", log[i].Timestamp, prefix, log[i].Data)
 		}
 	}
 }

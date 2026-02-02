@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"slices"
 	"time"
 
@@ -98,11 +99,11 @@ func isValidStage(stage string) bool {
 }
 
 func (c *StartPipelineCmd) startStage(client Client, wsId int, stage string) error {
-	fmt.Printf("starting %s stage on workspace %d...", stage, wsId)
+	log.Printf("starting %s stage on workspace %d...", stage, wsId)
 
 	err := client.StartPipelineStage(wsId, *c.Opts.Profile, stage)
 	if err != nil {
-		fmt.Println()
+		log.Println()
 		return fmt.Errorf("failed to start pipeline stage %s: %w", stage, err)
 	}
 
@@ -121,30 +122,30 @@ func (c *StartPipelineCmd) waitForPipelineStage(client Client, wsId int, stage s
 	for {
 		status, err := client.GetPipelineState(wsId, stage)
 		if err != nil {
-			fmt.Printf("\nError getting pipeline status: %s, trying again...", err.Error())
+			log.Printf("\nError getting pipeline status: %s, trying again...", err.Error())
 			c.Time.Sleep(delay)
 			continue
 		}
 
 		if c.allFinished(status) {
-			fmt.Println("(finished)")
+			log.Println("(finished)")
 			break
 		}
 
 		if allRunning(status) && stage == "run" {
-			fmt.Println("(running)")
+			log.Println("(running)")
 			break
 		}
 
 		err = shouldAbort(status)
 		if err != nil {
-			fmt.Println("(failed)")
+			log.Println("(failed)")
 			return fmt.Errorf("stage %s failed: %w", stage, err)
 		}
 
-		fmt.Print(".")
+		log.Print(".")
 		if c.Time.Now().After(maxWaitTime) {
-			fmt.Println()
+			log.Println()
 			return fmt.Errorf("timed out waiting for pipeline stage %s to be complete", stage)
 		}
 		c.Time.Sleep(delay)

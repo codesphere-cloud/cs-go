@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
@@ -38,7 +39,7 @@ func (c *GitPullCmd) RunE(_ *cobra.Command, args []string) error {
 		return err
 	}
 
-	fmt.Printf("Git pull completed successfully for workspace %d\n", wsId)
+	log.Printf("Git pull completed successfully for workspace %d\n", wsId)
 	return nil
 }
 

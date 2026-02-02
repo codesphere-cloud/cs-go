@@ -5,7 +5,7 @@ package cmd_test
 
 import (
 	"context"
-	"fmt"
+	"log"
 	"time"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -90,7 +90,7 @@ var _ = Describe("Monitor", func() {
 				It("Restarts immediately", func() {
 					mockExec.EXPECT().ExecuteCommand(mock.Anything, mock.Anything).RunAndReturn(
 						func(ctx context.Context, args []string) (int, error) {
-							fmt.Println("lol")
+							log.Println("lol")
 							mockTime.Sleep(300 * time.Millisecond)
 							return 0, nil
 						}).Twice()

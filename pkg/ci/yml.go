@@ -5,6 +5,7 @@ package ci
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/go-git/go-billy/v5"
 	"github.com/go-git/go-billy/v5/util"
@@ -89,7 +90,7 @@ func ReadYmlFile(fs billy.Filesystem, path string) (*CiYml, error) {
 			}}
 			service.Network.Path = ""
 			ymlContent.Run[serviceName] = service
-			fmt.Printf("Updated old service %s: %v\n", serviceName, service)
+			log.Printf("Updated old service %s: %v\n", serviceName, service)
 		}
 	}
 

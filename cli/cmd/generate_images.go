@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"path"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
@@ -34,10 +35,10 @@ func (c *GenerateImagesCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to generate images: %w", err)
 	}
 
-	fmt.Println("Images created:")
-	fmt.Printf("Container images from %s pushed to %s\n", c.Opts.Input, c.Opts.Registry)
-	fmt.Println("To generate kubernetes artifacts next, run:")
-	fmt.Printf("%s generate kubernetes --reporoot %s -r %s -p %s -i %s -o %s", io.BinName(), c.Opts.RepoRoot, c.Opts.Registry, c.Opts.ImagePrefix, c.Opts.Input, c.Opts.Output)
+	log.Println("Images created:")
+	log.Printf("Container images from %s pushed to %s\n", c.Opts.Input, c.Opts.Registry)
+	log.Println("To generate kubernetes artifacts next, run:")
+	log.Printf("%s generate kubernetes --reporoot %s -r %s -p %s -i %s -o %s", io.BinName(), c.Opts.RepoRoot, c.Opts.Registry, c.Opts.ImagePrefix, c.Opts.Input, c.Opts.Output)
 
 	return nil
 }

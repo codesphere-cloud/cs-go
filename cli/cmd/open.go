@@ -4,7 +4,7 @@
 package cmd
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 
@@ -16,7 +16,7 @@ type OpenCmd struct {
 }
 
 func (c *OpenCmd) RunE(_ *cobra.Command, args []string) error {
-	fmt.Println("Opening Codesphere IDE")
+	log.Println("Opening Codesphere IDE")
 	return cs.NewBrowser().OpenIde("")
 }
 

@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"os/exec"
@@ -57,7 +58,7 @@ var _ = Describe("cs monitor", func() {
 
 	AfterEach(func() {
 		if monitorCmdProcess != nil && monitorCmdProcess.Process != nil {
-			fmt.Printf("Terminating monitor process (PID: %d). Output:\n%s\n", monitorCmdProcess.Process.Pid, monitorOutputBuf.String())
+			log.Printf("Terminating monitor process (PID: %d). Output:\n%s\n", monitorCmdProcess.Process.Pid, monitorOutputBuf.String())
 			_ = monitorCmdProcess.Process.Kill()
 			_, _ = monitorCmdProcess.Process.Wait()
 		}
@@ -68,7 +69,7 @@ var _ = Describe("cs monitor", func() {
 	Context("Healthcheck forwarding", func() {
 		AfterEach(func() {
 			if targetServer != nil {
-				fmt.Printf("Terminating HTTP(S) server. Output:\n%s\n", targetServerOutputBuf.String())
+				log.Printf("Terminating HTTP(S) server. Output:\n%s\n", targetServerOutputBuf.String())
 				shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 1*time.Second)
 				defer shutdownCancel()
 				_ = targetServer.Shutdown(shutdownCtx)
@@ -81,7 +82,7 @@ var _ = Describe("cs monitor", func() {
 			targetServer, err = intutil.StartTestHttpServer(targetServerPort)
 			Expect(err).NotTo(HaveOccurred())
 			intutil.WaitForPort(fmt.Sprintf("127.0.0.1:%d", targetServerPort), 10*time.Second)
-			fmt.Printf("Go HTTPS server started on port %d.\n", targetServerPort)
+			log.Printf("Go HTTPS server started on port %d.\n", targetServerPort)
 
 			By("Running 'cs monitor' command with --forward and --insecure-skip-verify")
 			intutil.RunCommandInBackground(monitorOutputBuf,
@@ -102,7 +103,7 @@ var _ = Describe("cs monitor", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(bodyBytes)).To(Equal("OK (HTTP)"))
 
-			fmt.Printf("Monitor output after request:\n%s\n", monitorOutputBuf.String())
+			log.Printf("Monitor output after request:\n%s\n", monitorOutputBuf.String())
 		})
 
 		It("should start a Go HTTPS server with generated certs, run monitor with --insecure-skip-verify, and proxy successfully", func() {
@@ -122,7 +123,7 @@ var _ = Describe("cs monitor", func() {
 			targetServer, err = intutil.StartTestHttpsServer(targetServerPort, serverCertPath, serverKeyPath)
 			Expect(err).NotTo(HaveOccurred())
 			intutil.WaitForPort(fmt.Sprintf("127.0.0.1:%d", targetServerPort), 10*time.Second)
-			fmt.Printf("Go HTTPS server started on port %d.\n", targetServerPort)
+			log.Printf("Go HTTPS server started on port %d.\n", targetServerPort)
 
 			By("Running 'cs monitor' command with --forward and --insecure-skip-verify")
 			intutil.RunCommandInBackground(monitorOutputBuf,
@@ -144,7 +145,7 @@ var _ = Describe("cs monitor", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(bodyBytes)).To(Equal("OK (HTTPS)"))
 
-			fmt.Printf("Monitor output after request:\n%s\n", monitorOutputBuf.String())
+			log.Printf("Monitor output after request:\n%s\n", monitorOutputBuf.String())
 		})
 
 		It("should get an error for an invalid HTTPS certificate without --insecure-skip-verify or --ca-cert-file", func() {
@@ -164,7 +165,7 @@ var _ = Describe("cs monitor", func() {
 			targetServer, err = intutil.StartTestHttpsServer(targetServerPort, serverCertPath, serverKeyPath)
 			Expect(err).NotTo(HaveOccurred())
 			intutil.WaitForPort(fmt.Sprintf("127.0.0.1:%d", targetServerPort), 10*time.Second)
-			fmt.Printf("Go HTTPS server started on port %d.\n", targetServerPort)
+			log.Printf("Go HTTPS server started on port %d.\n", targetServerPort)
 
 			By("Running 'cs monitor' command without TLS bypass/trust")
 			intutil.RunCommandInBackground(
@@ -176,7 +177,7 @@ var _ = Describe("cs monitor", func() {
 			)
 
 			intutil.WaitForPort(fmt.Sprintf("127.0.0.1:%d", monitorListenPort), 10*time.Second)
-			fmt.Printf("Monitor command started on port %d. Initial output:\n%s\n", monitorListenPort, monitorOutputBuf.String())
+			log.Printf("Monitor command started on port %d. Initial output:\n%s\n", monitorListenPort, monitorOutputBuf.String())
 
 			By("Making request to monitor proxy and expecting a Bad Gateway error")
 			resp, err := testHttpClient.Get(fmt.Sprintf("http://127.0.0.1:%d/", monitorListenPort))
@@ -189,7 +190,7 @@ var _ = Describe("cs monitor", func() {
 			Expect(string(bodyBytes)).To(ContainSubstring("Error forwarding request"))
 			Expect(string(bodyBytes)).To(ContainSubstring("tls: failed to verify certificate"))
 
-			fmt.Printf("Monitor output after request:\n%s\n", monitorOutputBuf.String())
+			log.Printf("Monitor output after request:\n%s\n", monitorOutputBuf.String())
 		})
 
 		It("should forward to an HTTPS target with --ca-cert-file and return 200 OK", func() {
@@ -209,7 +210,7 @@ var _ = Describe("cs monitor", func() {
 			targetServer, err = intutil.StartTestHttpsServer(targetServerPort, serverCertPath, serverKeyPath)
 			Expect(err).NotTo(HaveOccurred())
 			intutil.WaitForPort(fmt.Sprintf("127.0.0.1:%d", targetServerPort), 10*time.Second)
-			fmt.Printf("Go HTTPS server started on port %d.\n", targetServerPort)
+			log.Printf("Go HTTPS server started on port %d.\n", targetServerPort)
 
 			By("Running 'cs monitor' command with --ca-cert-file")
 			intutil.RunCommandInBackground(monitorOutputBuf,
@@ -221,7 +222,7 @@ var _ = Describe("cs monitor", func() {
 				"sleep", "60s",
 			)
 			intutil.WaitForPort(fmt.Sprintf("127.0.0.1:%d", monitorListenPort), 10*time.Second)
-			fmt.Printf("Monitor command started on port %d. Initial output:\n%s\n", monitorListenPort, monitorOutputBuf.String())
+			log.Printf("Monitor command started on port %d. Initial output:\n%s\n", monitorListenPort, monitorOutputBuf.String())
 
 			By("Making request to monitor proxy to verify successful forwarding")
 			resp, err := testHttpClient.Get(fmt.Sprintf("http://127.0.0.1:%d/", monitorListenPort))
@@ -233,7 +234,7 @@ var _ = Describe("cs monitor", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(bodyBytes)).To(Equal("OK (HTTPS)"))
 
-			fmt.Printf("Monitor output after request:\n%s\n", monitorOutputBuf.String())
+			log.Printf("Monitor output after request:\n%s\n", monitorOutputBuf.String())
 		})
 	})
 
@@ -246,7 +247,7 @@ var _ = Describe("cs monitor", func() {
 				"--", "sleep", "60s",
 			)
 			intutil.WaitForPort(fmt.Sprintf("127.0.0.1:%d", monitorListenPort), 10*time.Second)
-			fmt.Printf("Monitor command started on port %d. Initial output:\n%s\n", monitorListenPort, monitorOutputBuf.String())
+			log.Printf("Monitor command started on port %d. Initial output:\n%s\n", monitorListenPort, monitorOutputBuf.String())
 
 			By("Making a request to the monitor's metrics endpoint")
 			resp, err := testHttpClient.Get(fmt.Sprintf("http://127.0.0.1:%d/metrics", monitorListenPort))
@@ -257,7 +258,7 @@ var _ = Describe("cs monitor", func() {
 			bodyBytes, err := io.ReadAll(resp.Body)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(bodyBytes)).To(ContainSubstring("cs_monitor_restarts_total"))
-			fmt.Printf("Monitor output after metrics request:\n%s\n", monitorOutputBuf.String())
+			log.Printf("Monitor output after metrics request:\n%s\n", monitorOutputBuf.String())
 		})
 
 		It("should redirect root to /metrics", func() {
@@ -268,7 +269,7 @@ var _ = Describe("cs monitor", func() {
 				"--", "sleep", "60s",
 			)
 			intutil.WaitForPort(fmt.Sprintf("127.0.0.1:%d", monitorListenPort), 10*time.Second)
-			fmt.Printf("Monitor command started on port %d. Initial output:\n%s\n", monitorListenPort, monitorOutputBuf.String())
+			log.Printf("Monitor command started on port %d. Initial output:\n%s\n", monitorListenPort, monitorOutputBuf.String())
 
 			By("Making a request to the monitor's root endpoint and expecting a redirect")
 			client := &http.Client{
@@ -283,7 +284,7 @@ var _ = Describe("cs monitor", func() {
 
 			Expect(resp.StatusCode).To(Equal(http.StatusMovedPermanently))
 			Expect(resp.Header.Get("Location")).To(Equal("/metrics"))
-			fmt.Printf("Monitor output after redirect request:\n%s\n", monitorOutputBuf.String())
+			log.Printf("Monitor output after redirect request:\n%s\n", monitorOutputBuf.String())
 		})
 	})
 
@@ -377,7 +378,7 @@ var _ = Describe("Open Workspace Integration Tests", func() {
 				"-p", "8",
 				"--timeout", "15m",
 			)
-			fmt.Printf("Create workspace output: %s\n", output)
+			log.Printf("Create workspace output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("Workspace created"))
 			workspaceId = intutil.ExtractWorkspaceId(output)
@@ -390,7 +391,7 @@ var _ = Describe("Open Workspace Integration Tests", func() {
 				"open", "workspace",
 				"-w", workspaceId,
 			)
-			fmt.Printf("Open workspace output: %s\n", output)
+			log.Printf("Open workspace output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("Opening workspace"))
 			Expect(output).To(ContainSubstring(workspaceId))
@@ -407,7 +408,7 @@ var _ = Describe("Open Workspace Integration Tests", func() {
 			output, exitCode := intutil.RunCommandWithExitCode(
 				"open", "workspace",
 			)
-			fmt.Printf("Open without workspace ID output: %s (exit code: %d)\n", output, exitCode)
+			log.Printf("Open without workspace ID output: %s (exit code: %d)\n", output, exitCode)
 			Expect(exitCode).NotTo(Equal(0))
 			Expect(output).To(Or(
 				ContainSubstring("workspace"),
@@ -447,7 +448,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 				"-p", "8",
 				"--timeout", "15m",
 			)
-			fmt.Printf("Create workspace with long name output: %s\n", output)
+			log.Printf("Create workspace with long name output: %s\n", output)
 
 			if output != "" && !strings.Contains(output, "error") {
 				Expect(output).To(ContainSubstring("Workspace created"))
@@ -463,7 +464,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 				"-p", "8",
 				"--timeout", "1s",
 			)
-			fmt.Printf("Create with short timeout output: %s (exit code: %d)\n", output, exitCode)
+			log.Printf("Create with short timeout output: %s (exit code: %d)\n", output, exitCode)
 
 			if exitCode != 0 {
 				Expect(output).To(Or(
@@ -498,7 +499,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 				"--",
 				"sh", "-c", "echo test1 && echo test2",
 			)
-			fmt.Printf("Exec with multiple args output: %s\n", output)
+			log.Printf("Exec with multiple args output: %s\n", output)
 			Expect(output).To(ContainSubstring("test1"))
 			Expect(output).To(ContainSubstring("test2"))
 		})
@@ -511,7 +512,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 				"--",
 				"sh", "-c", "echo error message >&2",
 			)
-			fmt.Printf("Exec with stderr output: %s\n", output)
+			log.Printf("Exec with stderr output: %s\n", output)
 			Expect(output).To(ContainSubstring("error message"))
 		})
 
@@ -523,7 +524,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 				"--",
 				"sh", "-c", "exit 42",
 			)
-			fmt.Printf("Exec with exit code output: %s (exit code: %d)\n", output, exitCode)
+			log.Printf("Exec with exit code output: %s (exit code: %d)\n", output, exitCode)
 		})
 
 		It("should execute long-running commands", func() {
@@ -534,7 +535,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 				"--",
 				"sh", "-c", "sleep 2 && echo completed",
 			)
-			fmt.Printf("Exec long-running command output: %s\n", output)
+			log.Printf("Exec long-running command output: %s\n", output)
 			Expect(output).To(ContainSubstring("completed"))
 		})
 	})
@@ -558,7 +559,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 				"-w", workspaceId,
 				"--yes",
 			)
-			fmt.Printf("Delete with confirmation output: %s\n", output)
+			log.Printf("Delete with confirmation output: %s\n", output)
 			Expect(output).To(ContainSubstring("deleted"))
 			workspaceId = ""
 		})
@@ -587,7 +588,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 				"-w", tempWsId,
 				"--yes",
 			)
-			fmt.Printf("Delete already deleted workspace output: %s (exit code: %d)\n", output, exitCode)
+			log.Printf("Delete already deleted workspace output: %s (exit code: %d)\n", output, exitCode)
 			Expect(exitCode).NotTo(Equal(0))
 			Expect(output).To(Or(
 				ContainSubstring("error"),
@@ -603,7 +604,7 @@ var _ = Describe("Version and Help Tests", func() {
 		It("should display version information", func() {
 			By("Running version command")
 			output := intutil.RunCommand("version")
-			fmt.Printf("Version output: %s\n", output)
+			log.Printf("Version output: %s\n", output)
 
 			Expect(output).To(Or(
 				ContainSubstring("version"),
@@ -617,7 +618,7 @@ var _ = Describe("Version and Help Tests", func() {
 		It("should display main help", func() {
 			By("Running help command")
 			output := intutil.RunCommand("--help")
-			fmt.Printf("Help output length: %d\n", len(output))
+			log.Printf("Help output length: %d\n", len(output))
 
 			Expect(output).To(ContainSubstring("Usage:"))
 			Expect(output).To(ContainSubstring("Available Commands:"))
@@ -649,7 +650,7 @@ var _ = Describe("Version and Help Tests", func() {
 		It("should handle unknown commands gracefully", func() {
 			By("Running unknown command")
 			output, exitCode := intutil.RunCommandWithExitCode("unknowncommand")
-			fmt.Printf("Unknown command output: %s (exit code: %d)\n", output, exitCode)
+			log.Printf("Unknown command output: %s (exit code: %d)\n", output, exitCode)
 
 			Expect(exitCode).NotTo(Equal(0))
 			Expect(output).To(Or(
@@ -661,7 +662,7 @@ var _ = Describe("Version and Help Tests", func() {
 		It("should suggest similar commands for typos", func() {
 			By("Running misspelled command")
 			output, exitCode := intutil.RunCommandWithExitCode("listt")
-			fmt.Printf("Typo command output: %s (exit code: %d)\n", output, exitCode)
+			log.Printf("Typo command output: %s (exit code: %d)\n", output, exitCode)
 
 			Expect(exitCode).NotTo(Equal(0))
 			lowerOutput := strings.ToLower(output)
@@ -710,7 +711,7 @@ var _ = Describe("List Command Tests", func() {
 		It("should list all workspaces in team with proper formatting", func() {
 			By("Listing workspaces")
 			output := intutil.RunCommand("list", "workspaces", "-t", teamId)
-			fmt.Printf("List workspaces output length: %d\n", len(output))
+			log.Printf("List workspaces output length: %d\n", len(output))
 
 			Expect(output).To(ContainSubstring("TEAM ID"))
 			Expect(output).To(ContainSubstring("ID"))
@@ -722,7 +723,7 @@ var _ = Describe("List Command Tests", func() {
 		It("should list all available plans", func() {
 			By("Listing plans")
 			output := intutil.RunCommand("list", "plans")
-			fmt.Printf("List plans output: %s\n", output)
+			log.Printf("List plans output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("ID"))
 			Expect(output).To(ContainSubstring("NAME"))
@@ -735,7 +736,7 @@ var _ = Describe("List Command Tests", func() {
 		It("should show plan details like CPU and RAM", func() {
 			By("Listing plans with details")
 			output := intutil.RunCommand("list", "plans")
-			fmt.Printf("Plan details output length: %d\n", len(output))
+			log.Printf("Plan details output length: %d\n", len(output))
 
 			Expect(output).To(ContainSubstring("CPU"))
 			Expect(output).To(ContainSubstring("RAM"))
@@ -746,7 +747,7 @@ var _ = Describe("List Command Tests", func() {
 		It("should list available base images", func() {
 			By("Listing base images")
 			output := intutil.RunCommand("list", "baseimages")
-			fmt.Printf("List baseimages output: %s\n", output)
+			log.Printf("List baseimages output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("ID"))
 			Expect(output).To(ContainSubstring("NAME"))
@@ -764,7 +765,7 @@ var _ = Describe("List Command Tests", func() {
 		It("should list teams user has access to", func() {
 			By("Listing teams")
 			output := intutil.RunCommand("list", "teams")
-			fmt.Printf("List teams output: %s\n", output)
+			log.Printf("List teams output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("ID"))
 			Expect(output).To(ContainSubstring("NAME"))
@@ -787,7 +788,7 @@ var _ = Describe("List Command Tests", func() {
 		It("should handle missing or invalid list subcommand", func() {
 			By("Running list without subcommand")
 			output, exitCode := intutil.RunCommandWithExitCode("list")
-			fmt.Printf("List without subcommand output: %s (exit code: %d)\n", output, exitCode)
+			log.Printf("List without subcommand output: %s (exit code: %d)\n", output, exitCode)
 			Expect(output).To(Or(
 				ContainSubstring("Available Commands:"),
 				ContainSubstring("Usage:"),
@@ -795,7 +796,7 @@ var _ = Describe("List Command Tests", func() {
 
 			By("Running list with invalid subcommand")
 			output, _ = intutil.RunCommandWithExitCode("list", "invalid")
-			fmt.Printf("List invalid output (first 200 chars): %s\n", output[:min(200, len(output))])
+			log.Printf("List invalid output (first 200 chars): %s\n", output[:min(200, len(output))])
 			Expect(output).To(Or(
 				ContainSubstring("Available Commands:"),
 				ContainSubstring("Usage:"),
@@ -827,7 +828,7 @@ var _ = Describe("Command Error Handling Tests", func() {
 		for _, tc := range testCases {
 			By(fmt.Sprintf("Testing %s with non-existent workspace", tc.commandName))
 			output, exitCode := intutil.RunCommandWithExitCode(tc.args...)
-			fmt.Printf("%s non-existent workspace output: %s (exit code: %d)\n", tc.commandName, output, exitCode)
+			log.Printf("%s non-existent workspace output: %s (exit code: %d)\n", tc.commandName, output, exitCode)
 			Expect(exitCode).NotTo(Equal(0))
 		}
 	})
@@ -873,7 +874,7 @@ var _ = Describe("Log Command Integration Tests", func() {
 				"log",
 				"-w", workspaceId,
 			)
-			fmt.Printf("Log command output (first 500 chars): %s... (exit code: %d)\n",
+			log.Printf("Log command output (first 500 chars): %s... (exit code: %d)\n",
 				output[:min(500, len(output))], exitCode)
 
 			Expect(exitCode).To(Or(Equal(0), Equal(1)))
@@ -921,7 +922,7 @@ var _ = Describe("Start Pipeline Integration Tests", func() {
 				"start", "pipeline",
 				"-w", workspaceId,
 			)
-			fmt.Printf("Start pipeline output: %s (exit code: %d)\n", output, exitCode)
+			log.Printf("Start pipeline output: %s (exit code: %d)\n", output, exitCode)
 
 			Expect(output).NotTo(BeEmpty())
 		})
@@ -968,7 +969,7 @@ var _ = Describe("Git Pull Integration Tests", func() {
 				"git", "pull",
 				"-w", workspaceId,
 			)
-			fmt.Printf("Git pull output: %s (exit code: %d)\n", output, exitCode)
+			log.Printf("Git pull output: %s (exit code: %d)\n", output, exitCode)
 
 			Expect(output).NotTo(BeEmpty())
 		})
@@ -991,7 +992,7 @@ var _ = Describe("Command Error Handling Tests", func() {
 		for _, tc := range testCases {
 			By(fmt.Sprintf("Testing %s with non-existent workspace", tc.commandName))
 			output, exitCode := intutil.RunCommandWithExitCode(tc.args...)
-			fmt.Printf("%s non-existent workspace output: %s (exit code: %d)\n", tc.commandName, output, exitCode)
+			log.Printf("%s non-existent workspace output: %s (exit code: %d)\n", tc.commandName, output, exitCode)
 			Expect(exitCode).NotTo(Equal(0))
 		}
 	})
