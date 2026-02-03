@@ -7,6 +7,7 @@ import (
 	"bytes"
 	_ "embed"
 	"fmt"
+	"log"
 	"regexp"
 	"strings"
 	"text/template"
@@ -39,11 +40,11 @@ func CreateDockerfile(config DockerTemplateConfig) ([]byte, error) {
 	fedoraRe := regexp.MustCompile(".*(fedora)|(coreos)|(rhel).*")
 	if alpineRe.MatchString(config.BaseImage) {
 		templ = dockerAlpineTemplateFile
-		fmt.Println("Alpine found in " + config.BaseImage)
+		log.Println("Alpine found in " + config.BaseImage)
 	}
 	if fedoraRe.MatchString(config.BaseImage) {
 		templ = dockerFedoraTemplateFile
-		fmt.Println("Fedora found in " + config.BaseImage)
+		log.Println("Fedora found in " + config.BaseImage)
 	}
 	dockerTemplate, err := template.New("dockerTemplate").Parse(templ)
 	if err != nil {

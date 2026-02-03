@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"log"
 	"net/url"
 	"path/filepath"
 
@@ -78,7 +79,7 @@ func (e *ExporterService) ExportDockerArtifacts() error {
 
 	// Create Dockerfiles and entrypoints for each service
 	for serviceName, service := range e.ymlContent.Run {
-		fmt.Printf("Creating dockerfile and entrypoint for service %s\n", serviceName)
+		log.Printf("Creating dockerfile and entrypoint for service %s\n", serviceName)
 
 		configDocker := templates.DockerTemplateConfig{
 			BaseImage:    e.baseImage,
@@ -89,9 +90,9 @@ func (e *ExporterService) ExportDockerArtifacts() error {
 		if err != nil {
 			return fmt.Errorf("error creating dockerfile for service %s: %w", serviceName, err)
 		}
-		fmt.Println(e.outputPath)
-		fmt.Println(e.GetExportDir())
-		fmt.Println(filepath.Join(e.GetExportDir(), serviceName))
+		log.Println(e.outputPath)
+		log.Println(e.GetExportDir())
+		log.Println(filepath.Join(e.GetExportDir(), serviceName))
 		err = e.fs.WriteFile(filepath.Join(e.GetExportDir(), serviceName), "Dockerfile", dockerfile, e.force)
 		if err != nil {
 			return fmt.Errorf("error writing dockerfile for service %s: %w", serviceName, err)
@@ -110,7 +111,7 @@ func (e *ExporterService) ExportDockerArtifacts() error {
 		}
 	}
 
-	fmt.Printf("Creating nginx config file and nginx dockerfile\n")
+	log.Printf("Creating nginx config file and nginx dockerfile\n")
 	// Create nginx config
 	configNginx := templates.NginxConfigTemplateConfig{
 		Services: e.ymlContent.Run,
@@ -132,7 +133,7 @@ func (e *ExporterService) ExportDockerArtifacts() error {
 	}
 
 	// Create docker-compose file
-	fmt.Printf("Creating docker-compose file\n")
+	log.Printf("Creating docker-compose file\n")
 
 	configDockerCompose := templates.DockerComposeTemplateConfig{
 		Services: e.ymlContent.Run,
@@ -159,7 +160,7 @@ func (e *ExporterService) ExportKubernetesArtifacts(registry string, imagePrefix
 
 	// Create deployment and service for each service
 	for serviceName, service := range e.ymlContent.Run {
-		fmt.Printf("Creating deployment for service %s\n", serviceName)
+		log.Printf("Creating deployment for service %s\n", serviceName)
 
 		tag, err := e.CreateImageTag(registry, imagePrefix, serviceName)
 		if err != nil {
@@ -219,13 +220,13 @@ func (e *ExporterService) ExportImages(ctx context.Context, registry string, ima
 		}
 
 		servicePath := filepath.Join(e.GetExportDir(), serviceName)
-		fmt.Printf("Building image in %v\n", servicePath)
+		log.Printf("Building image in %v\n", servicePath)
 		err = BuildImage(ctx, filepath.Join(e.outputPath, serviceName, "Dockerfile"), tag, e.repoRoot)
 		if err != nil {
 			return fmt.Errorf("error building %v image: %s", serviceName, err)
 		}
 
-		fmt.Printf("Pushing image %s\n", tag)
+		log.Printf("Pushing image %s\n", tag)
 		err = PushImage(ctx, tag)
 		if err != nil {
 			return fmt.Errorf("error pushing %v image: %s", serviceName, err)
@@ -238,7 +239,7 @@ func (e *ExporterService) ExportImages(ctx context.Context, registry string, ima
 // CreateImageTag creates a Docker image tag from the registry, image prefix and service name.
 // It returns the full image tag in the format: <registry>/<imagePrefix>-<serviceName>:latest.
 func (e *ExporterService) CreateImageTag(registry string, imagePrefix string, serviceName string) (string, error) {
-	fmt.Println(imagePrefix)
+	log.Println(imagePrefix)
 	if imagePrefix == "" {
 		tag, err := url.JoinPath(registry, fmt.Sprintf("%s:latest", serviceName))
 		if err != nil {

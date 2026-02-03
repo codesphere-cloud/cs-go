@@ -6,6 +6,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"log"
 
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
@@ -65,7 +66,7 @@ func (c *DeleteWorkspaceCmd) DeleteWorkspace(client Client, wsId int) error {
 	}
 
 	if !*c.Opts.Confirmed {
-		fmt.Printf("Please confirm deletion of workspace '%s', ID %d, in team %d by entering its name:\n", workspace.Name, workspace.Id, workspace.TeamId)
+		log.Printf("Please confirm deletion of workspace '%s', ID %d, in team %d by entering its name:\n", workspace.Name, workspace.Id, workspace.TeamId)
 		confirmation := c.Prompt.InputPrompt("Confirmation delete")
 
 		if confirmation != workspace.Name {
@@ -78,6 +79,6 @@ func (c *DeleteWorkspaceCmd) DeleteWorkspace(client Client, wsId int) error {
 		return err
 	}
 
-	fmt.Printf("Workspace %d deleted successfully\n", wsId)
+	log.Printf("Workspace %d deleted successfully\n", wsId)
 	return nil
 }

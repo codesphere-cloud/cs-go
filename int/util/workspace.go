@@ -5,7 +5,7 @@ package util
 
 import (
 	"bytes"
-	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"regexp"
@@ -82,9 +82,9 @@ func CleanupWorkspace(workspaceId string) {
 
 	output, exitCode := RunCommandWithExitCode("delete", "workspace", "-w", workspaceId, "--yes")
 	if exitCode != 0 {
-		fmt.Printf("Warning: Failed to cleanup workspace %s (exit code %d): %s\n", workspaceId, exitCode, output)
+		log.Printf("Warning: Failed to cleanup workspace %s (exit code %d): %s\n", workspaceId, exitCode, output)
 	} else {
-		fmt.Printf("Cleanup workspace %s: success\n", workspaceId)
+		log.Printf("Cleanup workspace %s: success\n", workspaceId)
 	}
 }
 
@@ -139,9 +139,9 @@ func CleanupTeam(teamId string) {
 
 	output, exitCode := RunCommandWithExitCode("delete", "team", "-t", teamId, "--force")
 	if exitCode != 0 {
-		fmt.Printf("Warning: Failed to cleanup team %s (exit code %d): %s\n", teamId, exitCode, output)
+		log.Printf("Warning: Failed to cleanup team %s (exit code %d): %s\n", teamId, exitCode, output)
 	} else {
-		fmt.Printf("Cleanup team %s: %s\n", teamId, output)
+		log.Printf("Cleanup team %s: %s\n", teamId, output)
 	}
 }
 
@@ -159,7 +159,7 @@ func CleanupAllWorkspacesInTeam(teamId string, namePrefix string) {
 			matches := re.FindStringSubmatch(line)
 			if len(matches) >= 2 {
 				workspaceId := matches[1]
-				fmt.Printf("Found orphaned workspace %s with prefix %s, cleaning up...\n", workspaceId, namePrefix)
+				log.Printf("Found orphaned workspace %s with prefix %s, cleaning up...\n", workspaceId, namePrefix)
 				CleanupWorkspace(workspaceId)
 			}
 		}

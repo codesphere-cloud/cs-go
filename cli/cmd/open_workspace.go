@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
@@ -57,7 +58,7 @@ func (cmd *OpenWorkspaceCmd) OpenWorkspace(browser Browser, client Client, wsId 
 		return fmt.Errorf("failed to get workspace: %w", err)
 	}
 
-	fmt.Printf("Opening workspace %d in Codesphere IDE\n", wsId)
+	log.Printf("Opening workspace %d in Codesphere IDE\n", wsId)
 
 	err = browser.OpenIde(fmt.Sprintf("teams/%d/workspaces/%d", workspace.TeamId, wsId))
 	if err != nil {
