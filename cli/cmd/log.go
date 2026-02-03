@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	stdlog "log"
+	"log"
 	"log/slog"
 	"net/http"
 	"strings"
@@ -106,7 +106,7 @@ func (l *LogCmd) RunE(_ *cobra.Command, args []string) (err error) {
 }
 
 func (l *LogCmd) printAllLogs() error {
-	stdlog.Println("Printing logs of all replicas")
+	log.Println("Printing logs of all replicas")
 
 	replicas, err := cs.GetPipelineStatus(l.scope.workspaceId, *l.scope.stage)
 	if err != nil {
@@ -125,7 +125,7 @@ func (l *LogCmd) printAllLogs() error {
 				prefix := fmt.Sprintf("|%-10s|%s", replica.Server, replica.Replica[len(replica.Replica)-11:])
 				err = l.printLogsOfReplica(prefix)
 				if err != nil {
-					stdlog.Printf("Error printling logs: %s\n", err.Error())
+					log.Printf("Error printling logs: %s\n", err.Error())
 				}
 			}()
 		}
@@ -237,8 +237,8 @@ func printLogsOfEndpoint(prefix string, endpoint string) error {
 				break
 			}
 		} // end SSE parsing
-		var log []LogEntry
-		err := json.Unmarshal([]byte(sse.data), &log)
+		var logEntries []LogEntry
+		err := json.Unmarshal([]byte(sse.data), &logEntries)
 		if err != nil {
 			var errRes errors.APIErrorResponse
 			err = json.Unmarshal([]byte(sse.data), &errRes)
@@ -251,8 +251,8 @@ func printLogsOfEndpoint(prefix string, endpoint string) error {
 			)
 		}
 
-		for i := 0; i < len(log); i++ {
-			stdlog.Printf("%s%s| %s", log[i].Timestamp, prefix, log[i].Data)
+		for i := 0; i < len(logEntries); i++ {
+			log.Printf("%s%s| %s", logEntries[i].Timestamp, prefix, logEntries[i].Data)
 		}
 	}
 }
