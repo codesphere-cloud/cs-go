@@ -6,6 +6,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"log"
 	"path"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
@@ -37,8 +38,8 @@ func (c *GenerateKubernetesCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to generate kubernetes: %w", err)
 	}
 
-	fmt.Println("Kubernetes artifacts export successful. You can apply the resources with the following command:")
-	fmt.Printf("kubectl apply -f %s\n", path.Join(c.Opts.RepoRoot, c.Opts.Output, "kubernetes"))
+	log.Println("Kubernetes artifacts export successful. You can apply the resources with the following command:")
+	log.Printf("kubectl apply -f %s\n", path.Join(c.Opts.RepoRoot, c.Opts.Output, "kubernetes"))
 	return nil
 }
 

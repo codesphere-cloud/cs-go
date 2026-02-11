@@ -6,6 +6,7 @@ package io
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"regexp"
@@ -59,7 +60,7 @@ type Prompt struct{}
 func (p *Prompt) InputPrompt(prompt string) string {
 	r := bufio.NewReader(os.Stdin)
 	for {
-		fmt.Printf("%s: ", prompt)
+		log.Printf("%s: ", prompt)
 		input, err := r.ReadString('\n')
 		input = strings.TrimSpace(input)
 		if input != "" || err != nil {
@@ -94,12 +95,12 @@ func (*RealHttpServer) ListenAndServe(addr string, handler http.Handler) error {
 
 func Verbosef(verbose bool, format string, args ...interface{}) {
 	if verbose {
-		fmt.Printf(format, args...)
+		log.Printf(format, args...)
 	}
 }
 
 func Verboseln(verbose bool, output ...interface{}) {
 	if verbose {
-		fmt.Println(output...)
+		log.Println(output...)
 	}
 }

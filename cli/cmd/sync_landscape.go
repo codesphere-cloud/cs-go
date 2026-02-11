@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 
@@ -59,7 +60,7 @@ func (c *SyncLandscapeCmd) SyncLandscape(client Client, wsId int) error {
 		return err
 	}
 
-	fmt.Printf("Landscape synced successfully for workspace %d\n", wsId)
+	log.Printf("Landscape synced successfully for workspace %d\n", wsId)
 	return nil
 	//TODO: Wait for deployment to be synced if possible
 }

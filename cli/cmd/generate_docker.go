@@ -6,6 +6,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"log"
 	"path"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
@@ -27,7 +28,7 @@ type GenerateDockerOpts struct {
 }
 
 func (c *GenerateDockerCmd) RunE(cc *cobra.Command, args []string) error {
-	fmt.Println(c.Opts.Force)
+	log.Println(c.Opts.Force)
 	fs := cs.NewOSFileSystem(".")
 	git := git.NewGitService(fs)
 
@@ -41,17 +42,17 @@ func (c *GenerateDockerCmd) RunE(cc *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to generate docker: %w", err)
 	}
 
-	fmt.Println("docker artifacts created:")
-	fmt.Printf("Input: %s\n", c.Opts.Input)
-	fmt.Printf("Output: %s\n", c.Opts.Output)
+	log.Println("docker artifacts created:")
+	log.Printf("Input: %s\n", c.Opts.Input)
+	log.Printf("Output: %s\n", c.Opts.Output)
 
-	fmt.Println("To start with docker-compose, run:")
-	fmt.Printf("cd %s && docker compose up\n\n", c.Opts.Output)
+	log.Println("To start with docker-compose, run:")
+	log.Printf("cd %s && docker compose up\n\n", c.Opts.Output)
 
-	fmt.Println("To build and push images, run:")
-	fmt.Println("export REGISTRY=<your-registry>")
-	fmt.Println("export IMAGE_PREFIX=<some-prefix>")
-	fmt.Printf("%s generate images --reporoot %s -r $REGISTRY -p $IMAGE_PREFIX -i %s -o %s\n\n", io.BinName(), c.Opts.RepoRoot, c.Opts.Input, c.Opts.Output)
+	log.Println("To build and push images, run:")
+	log.Println("export REGISTRY=<your-registry>")
+	log.Println("export IMAGE_PREFIX=<some-prefix>")
+	log.Printf("%s generate images --reporoot %s -r $REGISTRY -p $IMAGE_PREFIX -i %s -o %s\n\n", io.BinName(), c.Opts.RepoRoot, c.Opts.Input, c.Opts.Output)
 
 	return nil
 }
@@ -101,7 +102,7 @@ func (c *GenerateDockerCmd) GenerateDocker(fs *cs.FileSystem, exp exporter.Expor
 
 	ciInput := path.Join(c.Opts.RepoRoot, c.Opts.Input)
 	if !fs.FileExists(ciInput) {
-		fmt.Printf("Input file %s not found attempting to clone workspace repository...\n", c.Opts.Input)
+		log.Printf("Input file %s not found attempting to clone workspace repository...\n", c.Opts.Input)
 
 		if err := c.CloneRepository(csClient, fs, git, c.Opts.RepoRoot); err != nil {
 			return fmt.Errorf("failed to clone repository: %w", err)
@@ -125,7 +126,7 @@ func (c *GenerateDockerCmd) GenerateDocker(fs *cs.FileSystem, exp exporter.Expor
 }
 
 func (c *GenerateDockerCmd) CloneRepository(client Client, fs *cs.FileSystem, git git.Git, clonedir string) error {
-	fmt.Printf("Cloning repository into %s...\n", clonedir)
+	log.Printf("Cloning repository into %s...\n", clonedir)
 
 	wsId, err := c.Opts.GetWorkspaceId()
 	if err != nil {
@@ -152,6 +153,6 @@ func (c *GenerateDockerCmd) CloneRepository(client Client, fs *cs.FileSystem, gi
 		return fmt.Errorf("failed to clone repository %s branch %s: %w", repoUrl, repoBranch, err)
 	}
 
-	fmt.Printf("Repository %s, branch %s cloned.\n", repoUrl, repoBranch)
+	log.Printf("Repository %s, branch %s cloned.\n", repoUrl, repoBranch)
 	return nil
 }

@@ -4,7 +4,7 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/spf13/cobra"
@@ -15,9 +15,9 @@ type VersionCmd struct {
 }
 
 func (c *VersionCmd) RunE(_ *cobra.Command, args []string) error {
-	fmt.Printf("Codesphere CLI version: %s\n", cs.Version())
-	fmt.Printf("Commit: %s\n", cs.Commit())
-	fmt.Printf("Build Date: %s\n", cs.BuildDate())
+	log.Printf("Codesphere CLI version: %s\n", cs.Version())
+	log.Printf("Commit: %s\n", cs.Commit())
+	log.Printf("Build Date: %s\n", cs.BuildDate())
 
 	return nil
 }

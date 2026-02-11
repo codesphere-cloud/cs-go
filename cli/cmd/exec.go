@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strings"
 
@@ -28,7 +29,7 @@ type ExecOptions struct {
 
 func (c *ExecCmd) RunE(_ *cobra.Command, args []string) error {
 	command := strings.Join(args, " ")
-	fmt.Printf("running command %s\n", command)
+	log.Printf("running command %s\n", command)
 
 	client, err := NewClient(c.Opts.GlobalOptions)
 	if err != nil {
@@ -74,10 +75,10 @@ func (c *ExecCmd) ExecCommand(client Client, command string) error {
 
 	stdout, stderr, err := client.ExecCommand(wsId, command, *c.Opts.WorkDir, envVarMap)
 
-	fmt.Println("STDOUT:")
-	fmt.Println(stdout)
+	log.Println("STDOUT:")
+	log.Println(stdout)
 	if stderr != "" {
-		fmt.Println("STDERR:")
+		log.Println("STDERR:")
 		fmt.Fprintln(os.Stderr, stderr)
 	}
 	return errors.FormatAPIError(err)
