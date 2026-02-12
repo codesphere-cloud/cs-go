@@ -16,8 +16,8 @@ cs curl [path] [-- curl-args...] [flags]
 # GET request to workspace root
 $ cs curl / -w 1234
 
-# GET request to port 3001
-$ cs curl /api/health -w 1234 -p 3001
+# GET request to health endpoint
+$ cs curl /api/health -w 1234
 
 # POST request with data
 $ cs curl /api/data -w 1234 -- -XPOST -d '{"key":"value"}'
@@ -34,7 +34,6 @@ $ cs curl / -- -I
 ```
   -h, --help               help for curl
       --insecure           skip TLS certificate verification (for testing only)
-  -p, --port int           Port to connect to (default 3000)
       --timeout duration   Timeout for the request (default 30s)
 ```
 
