@@ -1201,8 +1201,7 @@ var _ = Describe("Curl Workspace Integration Tests", func() {
 			output := intutil.RunCommand(
 				"curl", "/",
 				"-w", workspaceId,
-				"--insecure",
-				"--", "-s", "-o", "/dev/null", "-w", "%{http_code}",
+				"--", "-k", "-s", "-o", "/dev/null", "-w", "%{http_code}",
 			)
 			fmt.Printf("Curl workspace output: %s\n", output)
 
@@ -1210,16 +1209,14 @@ var _ = Describe("Curl Workspace Integration Tests", func() {
 			Expect(output).To(ContainSubstring(workspaceId))
 		})
 
-		It("should support custom port", func() {
-			By("Sending curl request to custom port")
+		It("should support custom paths", func() {
+			By("Sending curl request to custom path")
 			output, exitCode := intutil.RunCommandWithExitCode(
-				"curl", "/",
+				"curl", "/api/health",
 				"-w", workspaceId,
-				"-p", "3001",
-				"--insecure",
-				"--", "-s", "-o", "/dev/null", "-w", "%{http_code}",
+				"--", "-k", "-s", "-o", "/dev/null", "-w", "%{http_code}",
 			)
-			fmt.Printf("Curl with custom port output: %s (exit code: %d)\n", output, exitCode)
+			fmt.Printf("Curl with custom path output: %s (exit code: %d)\n", output, exitCode)
 
 			Expect(output).To(ContainSubstring("Sending request to workspace"))
 		})
@@ -1229,8 +1226,7 @@ var _ = Describe("Curl Workspace Integration Tests", func() {
 			output := intutil.RunCommand(
 				"curl", "/",
 				"-w", workspaceId,
-				"--insecure",
-				"--", "-I",
+				"--", "-k", "-I",
 			)
 			fmt.Printf("Curl with -I flag output: %s\n", output)
 
@@ -1246,8 +1242,7 @@ var _ = Describe("Curl Workspace Integration Tests", func() {
 			By("Sending curl request using environment variable")
 			output := intutil.RunCommand(
 				"curl", "/",
-				"--insecure",
-				"--", "-s", "-o", "/dev/null", "-w", "%{http_code}",
+				"--", "-k", "-s", "-o", "/dev/null", "-w", "%{http_code}",
 			)
 			fmt.Printf("Curl with env var output: %s\n", output)
 
