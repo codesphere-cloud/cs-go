@@ -1314,7 +1314,7 @@ var _ = Describe("Curl Workspace Integration Tests", func() {
 			fmt.Printf("Curl help output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("Send authenticated HTTP requests"))
-			Expect(output).To(ContainSubstring("--port"))
+			Expect(output).To(ContainSubstring("--timeout"))
 			Expect(output).To(ContainSubstring("-w, --workspace"))
 		})
 	})
