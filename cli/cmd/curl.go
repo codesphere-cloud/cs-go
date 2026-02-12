@@ -26,11 +26,15 @@ func (e *DefaultCommandExecutor) Execute(ctx context.Context, name string, args 
 	return cmd.Run()
 }
 
+type CurlOptions struct {
+	Timeout  time.Duration
+	Insecure bool
+}
+
 type CurlCmd struct {
 	cmd      *cobra.Command
 	Opts     GlobalOptions
-	Timeout  time.Duration
-	Insecure bool
+	CurlOpts CurlOptions
 	Executor CommandExecutor // Injectable for testing
 }
 
@@ -74,8 +78,8 @@ func AddCurlCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 		Opts:     opts,
 		Executor: &DefaultCommandExecutor{},
 	}
-	curl.cmd.Flags().DurationVar(&curl.Timeout, "timeout", 30*time.Second, "Timeout for the request")
-	curl.cmd.Flags().BoolVar(&curl.Insecure, "insecure", false, "skip TLS certificate verification (for testing only)")
+	curl.cmd.Flags().DurationVar(&curl.CurlOpts.Timeout, "timeout", 30*time.Second, "Timeout for the request")
+	curl.cmd.Flags().BoolVar(&curl.CurlOpts.Insecure, "insecure", false, "skip TLS certificate verification (for testing only)")
 	rootCmd.AddCommand(curl.cmd)
 	curl.cmd.RunE = curl.RunE
 }
@@ -97,14 +101,14 @@ func (c *CurlCmd) CurlWorkspace(client Client, wsId int, token string, path stri
 
 	log.Printf("Sending request to workspace %d (%s) at %s\n", wsId, workspace.Name, url)
 
-	ctx, cancel := context.WithTimeout(context.Background(), c.Timeout)
+	ctx, cancel := context.WithTimeout(context.Background(), c.CurlOpts.Timeout)
 	defer cancel()
 
 	// Build curl command with authentication header
 	cmdArgs := []string{"curl", "-H", fmt.Sprintf("x-forward-security: %s", token)}
 
 	// Add insecure flag if specified
-	if c.Insecure {
+	if c.CurlOpts.Insecure {
 		cmdArgs = append(cmdArgs, "-k")
 	}
 
