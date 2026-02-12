@@ -114,9 +114,7 @@ func (c *CurlCmd) CurlWorkspace(client Client, wsId int, token string, path stri
 	err = c.Executor.Execute(ctx, cmdArgs[0], cmdArgs[1:], os.Stdout, os.Stderr)
 	if err != nil && err == context.DeadlineExceeded {
 		return fmt.Errorf("timeout exceeded while requesting workspace %d", wsId)
-	} else if err != nil {
-		return fmt.Errorf("curl command failed: %w", err)
 	}
 
-	return nil
+	return err
 }
