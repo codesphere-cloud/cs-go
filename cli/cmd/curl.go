@@ -10,7 +10,6 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"strings"
 	"time"
 
 	io_pkg "github.com/codesphere-cloud/cs-go/pkg/io"
@@ -30,7 +29,6 @@ func (e *DefaultCommandExecutor) Execute(ctx context.Context, name string, args 
 type CurlCmd struct {
 	cmd      *cobra.Command
 	Opts     GlobalOptions
-	Port     int
 	Timeout  time.Duration
 	Insecure bool
 	Executor CommandExecutor // Injectable for testing
@@ -66,7 +64,7 @@ func AddCurlCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 			Long:  `Send authenticated HTTP requests to a workspace's development domain using curl-like syntax.`,
 			Example: io_pkg.FormatExampleCommands("curl", []io_pkg.Example{
 				{Cmd: "/ -w 1234", Desc: "GET request to workspace root"},
-				{Cmd: "/api/health -w 1234 -p 3001", Desc: "GET request to port 3001"},
+				{Cmd: "/api/health -w 1234", Desc: "GET request to health endpoint"},
 				{Cmd: "/api/data -w 1234 -- -XPOST -d '{\"key\":\"value\"}'", Desc: "POST request with data"},
 				{Cmd: "/api/endpoint -w 1234 -- -v", Desc: "verbose output"},
 				{Cmd: "/ -- -I", Desc: "HEAD request using workspace from env var"},
@@ -76,7 +74,6 @@ func AddCurlCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 		Opts:     opts,
 		Executor: &DefaultCommandExecutor{},
 	}
-	curl.cmd.Flags().IntVarP(&curl.Port, "port", "p", 3000, "Port to connect to")
 	curl.cmd.Flags().DurationVar(&curl.Timeout, "timeout", 30*time.Second, "Timeout for the request")
 	curl.cmd.Flags().BoolVar(&curl.Insecure, "insecure", false, "skip TLS certificate verification (for testing only)")
 	rootCmd.AddCommand(curl.cmd)
@@ -94,16 +91,9 @@ func (c *CurlCmd) CurlWorkspace(client Client, wsId int, token string, path stri
 		return fmt.Errorf("workspace %d does not have a dev domain configured", wsId)
 	}
 
-	// Use the workspace's dev domain and replace the port if needed
-	// DevDomain format is: {workspace_id}-{port}.{domain}
+	// Use the workspace's dev domain
 	devDomain := *workspace.DevDomain
-	var url string
-	if c.Port != 3000 {
-		// Replace the default port (3000) with the custom port in the dev domain
-		url = fmt.Sprintf("https://%d-%d.%s%s", wsId, c.Port, devDomain[strings.Index(devDomain, ".")+1:], path)
-	} else {
-		url = fmt.Sprintf("https://%s%s", devDomain, path)
-	}
+	url := fmt.Sprintf("https://%s%s", devDomain, path)
 
 	log.Printf("Sending request to workspace %d (%s) at %s\n", wsId, workspace.Name, url)
 

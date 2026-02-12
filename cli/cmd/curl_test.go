@@ -24,7 +24,6 @@ var _ = Describe("Curl", func() {
 		wsId         int
 		teamId       int
 		token        string
-		port         int
 	)
 
 	JustBeforeEach(func() {
@@ -34,13 +33,11 @@ var _ = Describe("Curl", func() {
 		wsId = 42
 		teamId = 21
 		token = "test-api-token"
-		port = 3000
 		c = &cmd.CurlCmd{
 			Opts: cmd.GlobalOptions{
 				Env:         mockEnv,
 				WorkspaceId: &wsId,
 			},
-			Port:     port,
 			Timeout:  30 * time.Second,
 			Executor: mockExecutor,
 		}
@@ -87,8 +84,7 @@ var _ = Describe("Curl", func() {
 			Expect(err).ToNot(HaveOccurred())
 		})
 
-		It("should construct the correct URL with custom port", func() {
-			c.Port = 3001
+		It("should construct the correct URL with custom path", func() {
 			devDomain := "42-3000.dev.5.codesphere.com"
 			workspace := api.Workspace{
 				Id:        wsId,
@@ -102,14 +98,14 @@ var _ = Describe("Curl", func() {
 				mock.Anything,
 				"curl",
 				mock.MatchedBy(func(args []string) bool {
-					// Verify the URL contains the custom port
+					// Verify the URL contains the custom path
 					hasHeader := false
 					hasURL := false
 					for i, arg := range args {
 						if arg == "-H" && i+1 < len(args) && args[i+1] == fmt.Sprintf("x-forward-security: %s", token) {
 							hasHeader = true
 						}
-						if arg == "https://42-3001.dev.5.codesphere.com/custom/path" {
+						if arg == "https://42-3000.dev.5.codesphere.com/custom/path" {
 							hasURL = true
 						}
 					}
