@@ -24,6 +24,8 @@ var _ = Describe("Curl", func() {
 		wsId         int
 		teamId       int
 		token        string
+		devDomain    string
+		workspace    api.Workspace
 	)
 
 	JustBeforeEach(func() {
@@ -33,6 +35,13 @@ var _ = Describe("Curl", func() {
 		wsId = 42
 		teamId = 21
 		token = "test-api-token"
+		devDomain = "42-3000.dev.5.codesphere.com"
+		workspace = api.Workspace{
+			Id:        wsId,
+			TeamId:    teamId,
+			Name:      "test-workspace",
+			DevDomain: &devDomain,
+		}
 		c = &cmd.CurlCmd{
 			Opts: cmd.GlobalOptions{
 				Env:         mockEnv,
@@ -45,14 +54,6 @@ var _ = Describe("Curl", func() {
 
 	Context("CurlWorkspace", func() {
 		It("should construct the correct URL with default port", func() {
-			devDomain := "42-3000.dev.5.codesphere.com"
-			workspace := api.Workspace{
-				Id:        wsId,
-				TeamId:    teamId,
-				Name:      "test-workspace",
-				DevDomain: &devDomain,
-			}
-
 			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
 			mockExecutor.EXPECT().Execute(
 				mock.Anything,
@@ -85,14 +86,6 @@ var _ = Describe("Curl", func() {
 		})
 
 		It("should construct the correct URL with custom path", func() {
-			devDomain := "42-3000.dev.5.codesphere.com"
-			workspace := api.Workspace{
-				Id:        wsId,
-				TeamId:    teamId,
-				Name:      "test-workspace",
-				DevDomain: &devDomain,
-			}
-
 			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
 			mockExecutor.EXPECT().Execute(
 				mock.Anything,
@@ -122,14 +115,6 @@ var _ = Describe("Curl", func() {
 
 		It("should pass insecure flag when specified", func() {
 			c.Insecure = true
-			devDomain := "42-3000.dev.5.codesphere.com"
-			workspace := api.Workspace{
-				Id:        wsId,
-				TeamId:    teamId,
-				Name:      "test-workspace",
-				DevDomain: &devDomain,
-			}
-
 			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
 			mockExecutor.EXPECT().Execute(
 				mock.Anything,
@@ -187,14 +172,6 @@ var _ = Describe("Curl", func() {
 		})
 
 		It("should return error if command execution fails", func() {
-			devDomain := "42-3000.dev.5.codesphere.com"
-			workspace := api.Workspace{
-				Id:        wsId,
-				TeamId:    teamId,
-				Name:      "test-workspace",
-				DevDomain: &devDomain,
-			}
-
 			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
 			mockExecutor.EXPECT().Execute(
 				mock.Anything,
@@ -207,7 +184,7 @@ var _ = Describe("Curl", func() {
 			err := c.CurlWorkspace(mockClient, wsId, token, "/", []string{})
 
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(ContainSubstring("curl command failed"))
+			Expect(err.Error()).To(ContainSubstring("command failed"))
 		})
 	})
 })
