@@ -11,14 +11,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type WakeUpCmd struct {
-	cmd     *cobra.Command
-	Opts    GlobalOptions
+type WakeUpOptions struct {
+	GlobalOptions
 	Timeout time.Duration
 }
 
+type WakeUpCmd struct {
+	cmd  *cobra.Command
+	Opts WakeUpOptions
+}
+
 func (c *WakeUpCmd) RunE(_ *cobra.Command, args []string) error {
-	client, err := NewClient(c.Opts)
+	client, err := NewClient(c.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -43,9 +47,11 @@ func AddWakeUpCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 				{Cmd: "-w 1234 --timeout 60s", Desc: "wake up workspace with 60 second timeout"},
 			}),
 		},
-		Opts: opts,
+		Opts: WakeUpOptions{
+			GlobalOptions: opts,
+		},
 	}
-	wakeup.cmd.Flags().DurationVar(&wakeup.Timeout, "timeout", 120*time.Second, "Timeout for waking up the workspace")
+	wakeup.cmd.Flags().DurationVar(&wakeup.Opts.Timeout, "timeout", 120*time.Second, "Timeout for waking up the workspace")
 	rootCmd.AddCommand(wakeup.cmd)
 	wakeup.cmd.RunE = wakeup.RunE
 }
@@ -82,7 +88,7 @@ func (c *WakeUpCmd) WakeUpWorkspace(client Client, wsId int) error {
 	}
 
 	fmt.Printf("Waiting for workspace %d to be running...\n", wsId)
-	err = client.WaitForWorkspaceRunning(&workspace, c.Timeout)
+	err = client.WaitForWorkspaceRunning(&workspace, c.Opts.Timeout)
 	if err != nil {
 		return fmt.Errorf("workspace did not become running: %w", err)
 	}

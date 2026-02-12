@@ -27,19 +27,19 @@ func (e *DefaultCommandExecutor) Execute(ctx context.Context, name string, args 
 }
 
 type CurlOptions struct {
+	GlobalOptions
 	Timeout  time.Duration
 	Insecure bool
-}
-
-type CurlCmd struct {
-	cmd      *cobra.Command
-	Opts     GlobalOptions
-	CurlOpts CurlOptions
 	Executor CommandExecutor // Injectable for testing
 }
 
+type CurlCmd struct {
+	cmd  *cobra.Command
+	Opts CurlOptions
+}
+
 func (c *CurlCmd) RunE(_ *cobra.Command, args []string) error {
-	client, err := NewClient(c.Opts)
+	client, err := NewClient(c.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -75,11 +75,13 @@ func AddCurlCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 			}),
 			Args: cobra.MinimumNArgs(1),
 		},
-		Opts:     opts,
-		Executor: &DefaultCommandExecutor{},
+		Opts: CurlOptions{
+			GlobalOptions: opts,
+			Executor:      &DefaultCommandExecutor{},
+		},
 	}
-	curl.cmd.Flags().DurationVar(&curl.CurlOpts.Timeout, "timeout", 30*time.Second, "Timeout for the request")
-	curl.cmd.Flags().BoolVar(&curl.CurlOpts.Insecure, "insecure", false, "skip TLS certificate verification (for testing only)")
+	curl.cmd.Flags().DurationVar(&curl.Opts.Timeout, "timeout", 30*time.Second, "Timeout for the request")
+	curl.cmd.Flags().BoolVar(&curl.Opts.Insecure, "insecure", false, "skip TLS certificate verification (for testing only)")
 	rootCmd.AddCommand(curl.cmd)
 	curl.cmd.RunE = curl.RunE
 }
@@ -101,21 +103,21 @@ func (c *CurlCmd) CurlWorkspace(client Client, wsId int, token string, path stri
 
 	log.Printf("Sending request to workspace %d (%s) at %s\n", wsId, workspace.Name, url)
 
-	ctx, cancel := context.WithTimeout(context.Background(), c.CurlOpts.Timeout)
+	ctx, cancel := context.WithTimeout(context.Background(), c.Opts.Timeout)
 	defer cancel()
 
 	// Build curl command with authentication header
 	cmdArgs := []string{"curl", "-H", fmt.Sprintf("x-forward-security: %s", token)}
 
 	// Add insecure flag if specified
-	if c.CurlOpts.Insecure {
+	if c.Opts.Insecure {
 		cmdArgs = append(cmdArgs, "-k")
 	}
 
 	cmdArgs = append(cmdArgs, curlArgs...)
 	cmdArgs = append(cmdArgs, url)
 
-	err = c.Executor.Execute(ctx, cmdArgs[0], cmdArgs[1:], os.Stdout, os.Stderr)
+	err = c.Opts.Executor.Execute(ctx, cmdArgs[0], cmdArgs[1:], os.Stdout, os.Stderr)
 	if err != nil && err == context.DeadlineExceeded {
 		return fmt.Errorf("timeout exceeded while requesting workspace %d", wsId)
 	}

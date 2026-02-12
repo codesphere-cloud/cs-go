@@ -43,14 +43,14 @@ var _ = Describe("Curl", func() {
 			DevDomain: &devDomain,
 		}
 		c = &cmd.CurlCmd{
-			Opts: cmd.GlobalOptions{
-				Env:         mockEnv,
-				WorkspaceId: &wsId,
+			Opts: cmd.CurlOptions{
+				GlobalOptions: cmd.GlobalOptions{
+					Env:         mockEnv,
+					WorkspaceId: &wsId,
+				},
+				Timeout:  30 * time.Second,
+				Executor: mockExecutor,
 			},
-			CurlOpts: cmd.CurlOptions{
-				Timeout: 30 * time.Second,
-			},
-			Executor: mockExecutor,
 		}
 	})
 
@@ -116,7 +116,7 @@ var _ = Describe("Curl", func() {
 		})
 
 		It("should pass insecure flag when specified", func() {
-			c.CurlOpts.Insecure = true
+			c.Opts.Insecure = true
 			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
 			mockExecutor.EXPECT().Execute(
 				mock.Anything,

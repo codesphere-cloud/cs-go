@@ -30,9 +30,12 @@ var _ = Describe("WakeUp", func() {
 		wsId = 42
 		teamId = 21
 		c = &cmd.WakeUpCmd{
-			Opts: cmd.GlobalOptions{
-				Env:         mockEnv,
-				WorkspaceId: &wsId,
+			Opts: cmd.WakeUpOptions{
+				GlobalOptions: cmd.GlobalOptions{
+					Env:         mockEnv,
+					WorkspaceId: &wsId,
+				},
+				Timeout: 120 * time.Second,
 			},
 		}
 	})
@@ -44,7 +47,6 @@ var _ = Describe("WakeUp", func() {
 				TeamId: teamId,
 				Name:   "test-workspace",
 			}
-			c.Timeout = 120 * time.Second
 
 			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
 			mockClient.EXPECT().WorkspaceStatus(wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)
