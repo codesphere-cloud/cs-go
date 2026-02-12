@@ -25,6 +25,9 @@ $ cs curl /api/data -w 1234 -- -XPOST -d '{"key":"value"}'
 # verbose output
 $ cs curl /api/endpoint -w 1234 -- -v
 
+# skip TLS verification
+$ cs curl / -- -k
+
 # HEAD request using workspace from env var
 $ cs curl / -- -I
 ```
@@ -33,7 +36,6 @@ $ cs curl / -- -I
 
 ```
   -h, --help               help for curl
-      --insecure           skip TLS certificate verification (for testing only)
       --timeout duration   Timeout for the request (default 30s)
 ```
 
