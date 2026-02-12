@@ -115,39 +115,6 @@ var _ = Describe("Curl", func() {
 			Expect(err).ToNot(HaveOccurred())
 		})
 
-		It("should pass insecure flag when specified", func() {
-			c.Opts.Insecure = true
-			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
-			mockExecutor.EXPECT().Execute(
-				mock.Anything,
-				"curl",
-				mock.MatchedBy(func(args []string) bool {
-					// Verify the insecure flag is present
-					hasInsecure := false
-					hasHeader := false
-					hasURL := false
-					for i, arg := range args {
-						if arg == "-k" {
-							hasInsecure = true
-						}
-						if arg == "-H" && i+1 < len(args) && args[i+1] == fmt.Sprintf("x-forward-security: %s", token) {
-							hasHeader = true
-						}
-						if arg == "https://42-3000.dev.5.codesphere.com/" {
-							hasURL = true
-						}
-					}
-					return hasInsecure && hasHeader && hasURL
-				}),
-				mock.Anything,
-				mock.Anything,
-			).Return(nil)
-
-			err := c.CurlWorkspace(mockClient, wsId, token, "/", []string{})
-
-			Expect(err).ToNot(HaveOccurred())
-		})
-
 		It("should return error if workspace has no dev domain", func() {
 			workspace := api.Workspace{
 				Id:        wsId,

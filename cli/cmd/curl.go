@@ -29,7 +29,6 @@ func (e *DefaultCommandExecutor) Execute(ctx context.Context, name string, args 
 type CurlOptions struct {
 	GlobalOptions
 	Timeout  time.Duration
-	Insecure bool
 	Executor CommandExecutor // Injectable for testing
 }
 
@@ -71,7 +70,7 @@ func AddCurlCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 				{Cmd: "/api/health -w 1234", Desc: "GET request to health endpoint"},
 				{Cmd: "/api/data -w 1234 -- -XPOST -d '{\"key\":\"value\"}'", Desc: "POST request with data"},
 				{Cmd: "/api/endpoint -w 1234 -- -v", Desc: "verbose output"},
-				{Cmd: "/ -- -I", Desc: "HEAD request using workspace from env var"},
+				{Cmd: "/ -- -k", Desc: "skip TLS verification"}, {Cmd: "/ -- -I", Desc: "HEAD request using workspace from env var"},
 			}),
 			Args: cobra.MinimumNArgs(1),
 		},
@@ -81,7 +80,6 @@ func AddCurlCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 		},
 	}
 	curl.cmd.Flags().DurationVar(&curl.Opts.Timeout, "timeout", 30*time.Second, "Timeout for the request")
-	curl.cmd.Flags().BoolVar(&curl.Opts.Insecure, "insecure", false, "skip TLS certificate verification (for testing only)")
 	rootCmd.AddCommand(curl.cmd)
 	curl.cmd.RunE = curl.RunE
 }
@@ -108,11 +106,6 @@ func (c *CurlCmd) CurlWorkspace(client Client, wsId int, token string, path stri
 
 	// Build curl command with authentication header
 	cmdArgs := []string{"curl", "-H", fmt.Sprintf("x-forward-security: %s", token)}
-
-	// Add insecure flag if specified
-	if c.Opts.Insecure {
-		cmdArgs = append(cmdArgs, "-k")
-	}
 
 	cmdArgs = append(cmdArgs, curlArgs...)
 	cmdArgs = append(cmdArgs, url)
