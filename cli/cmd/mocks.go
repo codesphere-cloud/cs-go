@@ -5,8 +5,11 @@
 package cmd
 
 import (
+	"context"
 	"github.com/codesphere-cloud/cs-go/api"
 	mock "github.com/stretchr/testify/mock"
+	"io"
+	"time"
 )
 
 // NewMockClient creates a new instance of MockClient. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
@@ -708,6 +711,63 @@ func (_c *MockClient_ListWorkspaces_Call) RunAndReturn(run func(teamId int) ([]a
 	return _c
 }
 
+// ScaleWorkspace provides a mock function for the type MockClient
+func (_mock *MockClient) ScaleWorkspace(wsId int, replicas int) error {
+	ret := _mock.Called(wsId, replicas)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ScaleWorkspace")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(int, int) error); ok {
+		r0 = returnFunc(wsId, replicas)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockClient_ScaleWorkspace_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ScaleWorkspace'
+type MockClient_ScaleWorkspace_Call struct {
+	*mock.Call
+}
+
+// ScaleWorkspace is a helper method to define mock.On call
+//   - wsId int
+//   - replicas int
+func (_e *MockClient_Expecter) ScaleWorkspace(wsId interface{}, replicas interface{}) *MockClient_ScaleWorkspace_Call {
+	return &MockClient_ScaleWorkspace_Call{Call: _e.mock.On("ScaleWorkspace", wsId, replicas)}
+}
+
+func (_c *MockClient_ScaleWorkspace_Call) Run(run func(wsId int, replicas int)) *MockClient_ScaleWorkspace_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 int
+		if args[0] != nil {
+			arg0 = args[0].(int)
+		}
+		var arg1 int
+		if args[1] != nil {
+			arg1 = args[1].(int)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockClient_ScaleWorkspace_Call) Return(err error) *MockClient_ScaleWorkspace_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockClient_ScaleWorkspace_Call) RunAndReturn(run func(wsId int, replicas int) error) *MockClient_ScaleWorkspace_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // SetEnvVarOnWorkspace provides a mock function for the type MockClient
 func (_mock *MockClient) SetEnvVarOnWorkspace(workspaceId int, vars map[string]string) error {
 	ret := _mock.Called(workspaceId, vars)
@@ -824,6 +884,227 @@ func (_c *MockClient_StartPipelineStage_Call) Return(err error) *MockClient_Star
 }
 
 func (_c *MockClient_StartPipelineStage_Call) RunAndReturn(run func(wsId int, profile string, stage string) error) *MockClient_StartPipelineStage_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// WaitForWorkspaceRunning provides a mock function for the type MockClient
+func (_mock *MockClient) WaitForWorkspaceRunning(workspace *api.Workspace, timeout time.Duration) error {
+	ret := _mock.Called(workspace, timeout)
+
+	if len(ret) == 0 {
+		panic("no return value specified for WaitForWorkspaceRunning")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(*api.Workspace, time.Duration) error); ok {
+		r0 = returnFunc(workspace, timeout)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockClient_WaitForWorkspaceRunning_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'WaitForWorkspaceRunning'
+type MockClient_WaitForWorkspaceRunning_Call struct {
+	*mock.Call
+}
+
+// WaitForWorkspaceRunning is a helper method to define mock.On call
+//   - workspace *api.Workspace
+//   - timeout time.Duration
+func (_e *MockClient_Expecter) WaitForWorkspaceRunning(workspace interface{}, timeout interface{}) *MockClient_WaitForWorkspaceRunning_Call {
+	return &MockClient_WaitForWorkspaceRunning_Call{Call: _e.mock.On("WaitForWorkspaceRunning", workspace, timeout)}
+}
+
+func (_c *MockClient_WaitForWorkspaceRunning_Call) Run(run func(workspace *api.Workspace, timeout time.Duration)) *MockClient_WaitForWorkspaceRunning_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 *api.Workspace
+		if args[0] != nil {
+			arg0 = args[0].(*api.Workspace)
+		}
+		var arg1 time.Duration
+		if args[1] != nil {
+			arg1 = args[1].(time.Duration)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockClient_WaitForWorkspaceRunning_Call) Return(err error) *MockClient_WaitForWorkspaceRunning_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockClient_WaitForWorkspaceRunning_Call) RunAndReturn(run func(workspace *api.Workspace, timeout time.Duration) error) *MockClient_WaitForWorkspaceRunning_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// WorkspaceStatus provides a mock function for the type MockClient
+func (_mock *MockClient) WorkspaceStatus(workspaceId int) (*api.WorkspaceStatus, error) {
+	ret := _mock.Called(workspaceId)
+
+	if len(ret) == 0 {
+		panic("no return value specified for WorkspaceStatus")
+	}
+
+	var r0 *api.WorkspaceStatus
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(int) (*api.WorkspaceStatus, error)); ok {
+		return returnFunc(workspaceId)
+	}
+	if returnFunc, ok := ret.Get(0).(func(int) *api.WorkspaceStatus); ok {
+		r0 = returnFunc(workspaceId)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*api.WorkspaceStatus)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(int) error); ok {
+		r1 = returnFunc(workspaceId)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockClient_WorkspaceStatus_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'WorkspaceStatus'
+type MockClient_WorkspaceStatus_Call struct {
+	*mock.Call
+}
+
+// WorkspaceStatus is a helper method to define mock.On call
+//   - workspaceId int
+func (_e *MockClient_Expecter) WorkspaceStatus(workspaceId interface{}) *MockClient_WorkspaceStatus_Call {
+	return &MockClient_WorkspaceStatus_Call{Call: _e.mock.On("WorkspaceStatus", workspaceId)}
+}
+
+func (_c *MockClient_WorkspaceStatus_Call) Run(run func(workspaceId int)) *MockClient_WorkspaceStatus_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 int
+		if args[0] != nil {
+			arg0 = args[0].(int)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockClient_WorkspaceStatus_Call) Return(v *api.WorkspaceStatus, err error) *MockClient_WorkspaceStatus_Call {
+	_c.Call.Return(v, err)
+	return _c
+}
+
+func (_c *MockClient_WorkspaceStatus_Call) RunAndReturn(run func(workspaceId int) (*api.WorkspaceStatus, error)) *MockClient_WorkspaceStatus_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// NewMockCommandExecutor creates a new instance of MockCommandExecutor. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
+// The first argument is typically a *testing.T value.
+func NewMockCommandExecutor(t interface {
+	mock.TestingT
+	Cleanup(func())
+}) *MockCommandExecutor {
+	mock := &MockCommandExecutor{}
+	mock.Mock.Test(t)
+
+	t.Cleanup(func() { mock.AssertExpectations(t) })
+
+	return mock
+}
+
+// MockCommandExecutor is an autogenerated mock type for the CommandExecutor type
+type MockCommandExecutor struct {
+	mock.Mock
+}
+
+type MockCommandExecutor_Expecter struct {
+	mock *mock.Mock
+}
+
+func (_m *MockCommandExecutor) EXPECT() *MockCommandExecutor_Expecter {
+	return &MockCommandExecutor_Expecter{mock: &_m.Mock}
+}
+
+// Execute provides a mock function for the type MockCommandExecutor
+func (_mock *MockCommandExecutor) Execute(ctx context.Context, name string, args []string, stdout io.Writer, stderr io.Writer) error {
+	ret := _mock.Called(ctx, name, args, stdout, stderr)
+
+	if len(ret) == 0 {
+		panic("no return value specified for Execute")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, []string, io.Writer, io.Writer) error); ok {
+		r0 = returnFunc(ctx, name, args, stdout, stderr)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockCommandExecutor_Execute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Execute'
+type MockCommandExecutor_Execute_Call struct {
+	*mock.Call
+}
+
+// Execute is a helper method to define mock.On call
+//   - ctx context.Context
+//   - name string
+//   - args []string
+//   - stdout io.Writer
+//   - stderr io.Writer
+func (_e *MockCommandExecutor_Expecter) Execute(ctx interface{}, name interface{}, args interface{}, stdout interface{}, stderr interface{}) *MockCommandExecutor_Execute_Call {
+	return &MockCommandExecutor_Execute_Call{Call: _e.mock.On("Execute", ctx, name, args, stdout, stderr)}
+}
+
+func (_c *MockCommandExecutor_Execute_Call) Run(run func(ctx context.Context, name string, args []string, stdout io.Writer, stderr io.Writer)) *MockCommandExecutor_Execute_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 []string
+		if args[2] != nil {
+			arg2 = args[2].([]string)
+		}
+		var arg3 io.Writer
+		if args[3] != nil {
+			arg3 = args[3].(io.Writer)
+		}
+		var arg4 io.Writer
+		if args[4] != nil {
+			arg4 = args[4].(io.Writer)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+			arg4,
+		)
+	})
+	return _c
+}
+
+func (_c *MockCommandExecutor_Execute_Call) Return(err error) *MockCommandExecutor_Execute_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockCommandExecutor_Execute_Call) RunAndReturn(run func(ctx context.Context, name string, args []string, stdout io.Writer, stderr io.Writer) error) *MockCommandExecutor_Execute_Call {
 	_c.Call.Return(run)
 	return _c
 }

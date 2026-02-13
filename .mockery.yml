@@ -25,7 +25,6 @@ packages:
   github.com/codesphere-cloud/cs-go/api/openapi_client:
     config:
       all: true
-      include-auto-generated: true
     interfaces:
   github.com/codesphere-cloud/cs-go/api:
     config:

@@ -8,7 +8,9 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/url"
+	"time"
 
 	"github.com/codesphere-cloud/cs-go/api"
 )
@@ -18,6 +20,9 @@ type Client interface {
 	ListWorkspaces(teamId int) ([]api.Workspace, error)
 	ListBaseimages() ([]api.Baseimage, error)
 	GetWorkspace(workspaceId int) (api.Workspace, error)
+	WorkspaceStatus(workspaceId int) (*api.WorkspaceStatus, error)
+	WaitForWorkspaceRunning(workspace *api.Workspace, timeout time.Duration) error
+	ScaleWorkspace(wsId int, replicas int) error
 	SetEnvVarOnWorkspace(workspaceId int, vars map[string]string) error
 	ExecCommand(workspaceId int, command string, workdir string, env map[string]string) (string, string, error)
 	ListWorkspacePlans() ([]api.WorkspacePlan, error)
@@ -27,6 +32,11 @@ type Client interface {
 	GetPipelineState(wsId int, stage string) ([]api.PipelineStatus, error)
 	GitPull(wsId int, remote string, branch string) error
 	DeployLandscape(wsId int, profile string) error
+}
+
+// CommandExecutor abstracts command execution for testing
+type CommandExecutor interface {
+	Execute(ctx context.Context, name string, args []string, stdout, stderr io.Writer) error
 }
 
 func NewClient(opts GlobalOptions) (Client, error) {
