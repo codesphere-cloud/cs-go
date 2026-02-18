@@ -104,32 +104,16 @@ type MockExporter_ExportImages_Call struct {
 }
 
 // ExportImages is a helper method to define mock.On call
-//   - ctx context.Context
-//   - registry string
-//   - imagePrefix string
+//   - ctx
+//   - registry
+//   - imagePrefix
 func (_e *MockExporter_Expecter) ExportImages(ctx interface{}, registry interface{}, imagePrefix interface{}) *MockExporter_ExportImages_Call {
 	return &MockExporter_ExportImages_Call{Call: _e.mock.On("ExportImages", ctx, registry, imagePrefix)}
 }
 
 func (_c *MockExporter_ExportImages_Call) Run(run func(ctx context.Context, registry string, imagePrefix string)) *MockExporter_ExportImages_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 context.Context
-		if args[0] != nil {
-			arg0 = args[0].(context.Context)
-		}
-		var arg1 string
-		if args[1] != nil {
-			arg1 = args[1].(string)
-		}
-		var arg2 string
-		if args[2] != nil {
-			arg2 = args[2].(string)
-		}
-		run(
-			arg0,
-			arg1,
-			arg2,
-		)
+		run(args[0].(context.Context), args[1].(string), args[2].(string))
 	})
 	return _c
 }
@@ -167,50 +151,19 @@ type MockExporter_ExportKubernetesArtifacts_Call struct {
 }
 
 // ExportKubernetesArtifacts is a helper method to define mock.On call
-//   - registry string
-//   - image string
-//   - namespace string
-//   - pullSecret string
-//   - hostname string
-//   - ingressClass string
+//   - registry
+//   - image
+//   - namespace
+//   - pullSecret
+//   - hostname
+//   - ingressClass
 func (_e *MockExporter_Expecter) ExportKubernetesArtifacts(registry interface{}, image interface{}, namespace interface{}, pullSecret interface{}, hostname interface{}, ingressClass interface{}) *MockExporter_ExportKubernetesArtifacts_Call {
 	return &MockExporter_ExportKubernetesArtifacts_Call{Call: _e.mock.On("ExportKubernetesArtifacts", registry, image, namespace, pullSecret, hostname, ingressClass)}
 }
 
 func (_c *MockExporter_ExportKubernetesArtifacts_Call) Run(run func(registry string, image string, namespace string, pullSecret string, hostname string, ingressClass string)) *MockExporter_ExportKubernetesArtifacts_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 string
-		if args[0] != nil {
-			arg0 = args[0].(string)
-		}
-		var arg1 string
-		if args[1] != nil {
-			arg1 = args[1].(string)
-		}
-		var arg2 string
-		if args[2] != nil {
-			arg2 = args[2].(string)
-		}
-		var arg3 string
-		if args[3] != nil {
-			arg3 = args[3].(string)
-		}
-		var arg4 string
-		if args[4] != nil {
-			arg4 = args[4].(string)
-		}
-		var arg5 string
-		if args[5] != nil {
-			arg5 = args[5].(string)
-		}
-		run(
-			arg0,
-			arg1,
-			arg2,
-			arg3,
-			arg4,
-			arg5,
-		)
+		run(args[0].(string), args[1].(string), args[2].(string), args[3].(string), args[4].(string), args[5].(string))
 	})
 	return _c
 }
@@ -259,20 +212,14 @@ type MockExporter_ReadYmlFile_Call struct {
 }
 
 // ReadYmlFile is a helper method to define mock.On call
-//   - path string
+//   - path
 func (_e *MockExporter_Expecter) ReadYmlFile(path interface{}) *MockExporter_ReadYmlFile_Call {
 	return &MockExporter_ReadYmlFile_Call{Call: _e.mock.On("ReadYmlFile", path)}
 }
 
 func (_c *MockExporter_ReadYmlFile_Call) Run(run func(path string)) *MockExporter_ReadYmlFile_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 string
-		if args[0] != nil {
-			arg0 = args[0].(string)
-		}
-		run(
-			arg0,
-		)
+		run(args[0].(string))
 	})
 	return _c
 }
