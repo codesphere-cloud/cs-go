@@ -55,7 +55,8 @@ var _ = Describe("GenerateDocker", func() {
 
 	Context("the baseimage is not provided", func() {
 		It("should return an error", func() {
-			err := c.GenerateDocker(memoryFs, mockExporter, mockGit, mockClient)
+			clientFactory := func() (cmd.Client, error) { return mockClient, nil }
+			err := c.GenerateDocker(memoryFs, mockExporter, mockGit, clientFactory)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("baseimage is required"))
 		})
@@ -78,7 +79,8 @@ var _ = Describe("GenerateDocker", func() {
 			It("should not return an error", func() {
 				mockExporter.EXPECT().ReadYmlFile(ciYmlPath).Return(&ci.CiYml{}, nil)
 				mockExporter.EXPECT().ExportDockerArtifacts().Return(nil)
-				err := c.GenerateDocker(memoryFs, mockExporter, mockGit, mockClient)
+				clientFactory := func() (cmd.Client, error) { return mockClient, nil }
+				err := c.GenerateDocker(memoryFs, mockExporter, mockGit, clientFactory)
 				Expect(err).To(Not(HaveOccurred()))
 			})
 		})

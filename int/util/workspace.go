@@ -5,9 +5,11 @@ package util
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strings"
 	"time"
@@ -53,6 +55,43 @@ func RunCommandWithExitCode(args ...string) (string, int) {
 	command.Stderr = &outputBuffer
 
 	err := command.Run()
+
+	exitCode := 0
+	if err != nil {
+		if exitError, ok := err.(*exec.ExitError); ok {
+			exitCode = exitError.ExitCode()
+		} else {
+			exitCode = -1
+		}
+	}
+
+	return outputBuffer.String(), exitCode
+}
+
+// RunCommandInDir runs a command from a specific working directory.
+// The cs binary path is resolved relative to the int/ directory.
+func RunCommandInDir(dir string, args ...string) string {
+	output, _ := RunCommandInDirWithExitCode(dir, args...)
+	return output
+}
+
+// RunCommandInDirWithExitCode runs a command from a specific working directory and returns exit code.
+func RunCommandInDirWithExitCode(dir string, args ...string) (string, int) {
+	// Get absolute path to cs binary (relative to int/ directory)
+	csBinary, err := filepath.Abs("../cs")
+	if err != nil {
+		return fmt.Sprintf("failed to get cs binary path: %v", err), -1
+	}
+
+	command := exec.Command(csBinary, args...)
+	command.Dir = dir
+	command.Env = os.Environ()
+
+	var outputBuffer bytes.Buffer
+	command.Stdout = &outputBuffer
+	command.Stderr = &outputBuffer
+
+	err = command.Run()
 
 	exitCode := 0
 	if err != nil {

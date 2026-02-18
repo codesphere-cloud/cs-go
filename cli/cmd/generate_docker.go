@@ -30,15 +30,15 @@ type GenerateDockerOpts struct {
 func (c *GenerateDockerCmd) RunE(cc *cobra.Command, args []string) error {
 	log.Println(c.Opts.Force)
 	fs := cs.NewOSFileSystem(".")
-	git := git.NewGitService(fs)
-
-	client, err := NewClient(c.Opts.GlobalOptions)
-	if err != nil {
-		return fmt.Errorf("failed to create Codesphere client: %w", err)
-	}
+	gitSvc := git.NewGitService(fs)
 
 	exporter := exporter.NewExporterService(fs, c.Opts.Output, c.Opts.BaseImage, c.Opts.Envs, c.Opts.RepoRoot, c.Opts.Force)
-	if err := c.GenerateDocker(fs, exporter, git, client); err != nil {
+
+	clientFactory := func() (Client, error) {
+		return NewClient(c.Opts.GlobalOptions)
+	}
+
+	if err := c.GenerateDocker(fs, exporter, gitSvc, clientFactory); err != nil {
 		return fmt.Errorf("failed to generate docker: %w", err)
 	}
 
@@ -95,7 +95,7 @@ func AddGenerateDockerCmd(generate *cobra.Command, opts *GenerateOpts) {
 	docker.cmd.RunE = docker.RunE
 }
 
-func (c *GenerateDockerCmd) GenerateDocker(fs *cs.FileSystem, exp exporter.Exporter, git git.Git, csClient Client) error {
+func (c *GenerateDockerCmd) GenerateDocker(fs *cs.FileSystem, exp exporter.Exporter, git git.Git, clientFactory func() (Client, error)) error {
 	if c.Opts.BaseImage == "" {
 		return errors.New("baseimage is required")
 	}
@@ -104,7 +104,12 @@ func (c *GenerateDockerCmd) GenerateDocker(fs *cs.FileSystem, exp exporter.Expor
 	if !fs.FileExists(ciInput) {
 		log.Printf("Input file %s not found attempting to clone workspace repository...\n", c.Opts.Input)
 
-		if err := c.CloneRepository(csClient, fs, git, c.Opts.RepoRoot); err != nil {
+		client, err := clientFactory()
+		if err != nil {
+			return fmt.Errorf("failed to create Codesphere client: %w", err)
+		}
+
+		if err := c.CloneRepository(client, fs, git, c.Opts.RepoRoot); err != nil {
 			return fmt.Errorf("failed to clone repository: %w", err)
 		}
 		if !fs.FileExists(ciInput) {
