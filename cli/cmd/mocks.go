@@ -628,6 +628,52 @@ func (_c *MockClient_ListWorkspaces_Call) RunAndReturn(run func(teamId int) ([]a
 	return _c
 }
 
+// ScaleLandscapeServices provides a mock function for the type MockClient
+func (_mock *MockClient) ScaleLandscapeServices(wsId int, services map[string]int) error {
+	ret := _mock.Called(wsId, services)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ScaleLandscapeServices")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(int, map[string]int) error); ok {
+		r0 = returnFunc(wsId, services)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockClient_ScaleLandscapeServices_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ScaleLandscapeServices'
+type MockClient_ScaleLandscapeServices_Call struct {
+	*mock.Call
+}
+
+// ScaleLandscapeServices is a helper method to define mock.On call
+//   - wsId
+//   - services
+func (_e *MockClient_Expecter) ScaleLandscapeServices(wsId interface{}, services interface{}) *MockClient_ScaleLandscapeServices_Call {
+	return &MockClient_ScaleLandscapeServices_Call{Call: _e.mock.On("ScaleLandscapeServices", wsId, services)}
+}
+
+func (_c *MockClient_ScaleLandscapeServices_Call) Run(run func(wsId int, services map[string]int)) *MockClient_ScaleLandscapeServices_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(int), args[1].(map[string]int))
+	})
+	return _c
+}
+
+func (_c *MockClient_ScaleLandscapeServices_Call) Return(err error) *MockClient_ScaleLandscapeServices_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockClient_ScaleLandscapeServices_Call) RunAndReturn(run func(wsId int, services map[string]int) error) *MockClient_ScaleLandscapeServices_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // ScaleWorkspace provides a mock function for the type MockClient
 func (_mock *MockClient) ScaleWorkspace(wsId int, replicas int) error {
 	ret := _mock.Called(wsId, replicas)
