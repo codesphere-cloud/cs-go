@@ -32,6 +32,7 @@ type Client interface {
 	GetPipelineState(wsId int, stage string) ([]api.PipelineStatus, error)
 	GitPull(wsId int, remote string, branch string) error
 	DeployLandscape(wsId int, profile string) error
+	StreamLogs(ctx context.Context, apiUrl string, wsId int, stage string, step int, w io.Writer) error
 }
 
 // CommandExecutor abstracts command execution for testing
