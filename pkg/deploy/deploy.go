@@ -9,19 +9,21 @@ import (
 	"time"
 
 	"github.com/codesphere-cloud/cs-go/api"
+	"github.com/codesphere-cloud/cs-go/pkg/pipeline"
 )
 
 // Client defines the API operations needed for preview deployments.
 // This is a subset of the full Codesphere API client.
+// Pipeline operations (StartPipelineStage, GetPipelineState, DeployLandscape)
+// are handled via the pipeline.Client interface.
 type Client interface {
+	pipeline.Client
 	ListWorkspaces(teamId int) ([]api.Workspace, error)
 	DeployWorkspace(args api.DeployWorkspaceArgs) (*api.Workspace, error)
 	DeleteWorkspace(wsId int) error
 	WaitForWorkspaceRunning(workspace *api.Workspace, timeout time.Duration) error
 	SetEnvVarOnWorkspace(workspaceId int, vars map[string]string) error
 	GitPull(wsId int, remote string, branch string) error
-	StartPipelineStage(wsId int, profile string, stage string) error
-	GetPipelineState(wsId int, stage string) ([]api.PipelineStatus, error)
 }
 
 // Config holds all parameters needed for a preview deployment.
@@ -36,6 +38,7 @@ type Config struct {
 	Stages    []string
 	RepoUrl   string
 	Timeout   time.Duration
+	Profile   string
 }
 
 // Result holds the output of a successful deployment.
@@ -126,55 +129,20 @@ func (d *Deployer) DeleteWorkspace(wsId int) error {
 	return d.Client.DeleteWorkspace(wsId)
 }
 
-// RunPipeline runs pipeline stages sequentially. For non-"run" stages it polls
-// until completion. The "run" stage is fire-and-forget.
-func (d *Deployer) RunPipeline(wsId int, stages []string) error {
-	if len(stages) == 0 {
+// RunPipeline runs pipeline stages using the shared pipeline runner.
+// The flow is: prepare → test (if present) → sync landscape → run.
+func (d *Deployer) RunPipeline(wsId int, cfg Config) error {
+	if len(cfg.Stages) == 0 {
 		return nil
 	}
 
-	fmt.Printf("🔧 Running pipeline: %s\n", strings.Join(stages, " → "))
+	fmt.Printf("🔧 Running pipeline: %s\n", strings.Join(cfg.Stages, " → "))
 
-	for _, stage := range stages {
-		fmt.Printf("  ▶ Starting '%s'...\n", stage)
-		if err := d.Client.StartPipelineStage(wsId, "", stage); err != nil {
-			return fmt.Errorf("starting stage '%s': %w", stage, err)
-		}
-
-		// 'run' is fire-and-forget
-		if stage == "run" {
-			fmt.Printf("  ✅ '%s' triggered.\n", stage)
-			continue
-		}
-
-		// Poll until done
-		deadline := time.Now().Add(30 * time.Minute)
-		for time.Now().Before(deadline) {
-			time.Sleep(5 * time.Second)
-			statuses, err := d.Client.GetPipelineState(wsId, stage)
-			if err != nil {
-				continue // transient error, retry
-			}
-
-			allDone := true
-			for _, s := range statuses {
-				switch s.State {
-				case "failure", "aborted":
-					return fmt.Errorf("pipeline '%s' failed (state: %s)", stage, s.State)
-				case "success":
-					// good
-				default:
-					allDone = false
-				}
-			}
-
-			if allDone && len(statuses) > 0 {
-				fmt.Printf("  ✅ '%s' completed.\n", stage)
-				break
-			}
-		}
-	}
-	return nil
+	runner := pipeline.NewRunner(d.Client, nil)
+	return runner.RunStages(wsId, cfg.Stages, pipeline.Config{
+		Profile: cfg.Profile,
+		Timeout: cfg.Timeout,
+	})
 }
 
 // Deploy orchestrates the full preview environment lifecycle:
@@ -224,7 +192,7 @@ func (d *Deployer) Deploy(cfg Config, isDelete bool) (*Result, error) {
 		fmt.Println("✅ New workspace created.")
 	}
 
-	if err := d.RunPipeline(wsId, cfg.Stages); err != nil {
+	if err := d.RunPipeline(wsId, cfg); err != nil {
 		return nil, fmt.Errorf("running pipeline: %w", err)
 	}
 
