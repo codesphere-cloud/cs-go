@@ -29,6 +29,7 @@ type DeployGitHubOpts struct {
 	Branch    *string
 	Stages    *string
 	Timeout   *time.Duration
+	Profile   *string
 }
 
 func (c *DeployGitHubCmd) RunE(_ *cobra.Command, args []string) error {
@@ -85,6 +86,7 @@ func (c *DeployGitHubCmd) RunE(_ *cobra.Command, args []string) error {
 		Stages:    stages,
 		RepoUrl:   repoUrl,
 		Timeout:   *c.Opts.Timeout,
+		Profile:   *c.Opts.Profile,
 	}
 
 	// Determine if this is a delete operation
@@ -193,6 +195,7 @@ func AddDeployGitHubCmd(deployCmd *cobra.Command, opts GlobalOptions) {
 	github.Opts.Branch = github.cmd.Flags().StringP("branch", "b", "", "Git branch to deploy (auto-detected from GitHub context if not set)")
 	github.Opts.Stages = github.cmd.Flags().String("stages", "prepare run", "Pipeline stages to run (space-separated: prepare test run)")
 	github.Opts.Timeout = github.cmd.Flags().Duration("timeout", 5*time.Minute, "Timeout for workspace creation/readiness")
+	github.Opts.Profile = github.cmd.Flags().StringP("profile", "p", "", "CI profile to use (e.g. 'prod' for ci.prod.yml), defaults to ci.yml")
 
 	deployCmd.AddCommand(github.cmd)
 	github.cmd.RunE = github.RunE
