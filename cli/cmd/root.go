@@ -94,6 +94,7 @@ func GetRootCmd() *cobra.Command {
 	AddGoCmd(rootCmd)
 	AddWakeUpCmd(rootCmd, opts)
 	AddCurlCmd(rootCmd, opts)
+	AddDeployCmd(rootCmd, opts)
 
 	return rootCmd
 }
