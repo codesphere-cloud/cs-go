@@ -61,11 +61,15 @@ var _ = Describe("Curl", func() {
 				mock.Anything,
 				"curl",
 				mock.MatchedBy(func(args []string) bool {
-					// Verify the args contain the expected header, flag, and URL
+					// Verify the args contain the expected header, flag, -L and URL
+					hasFollowRedirects := false
 					hasHeader := false
 					hasFlag := false
 					hasURL := false
 					for i, arg := range args {
+						if arg == "-L" {
+							hasFollowRedirects = true
+						}
 						if arg == "-H" && i+1 < len(args) && args[i+1] == fmt.Sprintf("x-forward-security: %s", token) {
 							hasHeader = true
 						}
@@ -76,7 +80,7 @@ var _ = Describe("Curl", func() {
 							hasURL = true
 						}
 					}
-					return hasHeader && hasFlag && hasURL
+					return hasFollowRedirects && hasHeader && hasFlag && hasURL
 				}),
 				mock.Anything,
 				mock.Anything,
@@ -93,10 +97,14 @@ var _ = Describe("Curl", func() {
 				mock.Anything,
 				"curl",
 				mock.MatchedBy(func(args []string) bool {
-					// Verify the URL contains the custom path
+					// Verify the URL contains the custom path and -L flag
+					hasFollowRedirects := false
 					hasHeader := false
 					hasURL := false
 					for i, arg := range args {
+						if arg == "-L" {
+							hasFollowRedirects = true
+						}
 						if arg == "-H" && i+1 < len(args) && args[i+1] == fmt.Sprintf("x-forward-security: %s", token) {
 							hasHeader = true
 						}
@@ -104,7 +112,7 @@ var _ = Describe("Curl", func() {
 							hasURL = true
 						}
 					}
-					return hasHeader && hasURL
+					return hasFollowRedirects && hasHeader && hasURL
 				}),
 				mock.Anything,
 				mock.Anything,
