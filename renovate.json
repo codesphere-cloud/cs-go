@@ -4,6 +4,14 @@
     "config:best-practices",
     ":enableVulnerabilityAlerts"
   ],
+
+  "packageRules": [
+    {
+      "matchDatasources": ["golang-version"],
+      "rangeStrategy": "bump"
+    }
+  ],
+
   "postUpdateOptions": [
     "gomodTidy"
   ]
