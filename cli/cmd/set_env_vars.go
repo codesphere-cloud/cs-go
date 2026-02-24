@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
@@ -67,6 +68,6 @@ func (l *SetEnvVarCmd) SetEnvironmentVariables(client Client) (err error) {
 		return fmt.Errorf("failed to set environment variables %v: %w", envVarMap, err)
 	}
 
-	fmt.Printf("Environment variables set successfully on workspace %d\n", wsId)
+	log.Printf("Environment variables set successfully on workspace %d\n", wsId)
 	return nil
 }

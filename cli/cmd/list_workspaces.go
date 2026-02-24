@@ -25,7 +25,7 @@ func addListWorkspacesCmd(p *cobra.Command, opts GlobalOptions) {
 			Short: "List workspaces",
 			Long:  `List workspaces available in Codesphere`,
 			Example: io.FormatExampleCommands("list workspaces", []io.Example{
-				{Cmd: "--team-id <team-id>", Desc: "List all workspaces"},
+				{Cmd: "-t <team-id>", Desc: "List all workspaces"},
 			}),
 		},
 		Opts: opts,
@@ -46,13 +46,17 @@ func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	}
 
 	t := io.GetTableWriter()
-	t.AppendHeader(table.Row{"Team ID", "ID", "Name", "Repository"})
+	t.AppendHeader(table.Row{"Team ID", "ID", "Name", "Repository", "Dev Domain"})
 	for _, w := range workspaces {
 		gitUrl := ""
-		if w.GitUrl.Get() != nil {
+		if w.GitUrl.IsSet() && w.GitUrl.Get() != nil {
 			gitUrl = *w.GitUrl.Get()
 		}
-		t.AppendRow(table.Row{w.TeamId, w.Id, w.Name, gitUrl})
+		devDomain := ""
+		if w.DevDomain != nil {
+			devDomain = *w.DevDomain
+		}
+		t.AppendRow(table.Row{w.TeamId, w.Id, w.Name, gitUrl, devDomain})
 	}
 	t.Render()
 

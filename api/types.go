@@ -13,7 +13,7 @@ type DataCenter = openapi.MetadataGetDatacenters200ResponseInner
 type Team = openapi.TeamsListTeams200ResponseInner
 type Domain = openapi.DomainsGetDomain200Response
 type DomainVerificationStatus = openapi.DomainsGetDomain200ResponseDomainVerificationStatus
-type UpdateDomainArgs = openapi.DomainsGetDomain200ResponseCustomConfig
+type UpdateDomainArgs = openapi.DomainsUpdateDomainRequest
 type PathToWorkspaces = map[string][]*Workspace
 
 type Workspace = openapi.WorkspacesGetWorkspace200Response
