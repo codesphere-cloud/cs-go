@@ -46,7 +46,7 @@ var _ = Describe("Curl", func() {
 			Opts: cmd.CurlOptions{
 				GlobalOptions: cmd.GlobalOptions{
 					Env:         mockEnv,
-					WorkspaceId: &wsId,
+					WorkspaceId: wsId,
 				},
 				Timeout:  30 * time.Second,
 				Executor: mockExecutor,

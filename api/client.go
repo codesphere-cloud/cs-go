@@ -24,6 +24,9 @@ type Configuration struct {
 	BaseUrl *url.URL
 	// Codesphere api token
 	Token string
+
+	// Verbose output for debugging
+	Verbose bool
 }
 
 func (c Configuration) GetApiUrl() *url.URL {
@@ -52,6 +55,7 @@ func NewClient(ctx context.Context, opts Configuration) *Client {
 	cfg.Servers = []openapi_client.ServerConfiguration{{
 		URL: opts.BaseUrl.String(),
 	}}
+	cfg.Debug = opts.Verbose
 	return NewClientWithCustomDeps(ctx, opts, openapi_client.NewAPIClient(cfg), &RealTime{})
 }
 

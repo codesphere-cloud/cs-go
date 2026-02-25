@@ -39,8 +39,8 @@ var _ = Describe("StartPipeline", func() {
 		c = &cmd.StartPipelineCmd{
 			Opts: cmd.StartPipelineOpts{
 				GlobalOptions: cmd.GlobalOptions{
-					WorkspaceId: &wsId,
-					Verbose:     &verbose,
+					WorkspaceId: wsId,
+					Verbose:     verbose,
 				},
 				Profile: &profile,
 				Timeout: &timeout,

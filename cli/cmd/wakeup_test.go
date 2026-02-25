@@ -33,7 +33,7 @@ var _ = Describe("WakeUp", func() {
 			Opts: cmd.WakeUpOptions{
 				GlobalOptions: cmd.GlobalOptions{
 					Env:         mockEnv,
-					WorkspaceId: &wsId,
+					WorkspaceId: wsId,
 				},
 				Timeout: 120 * time.Second,
 			},

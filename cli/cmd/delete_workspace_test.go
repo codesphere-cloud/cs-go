@@ -33,7 +33,7 @@ var _ = Describe("DeleteWorkspace", func() {
 			Opts: cmd.DeleteWorkspaceOpts{
 				GlobalOptions: cmd.GlobalOptions{
 					Env:         mockEnv,
-					WorkspaceId: &wsId,
+					WorkspaceId: wsId,
 				},
 				Confirmed: &confirmed,
 			},

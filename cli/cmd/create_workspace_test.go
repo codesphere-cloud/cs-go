@@ -56,7 +56,7 @@ var _ = Describe("CreateWorkspace", func() {
 			Opts: cmd.CreateWorkspaceOpts{
 				GlobalOptions: cmd.GlobalOptions{
 					Env:    mockEnv,
-					TeamId: &teamId,
+					TeamId: teamId,
 				},
 				Env:       &env,
 				Repo:      repo,
