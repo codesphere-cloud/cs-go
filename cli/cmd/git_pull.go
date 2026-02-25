@@ -51,7 +51,7 @@ func AddGitPullCmd(git *cobra.Command, opts GlobalOptions) {
 			Long: io.Long(`Pull latest changes from the remote git repository.
 
 				if specified, pulls a specific branch.`),
-			Example: io.FormatExampleCommands("pull", []io.Example{
+			Example: io.FormatExampleCommands("git pull", []io.Example{
 				{Cmd: "", Desc: "Pull latest HEAD from current branch"},
 				{Cmd: "--remote origin --branch staging", Desc: "Pull branch staging from remote origin"},
 			}),
