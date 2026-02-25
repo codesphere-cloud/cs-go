@@ -131,7 +131,13 @@ func (c *WakeUpCmd) WakeUpWorkspace(client Client, wsId int) error {
 	}
 
 	log.Printf("Checking health of workspace %d (%s)...\n", wsId, workspace.Name)
-	err = c.waitForWorkspaceHealthy(*workspace.DevDomain, c.Opts.Timeout)
+
+	token, err := c.Opts.Env.GetApiToken()
+	if err != nil {
+		return fmt.Errorf("failed to get API token: %w", err)
+	}
+
+	err = c.waitForWorkspaceHealthy(*workspace.DevDomain, token, c.Opts.Timeout)
 	if err != nil {
 		return fmt.Errorf("workspace did not become healthy: %w", err)
 	}
@@ -141,7 +147,7 @@ func (c *WakeUpCmd) WakeUpWorkspace(client Client, wsId int) error {
 	return nil
 }
 
-func (c *WakeUpCmd) waitForWorkspaceHealthy(devDomain string, timeout time.Duration) error {
+func (c *WakeUpCmd) waitForWorkspaceHealthy(devDomain string, token string, timeout time.Duration) error {
 	url := fmt.Sprintf("https://%s", devDomain)
 	delay := 5 * time.Second
 	maxWaitTime := time.Now().Add(timeout)
@@ -151,15 +157,20 @@ func (c *WakeUpCmd) waitForWorkspaceHealthy(devDomain string, timeout time.Durat
 	}
 
 	for {
-		resp, err := httpClient.Get(url)
+		req, err := http.NewRequest("GET", url, nil)
+		if err != nil {
+			return fmt.Errorf("failed to create request: %w", err)
+		}
+
+		req.Header.Set("X-CS-Authorization", fmt.Sprintf("Bearer %s", token))
+
+		resp, err := httpClient.Do(req)
 		if err == nil {
 			resp.Body.Close()
 			if resp.StatusCode == http.StatusOK {
 				return nil
 			}
-
-			log.Printf("Workspace %s responded with status code %d\n", devDomain, resp.StatusCode)
-			return nil
+			log.Printf("Workspace %s responded with status code %d, retrying...\n", devDomain, resp.StatusCode)
 		}
 
 		if time.Now().After(maxWaitTime) {

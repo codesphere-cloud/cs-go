@@ -116,7 +116,7 @@ func (c *CurlCmd) CurlWorkspace(client Client, wsId int, token string, path stri
 	defer cancel()
 
 	// Build curl command with authentication header and -L to follow redirects
-	cmdArgs := []string{"curl", "-L", "-H", fmt.Sprintf("x-forward-security: %s", token)}
+	cmdArgs := []string{"curl", "-L", "-H", fmt.Sprintf("X-CS-Authorization: Bearer %s", token)}
 
 	cmdArgs = append(cmdArgs, curlArgs...)
 	cmdArgs = append(cmdArgs, url)

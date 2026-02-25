@@ -70,7 +70,7 @@ var _ = Describe("Curl", func() {
 						if arg == "-L" {
 							hasFollowRedirects = true
 						}
-						if arg == "-H" && i+1 < len(args) && args[i+1] == fmt.Sprintf("x-forward-security: %s", token) {
+						if arg == "-H" && i+1 < len(args) && args[i+1] == fmt.Sprintf("X-CS-Authorization: Bearer %s", token) {
 							hasHeader = true
 						}
 						if arg == "-I" {
@@ -105,7 +105,7 @@ var _ = Describe("Curl", func() {
 						if arg == "-L" {
 							hasFollowRedirects = true
 						}
-						if arg == "-H" && i+1 < len(args) && args[i+1] == fmt.Sprintf("x-forward-security: %s", token) {
+						if arg == "-H" && i+1 < len(args) && args[i+1] == fmt.Sprintf("X-CS-Authorization: Bearer %s", token) {
 							hasHeader = true
 						}
 						if arg == "https://42-3000.dev.5.codesphere.com/custom/path" {
