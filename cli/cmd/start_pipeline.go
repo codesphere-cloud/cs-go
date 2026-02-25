@@ -164,9 +164,9 @@ func allRunning(status []api.PipelineStatus) bool {
 }
 
 func (c *StartPipelineCmd) allFinished(status []api.PipelineStatus) bool {
-	io.Verboseln(*c.Opts.Verbose, "====")
+	io.Verboseln(c.Opts.Verbose, "====")
 	for _, s := range status {
-		io.Verbosef(*c.Opts.Verbose, "Server: %s, State: %s, Replica: %s\n", s.Server, s.State, s.Replica)
+		io.Verbosef(c.Opts.Verbose, "Server: %s, State: %s, Replica: %s\n", s.Server, s.State, s.Replica)
 	}
 	for _, s := range status {
 		// Prepare and Test stage is only running in the IDE server, ignore customer servers

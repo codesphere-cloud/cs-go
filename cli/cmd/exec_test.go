@@ -34,7 +34,7 @@ var _ = Describe("Exec", func() {
 			Opts: cmd.ExecOptions{
 				GlobalOptions: cmd.GlobalOptions{
 					Env:         mockEnv,
-					WorkspaceId: &wsId,
+					WorkspaceId: wsId,
 				},
 				EnvVar:  &envVars,
 				WorkDir: &workDir,

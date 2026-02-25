@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
@@ -80,14 +81,9 @@ func (l *ListWorkspacesCmd) ListWorkspaces(client Client) ([]api.Workspace, erro
 }
 
 func (l *ListWorkspacesCmd) getTeamIds(client Client) (teams []int, err error) {
-	if l.Opts.TeamId != nil && *l.Opts.TeamId >= 0 {
-		teams = append(teams, *l.Opts.TeamId)
-		return
-	}
-	teamIdEnv, err := l.Opts.Env.GetTeamId()
+	teamIdEnv, err := l.Opts.GetTeamId()
 	if err != nil {
-		err = fmt.Errorf("failed to get team ID from env: %w", err)
-		return
+		log.Println("No team ID provided via flag or environment variable, listing workspaces of all teams")
 	}
 	if teamIdEnv >= 0 {
 		teams = append(teams, teamIdEnv)

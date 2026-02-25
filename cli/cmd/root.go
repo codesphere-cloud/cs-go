@@ -12,11 +12,11 @@ import (
 )
 
 type GlobalOptions struct {
-	ApiUrl      *string
-	TeamId      *int
-	WorkspaceId *int
+	ApiUrl      string
+	TeamId      int
+	WorkspaceId int
 	Env         Env
-	Verbose     *bool
+	Verbose     bool
 }
 
 type Env interface {
@@ -27,15 +27,15 @@ type Env interface {
 }
 
 func (o GlobalOptions) GetApiUrl() string {
-	if o.ApiUrl != nil && *o.ApiUrl != "" {
-		return *o.ApiUrl
+	if o.ApiUrl != "" {
+		return o.ApiUrl
 	}
 	return o.Env.GetApiUrl()
 }
 
 func (o GlobalOptions) GetTeamId() (int, error) {
-	if o.TeamId != nil && *o.TeamId != -1 {
-		return *o.TeamId, nil
+	if o.TeamId != -1 {
+		return o.TeamId, nil
 	}
 	wsId, err := o.Env.GetTeamId()
 	if err != nil {
@@ -48,8 +48,8 @@ func (o GlobalOptions) GetTeamId() (int, error) {
 }
 
 func (o GlobalOptions) GetWorkspaceId() (int, error) {
-	if o.WorkspaceId != nil && *o.WorkspaceId != -1 {
-		return *o.WorkspaceId, nil
+	if o.WorkspaceId != -1 {
+		return o.WorkspaceId, nil
 	}
 	wsId, err := o.Env.GetWorkspaceId()
 	if err != nil {
@@ -71,10 +71,10 @@ func GetRootCmd() *cobra.Command {
 
 	opts := GlobalOptions{Env: cs.NewEnv()}
 
-	opts.ApiUrl = rootCmd.PersistentFlags().StringP("api", "a", "", "URL of Codesphere API (can also be CS_API)")
-	opts.TeamId = rootCmd.PersistentFlags().IntP("team", "t", -1, "Team ID (relevant for some commands, can also be CS_TEAM_ID)")
-	opts.WorkspaceId = rootCmd.PersistentFlags().IntP("workspace", "w", -1, "Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID)")
-	opts.Verbose = rootCmd.PersistentFlags().BoolP("verbose", "v", false, "Verbose output")
+	rootCmd.PersistentFlags().StringVarP(&opts.ApiUrl, "api", "a", "", "URL of Codesphere API (can also be CS_API)")
+	rootCmd.PersistentFlags().IntVarP(&opts.TeamId, "team", "t", -1, "Team ID (relevant for some commands, can also be CS_TEAM_ID)")
+	rootCmd.PersistentFlags().IntVarP(&opts.WorkspaceId, "workspace", "w", -1, "Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID)")
+	rootCmd.PersistentFlags().BoolVarP(&opts.Verbose, "verbose", "v", false, "Verbose output")
 
 	AddExecCmd(rootCmd, opts)
 	AddLogCmd(rootCmd, opts)
