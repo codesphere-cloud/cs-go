@@ -157,6 +157,9 @@ func (c *WakeUpCmd) waitForWorkspaceHealthy(devDomain string, timeout time.Durat
 			if resp.StatusCode == http.StatusOK {
 				return nil
 			}
+
+			log.Printf("Workspace %s responded with status code %d\n", devDomain, resp.StatusCode)
+			return nil
 		}
 
 		if time.Now().After(maxWaitTime) {
