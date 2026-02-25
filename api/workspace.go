@@ -13,32 +13,32 @@ import (
 )
 
 func (c *Client) ListWorkspaces(teamId int) ([]Workspace, error) {
-	workspaces, _, err := c.api.WorkspacesAPI.WorkspacesListWorkspaces(c.ctx, float32(teamId)).Execute()
-	return workspaces, errors.FormatAPIError(err)
+	workspaces, r, err := c.api.WorkspacesAPI.WorkspacesListWorkspaces(c.ctx, float32(teamId)).Execute()
+	return workspaces, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) GetWorkspace(workspaceId int) (Workspace, error) {
-	workspace, _, err := c.api.WorkspacesAPI.WorkspacesGetWorkspace(c.ctx, float32(workspaceId)).Execute()
+	workspace, r, err := c.api.WorkspacesAPI.WorkspacesGetWorkspace(c.ctx, float32(workspaceId)).Execute()
 
 	if workspace != nil {
-		return *workspace, errors.FormatAPIError(err)
+		return *workspace, errors.FormatAPIError(r, err)
 	}
-	return Workspace{}, errors.FormatAPIError(err)
+	return Workspace{}, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) DeleteWorkspace(workspaceId int) error {
-	_, err := c.api.WorkspacesAPI.WorkspacesDeleteWorkspace(c.ctx, float32(workspaceId)).Execute()
-	return errors.FormatAPIError(err)
+	r, err := c.api.WorkspacesAPI.WorkspacesDeleteWorkspace(c.ctx, float32(workspaceId)).Execute()
+	return errors.FormatAPIError(r, err)
 }
 
 func (c *Client) WorkspaceStatus(workspaceId int) (*WorkspaceStatus, error) {
-	status, _, err := c.api.WorkspacesAPI.WorkspacesGetWorkspaceStatus(c.ctx, float32(workspaceId)).Execute()
-	return status, errors.FormatAPIError(err)
+	status, r, err := c.api.WorkspacesAPI.WorkspacesGetWorkspaceStatus(c.ctx, float32(workspaceId)).Execute()
+	return status, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) CreateWorkspace(args CreateWorkspaceArgs) (*Workspace, error) {
-	workspace, _, err := c.api.WorkspacesAPI.WorkspacesCreateWorkspace(c.ctx).WorkspacesCreateWorkspaceRequest(args).Execute()
-	return workspace, errors.FormatAPIError(err)
+	workspace, r, err := c.api.WorkspacesAPI.WorkspacesCreateWorkspace(c.ctx).WorkspacesCreateWorkspaceRequest(args).Execute()
+	return workspace, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string) error {
@@ -52,8 +52,8 @@ func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string
 
 	req := c.api.WorkspacesAPI.WorkspacesSetEnvVar(c.ctx, float32(workspaceId)).
 		WorkspacesCreateWorkspaceRequestEnvInner(vars)
-	_, err := c.api.WorkspacesAPI.WorkspacesSetEnvVarExecute(req)
-	return errors.FormatAPIError(err)
+	r, err := c.api.WorkspacesAPI.WorkspacesSetEnvVarExecute(req)
+	return errors.FormatAPIError(r, err)
 }
 
 func (c *Client) ExecCommand(workspaceId int, command string, workdir string, env map[string]string) (string, string, error) {
@@ -69,43 +69,43 @@ func (c *Client) ExecCommand(workspaceId int, command string, workdir string, en
 	}
 
 	req := c.api.WorkspacesAPI.WorkspacesExecuteCommand(c.ctx, float32(workspaceId)).WorkspacesExecuteCommandRequest(cmd)
-	res, _, err := req.Execute()
+	res, r, err := req.Execute()
 
 	if err != nil {
-		return "", "", errors.FormatAPIError(err)
+		return "", "", errors.FormatAPIError(r, err)
 	}
 	if res == nil {
-		return "", "", errors.FormatAPIError(err)
+		return "", "", errors.FormatAPIError(r, err)
 	}
-	return res.Output, res.Error, errors.FormatAPIError(err)
+	return res.Output, res.Error, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) DeployLandscape(wsId int, profile string) error {
 	if profile == "ci.yml" || profile == "" {
 		req := c.api.WorkspacesAPI.WorkspacesDeployLandscape(c.ctx, float32(wsId))
-		_, err := req.Execute()
-		return errors.FormatAPIError(err)
+		r, err := req.Execute()
+		return errors.FormatAPIError(r, err)
 	}
 	req := c.api.WorkspacesAPI.WorkspacesDeployLandscape1(c.ctx, float32(wsId), profile)
-	_, err := req.Execute()
-	return errors.FormatAPIError(err)
+	r, err := req.Execute()
+	return errors.FormatAPIError(r, err)
 }
 
 func (c *Client) StartPipelineStage(wsId int, profile string, stage string) error {
 	if profile == "ci.yml" || profile == "" {
 		req := c.api.WorkspacesAPI.WorkspacesStartPipelineStage(c.ctx, float32(wsId), stage)
-		_, err := req.Execute()
-		return errors.FormatAPIError(err)
+		r, err := req.Execute()
+		return errors.FormatAPIError(r, err)
 	}
 	req := c.api.WorkspacesAPI.WorkspacesStartPipelineStage1(c.ctx, float32(wsId), stage, profile)
-	_, err := req.Execute()
-	return errors.FormatAPIError(err)
+	r, err := req.Execute()
+	return errors.FormatAPIError(r, err)
 }
 
 func (c *Client) GetPipelineState(wsId int, stage string) ([]PipelineStatus, error) {
 	req := c.api.WorkspacesAPI.WorkspacesPipelineStatus(c.ctx, float32(wsId), stage)
-	res, _, err := req.Execute()
-	return res, errors.FormatAPIError(err)
+	res, r, err := req.Execute()
+	return res, errors.FormatAPIError(r, err)
 }
 
 // ScaleWorkspace sets the number of replicas for a workspace.
@@ -115,8 +115,8 @@ func (c *Client) ScaleWorkspace(wsId int, replicas int) error {
 		WorkspacesUpdateWorkspaceRequest(openapi_client.WorkspacesUpdateWorkspaceRequest{
 			Replicas: &replicas,
 		})
-	_, err := req.Execute()
-	return errors.FormatAPIError(err)
+	r, err := req.Execute()
+	return errors.FormatAPIError(r, err)
 }
 
 // Waits for a given workspace to be running.
@@ -131,7 +131,7 @@ func (client *Client) WaitForWorkspaceRunning(workspace *Workspace, timeout time
 
 		if err != nil {
 			if client.time.Now().After(maxWaitTime) {
-				return errors.FormatAPIError(err)
+				return err
 			}
 			client.time.Sleep(delay)
 			continue
@@ -202,11 +202,11 @@ func (client Client) DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, erro
 func (c Client) GitPull(workspaceId int, remote string, branch string) error {
 	if remote == "" {
 		req := c.api.WorkspacesAPI.WorkspacesGitPull(c.ctx, float32(workspaceId))
-		_, err := req.Execute()
-		return errors.FormatAPIError(err)
+		r, err := req.Execute()
+		return errors.FormatAPIError(r, err)
 	}
 
 	req := c.api.WorkspacesAPI.WorkspacesGitPull2(c.ctx, float32(workspaceId), remote, branch)
-	_, err := req.Execute()
-	return errors.FormatAPIError(err)
+	r, err := req.Execute()
+	return errors.FormatAPIError(r, err)
 }
