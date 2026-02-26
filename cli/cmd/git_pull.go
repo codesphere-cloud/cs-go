@@ -18,7 +18,7 @@ type GitPullCmd struct {
 }
 
 type GitPullOpts struct {
-	GlobalOptions
+	*GlobalOptions
 	Remote *string
 	Branch *string
 }
@@ -29,7 +29,7 @@ func (c *GitPullCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
 	}
 
-	client, err := NewClient(c.Opts.GlobalOptions)
+	client, err := NewClient(*c.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -43,7 +43,7 @@ func (c *GitPullCmd) RunE(_ *cobra.Command, args []string) error {
 	return nil
 }
 
-func AddGitPullCmd(git *cobra.Command, opts GlobalOptions) {
+func AddGitPullCmd(git *cobra.Command, opts *GlobalOptions) {
 	pull := GitPullCmd{
 		cmd: &cobra.Command{
 			Use:   "pull",
@@ -51,7 +51,7 @@ func AddGitPullCmd(git *cobra.Command, opts GlobalOptions) {
 			Long: io.Long(`Pull latest changes from the remote git repository.
 
 				if specified, pulls a specific branch.`),
-			Example: io.FormatExampleCommands("pull", []io.Example{
+			Example: io.FormatExampleCommands("git pull", []io.Example{
 				{Cmd: "", Desc: "Pull latest HEAD from current branch"},
 				{Cmd: "--remote origin --branch staging", Desc: "Pull branch staging from remote origin"},
 			}),

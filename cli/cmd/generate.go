@@ -14,7 +14,7 @@ type GenerateCmd struct {
 }
 
 type GenerateOpts struct {
-	GlobalOptions
+	*GlobalOptions
 	Input    string
 	Branch   string
 	Output   string
@@ -22,7 +22,7 @@ type GenerateOpts struct {
 	RepoRoot string
 }
 
-func AddGenerateCmd(rootCmd *cobra.Command, opts GlobalOptions) {
+func AddGenerateCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	generate := GenerateCmd{
 		cmd: &cobra.Command{
 			Use:   "generate",

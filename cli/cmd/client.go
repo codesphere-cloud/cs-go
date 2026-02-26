@@ -52,6 +52,7 @@ func NewClient(opts GlobalOptions) (Client, error) {
 	client := api.NewClient(context.Background(), api.Configuration{
 		BaseUrl: apiUrl,
 		Token:   token,
+		Verbose: opts.Verbose,
 	})
 	return client, nil
 }

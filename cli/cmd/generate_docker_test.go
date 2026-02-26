@@ -43,8 +43,9 @@ var _ = Describe("GenerateDocker", func() {
 		c = &cmd.GenerateDockerCmd{
 			Opts: &cmd.GenerateDockerOpts{
 				GenerateOpts: &cmd.GenerateOpts{
-					GlobalOptions: cmd.GlobalOptions{
-						Env: mockEnv,
+					GlobalOptions: &cmd.GlobalOptions{
+						WorkspaceId: -1,
+						Env:         mockEnv,
 					},
 					Input:  defaultInput,
 					Output: defaultOutput,
@@ -109,16 +110,17 @@ var _ = Describe("GenerateDocker", func() {
 		})
 
 		Context("when workspace ID is set in the env var", func() {
+			BeforeEach(func() {
+				wsId = 99
+			})
 			It("should use the workspace ID from environment", func() {
-				envWsId := 99
-				mockEnv.EXPECT().GetWorkspaceId().Return(envWsId, nil)
-
 				cmd := &cmd.GenerateDockerCmd{
 					Opts: &cmd.GenerateDockerOpts{
 						GenerateOpts: &cmd.GenerateOpts{
-							GlobalOptions: cmd.GlobalOptions{
-								Env: mockEnv,
-								// WorkspaceId is nil, so it will use env var
+							GlobalOptions: &cmd.GlobalOptions{
+								Env:         mockEnv,
+								WorkspaceId: -1,
+								// WorkspaceId is -1 (default), so it will use env var
 							},
 						},
 						BaseImage: "alpine:latest",
@@ -128,7 +130,8 @@ var _ = Describe("GenerateDocker", func() {
 				ws := api.Workspace{
 					GitUrl: *openapi_client.NewNullableString(&repoUrl),
 				}
-				mockClient.EXPECT().GetWorkspace(envWsId).Return(ws, nil)
+				mockEnv.EXPECT().GetWorkspaceId().Return(wsId, nil)
+				mockClient.EXPECT().GetWorkspace(99).Return(ws, nil)
 				mockGit.EXPECT().CloneRepository(memoryFs, repoUrl, branch, clonedir).Return(nil, nil)
 
 				err := cmd.CloneRepository(mockClient, memoryFs, mockGit, clonedir)
@@ -142,9 +145,9 @@ var _ = Describe("GenerateDocker", func() {
 				cmd := &cmd.GenerateDockerCmd{
 					Opts: &cmd.GenerateDockerOpts{
 						GenerateOpts: &cmd.GenerateOpts{
-							GlobalOptions: cmd.GlobalOptions{
+							GlobalOptions: &cmd.GlobalOptions{
 								Env:         mockEnv,
-								WorkspaceId: &flagWsId,
+								WorkspaceId: flagWsId,
 							},
 						},
 						BaseImage: "alpine:latest",

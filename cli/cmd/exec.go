@@ -9,7 +9,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/codesphere-cloud/cs-go/api/errors"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 
@@ -22,7 +21,7 @@ type ExecCmd struct {
 }
 
 type ExecOptions struct {
-	GlobalOptions
+	*GlobalOptions
 	EnvVar  *[]string
 	WorkDir *string
 }
@@ -31,7 +30,7 @@ func (c *ExecCmd) RunE(_ *cobra.Command, args []string) error {
 	command := strings.Join(args, " ")
 	log.Printf("running command %s\n", command)
 
-	client, err := NewClient(c.Opts.GlobalOptions)
+	client, err := NewClient(*c.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -39,7 +38,7 @@ func (c *ExecCmd) RunE(_ *cobra.Command, args []string) error {
 	return c.ExecCommand(client, command)
 }
 
-func AddExecCmd(rootCmd *cobra.Command, opts GlobalOptions) {
+func AddExecCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	exec := ExecCmd{
 		cmd: &cobra.Command{
 			Use:   "exec",
@@ -81,5 +80,5 @@ func (c *ExecCmd) ExecCommand(client Client, command string) error {
 		log.Println("STDERR:")
 		fmt.Fprintln(os.Stderr, stderr)
 	}
-	return errors.FormatAPIError(err)
+	return err
 }

@@ -28,7 +28,7 @@ func (e *DefaultCommandExecutor) Execute(ctx context.Context, name string, args 
 }
 
 type CurlOptions struct {
-	GlobalOptions
+	*GlobalOptions
 	Timeout  time.Duration
 	Executor CommandExecutor // Injectable for testing
 }
@@ -39,7 +39,7 @@ type CurlCmd struct {
 }
 
 func (c *CurlCmd) RunE(_ *cobra.Command, args []string) error {
-	client, err := NewClient(c.Opts.GlobalOptions)
+	client, err := NewClient(*c.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -69,7 +69,7 @@ func (c *CurlCmd) RunE(_ *cobra.Command, args []string) error {
 	return c.CurlWorkspace(client, wsId, token, path, curlArgs)
 }
 
-func AddCurlCmd(rootCmd *cobra.Command, opts GlobalOptions) {
+func AddCurlCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	curl := CurlCmd{
 		cmd: &cobra.Command{
 			Use:   "curl [path] [-- curl-args...]",

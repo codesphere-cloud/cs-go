@@ -16,7 +16,7 @@ import (
 )
 
 type WakeUpOptions struct {
-	GlobalOptions
+	*GlobalOptions
 	Timeout       time.Duration
 	SyncLandscape bool
 	Profile       string
@@ -29,7 +29,7 @@ type WakeUpCmd struct {
 }
 
 func (c *WakeUpCmd) RunE(_ *cobra.Command, args []string) error {
-	client, err := NewClient(c.Opts.GlobalOptions)
+	client, err := NewClient(*c.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -42,7 +42,7 @@ func (c *WakeUpCmd) RunE(_ *cobra.Command, args []string) error {
 	return c.WakeUpWorkspace(client, wsId)
 }
 
-func AddWakeUpCmd(rootCmd *cobra.Command, opts GlobalOptions) {
+func AddWakeUpCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	wakeup := WakeUpCmd{
 		cmd: &cobra.Command{
 			Use:   "wake-up",

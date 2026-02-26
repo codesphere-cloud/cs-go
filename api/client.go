@@ -24,6 +24,9 @@ type Configuration struct {
 	BaseUrl *url.URL
 	// Codesphere api token
 	Token string
+
+	// Verbose output for debugging
+	Verbose bool
 }
 
 func (c Configuration) GetApiUrl() *url.URL {
@@ -52,6 +55,7 @@ func NewClient(ctx context.Context, opts Configuration) *Client {
 	cfg.Servers = []openapi_client.ServerConfiguration{{
 		URL: opts.BaseUrl.String(),
 	}}
+	cfg.Debug = opts.Verbose
 	return NewClientWithCustomDeps(ctx, opts, openapi_client.NewAPIClient(cfg), &RealTime{})
 }
 
@@ -78,46 +82,46 @@ func NewHttpClient() *http.Client {
 }
 
 func (c *Client) ListDataCenters() ([]DataCenter, error) {
-	datacenters, _, err := c.api.MetadataAPI.MetadataGetDatacenters(c.ctx).Execute()
-	return datacenters, errors.FormatAPIError(err)
+	datacenters, r, err := c.api.MetadataAPI.MetadataGetDatacenters(c.ctx).Execute()
+	return datacenters, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) ListDomains(teamId int) ([]Domain, error) {
-	domains, _, err := c.api.DomainsAPI.DomainsListDomains(c.ctx, float32(teamId)).Execute()
-	return domains, errors.FormatAPIError(err)
+	domains, r, err := c.api.DomainsAPI.DomainsListDomains(c.ctx, float32(teamId)).Execute()
+	return domains, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) GetDomain(teamId int, domainName string) (*Domain, error) {
-	domain, _, err := c.api.DomainsAPI.DomainsGetDomain(c.ctx, float32(teamId), domainName).Execute()
-	return domain, errors.FormatAPIError(err)
+	domain, r, err := c.api.DomainsAPI.DomainsGetDomain(c.ctx, float32(teamId), domainName).Execute()
+	return domain, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) CreateDomain(teamId int, domainName string) (*Domain, error) {
-	domain, _, err := c.api.DomainsAPI.DomainsCreateDomain(c.ctx, float32(teamId), domainName).Execute()
-	return domain, errors.FormatAPIError(err)
+	domain, r, err := c.api.DomainsAPI.DomainsCreateDomain(c.ctx, float32(teamId), domainName).Execute()
+	return domain, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) DeleteDomain(teamId int, domainName string) error {
-	_, err := c.api.DomainsAPI.DomainsDeleteDomain(c.ctx, float32(teamId), domainName).Execute()
-	return errors.FormatAPIError(err)
+	r, err := c.api.DomainsAPI.DomainsDeleteDomain(c.ctx, float32(teamId), domainName).Execute()
+	return errors.FormatAPIError(r, err)
 }
 
 func (c *Client) UpdateDomain(
 	teamId int, domainName string, args UpdateDomainArgs,
 ) (*Domain, error) {
-	domain, _, err := c.api.DomainsAPI.
+	domain, r, err := c.api.DomainsAPI.
 		DomainsUpdateDomain(c.ctx, float32(teamId), domainName).
 		DomainsUpdateDomainRequest(args).
 		Execute()
-	return domain, errors.FormatAPIError(err)
+	return domain, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) VerifyDomain(
 	teamId int, domainName string,
 ) (*DomainVerificationStatus, error) {
-	status, _, err := c.api.DomainsAPI.
+	status, r, err := c.api.DomainsAPI.
 		DomainsVerifyDomain(c.ctx, float32(teamId), domainName).Execute()
-	return status, errors.FormatAPIError(err)
+	return status, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) UpdateWorkspaceConnections(
@@ -131,13 +135,13 @@ func (c *Client) UpdateWorkspaceConnections(
 		}
 		req[path] = ids
 	}
-	domain, _, err := c.api.DomainsAPI.
+	domain, r, err := c.api.DomainsAPI.
 		DomainsUpdateWorkspaceConnections(c.ctx, float32(teamId), domainName).
 		RequestBody(req).Execute()
-	return domain, errors.FormatAPIError(err)
+	return domain, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) ListBaseimages() ([]Baseimage, error) {
-	baseimages, _, err := c.api.MetadataAPI.MetadataGetWorkspaceBaseImages(c.ctx).Execute()
-	return baseimages, errors.FormatAPIError(err)
+	baseimages, r, err := c.api.MetadataAPI.MetadataGetWorkspaceBaseImages(c.ctx).Execute()
+	return baseimages, errors.FormatAPIError(r, err)
 }
