@@ -15,11 +15,11 @@ import (
 )
 
 type ListWorkspacesCmd struct {
-	Opts GlobalOptions
+	Opts *GlobalOptions
 	cmd  *cobra.Command
 }
 
-func addListWorkspacesCmd(p *cobra.Command, opts GlobalOptions) {
+func addListWorkspacesCmd(p *cobra.Command, opts *GlobalOptions) {
 	l := ListWorkspacesCmd{
 		cmd: &cobra.Command{
 			Use:   "workspaces",
@@ -36,7 +36,7 @@ func addListWorkspacesCmd(p *cobra.Command, opts GlobalOptions) {
 }
 
 func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {
-	client, err := NewClient(l.Opts)
+	client, err := NewClient(*l.Opts)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}

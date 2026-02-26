@@ -25,7 +25,7 @@ var _ = Describe("SetEnvVars", func() {
 		wsId = 42
 		e = &cmd.SetEnvVarCmd{
 			Opts: cmd.SetEnvVarOptions{
-				GlobalOptions: cmd.GlobalOptions{
+				GlobalOptions: &cmd.GlobalOptions{
 					Env:         mockEnv,
 					WorkspaceId: wsId,
 				},

@@ -38,7 +38,7 @@ var _ = Describe("StartPipeline", func() {
 	JustBeforeEach(func() {
 		c = &cmd.StartPipelineCmd{
 			Opts: cmd.StartPipelineOpts{
-				GlobalOptions: cmd.GlobalOptions{
+				GlobalOptions: &cmd.GlobalOptions{
 					WorkspaceId: wsId,
 					Verbose:     verbose,
 				},

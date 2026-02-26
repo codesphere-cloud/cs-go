@@ -20,7 +20,7 @@ func (c *OpenCmd) RunE(_ *cobra.Command, args []string) error {
 	return cs.NewBrowser().OpenIde("")
 }
 
-func AddOpenCmd(rootCmd *cobra.Command, opts GlobalOptions) {
+func AddOpenCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	open := OpenCmd{
 		cmd: &cobra.Command{
 			Use:   "open",

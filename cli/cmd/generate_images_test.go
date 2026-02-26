@@ -40,7 +40,7 @@ var _ = Describe("GenerateImages", func() {
 		c = &cmd.GenerateImagesCmd{
 			Opts: &cmd.GenerateImagesOpts{
 				GenerateOpts: &cmd.GenerateOpts{
-					GlobalOptions: cmd.GlobalOptions{
+					GlobalOptions: &cmd.GlobalOptions{
 						Env:         mockEnv,
 						WorkspaceId: wsId,
 					},

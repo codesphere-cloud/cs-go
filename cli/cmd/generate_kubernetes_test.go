@@ -38,7 +38,7 @@ var _ = Describe("GenerateKubernetes", func() {
 		c = &cmd.GenerateKubernetesCmd{
 			Opts: &cmd.GenerateKubernetesOpts{
 				GenerateOpts: &cmd.GenerateOpts{
-					GlobalOptions: cmd.GlobalOptions{
+					GlobalOptions: &cmd.GlobalOptions{
 						Env:         mockEnv,
 						WorkspaceId: wsId,
 					},
