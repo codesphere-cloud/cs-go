@@ -22,7 +22,7 @@ type StartPipelineCmd struct {
 }
 
 type StartPipelineOpts struct {
-	GlobalOptions
+	*GlobalOptions
 	Profile *string
 	Timeout *time.Duration
 }
@@ -36,7 +36,7 @@ func (c *StartPipelineCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
 	}
 
-	client, err := NewClient(c.Opts.GlobalOptions)
+	client, err := NewClient(*c.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -44,7 +44,7 @@ func (c *StartPipelineCmd) RunE(_ *cobra.Command, args []string) error {
 	return c.StartPipelineStages(client, workspaceId, args)
 }
 
-func AddStartPipelineCmd(start *cobra.Command, opts GlobalOptions) {
+func AddStartPipelineCmd(start *cobra.Command, opts *GlobalOptions) {
 	pipeline := StartPipelineCmd{
 		cmd: &cobra.Command{
 			Use:   "pipeline",

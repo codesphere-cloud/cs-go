@@ -24,7 +24,7 @@ type CreateWorkspaceCmd struct {
 }
 
 type CreateWorkspaceOpts struct {
-	GlobalOptions
+	*GlobalOptions
 	Repo            *string
 	Vpn             *string
 	Env             *[]string
@@ -37,7 +37,7 @@ type CreateWorkspaceOpts struct {
 }
 
 func (c *CreateWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
-	client, err := NewClient(c.Opts.GlobalOptions)
+	client, err := NewClient(*c.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -77,7 +77,7 @@ func (c *CreateWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
 	return nil
 }
 
-func AddCreateWorkspaceCmd(create *cobra.Command, opts GlobalOptions) {
+func AddCreateWorkspaceCmd(create *cobra.Command, opts *GlobalOptions) {
 	workspace := CreateWorkspaceCmd{
 		cmd: &cobra.Command{
 			Use:   "workspace",

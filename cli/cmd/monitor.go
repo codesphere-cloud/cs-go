@@ -37,7 +37,7 @@ type MonitorCmd struct {
 }
 
 type MonitorOpts struct {
-	GlobalOptions
+	*GlobalOptions
 	ListenAddress      *string
 	MaxRestarts        *int
 	Forward            *string
@@ -274,7 +274,7 @@ func (p *Proxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	_ = resp.Body.Close()
 }
 
-func AddMonitorCmd(rootCmd *cobra.Command, opts GlobalOptions) {
+func AddMonitorCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	monitor := MonitorCmd{
 		Cmd: &cobra.Command{
 			Use:   "monitor",

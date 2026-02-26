@@ -32,7 +32,7 @@ func (c *GenerateDockerCmd) RunE(cc *cobra.Command, args []string) error {
 	fs := cs.NewOSFileSystem(".")
 	git := git.NewGitService(fs)
 
-	client, err := NewClient(c.Opts.GlobalOptions)
+	client, err := NewClient(*c.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}

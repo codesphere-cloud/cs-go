@@ -15,10 +15,10 @@ import (
 
 type ListTeamsCmd struct {
 	cmd  *cobra.Command
-	opts GlobalOptions
+	opts *GlobalOptions
 }
 
-func addListTeamsCmd(p *cobra.Command, opts GlobalOptions) {
+func addListTeamsCmd(p *cobra.Command, opts *GlobalOptions) {
 	l := ListTeamsCmd{
 		cmd: &cobra.Command{
 			Use:   "teams",
@@ -35,7 +35,7 @@ func addListTeamsCmd(p *cobra.Command, opts GlobalOptions) {
 }
 
 func (l *ListTeamsCmd) RunE(_ *cobra.Command, args []string) (err error) {
-	client, err := NewClient(l.opts)
+	client, err := NewClient(*l.opts)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
