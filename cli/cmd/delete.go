@@ -11,7 +11,7 @@ type DeleteCmd struct {
 	cmd *cobra.Command
 }
 
-func AddDeleteCmd(rootCmd *cobra.Command, opt GlobalOptions) {
+func AddDeleteCmd(rootCmd *cobra.Command, opt *GlobalOptions) {
 	delete := DeleteCmd{
 		cmd: &cobra.Command{
 			Use:   "delete",

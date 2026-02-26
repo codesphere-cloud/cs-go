@@ -43,7 +43,7 @@ var _ = Describe("GenerateDocker", func() {
 		c = &cmd.GenerateDockerCmd{
 			Opts: &cmd.GenerateDockerOpts{
 				GenerateOpts: &cmd.GenerateOpts{
-					GlobalOptions: cmd.GlobalOptions{
+					GlobalOptions: &cmd.GlobalOptions{
 						WorkspaceId: -1,
 						Env:         mockEnv,
 					},
@@ -117,7 +117,7 @@ var _ = Describe("GenerateDocker", func() {
 				cmd := &cmd.GenerateDockerCmd{
 					Opts: &cmd.GenerateDockerOpts{
 						GenerateOpts: &cmd.GenerateOpts{
-							GlobalOptions: cmd.GlobalOptions{
+							GlobalOptions: &cmd.GlobalOptions{
 								Env:         mockEnv,
 								WorkspaceId: -1,
 								// WorkspaceId is -1 (default), so it will use env var
@@ -145,7 +145,7 @@ var _ = Describe("GenerateDocker", func() {
 				cmd := &cmd.GenerateDockerCmd{
 					Opts: &cmd.GenerateDockerOpts{
 						GenerateOpts: &cmd.GenerateOpts{
-							GlobalOptions: cmd.GlobalOptions{
+							GlobalOptions: &cmd.GlobalOptions{
 								Env:         mockEnv,
 								WorkspaceId: flagWsId,
 							},

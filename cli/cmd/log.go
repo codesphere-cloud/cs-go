@@ -24,7 +24,7 @@ import (
 type LogCmd struct {
 	cmd   *cobra.Command
 	scope LogCmdScope
-	opts  GlobalOptions
+	opts  *GlobalOptions
 }
 
 type LogCmdScope struct {
@@ -46,7 +46,7 @@ type SSE struct {
 	data  string
 }
 
-func AddLogCmd(rootCmd *cobra.Command, opts GlobalOptions) {
+func AddLogCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	logCmd := LogCmd{
 		cmd: &cobra.Command{
 			Use:   "log",

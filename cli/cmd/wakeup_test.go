@@ -31,7 +31,7 @@ var _ = Describe("WakeUp", func() {
 		teamId = 21
 		c = &cmd.WakeUpCmd{
 			Opts: cmd.WakeUpOptions{
-				GlobalOptions: cmd.GlobalOptions{
+				GlobalOptions: &cmd.GlobalOptions{
 					Env:         mockEnv,
 					WorkspaceId: wsId,
 				},
