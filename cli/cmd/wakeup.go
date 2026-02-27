@@ -202,8 +202,8 @@ func parseScaleServices(s string) (map[string]int, error) {
 		if err != nil {
 			return nil, fmt.Errorf("invalid replica count '%s' for service '%s': %w", parts[1], service, err)
 		}
-		if replicas < 0 {
-			return nil, fmt.Errorf("replica count must be non-negative for service '%s'", service)
+		if replicas < 1 {
+			return nil, fmt.Errorf("replica count must be at least 1 for service '%s'", service)
 		}
 		result[service] = replicas
 	}

@@ -124,8 +124,8 @@ func (c *Client) ScaleWorkspace(wsId int, replicas int) error {
 func (c *Client) ScaleLandscapeServices(wsId int, services map[string]int) error {
 	req := c.api.WorkspacesAPI.WorkspacesScaleLandscapeServices(c.ctx, float32(wsId)).
 		RequestBody(services)
-	_, err := req.Execute()
-	return errors.FormatAPIError(err)
+	resp, err := req.Execute()
+	return errors.FormatAPIError(resp, err)
 }
 
 // Waits for a given workspace to be running.
