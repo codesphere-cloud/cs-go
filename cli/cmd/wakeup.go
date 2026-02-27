@@ -166,7 +166,7 @@ func (c *WakeUpCmd) waitForWorkspaceHealthy(devDomain string, token string, time
 
 		resp, err := httpClient.Do(req)
 		if err == nil {
-			resp.Body.Close()
+			defer func() { _ = resp.Body.Close() }()
 			if resp.StatusCode == http.StatusOK {
 				return nil
 			}
