@@ -23,6 +23,7 @@ type Client interface {
 	WorkspaceStatus(workspaceId int) (*api.WorkspaceStatus, error)
 	WaitForWorkspaceRunning(workspace *api.Workspace, timeout time.Duration) error
 	ScaleWorkspace(wsId int, replicas int) error
+	ScaleLandscapeServices(wsId int, services map[string]int) error
 	SetEnvVarOnWorkspace(workspaceId int, vars map[string]string) error
 	ExecCommand(workspaceId int, command string, workdir string, env map[string]string) (string, string, error)
 	ListWorkspacePlans() ([]api.WorkspacePlan, error)

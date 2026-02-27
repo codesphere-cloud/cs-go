@@ -10,6 +10,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 	"time"
 
 	io_pkg "github.com/codesphere-cloud/cs-go/pkg/io"
@@ -53,8 +54,17 @@ func (c *CurlCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get API token: %w", err)
 	}
 
-	path := args[0]
-	curlArgs := args[1:]
+	path := "/"
+	var curlArgs []string
+
+	if len(args) > 0 {
+		if strings.HasPrefix(args[0], "/") {
+			path = args[0]
+			curlArgs = args[1:]
+		} else {
+			curlArgs = args
+		}
+	}
 
 	return c.CurlWorkspace(client, wsId, token, path, curlArgs)
 }
@@ -70,9 +80,10 @@ func AddCurlCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 				{Cmd: "/api/health -w 1234", Desc: "GET request to health endpoint"},
 				{Cmd: "/api/data -w 1234 -- -XPOST -d '{\"key\":\"value\"}'", Desc: "POST request with data"},
 				{Cmd: "/api/endpoint -w 1234 -- -v", Desc: "verbose output"},
+				{Cmd: "-w 1234 -- -v", Desc: "verbose request to workspace root"},
 				{Cmd: "/ -- -k", Desc: "skip TLS verification"}, {Cmd: "/ -- -I", Desc: "HEAD request using workspace from env var"},
 			}),
-			Args: cobra.MinimumNArgs(1),
+			Args: cobra.ArbitraryArgs,
 		},
 		Opts: CurlOptions{
 			GlobalOptions: opts,
@@ -104,8 +115,8 @@ func (c *CurlCmd) CurlWorkspace(client Client, wsId int, token string, path stri
 	ctx, cancel := context.WithTimeout(context.Background(), c.Opts.Timeout)
 	defer cancel()
 
-	// Build curl command with authentication header
-	cmdArgs := []string{"curl", "-H", fmt.Sprintf("x-forward-security: %s", token)}
+	// Build curl command with authentication header and -L to follow redirects
+	cmdArgs := []string{"curl", "-L", "-H", fmt.Sprintf("X-CS-Authorization: Bearer %s", token)}
 
 	cmdArgs = append(cmdArgs, curlArgs...)
 	cmdArgs = append(cmdArgs, url)

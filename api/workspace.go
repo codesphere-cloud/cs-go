@@ -119,6 +119,15 @@ func (c *Client) ScaleWorkspace(wsId int, replicas int) error {
 	return errors.FormatAPIError(r, err)
 }
 
+// ScaleLandscapeServices scales landscape services by name.
+// The services map contains service name -> replica count.
+func (c *Client) ScaleLandscapeServices(wsId int, services map[string]int) error {
+	req := c.api.WorkspacesAPI.WorkspacesScaleLandscapeServices(c.ctx, float32(wsId)).
+		RequestBody(services)
+	resp, err := req.Execute()
+	return errors.FormatAPIError(resp, err)
+}
+
 // Waits for a given workspace to be running.
 //
 // Returns [TimedOut] error if the workspace does not become running in time.
