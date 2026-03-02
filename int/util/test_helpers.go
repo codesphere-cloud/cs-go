@@ -9,7 +9,7 @@ import (
 	ginkgo "github.com/onsi/ginkgo/v2"
 )
 
-func SkipIfMissingEnvVars() (teamId, token string) {
+func FailIfMissingEnvVars() (teamId, token string) {
 	teamId = os.Getenv("CS_TEAM_ID")
 	if teamId == "" {
 		ginkgo.Fail("CS_TEAM_ID environment variable not set")

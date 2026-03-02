@@ -241,7 +241,7 @@ var _ = Describe("cs monitor", func() {
 	Context("Prometheus Metrics Endpoint", func() {
 		It("should expose Prometheus metrics when no forward is specified", func() {
 			By("Running 'cs monitor' command without forwarding (metrics only)")
-			intutil.RunCommandInBackground(monitorOutputBuf,
+			monitorCmdProcess = intutil.RunCommandInBackground(monitorOutputBuf,
 				"monitor",
 				"--address", fmt.Sprintf(":%d", monitorListenPort),
 				"--", "sleep", "60s",
@@ -263,7 +263,7 @@ var _ = Describe("cs monitor", func() {
 
 		It("should redirect root to /metrics", func() {
 			By("Running 'cs monitor' command without forwarding (metrics only)")
-			intutil.RunCommandInBackground(monitorOutputBuf,
+			monitorCmdProcess = intutil.RunCommandInBackground(monitorOutputBuf,
 				"monitor",
 				"--address", fmt.Sprintf(":%d", monitorListenPort),
 				"--", "sleep", "60s",
@@ -357,7 +357,7 @@ var _ = Describe("Open Workspace Integration Tests", func() {
 	)
 
 	BeforeEach(func() {
-		teamId, _ = intutil.SkipIfMissingEnvVars()
+		teamId, _ = intutil.FailIfMissingEnvVars()
 		workspaceName = fmt.Sprintf("cli-open-test-%d", time.Now().Unix())
 	})
 
@@ -431,7 +431,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", func() {
 	)
 
 	BeforeEach(func() {
-		teamId, _ = intutil.SkipIfMissingEnvVars()
+		teamId, _ = intutil.FailIfMissingEnvVars()
 		workspaceName = fmt.Sprintf("cli-edge-test-%d", time.Now().Unix())
 	})
 
@@ -709,7 +709,7 @@ var _ = Describe("List Command Tests", func() {
 	var teamId string
 
 	BeforeEach(func() {
-		teamId, _ = intutil.SkipIfMissingEnvVars()
+		teamId, _ = intutil.FailIfMissingEnvVars()
 	})
 
 	Context("List Workspaces", func() {
@@ -849,7 +849,7 @@ var _ = Describe("Log Command Integration Tests", func() {
 	)
 
 	BeforeEach(func() {
-		teamId, _ = intutil.SkipIfMissingEnvVars()
+		teamId, _ = intutil.FailIfMissingEnvVars()
 		workspaceName = fmt.Sprintf("cli-log-test-%d", time.Now().Unix())
 	})
 
@@ -897,7 +897,7 @@ var _ = Describe("Start Pipeline Integration Tests", func() {
 	)
 
 	BeforeEach(func() {
-		teamId, _ = intutil.SkipIfMissingEnvVars()
+		teamId, _ = intutil.FailIfMissingEnvVars()
 		workspaceName = fmt.Sprintf("cli-pipeline-test-%d", time.Now().Unix())
 	})
 
@@ -944,7 +944,7 @@ var _ = Describe("Git Pull Integration Tests", func() {
 	)
 
 	BeforeEach(func() {
-		teamId, _ = intutil.SkipIfMissingEnvVars()
+		teamId, _ = intutil.FailIfMissingEnvVars()
 		workspaceName = fmt.Sprintf("cli-git-test-%d", time.Now().Unix())
 	})
 
@@ -991,7 +991,7 @@ var _ = Describe("Wake Up Workspace Integration Tests", func() {
 	)
 
 	BeforeEach(func() {
-		teamId, _ = intutil.SkipIfMissingEnvVars()
+		teamId, _ = intutil.FailIfMissingEnvVars()
 		workspaceName = fmt.Sprintf("cli-wakeup-test-%d", time.Now().Unix())
 	})
 
@@ -1165,7 +1165,7 @@ var _ = Describe("Curl Workspace Integration Tests", func() {
 	)
 
 	BeforeEach(func() {
-		teamId, _ = intutil.SkipIfMissingEnvVars()
+		teamId, _ = intutil.FailIfMissingEnvVars()
 		workspaceName = fmt.Sprintf("cli-curl-test-%d", time.Now().Unix())
 	})
 
