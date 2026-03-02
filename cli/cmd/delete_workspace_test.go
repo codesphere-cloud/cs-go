@@ -31,9 +31,9 @@ var _ = Describe("DeleteWorkspace", func() {
 		mockPrompt = cmd.NewMockPrompt(GinkgoT())
 		c = &cmd.DeleteWorkspaceCmd{
 			Opts: cmd.DeleteWorkspaceOpts{
-				GlobalOptions: cmd.GlobalOptions{
+				GlobalOptions: &cmd.GlobalOptions{
 					Env:         mockEnv,
-					WorkspaceId: &wsId,
+					WorkspaceId: wsId,
 				},
 				Confirmed: &confirmed,
 			},

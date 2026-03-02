@@ -125,9 +125,9 @@ License URL: https://github.com/go-git/gcfg/blob/3a3c6141e376/LICENSE
  
 ----------
 Module: github.com/go-git/go-billy/v5
-Version: v5.7.0
+Version: v5.8.0
 License: Apache-2.0
-License URL: https://github.com/go-git/go-billy/blob/v5.7.0/LICENSE
+License URL: https://github.com/go-git/go-billy/blob/v5.8.0/LICENSE
  
 ----------
 Module: github.com/go-git/go-git/v5

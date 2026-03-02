@@ -18,11 +18,11 @@ type SetEnvVarCmd struct {
 }
 
 type SetEnvVarOptions struct {
-	GlobalOptions
+	*GlobalOptions
 	EnvVar *[]string
 }
 
-func AddSetEnvVarCmd(p *cobra.Command, opts GlobalOptions) {
+func AddSetEnvVarCmd(p *cobra.Command, opts *GlobalOptions) {
 	l := SetEnvVarCmd{
 		cmd: &cobra.Command{
 			Use:   "set-env",
@@ -45,7 +45,7 @@ func (l *SetEnvVarCmd) parseFlags() {
 }
 
 func (l *SetEnvVarCmd) RunE(_ *cobra.Command, args []string) (err error) {
-	client, err := NewClient(l.Opts.GlobalOptions)
+	client, err := NewClient(*l.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}

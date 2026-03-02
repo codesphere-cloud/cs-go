@@ -5,6 +5,7 @@ package cmd_test
 
 import (
 	"fmt"
+
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
@@ -29,9 +30,9 @@ var _ = Describe("GenerateWorkspacePath", func() {
 		wsId = 42
 		teamId = 21
 		o = &cmd.OpenWorkspaceCmd{
-			Opts: cmd.GlobalOptions{
+			Opts: &cmd.GlobalOptions{
 				Env:         mockEnv,
-				WorkspaceId: &wsId,
+				WorkspaceId: wsId,
 			},
 		}
 	})

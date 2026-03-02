@@ -15,12 +15,12 @@ import (
 
 type ListPlansCmd struct {
 	cmd  *cobra.Command
-	Opts GlobalOptions
+	Opts *GlobalOptions
 }
 
 func (c *ListPlansCmd) RunE(_ *cobra.Command, args []string) error {
 
-	client, err := NewClient(c.Opts)
+	client, err := NewClient(*c.Opts)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -65,7 +65,7 @@ func formatBytesAsGib(in int) string {
 	return fmt.Sprintf("%.2f", float32(in)/1024/1024/1024)
 }
 
-func AddListPlansCmd(list *cobra.Command, opts GlobalOptions) {
+func AddListPlansCmd(list *cobra.Command, opts *GlobalOptions) {
 	plans := ListPlansCmd{
 		cmd: &cobra.Command{
 			Use:   "plans",

@@ -6,6 +6,8 @@ package errors
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/codesphere-cloud/cs-go/api/openapi_client"
@@ -60,24 +62,33 @@ type APIErrorResponse struct {
 	TraceId string `json:"traceId"`
 }
 
-func FormatAPIError(err error) error {
+func FormatAPIError(r *http.Response, err error) error {
 	if err == nil {
 		return nil
 	}
 
+	if r == nil {
+		r = &http.Response{
+			StatusCode: -1,
+		}
+	}
+	if r.Request == nil {
+		r.Request = &http.Request{URL: &url.URL{}}
+	}
+
 	openAPIErr, ok := err.(*openapi_client.GenericOpenAPIError)
 	if !ok {
-		return err
+		return fmt.Errorf("unexpected error %d at URL %s: %w", r.StatusCode, r.Request.URL, err)
 	}
 
 	body := openAPIErr.Body()
 	if len(body) == 0 {
-		return err
+		return fmt.Errorf("unexpected error %d at URL %s: %w", r.StatusCode, r.Request.URL, err)
 	}
 
 	var apiErr APIErrorResponse
 	if json.Unmarshal(body, &apiErr) != nil {
-		return err
+		return fmt.Errorf("unexpected error %d at URL %s: %w", r.StatusCode, r.Request.URL, err)
 	}
 
 	return fmt.Errorf("codesphere API returned error %d (%s): %s", apiErr.Status, apiErr.Title, apiErr.Detail)

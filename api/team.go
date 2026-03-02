@@ -40,26 +40,26 @@ func (client *Client) TeamIdByName(name string) (Team, error) {
 }
 
 func (c *Client) ListTeams() ([]Team, error) {
-	teams, _, err := c.api.TeamsAPI.TeamsListTeams(c.ctx).Execute()
-	return teams, cserrors.FormatAPIError(err)
+	teams, r, err := c.api.TeamsAPI.TeamsListTeams(c.ctx).Execute()
+	return teams, cserrors.FormatAPIError(r, err)
 }
 
 func (c *Client) GetTeam(teamId int) (*Team, error) {
-	team, _, err := c.api.TeamsAPI.TeamsGetTeam(c.ctx, float32(teamId)).Execute()
-	return ConvertToTeam(team), cserrors.FormatAPIError(err)
+	team, r, err := c.api.TeamsAPI.TeamsGetTeam(c.ctx, float32(teamId)).Execute()
+	return ConvertToTeam(team), cserrors.FormatAPIError(r, err)
 }
 
 func (c *Client) CreateTeam(name string, dc int) (*Team, error) {
-	team, _, err := c.api.TeamsAPI.TeamsCreateTeam(c.ctx).
+	team, r, err := c.api.TeamsAPI.TeamsCreateTeam(c.ctx).
 		TeamsCreateTeamRequest(openapi_client.TeamsCreateTeamRequest{
 			Name: name,
 			Dc:   dc,
 		}).
 		Execute()
-	return ConvertToTeam(team), cserrors.FormatAPIError(err)
+	return ConvertToTeam(team), cserrors.FormatAPIError(r, err)
 }
 
 func (c *Client) DeleteTeam(teamId int) error {
-	_, err := c.api.TeamsAPI.TeamsDeleteTeam(c.ctx, float32(teamId)).Execute()
-	return cserrors.FormatAPIError(err)
+	r, err := c.api.TeamsAPI.TeamsDeleteTeam(c.ctx, float32(teamId)).Execute()
+	return cserrors.FormatAPIError(r, err)
 }

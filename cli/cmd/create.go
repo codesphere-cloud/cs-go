@@ -11,7 +11,7 @@ type CreateCmd struct {
 	cmd *cobra.Command
 }
 
-func AddCreateCmd(rootCmd *cobra.Command, opts GlobalOptions) {
+func AddCreateCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	create := CreateCmd{
 		cmd: &cobra.Command{
 			Use:   "create",

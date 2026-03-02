@@ -16,10 +16,10 @@ cs git pull [flags]
 
 ```
 # Pull latest HEAD from current branch
-$ cs pull 
+$ cs git pull 
 
 # Pull branch staging from remote origin
-$ cs pull --remote origin --branch staging
+$ cs git pull --remote origin --branch staging
 ```
 
 ### Options

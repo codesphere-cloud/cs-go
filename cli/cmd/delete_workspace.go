@@ -23,7 +23,7 @@ type DeleteWorkspaceCmd struct {
 }
 
 type DeleteWorkspaceOpts struct {
-	GlobalOptions
+	*GlobalOptions
 	Confirmed *bool
 }
 
@@ -33,7 +33,7 @@ func (c *DeleteWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
 	}
 
-	client, err := NewClient(c.Opts.GlobalOptions)
+	client, err := NewClient(*c.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -41,7 +41,7 @@ func (c *DeleteWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
 	return c.DeleteWorkspace(client, wsId)
 }
 
-func AddDeleteWorkspaceCmd(delete *cobra.Command, opts GlobalOptions) {
+func AddDeleteWorkspaceCmd(delete *cobra.Command, opts *GlobalOptions) {
 	workspace := DeleteWorkspaceCmd{
 		cmd: &cobra.Command{
 			Use:   "workspace",

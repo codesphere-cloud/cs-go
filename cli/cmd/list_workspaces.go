@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
@@ -14,11 +15,11 @@ import (
 )
 
 type ListWorkspacesCmd struct {
-	Opts GlobalOptions
+	Opts *GlobalOptions
 	cmd  *cobra.Command
 }
 
-func addListWorkspacesCmd(p *cobra.Command, opts GlobalOptions) {
+func addListWorkspacesCmd(p *cobra.Command, opts *GlobalOptions) {
 	l := ListWorkspacesCmd{
 		cmd: &cobra.Command{
 			Use:   "workspaces",
@@ -35,7 +36,7 @@ func addListWorkspacesCmd(p *cobra.Command, opts GlobalOptions) {
 }
 
 func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {
-	client, err := NewClient(l.Opts)
+	client, err := NewClient(*l.Opts)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -80,14 +81,9 @@ func (l *ListWorkspacesCmd) ListWorkspaces(client Client) ([]api.Workspace, erro
 }
 
 func (l *ListWorkspacesCmd) getTeamIds(client Client) (teams []int, err error) {
-	if l.Opts.TeamId != nil && *l.Opts.TeamId >= 0 {
-		teams = append(teams, *l.Opts.TeamId)
-		return
-	}
-	teamIdEnv, err := l.Opts.Env.GetTeamId()
+	teamIdEnv, err := l.Opts.GetTeamId()
 	if err != nil {
-		err = fmt.Errorf("failed to get team ID from env: %w", err)
-		return
+		log.Println("No team ID provided via flag or environment variable, listing workspaces of all teams")
 	}
 	if teamIdEnv >= 0 {
 		teams = append(teams, teamIdEnv)
