@@ -35,7 +35,7 @@ func (c *GenerateDockerCmd) RunE(cc *cobra.Command, args []string) error {
 	exporter := exporter.NewExporterService(fs, c.Opts.Output, c.Opts.BaseImage, c.Opts.Envs, c.Opts.RepoRoot, c.Opts.Force)
 
 	clientFactory := func() (Client, error) {
-		return NewClient(c.Opts.GlobalOptions)
+		return NewClient(*c.Opts.GlobalOptions)
 	}
 
 	if err := c.GenerateDocker(fs, exporter, gitSvc, clientFactory); err != nil {
