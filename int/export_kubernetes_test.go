@@ -96,6 +96,19 @@ run:
       stripPath: true
 `
 
+const invalidYaml = `this is not valid yaml:
+  - missing proper structure
+    broken: [indentation
+`
+
+const emptyCiYml = `schemaVersion: v0.2
+prepare:
+  steps: []
+test:
+  steps: []
+run: {}
+`
+
 var _ = Describe("Kubernetes Export Integration Tests", func() {
 	var (
 		tempDir string
@@ -227,6 +240,45 @@ var _ = Describe("Kubernetes Export Integration Tests", func() {
 			fmt.Printf("Generate docker with nonexistent file output: %s (exit code: %d)\n", output, exitCode)
 
 			Expect(exitCode).NotTo(Equal(0))
+		})
+
+		It("should fail with invalid YAML content", func() {
+			By("Creating invalid ci.yml")
+			ciYmlPath := filepath.Join(tempDir, "ci.yml")
+			err := os.WriteFile(ciYmlPath, []byte(invalidYaml), 0644)
+			Expect(err).NotTo(HaveOccurred())
+
+			By("Running generate docker with invalid YAML")
+			output, exitCode := intutil.RunCommandWithExitCode(
+				"generate", "docker",
+				"--reporoot", tempDir,
+				"-b", "ubuntu:latest",
+				"-i", "ci.yml",
+				"-o", "export",
+			)
+			fmt.Printf("Generate docker with invalid YAML output: %s (exit code: %d)\n", output, exitCode)
+
+			Expect(exitCode).NotTo(Equal(0))
+		})
+
+		It("should fail with ci.yml with no services", func() {
+			By("Creating ci.yml with empty run section")
+			ciYmlPath := filepath.Join(tempDir, "ci.yml")
+			err := os.WriteFile(ciYmlPath, []byte(emptyCiYml), 0644)
+			Expect(err).NotTo(HaveOccurred())
+
+			By("Running generate docker with empty services")
+			output, exitCode := intutil.RunCommandWithExitCode(
+				"generate", "docker",
+				"--reporoot", tempDir,
+				"-b", "ubuntu:latest",
+				"-i", "ci.yml",
+				"-o", "export",
+			)
+			fmt.Printf("Generate docker with empty services output: %s (exit code: %d)\n", output, exitCode)
+
+			Expect(exitCode).NotTo(Equal(0))
+			Expect(output).To(ContainSubstring("at least one service is required"))
 		})
 	})
 
