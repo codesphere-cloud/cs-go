@@ -5,9 +5,9 @@ This project includes code licensed under the following terms:
  
 ----------
 Module: code.gitea.io/sdk/gitea
-Version: v0.22.1
+Version: v0.23.2
 License: MIT
-License URL: https://gitea.com/gitea/go-sdk/src/tag/gitea/v0.22.1/gitea/LICENSE
+License URL: https://gitea.com/gitea/go-sdk/src/tag/gitea/v0.23.2/gitea/LICENSE
  
 ----------
 Module: dario.cat/mergo
@@ -365,9 +365,9 @@ License URL: https://github.com/xanzy/ssh-agent/blob/v0.3.3/LICENSE
  
 ----------
 Module: gitlab.com/gitlab-org/api/client-go
-Version: v1.11.0
+Version: v1.39.0
 License: Apache-2.0
-License URL: https://gitlab.com/gitlab-org/api/blob/client-go/v1.11.0/client-go/LICENSE
+License URL: https://gitlab.com/gitlab-org/api/blob/client-go/v1.39.0/client-go/LICENSE
  
 ----------
 Module: go.yaml.in/yaml/v2
@@ -401,9 +401,9 @@ License URL: https://cs.opensource.google/go/x/net/+/v0.50.0:LICENSE
  
 ----------
 Module: golang.org/x/oauth2
-Version: v0.34.0
+Version: v0.35.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/oauth2/+/v0.34.0:LICENSE
+License URL: https://cs.opensource.google/go/x/oauth2/+/v0.35.0:LICENSE
  
 ----------
 Module: golang.org/x/sync/errgroup
