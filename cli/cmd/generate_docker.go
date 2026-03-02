@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"path"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/exporter"
@@ -28,8 +27,7 @@ type GenerateDockerOpts struct {
 }
 
 func (c *GenerateDockerCmd) RunE(cc *cobra.Command, args []string) error {
-	log.Println(c.Opts.Force)
-	fs := cs.NewOSFileSystem(".")
+	fs := cs.NewOSFileSystem(c.Opts.RepoRoot)
 	gitSvc := git.NewGitService(fs)
 
 	exporter := exporter.NewExporterService(fs, c.Opts.Output, c.Opts.BaseImage, c.Opts.Envs, c.Opts.RepoRoot, c.Opts.Force)
@@ -100,7 +98,7 @@ func (c *GenerateDockerCmd) GenerateDocker(fs *cs.FileSystem, exp exporter.Expor
 		return errors.New("baseimage is required")
 	}
 
-	ciInput := path.Join(c.Opts.RepoRoot, c.Opts.Input)
+	ciInput := c.Opts.Input
 	if !fs.FileExists(ciInput) {
 		log.Printf("Input file %s not found attempting to clone workspace repository...\n", c.Opts.Input)
 

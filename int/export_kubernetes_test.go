@@ -364,6 +364,38 @@ var _ = Describe("Kubernetes Export Integration Tests", func() {
 		})
 	})
 
+	Context("Generate Images Command", func() {
+		BeforeEach(func() {
+			By("Creating ci.yml and generating docker artifacts first")
+			ciYmlPath := filepath.Join(tempDir, "ci.yml")
+			err := os.WriteFile(ciYmlPath, []byte(simpleCiYml), 0644)
+			Expect(err).NotTo(HaveOccurred())
+
+			output := intutil.RunCommand(
+				"generate", "docker",
+				"--reporoot", tempDir,
+				"-b", "ubuntu:latest",
+				"-i", "ci.yml",
+				"-o", "export",
+			)
+			Expect(output).To(ContainSubstring("docker artifacts created"))
+		})
+
+		It("should fail when registry is not provided for generate images", func() {
+			By("Running generate images without registry")
+			output, exitCode := intutil.RunCommandWithExitCode(
+				"generate", "images",
+				"--reporoot", tempDir,
+				"-i", "ci.yml",
+				"-o", "export",
+			)
+			fmt.Printf("Generate images without registry output: %s (exit code: %d)\n", output, exitCode)
+
+			Expect(exitCode).NotTo(Equal(0))
+			Expect(output).To(ContainSubstring("registry is required"))
+		})
+	})
+
 	Context("Full Export Workflow", func() {
 		It("should complete the full export workflow from ci.yml to Kubernetes artifacts", func() {
 			By("Step 1: Creating ci.yml with multi-service application")
