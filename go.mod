@@ -14,7 +14,7 @@ require (
 	github.com/stretchr/testify v1.11.1
 	go.yaml.in/yaml/v3 v3.0.4
 	gopkg.in/validator.v2 v2.0.1
-	k8s.io/apimachinery v0.35.1
+	k8s.io/apimachinery v0.35.2
 )
 
 require (
@@ -490,7 +490,7 @@ require (
 	gopkg.in/mail.v2 v2.3.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/tools v0.7.0 // indirect
-	k8s.io/client-go v0.35.1 // indirect
+	k8s.io/client-go v0.35.2 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20251125145642-4e65d59e963e // indirect
 	k8s.io/utils v0.0.0-20260106112306-0fe9cd71b2f8 // indirect
@@ -548,8 +548,8 @@ require (
 	golang.org/x/tools v0.42.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
-	k8s.io/api v0.35.1
-	k8s.io/cli-runtime v0.35.1
+	k8s.io/api v0.35.2
+	k8s.io/cli-runtime v0.35.2
 )
 
 tool (
