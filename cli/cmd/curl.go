@@ -55,15 +55,11 @@ func (c *CurlCmd) RunE(_ *cobra.Command, args []string) error {
 	}
 
 	path := "/"
-	var curlArgs []string
+    curlArgs := args
 
-	if len(args) > 0 {
-		if strings.HasPrefix(args[0], "/") {
-			path = args[0]
-			curlArgs = args[1:]
-		} else {
-			curlArgs = args
-		}
+	if len(args) > 0 && strings.HasPrefix(args[0], "/") {
+		path = args[0]
+		curlArgs = args[1:]
 	}
 
 	return c.CurlWorkspace(client, wsId, token, path, curlArgs)
