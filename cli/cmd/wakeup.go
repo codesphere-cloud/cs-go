@@ -96,6 +96,8 @@ func (c *WakeUpCmd) WakeUpWorkspace(client Client, wsId int) error {
 		if err != nil {
 			return fmt.Errorf("workspace did not become running: %w", err)
 		}
+	} else {
+		log.Printf("Workspace %d (%s) is already running\n", wsId, workspace.Name)
 	}
 
 	if c.Opts.SyncLandscape {
@@ -148,11 +150,12 @@ func (c *WakeUpCmd) waitForWorkspaceHealthy(devDomain string, token string, time
 
 		resp, err := httpClient.Do(req)
 		if err == nil {
-			defer func() { _ = resp.Body.Close() }()
-			if resp.StatusCode == http.StatusOK {
-				return nil
-			}
-			log.Printf("Workspace %s responded with status code %d, retrying...\n", devDomain, resp.StatusCode)
+			_ = resp.Body.Close()
+			// Any HTTP response (even 502) means the workspace proxy is reachable
+			// and the workspace is awake. A non-200 status just means no service
+			// is listening on the target port yet, which is expected for fresh workspaces.
+			log.Printf("Workspace %s responded with status code %d\n", devDomain, resp.StatusCode)
+			return nil
 		}
 
 		if time.Now().After(maxWaitTime) {
