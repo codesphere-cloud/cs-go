@@ -4,6 +4,7 @@
 package int_test
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -12,9 +13,14 @@ import (
 	intutil "github.com/codesphere-cloud/cs-go/int/util"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	apps "k8s.io/api/apps/v1"
+	core "k8s.io/api/core/v1"
+	networking "k8s.io/api/networking/v1"
+	sigsyaml "sigs.k8s.io/yaml"
 )
 
-// Sample ci.yml for testing - simulates the flask-demo structure from the blog post
+// Sample ci.yml for testing - simulates the flask-demo structure.
+// Reference: https://github.com/codesphere-cloud/flask-demo
 const flaskDemoCiYml = `schemaVersion: v0.2
 prepare:
   steps:
@@ -109,6 +115,118 @@ test:
 run: {}
 `
 
+// splitYAMLDocuments splits a multi-document YAML byte slice on "---" separators.
+func splitYAMLDocuments(content []byte) [][]byte {
+	docs := bytes.Split(content, []byte("\n---\n"))
+	var result [][]byte
+	for _, doc := range docs {
+		trimmed := bytes.TrimSpace(doc)
+		if len(trimmed) > 0 {
+			result = append(result, trimmed)
+		}
+	}
+	return result
+}
+
+// unmarshalDeployment unmarshals YAML into a Kubernetes Deployment and validates its structure.
+func unmarshalDeployment(yamlContent []byte) *apps.Deployment {
+	GinkgoHelper()
+	deployment := &apps.Deployment{}
+	err := sigsyaml.Unmarshal(yamlContent, deployment)
+	Expect(err).NotTo(HaveOccurred(), "Failed to unmarshal Deployment YAML")
+	Expect(deployment.Kind).To(Equal("Deployment"), "Expected kind Deployment")
+	Expect(deployment.APIVersion).To(Equal("apps/v1"), "Expected apiVersion apps/v1")
+	Expect(deployment.Name).NotTo(BeEmpty(), "Deployment name should not be empty")
+	return deployment
+}
+
+// unmarshalService unmarshals YAML into a Kubernetes Service and validates its structure.
+func unmarshalService(yamlContent []byte) *core.Service {
+	GinkgoHelper()
+	service := &core.Service{}
+	err := sigsyaml.Unmarshal(yamlContent, service)
+	Expect(err).NotTo(HaveOccurred(), "Failed to unmarshal Service YAML")
+	Expect(service.Kind).To(Equal("Service"), "Expected kind Service")
+	Expect(service.APIVersion).To(Equal("v1"), "Expected apiVersion v1")
+	Expect(service.Name).NotTo(BeEmpty(), "Service name should not be empty")
+	return service
+}
+
+// unmarshalIngress unmarshals YAML into a Kubernetes Ingress and validates its structure.
+func unmarshalIngress(yamlContent []byte) *networking.Ingress {
+	GinkgoHelper()
+	ingress := &networking.Ingress{}
+	err := sigsyaml.Unmarshal(yamlContent, ingress)
+	Expect(err).NotTo(HaveOccurred(), "Failed to unmarshal Ingress YAML")
+	Expect(ingress.Kind).To(Equal("Ingress"), "Expected kind Ingress")
+	Expect(ingress.APIVersion).To(Equal("networking.k8s.io/v1"), "Expected apiVersion networking.k8s.io/v1")
+	Expect(ingress.Name).NotTo(BeEmpty(), "Ingress name should not be empty")
+	return ingress
+}
+
+// validateServiceFile validates a K8s service YAML file containing a Deployment and Service.
+func validateServiceFile(content []byte) (*apps.Deployment, *core.Service) {
+	GinkgoHelper()
+	docs := splitYAMLDocuments(content)
+	Expect(docs).To(HaveLen(2), "Service file should contain a Deployment and a Service document")
+	return unmarshalDeployment(docs[0]), unmarshalService(docs[1])
+}
+
+// validateDockerfile performs basic structural validation of a Dockerfile.
+func validateDockerfile(content string) {
+	GinkgoHelper()
+	lines := strings.Split(strings.TrimSpace(content), "\n")
+	Expect(len(lines)).To(BeNumerically(">", 0), "Dockerfile should not be empty")
+
+	validInstructions := map[string]bool{
+		"FROM": true, "RUN": true, "CMD": true, "LABEL": true,
+		"EXPOSE": true, "ENV": true, "ADD": true, "COPY": true,
+		"ENTRYPOINT": true, "VOLUME": true, "USER": true,
+		"WORKDIR": true, "ARG": true, "ONBUILD": true,
+		"STOPSIGNAL": true, "HEALTHCHECK": true, "SHELL": true,
+	}
+
+	hasFrom := false
+	inContinuation := false
+	for _, line := range lines {
+		trimmed := strings.TrimSpace(line)
+		if trimmed == "" || strings.HasPrefix(trimmed, "#") {
+			inContinuation = false
+			continue
+		}
+		if inContinuation {
+			inContinuation = strings.HasSuffix(trimmed, "\\")
+			continue
+		}
+
+		parts := strings.Fields(trimmed)
+		instruction := strings.ToUpper(parts[0])
+		Expect(validInstructions).To(HaveKey(instruction),
+			fmt.Sprintf("Invalid Dockerfile instruction: '%s' in line: '%s'", parts[0], trimmed))
+		if instruction == "FROM" {
+			hasFrom = true
+		}
+		inContinuation = strings.HasSuffix(trimmed, "\\")
+	}
+	Expect(hasFrom).To(BeTrue(), "Dockerfile must contain a FROM instruction")
+}
+
+// validateShellScript validates that a shell script has a proper shebang and is non-empty.
+func validateShellScript(content string) {
+	GinkgoHelper()
+	Expect(content).NotTo(BeEmpty(), "Shell script should not be empty")
+	Expect(content).To(HavePrefix("#!/bin/bash"), "Shell script should start with #!/bin/bash shebang")
+}
+
+// validateDockerCompose validates docker-compose.yml content is valid YAML with required structure.
+func validateDockerCompose(content []byte) {
+	GinkgoHelper()
+	var compose map[string]interface{}
+	err := sigsyaml.Unmarshal(content, &compose)
+	Expect(err).NotTo(HaveOccurred(), "docker-compose.yml should be valid YAML")
+	Expect(compose).To(HaveKey("services"), "docker-compose.yml should have a 'services' key")
+}
+
 var _ = Describe("Kubernetes Export Integration Tests", func() {
 	var (
 		tempDir string
@@ -153,6 +271,7 @@ var _ = Describe("Kubernetes Export Integration Tests", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(content)).To(ContainSubstring("FROM ubuntu:latest"))
 			Expect(string(content)).To(ContainSubstring("pip install"))
+			validateDockerfile(string(content))
 
 			By("Verifying frontend-service entrypoint was created")
 			frontendEntrypoint := filepath.Join(tempDir, "export", "frontend-service", "entrypoint.sh")
@@ -160,10 +279,14 @@ var _ = Describe("Kubernetes Export Integration Tests", func() {
 			content, err = os.ReadFile(frontendEntrypoint)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(content)).To(ContainSubstring("python app.py"))
+			validateShellScript(string(content))
 
 			By("Verifying backend-service Dockerfile was created")
 			backendDockerfile := filepath.Join(tempDir, "export", "backend-service", "Dockerfile")
 			Expect(backendDockerfile).To(BeAnExistingFile())
+			content, err = os.ReadFile(backendDockerfile)
+			Expect(err).NotTo(HaveOccurred())
+			validateDockerfile(string(content))
 
 			By("Verifying backend-service entrypoint was created")
 			backendEntrypoint := filepath.Join(tempDir, "export", "backend-service", "entrypoint.sh")
@@ -171,6 +294,7 @@ var _ = Describe("Kubernetes Export Integration Tests", func() {
 			content, err = os.ReadFile(backendEntrypoint)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(content)).To(ContainSubstring("python backend.py"))
+			validateShellScript(string(content))
 
 			By("Verifying docker-compose.yml was created")
 			dockerComposePath := filepath.Join(tempDir, "export", "docker-compose.yml")
@@ -179,6 +303,7 @@ var _ = Describe("Kubernetes Export Integration Tests", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(content)).To(ContainSubstring("frontend-service"))
 			Expect(string(content)).To(ContainSubstring("backend-service"))
+			validateDockerCompose(content)
 
 			By("Verifying nginx config was created")
 			nginxConfigPath := filepath.Join(tempDir, "export", "nginx.conf")
@@ -209,6 +334,7 @@ var _ = Describe("Kubernetes Export Integration Tests", func() {
 			content, err := os.ReadFile(dockerfile)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(content)).To(ContainSubstring("FROM alpine:latest"))
+			validateDockerfile(string(content))
 		})
 
 		It("should fail when baseimage is not provided", func() {
@@ -322,37 +448,38 @@ var _ = Describe("Kubernetes Export Integration Tests", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(info.IsDir()).To(BeTrue())
 
-			By("Verifying frontend-service deployment was created")
-			frontendService := filepath.Join(kubernetesDir, "service-frontend-service.yml")
-			Expect(frontendService).To(BeAnExistingFile())
-			content, err := os.ReadFile(frontendService)
+			By("Verifying frontend-service deployment was created and is valid")
+			frontendServicePath := filepath.Join(kubernetesDir, "service-frontend-service.yml")
+			Expect(frontendServicePath).To(BeAnExistingFile())
+			content, err := os.ReadFile(frontendServicePath)
 			Expect(err).NotTo(HaveOccurred())
-			contentStr := string(content)
-			Expect(contentStr).To(ContainSubstring("kind: Deployment"))
-			Expect(contentStr).To(ContainSubstring("kind: Service"))
-			Expect(contentStr).To(ContainSubstring("namespace: flask-demo"))
-			Expect(contentStr).To(ContainSubstring("ghcr.io/codesphere-cloud/flask-demo/cs-demo-frontend-service:latest"))
+			frontDep, frontSvc := validateServiceFile(content)
+			Expect(frontDep.Namespace).To(Equal("flask-demo"))
+			Expect(frontDep.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(frontDep.Spec.Template.Spec.Containers[0].Image).To(Equal("ghcr.io/codesphere-cloud/flask-demo/cs-demo-frontend-service:latest"))
+			Expect(frontSvc.Namespace).To(Equal("flask-demo"))
 
-			By("Verifying backend-service deployment was created")
-			backendService := filepath.Join(kubernetesDir, "service-backend-service.yml")
-			Expect(backendService).To(BeAnExistingFile())
-			content, err = os.ReadFile(backendService)
+			By("Verifying backend-service deployment was created and is valid")
+			backendServicePath := filepath.Join(kubernetesDir, "service-backend-service.yml")
+			Expect(backendServicePath).To(BeAnExistingFile())
+			content, err = os.ReadFile(backendServicePath)
 			Expect(err).NotTo(HaveOccurred())
-			contentStr = string(content)
-			Expect(contentStr).To(ContainSubstring("kind: Deployment"))
-			Expect(contentStr).To(ContainSubstring("namespace: flask-demo"))
-			Expect(contentStr).To(ContainSubstring("cs-demo-backend-service:latest"))
+			backDep, backSvc := validateServiceFile(content)
+			Expect(backDep.Namespace).To(Equal("flask-demo"))
+			Expect(backDep.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(backDep.Spec.Template.Spec.Containers[0].Image).To(ContainSubstring("cs-demo-backend-service:latest"))
+			Expect(backSvc.Namespace).To(Equal("flask-demo"))
 
-			By("Verifying ingress was created")
+			By("Verifying ingress was created and is valid")
 			ingressPath := filepath.Join(kubernetesDir, "ingress.yml")
 			Expect(ingressPath).To(BeAnExistingFile())
 			content, err = os.ReadFile(ingressPath)
 			Expect(err).NotTo(HaveOccurred())
-			contentStr = string(content)
-			Expect(contentStr).To(ContainSubstring("kind: Ingress"))
-			Expect(contentStr).To(ContainSubstring("namespace: flask-demo"))
-			Expect(contentStr).To(ContainSubstring("host: flask-demo.local"))
-			Expect(contentStr).To(ContainSubstring("ingressClassName: nginx"))
+			ingress := unmarshalIngress(content)
+			Expect(ingress.Namespace).To(Equal("flask-demo"))
+			Expect(ingress.Spec.Rules).To(HaveLen(1))
+			Expect(ingress.Spec.Rules[0].Host).To(Equal("flask-demo.local"))
+			Expect(*ingress.Spec.IngressClassName).To(Equal("nginx"))
 		})
 
 		It("should generate Kubernetes artifacts with custom ingress class", func() {
@@ -375,7 +502,8 @@ var _ = Describe("Kubernetes Export Integration Tests", func() {
 			ingressPath := filepath.Join(tempDir, "export", "kubernetes", "ingress.yml")
 			content, err := os.ReadFile(ingressPath)
 			Expect(err).NotTo(HaveOccurred())
-			Expect(string(content)).To(ContainSubstring("ingressClassName: traefik"))
+			ingress := unmarshalIngress(content)
+			Expect(*ingress.Spec.IngressClassName).To(Equal("traefik"))
 		})
 
 		It("should generate Kubernetes artifacts with pull secret", func() {
@@ -395,10 +523,12 @@ var _ = Describe("Kubernetes Export Integration Tests", func() {
 			Expect(output).To(ContainSubstring("Kubernetes artifacts export successful"))
 
 			By("Verifying deployment includes pull secret")
-			frontendService := filepath.Join(tempDir, "export", "kubernetes", "service-frontend-service.yml")
-			content, err := os.ReadFile(frontendService)
+			frontendServicePath := filepath.Join(tempDir, "export", "kubernetes", "service-frontend-service.yml")
+			content, err := os.ReadFile(frontendServicePath)
 			Expect(err).NotTo(HaveOccurred())
-			Expect(string(content)).To(ContainSubstring("my-registry-secret"))
+			dep, _ := validateServiceFile(content)
+			Expect(dep.Spec.Template.Spec.ImagePullSecrets).To(HaveLen(1))
+			Expect(dep.Spec.Template.Spec.ImagePullSecrets[0].Name).To(Equal("my-registry-secret"))
 		})
 
 		It("should fail when registry is not provided", func() {
@@ -504,28 +634,48 @@ var _ = Describe("Kubernetes Export Integration Tests", func() {
 				Expect(fullPath).To(BeAnExistingFile(), fmt.Sprintf("Expected file %s to exist", file))
 			}
 
-			By("Step 5: Verify Kubernetes manifests are valid YAML with correct content")
+			By("Step 5: Validate generated Dockerfiles and shell scripts")
+			for _, svc := range []string{"frontend-service", "backend-service"} {
+				df, err := os.ReadFile(filepath.Join(tempDir, "export", svc, "Dockerfile"))
+				Expect(err).NotTo(HaveOccurred())
+				validateDockerfile(string(df))
+
+				ep, err := os.ReadFile(filepath.Join(tempDir, "export", svc, "entrypoint.sh"))
+				Expect(err).NotTo(HaveOccurred())
+				validateShellScript(string(ep))
+			}
+			dc, err := os.ReadFile(filepath.Join(tempDir, "export", "docker-compose.yml"))
+			Expect(err).NotTo(HaveOccurred())
+			validateDockerCompose(dc)
+
+			By("Step 6: Verify Kubernetes manifests by unmarshalling into typed structs")
 			kubernetesDir := filepath.Join(tempDir, "export", "kubernetes")
 
-			// Check ingress contains all services
+			// Validate ingress
 			ingressContent, err := os.ReadFile(filepath.Join(kubernetesDir, "ingress.yml"))
 			Expect(err).NotTo(HaveOccurred())
-			ingressStr := string(ingressContent)
-			Expect(ingressStr).To(ContainSubstring("host: colima-cluster"))
-			Expect(ingressStr).To(ContainSubstring("frontend-service"))
-			Expect(ingressStr).To(ContainSubstring("backend-service"))
-			Expect(ingressStr).To(ContainSubstring("path: /"))
-			Expect(ingressStr).To(ContainSubstring("path: /api"))
+			ingress := unmarshalIngress(ingressContent)
+			Expect(ingress.Spec.Rules).To(HaveLen(1))
+			Expect(ingress.Spec.Rules[0].Host).To(Equal("colima-cluster"))
+			// Verify all paths are present in the ingress
+			ingressPaths := ingress.Spec.Rules[0].HTTP.Paths
+			pathStrings := make([]string, len(ingressPaths))
+			for i, p := range ingressPaths {
+				pathStrings[i] = p.Path
+			}
+			Expect(pathStrings).To(ContainElements("/", "/api"))
 
-			// Check frontend service has correct image
+			// Validate frontend service
 			frontendContent, err := os.ReadFile(filepath.Join(kubernetesDir, "service-frontend-service.yml"))
 			Expect(err).NotTo(HaveOccurred())
-			Expect(string(frontendContent)).To(ContainSubstring("image: ghcr.io/codesphere-cloud/flask-demo/cs-demo-frontend-service:latest"))
+			frontDep, _ := validateServiceFile(frontendContent)
+			Expect(frontDep.Spec.Template.Spec.Containers[0].Image).To(Equal("ghcr.io/codesphere-cloud/flask-demo/cs-demo-frontend-service:latest"))
 
-			// Check backend service has correct image
+			// Validate backend service
 			backendContent, err := os.ReadFile(filepath.Join(kubernetesDir, "service-backend-service.yml"))
 			Expect(err).NotTo(HaveOccurred())
-			Expect(string(backendContent)).To(ContainSubstring("image: ghcr.io/codesphere-cloud/flask-demo/cs-demo-backend-service:latest"))
+			backDep, _ := validateServiceFile(backendContent)
+			Expect(backDep.Spec.Template.Spec.Containers[0].Image).To(Equal("ghcr.io/codesphere-cloud/flask-demo/cs-demo-backend-service:latest"))
 		})
 
 		It("should handle different ci.yml profiles", func() {
@@ -564,18 +714,22 @@ var _ = Describe("Kubernetes Export Integration Tests", func() {
 			devEntrypoint, err := os.ReadFile(filepath.Join(tempDir, "export-dev", "web", "entrypoint.sh"))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(devEntrypoint)).To(ContainSubstring("npm run dev"))
+			validateShellScript(string(devEntrypoint))
 
 			prodEntrypoint, err := os.ReadFile(filepath.Join(tempDir, "export-prod", "web", "entrypoint.sh"))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(prodEntrypoint)).To(ContainSubstring("npm run prod"))
+			validateShellScript(string(prodEntrypoint))
 
 			devDockerfile, err := os.ReadFile(filepath.Join(tempDir, "export-dev", "web", "Dockerfile"))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(devDockerfile)).To(ContainSubstring("FROM node:18"))
+			validateDockerfile(string(devDockerfile))
 
 			prodDockerfile, err := os.ReadFile(filepath.Join(tempDir, "export-prod", "web", "Dockerfile"))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(prodDockerfile)).To(ContainSubstring("FROM node:18-alpine"))
+			validateDockerfile(string(prodDockerfile))
 		})
 	})
 
@@ -610,10 +764,24 @@ var _ = Describe("Kubernetes Export Integration Tests", func() {
 			fmt.Printf("Legacy Kubernetes generation output: %s\n", k8sOutput)
 			Expect(k8sOutput).To(ContainSubstring("Kubernetes artifacts export successful"))
 
-			By("Verifying artifacts were created correctly")
-			Expect(filepath.Join(tempDir, "export", "app", "Dockerfile")).To(BeAnExistingFile())
-			Expect(filepath.Join(tempDir, "export", "kubernetes", "service-app.yml")).To(BeAnExistingFile())
-			Expect(filepath.Join(tempDir, "export", "kubernetes", "ingress.yml")).To(BeAnExistingFile())
+			By("Verifying artifacts were created and are valid")
+			appDockerfile := filepath.Join(tempDir, "export", "app", "Dockerfile")
+			Expect(appDockerfile).To(BeAnExistingFile())
+			dfContent, err := os.ReadFile(appDockerfile)
+			Expect(err).NotTo(HaveOccurred())
+			validateDockerfile(string(dfContent))
+
+			serviceFilePath := filepath.Join(tempDir, "export", "kubernetes", "service-app.yml")
+			Expect(serviceFilePath).To(BeAnExistingFile())
+			serviceContent, err := os.ReadFile(serviceFilePath)
+			Expect(err).NotTo(HaveOccurred())
+			validateServiceFile(serviceContent)
+
+			ingressFilePath := filepath.Join(tempDir, "export", "kubernetes", "ingress.yml")
+			Expect(ingressFilePath).To(BeAnExistingFile())
+			ingressContent, err := os.ReadFile(ingressFilePath)
+			Expect(err).NotTo(HaveOccurred())
+			unmarshalIngress(ingressContent)
 		})
 	})
 
@@ -643,6 +811,7 @@ var _ = Describe("Kubernetes Export Integration Tests", func() {
 			content := string(dockerCompose)
 			Expect(content).To(ContainSubstring("NODE_ENV"))
 			Expect(content).To(ContainSubstring("API_URL"))
+			validateDockerCompose(dockerCompose)
 		})
 	})
 
@@ -678,6 +847,7 @@ var _ = Describe("Kubernetes Export Integration Tests", func() {
 			dockerfile, err := os.ReadFile(filepath.Join(tempDir, "export", "web", "Dockerfile"))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(dockerfile)).To(ContainSubstring("FROM alpine:latest"))
+			validateDockerfile(string(dockerfile))
 		})
 	})
 
