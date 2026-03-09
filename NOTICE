@@ -46,16 +46,10 @@ License: MIT
 License URL: https://github.com/cespare/xxhash/blob/v2.3.0/LICENSE.txt
  
 ----------
-Module: github.com/clipperhouse/stringish
-Version: v0.1.1
+Module: github.com/clipperhouse/uax29/v2/graphemes
+Version: v2.7.0
 License: MIT
-License URL: https://github.com/clipperhouse/stringish/blob/v0.1.1/LICENSE
- 
-----------
-Module: github.com/clipperhouse/uax29/v2
-Version: v2.3.0
-License: MIT
-License URL: https://github.com/clipperhouse/uax29/blob/v2.3.0/LICENSE
+License URL: https://github.com/clipperhouse/uax29/blob/v2.7.0/LICENSE
  
 ----------
 Module: github.com/cloudflare/circl
@@ -365,9 +359,9 @@ License URL: https://github.com/xanzy/ssh-agent/blob/v0.3.3/LICENSE
  
 ----------
 Module: gitlab.com/gitlab-org/api/client-go
-Version: v1.39.0
+Version: v1.46.0
 License: Apache-2.0
-License URL: https://gitlab.com/gitlab-org/api/blob/client-go/v1.39.0/client-go/LICENSE
+License URL: https://gitlab.com/gitlab-org/api/blob/client-go/v1.46.0/client-go/LICENSE
  
 ----------
 Module: go.yaml.in/yaml/v2
@@ -395,9 +389,9 @@ License URL: https://cs.opensource.google/go/x/mod/+/v0.33.0:LICENSE
  
 ----------
 Module: golang.org/x/net
-Version: v0.50.0
+Version: v0.51.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/net/+/v0.50.0:LICENSE
+License URL: https://cs.opensource.google/go/x/net/+/v0.51.0:LICENSE
  
 ----------
 Module: golang.org/x/oauth2
