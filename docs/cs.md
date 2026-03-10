@@ -29,6 +29,7 @@ Manage and debug resources deployed in Codesphere via command line.
 * [cs log](cs_log.md)	 - Retrieve run logs from services
 * [cs monitor](cs_monitor.md)	 - Monitor a command and report health information
 * [cs open](cs_open.md)	 - Open the Codesphere IDE
+* [cs scale](cs_scale.md)	 - Scale Codesphere resources
 * [cs set-env](cs_set-env.md)	 - Set environment variables
 * [cs start](cs_start.md)	 - Start workspace pipeline
 * [cs sync](cs_sync.md)	 - Sync Codesphere resources
