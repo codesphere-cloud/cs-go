@@ -8,6 +8,10 @@ on:
 jobs:
   integration-tests:
     runs-on: ubuntu-latest
+    env:
+      CS_TOKEN: ${{ secrets.CS_TOKEN }}
+      CS_API: ${{ secrets.CS_API }}
+      CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
@@ -16,27 +20,46 @@ jobs:
         with:
           go-version-file: 'go.mod'
 
-      - name: Run integration tests
-        env:
-          CS_TOKEN: ${{ secrets.CS_TOKEN }}
-          CS_API: ${{ secrets.CS_API }}
-          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
+      - name: Run integration tests - workspace
+        run: make test-int-workspace
+
+      - name: Run integration tests - list
+        if: always()
+        run: make test-int-list
+
+      - name: Run integration tests - error-handling
+        if: always()
+        run: make test-int-error-handling
+
+      - name: Run integration tests - log
+        if: always()
+        run: make test-int-log
+
+      - name: Run integration tests - pipeline
+        if: always()
+        run: make test-int-pipeline
+
+      - name: Run integration tests - git
+        if: always()
+        run: make test-int-git
+
+      - name: Run integration tests - wakeup
+        if: always()
+        run: make test-int-wakeup
+
+      - name: Run integration tests - curl
+        if: always()
+        run: make test-int-curl
+
+      - name: Run integration tests - local
+        if: always()
+        run: make test-int-local
+
+      - name: Run integration tests - unlabeled
+        if: always()
         run: |
-          failed=""
-          for label in workspace list error-handling log pipeline git wakeup curl local unlabeled; do
-            echo "::group::Integration Tests - $label"
-            if [ "$label" = "unlabeled" ]; then
-              echo "::warning::Running tests without a known label. If tests are found here, please add a label to the Describe block."
-            fi
-            if ! make test-int-$label; then
-              failed="$failed $label"
-            fi
-            echo "::endgroup::"
-          done
-          if [ -n "$failed" ]; then
-            echo "::error::Failed labels:$failed"
-            exit 1
-          fi
+          echo "::warning::Running tests without a known label. If tests are found here, please add a label to the Describe block."
+          make test-int-unlabeled
 
       - name: Cleanup Orphaned Test Resources
         if: always()
