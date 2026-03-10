@@ -34,6 +34,8 @@ var _ = AfterSuite(func() {
 		"cli-setenv-test-",
 		"cli-edge-test-",
 		"cli-very-long-workspace-name-test-",
+		"cli-wakeup-test-",
+		"cli-curl-test-",
 	}
 
 	for _, prefix := range prefixes {
