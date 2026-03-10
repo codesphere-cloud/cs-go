@@ -24,6 +24,7 @@ jobs:
         run: make test-int
 
       - name: Local Integration Tests
+        if: always()  # Run even if make test-int fails
         run: make test-int-local
 
       - name: Cleanup Orphaned Test Resources
