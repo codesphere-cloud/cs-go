@@ -25,6 +25,9 @@ $ cs curl /api/data -w 1234 -- -XPOST -d '{"key":"value"}'
 # verbose output
 $ cs curl /api/endpoint -w 1234 -- -v
 
+# verbose request to workspace root
+$ cs curl -w 1234 -- -v
+
 # skip TLS verification
 $ cs curl / -- -k
 

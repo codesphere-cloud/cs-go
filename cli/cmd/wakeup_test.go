@@ -98,5 +98,81 @@ var _ = Describe("WakeUp", func() {
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to scale workspace"))
 		})
+
+		It("should sync landscape when SyncLandscape flag is set", func() {
+			workspace := api.Workspace{
+				Id:     wsId,
+				TeamId: teamId,
+				Name:   "test-workspace",
+			}
+			c.Opts.SyncLandscape = true
+
+			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockClient.EXPECT().WorkspaceStatus(wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)
+			mockClient.EXPECT().ScaleWorkspace(wsId, 1).Return(nil)
+			mockClient.EXPECT().WaitForWorkspaceRunning(mock.Anything, mock.Anything).Return(nil)
+			mockClient.EXPECT().DeployLandscape(wsId, "").Return(nil)
+
+			err := c.WakeUpWorkspace(mockClient, wsId)
+
+			Expect(err).ToNot(HaveOccurred())
+		})
+
+		It("should sync landscape with custom profile", func() {
+			workspace := api.Workspace{
+				Id:     wsId,
+				TeamId: teamId,
+				Name:   "test-workspace",
+			}
+			c.Opts.SyncLandscape = true
+			c.Opts.Profile = "prod"
+
+			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockClient.EXPECT().WorkspaceStatus(wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)
+			mockClient.EXPECT().ScaleWorkspace(wsId, 1).Return(nil)
+			mockClient.EXPECT().WaitForWorkspaceRunning(mock.Anything, mock.Anything).Return(nil)
+			mockClient.EXPECT().DeployLandscape(wsId, "prod").Return(nil)
+
+			err := c.WakeUpWorkspace(mockClient, wsId)
+
+			Expect(err).ToNot(HaveOccurred())
+		})
+
+		It("should return error if DeployLandscape fails", func() {
+			workspace := api.Workspace{
+				Id:     wsId,
+				TeamId: teamId,
+				Name:   "test-workspace",
+			}
+			c.Opts.SyncLandscape = true
+
+			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockClient.EXPECT().WorkspaceStatus(wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)
+			mockClient.EXPECT().ScaleWorkspace(wsId, 1).Return(nil)
+			mockClient.EXPECT().WaitForWorkspaceRunning(mock.Anything, mock.Anything).Return(nil)
+			mockClient.EXPECT().DeployLandscape(wsId, "").Return(fmt.Errorf("deploy error"))
+
+			err := c.WakeUpWorkspace(mockClient, wsId)
+
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(ContainSubstring("failed to deploy landscape"))
+		})
+
+		It("should sync landscape even when workspace is already running", func() {
+			workspace := api.Workspace{
+				Id:     wsId,
+				TeamId: teamId,
+				Name:   "test-workspace",
+			}
+			c.Opts.SyncLandscape = true
+
+			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockClient.EXPECT().WorkspaceStatus(wsId).Return(&api.WorkspaceStatus{IsRunning: true}, nil)
+			mockClient.EXPECT().DeployLandscape(wsId, "").Return(nil)
+
+			err := c.WakeUpWorkspace(mockClient, wsId)
+
+			Expect(err).ToNot(HaveOccurred())
+		})
 	})
 })
