@@ -23,6 +23,9 @@ jobs:
           CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
         run: make test-int
 
+      - name: Local Integration Tests
+        run: make test-int-local
+
       - name: Cleanup Orphaned Test Resources
         if: always()  # Run even if tests fail
         env:
