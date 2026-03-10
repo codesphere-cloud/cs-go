@@ -8,6 +8,11 @@ on:
 jobs:
   integration-tests:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        label: [workspace, list, error-handling, log, pipeline, git, wakeup, curl, local, unlabeled]
+    name: Integration Tests (${{ matrix.label }})
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
@@ -16,92 +21,39 @@ jobs:
         with:
           go-version-file: 'go.mod'
 
-      - name: Integration Tests - workspace
-        env:
-          CS_TOKEN: ${{ secrets.CS_TOKEN }}
-          CS_API: ${{ secrets.CS_API }}
-          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
-        run: make test-int-workspace
+      - name: Warn about unlabeled tests
+        if: matrix.label == 'unlabeled'
+        run: echo "::warning::Running tests without a known label. If tests are found here, please add a label to the Describe block."
 
-      - name: Integration Tests - list
-        if: always()
+      - name: Run integration tests
         env:
-          CS_TOKEN: ${{ secrets.CS_TOKEN }}
-          CS_API: ${{ secrets.CS_API }}
-          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
-        run: make test-int-list
+          CS_TOKEN: ${{ matrix.label != 'local' && secrets.CS_TOKEN || '' }}
+          CS_API: ${{ matrix.label != 'local' && secrets.CS_API || '' }}
+          CS_TEAM_ID: ${{ matrix.label != 'local' && secrets.CS_TEAM_ID || '' }}
+        run: make test-int-${{ matrix.label }}
 
-      - name: Integration Tests - error-handling
-        if: always()
-        env:
-          CS_TOKEN: ${{ secrets.CS_TOKEN }}
-          CS_API: ${{ secrets.CS_API }}
-          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
-        run: make test-int-error-handling
+  integration-tests-cleanup:
+    runs-on: ubuntu-latest
+    needs: integration-tests
+    if: always()
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - name: Integration Tests - log
-        if: always()
-        env:
-          CS_TOKEN: ${{ secrets.CS_TOKEN }}
-          CS_API: ${{ secrets.CS_API }}
-          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
-        run: make test-int-log
+      - name: Set up Go
+        uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6
+        with:
+          go-version-file: 'go.mod'
 
-      - name: Integration Tests - pipeline
-        if: always()
-        env:
-          CS_TOKEN: ${{ secrets.CS_TOKEN }}
-          CS_API: ${{ secrets.CS_API }}
-          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
-        run: make test-int-pipeline
-
-      - name: Integration Tests - git
-        if: always()
-        env:
-          CS_TOKEN: ${{ secrets.CS_TOKEN }}
-          CS_API: ${{ secrets.CS_API }}
-          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
-        run: make test-int-git
-
-      - name: Integration Tests - wakeup
-        if: always()
-        env:
-          CS_TOKEN: ${{ secrets.CS_TOKEN }}
-          CS_API: ${{ secrets.CS_API }}
-          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
-        run: make test-int-wakeup
-
-      - name: Integration Tests - curl
-        if: always()
-        env:
-          CS_TOKEN: ${{ secrets.CS_TOKEN }}
-          CS_API: ${{ secrets.CS_API }}
-          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
-        run: make test-int-curl
-
-      - name: Integration Tests - local
-        if: always()
-        run: make test-int-local
-
-      - name: Integration Tests - unlabeled (label missing!)
-        if: always()
-        env:
-          CS_TOKEN: ${{ secrets.CS_TOKEN }}
-          CS_API: ${{ secrets.CS_API }}
-          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
-        run: |
-          echo "::warning::Running tests without a known label. If tests are found here, please add a label to the Describe block."
-          make test-int-unlabeled
+      - name: Build CLI
+        run: make build
 
       - name: Cleanup Orphaned Test Resources
-        if: always()  # Run even if tests fail
         env:
           CS_TOKEN: ${{ secrets.CS_TOKEN }}
           CS_API: ${{ secrets.CS_API }}
           CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
         run: |
           echo "Cleaning up any orphaned test workspaces..."
-          # List all workspaces and delete any with test name prefixes
           ./cs list workspaces -t $CS_TEAM_ID | grep -E "cli-(test|git-test|pipeline-test|log-test|sync-test|open-test|setenv-test|edge-test|wakeup-test|curl-test)-" | awk '{print $2}' | while read ws_id; do
             if [ ! -z "$ws_id" ]; then
               echo "Deleting orphaned workspace: $ws_id"
