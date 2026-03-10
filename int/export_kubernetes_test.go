@@ -227,7 +227,7 @@ func validateDockerCompose(content []byte) {
 	Expect(compose).To(HaveKey("services"), "docker-compose.yml should have a 'services' key")
 }
 
-var _ = Describe("Kubernetes Export Integration Tests", func() {
+var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 	var (
 		tempDir string
 	)

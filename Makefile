@@ -14,7 +14,10 @@ test:
 	go test ./api/... ./cli/... ./pkg/... -count=1
 
 test-int: build
-	go test ./int/... -count=1 -v
+	go test ./int/... -count=1 -v -ginkgo.label-filter='!local'
+
+test-int-local: build
+	go test ./int/... -count=1 -v -ginkgo.label-filter='local'
 
 generate: install-build-deps
 	go generate ./...
