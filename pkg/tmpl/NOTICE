@@ -401,9 +401,9 @@ License URL: https://cs.opensource.google/go/x/oauth2/+/v0.35.0:LICENSE
  
 ----------
 Module: golang.org/x/sync/errgroup
-Version: v0.19.0
+Version: v0.20.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/sync/+/v0.19.0:LICENSE
+License URL: https://cs.opensource.google/go/x/sync/+/v0.20.0:LICENSE
  
 ----------
 Module: golang.org/x/sys
