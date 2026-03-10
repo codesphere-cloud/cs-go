@@ -14,10 +14,39 @@ test:
 	go test ./api/... ./cli/... ./pkg/... -count=1
 
 test-int: build
-	go test ./int/... -count=1 -v -ginkgo.label-filter='!local'
+	go test ./int/... -count=1 -v
+
+# new integration tests should be added here with a label, e.g. 'workspace' or 'list',
+# the label must be added to the unlabeled test filter in the 'test-int-unlabeled' target below
+test-int-workspace: build
+	go test ./int/... -count=1 -v -ginkgo.label-filter='workspace'
+
+test-int-list: build
+	go test ./int/... -count=1 -v -ginkgo.label-filter='list'
+
+test-int-error-handling: build
+	go test ./int/... -count=1 -v -ginkgo.label-filter='error-handling'
+
+test-int-log: build
+	go test ./int/... -count=1 -v -ginkgo.label-filter='log'
+
+test-int-pipeline: build
+	go test ./int/... -count=1 -v -ginkgo.label-filter='pipeline'
+
+test-int-git: build
+	go test ./int/... -count=1 -v -ginkgo.label-filter='git'
+
+test-int-wakeup: build
+	go test ./int/... -count=1 -v -ginkgo.label-filter='wakeup'
+
+test-int-curl: build
+	go test ./int/... -count=1 -v -ginkgo.label-filter='curl'
 
 test-int-local: build
 	go test ./int/... -count=1 -v -ginkgo.label-filter='local'
+
+test-int-unlabeled: build
+	go test ./int/... -count=1 -v -ginkgo.label-filter='!local && !workspace && !list && !error-handling && !log && !pipeline && !git && !wakeup && !curl'
 
 generate: install-build-deps
 	go generate ./...

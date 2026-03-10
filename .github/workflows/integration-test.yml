@@ -16,16 +16,82 @@ jobs:
         with:
           go-version-file: 'go.mod'
 
-      - name: Run Integration Tests
+      - name: Integration Tests - workspace
         env:
           CS_TOKEN: ${{ secrets.CS_TOKEN }}
           CS_API: ${{ secrets.CS_API }}
           CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
-        run: make test-int
+        run: make test-int-workspace
 
-      - name: Local Integration Tests
-        if: always()  # Run even if make test-int fails
+      - name: Integration Tests - list
+        if: always()
+        env:
+          CS_TOKEN: ${{ secrets.CS_TOKEN }}
+          CS_API: ${{ secrets.CS_API }}
+          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
+        run: make test-int-list
+
+      - name: Integration Tests - error-handling
+        if: always()
+        env:
+          CS_TOKEN: ${{ secrets.CS_TOKEN }}
+          CS_API: ${{ secrets.CS_API }}
+          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
+        run: make test-int-error-handling
+
+      - name: Integration Tests - log
+        if: always()
+        env:
+          CS_TOKEN: ${{ secrets.CS_TOKEN }}
+          CS_API: ${{ secrets.CS_API }}
+          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
+        run: make test-int-log
+
+      - name: Integration Tests - pipeline
+        if: always()
+        env:
+          CS_TOKEN: ${{ secrets.CS_TOKEN }}
+          CS_API: ${{ secrets.CS_API }}
+          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
+        run: make test-int-pipeline
+
+      - name: Integration Tests - git
+        if: always()
+        env:
+          CS_TOKEN: ${{ secrets.CS_TOKEN }}
+          CS_API: ${{ secrets.CS_API }}
+          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
+        run: make test-int-git
+
+      - name: Integration Tests - wakeup
+        if: always()
+        env:
+          CS_TOKEN: ${{ secrets.CS_TOKEN }}
+          CS_API: ${{ secrets.CS_API }}
+          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
+        run: make test-int-wakeup
+
+      - name: Integration Tests - curl
+        if: always()
+        env:
+          CS_TOKEN: ${{ secrets.CS_TOKEN }}
+          CS_API: ${{ secrets.CS_API }}
+          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
+        run: make test-int-curl
+
+      - name: Integration Tests - local
+        if: always()
         run: make test-int-local
+
+      - name: Integration Tests - unlabeled (label missing!)
+        if: always()
+        env:
+          CS_TOKEN: ${{ secrets.CS_TOKEN }}
+          CS_API: ${{ secrets.CS_API }}
+          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
+        run: |
+          echo "::warning::Running tests without a known label. If tests are found here, please add a label to the Describe block."
+          make test-int-unlabeled
 
       - name: Cleanup Orphaned Test Resources
         if: always()  # Run even if tests fail
