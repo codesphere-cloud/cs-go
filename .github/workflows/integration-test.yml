@@ -16,14 +16,18 @@ jobs:
         with:
           go-version-file: 'go.mod'
 
-      - name: Build CLI
-        run: make build
+      - name: Build CLI and test binary
+        run: |
+          make build
+          go test -c -o int.test ./int/...
 
-      - name: Upload binary
+      - name: Upload artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: cs-binary
-          path: cs
+          name: test-artifacts
+          path: |
+            cs
+            int.test
           retention-days: 1
 
   integration-tests:
@@ -38,28 +42,24 @@ jobs:
       CS_API: ${{ secrets.CS_API }}
       CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-
-      - name: Set up Go
-        uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6
-        with:
-          go-version-file: 'go.mod'
-
-      - name: Download binary
+      - name: Download artifacts
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
-          name: cs-binary
+          name: test-artifacts
 
-      - name: Make binary executable
-        run: chmod +x ./cs
+      - name: Make binaries executable
+        run: chmod +x ./cs ./int.test
 
       - name: Run integration tests - ${{ matrix.label }}
         run: |
+          mkdir -p int
+          mv int.test int/
+          cd int
           if [ "${{ matrix.label }}" = "unlabeled" ]; then
             echo "::warning::Running tests without a known label. If tests are found here, please add a label to the Describe block."
-            go test ./int/... -count=1 -v -ginkgo.label-filter='!local && !workspace && !list && !error-handling && !log && !pipeline && !git && !wakeup && !curl'
+            ./int.test -test.v -ginkgo.label-filter='!local && !workspace && !list && !error-handling && !log && !pipeline && !git && !wakeup && !curl'
           else
-            go test ./int/... -count=1 -v -ginkgo.label-filter='${{ matrix.label }}'
+            ./int.test -test.v -ginkgo.label-filter='${{ matrix.label }}'
           fi
 
   cleanup:
@@ -71,17 +71,10 @@ jobs:
       CS_API: ${{ secrets.CS_API }}
       CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-
-      - name: Set up Go
-        uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6
-        with:
-          go-version-file: 'go.mod'
-
-      - name: Download binary
+      - name: Download artifacts
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
-          name: cs-binary
+          name: test-artifacts
 
       - name: Make binary executable
         run: chmod +x ./cs
