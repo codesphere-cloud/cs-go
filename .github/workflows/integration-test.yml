@@ -19,7 +19,7 @@ jobs:
       - name: Build CLI and test binary
         run: |
           make build
-          go test -c -o int.test ./int/...
+          go test -c -o int.test ./int
 
       - name: Upload artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
