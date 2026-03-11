@@ -6,7 +6,65 @@ on:
   workflow_call:
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Set up Go
+        uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Build CLI
+        run: make build
+
+      - name: Upload binary
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: cs-binary
+          path: cs
+          retention-days: 1
+
   integration-tests:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        label: [workspace, list, error-handling, log, pipeline, git, wakeup, curl, local, unlabeled]
+    env:
+      CS_TOKEN: ${{ secrets.CS_TOKEN }}
+      CS_API: ${{ secrets.CS_API }}
+      CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Set up Go
+        uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Download binary
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: cs-binary
+
+      - name: Make binary executable
+        run: chmod +x ./cs
+
+      - name: Run integration tests - ${{ matrix.label }}
+        run: |
+          if [ "${{ matrix.label }}" = "unlabeled" ]; then
+            echo "::warning::Running tests without a known label. If tests are found here, please add a label to the Describe block."
+            go test ./int/... -count=1 -v -ginkgo.label-filter='!local && !workspace && !list && !error-handling && !log && !pipeline && !git && !wakeup && !curl'
+          else
+            go test ./int/... -count=1 -v -ginkgo.label-filter='${{ matrix.label }}'
+          fi
+
+  cleanup:
+    needs: integration-tests
+    if: always()
     runs-on: ubuntu-latest
     env:
       CS_TOKEN: ${{ secrets.CS_TOKEN }}
@@ -20,53 +78,15 @@ jobs:
         with:
           go-version-file: 'go.mod'
 
-      - name: Run integration tests - workspace
-        run: make test-int-workspace
+      - name: Download binary
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: cs-binary
 
-      - name: Run integration tests - list
-        if: always()
-        run: make test-int-list
-
-      - name: Run integration tests - error-handling
-        if: always()
-        run: make test-int-error-handling
-
-      - name: Run integration tests - log
-        if: always()
-        run: make test-int-log
-
-      - name: Run integration tests - pipeline
-        if: always()
-        run: make test-int-pipeline
-
-      - name: Run integration tests - git
-        if: always()
-        run: make test-int-git
-
-      - name: Run integration tests - wakeup
-        if: always()
-        run: make test-int-wakeup
-
-      - name: Run integration tests - curl
-        if: always()
-        run: make test-int-curl
-
-      - name: Run integration tests - local
-        if: always()
-        run: make test-int-local
-
-      - name: Run integration tests - unlabeled
-        if: always()
-        run: |
-          echo "::warning::Running tests without a known label. If tests are found here, please add a label to the Describe block."
-          make test-int-unlabeled
+      - name: Make binary executable
+        run: chmod +x ./cs
 
       - name: Cleanup Orphaned Test Resources
-        if: always()
-        env:
-          CS_TOKEN: ${{ secrets.CS_TOKEN }}
-          CS_API: ${{ secrets.CS_API }}
-          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
         run: |
           echo "Cleaning up any orphaned test workspaces..."
           ./cs list workspaces -t $CS_TEAM_ID | grep -E "cli-(test|git-test|pipeline-test|log-test|sync-test|open-test|setenv-test|edge-test|wakeup-test|curl-test)-" | awk '{print $2}' | while read ws_id; do
