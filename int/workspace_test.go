@@ -6,9 +6,7 @@ package int_test
 import (
 	"fmt"
 	"log"
-	"os"
 	"strings"
-	"time"
 
 	intutil "github.com/codesphere-cloud/cs-go/int/util"
 	. "github.com/onsi/ginkgo/v2"
@@ -24,7 +22,7 @@ var _ = Describe("Open Workspace Integration Tests", Label("workspace"), func() 
 
 	BeforeEach(func() {
 		teamId, _ = intutil.FailIfMissingEnvVars()
-		workspaceName = fmt.Sprintf("cli-open-test-%d", time.Now().Unix())
+		workspaceName = intutil.NewWorkspaceName("open")
 	})
 
 	AfterEach(func() {
@@ -38,17 +36,7 @@ var _ = Describe("Open Workspace Integration Tests", Label("workspace"), func() 
 	Context("Open Workspace Command", func() {
 		BeforeEach(func() {
 			By("Creating a workspace")
-			output := intutil.RunCommand(
-				"create", "workspace", workspaceName,
-				"-t", teamId,
-				"-p", "8",
-				"--timeout", "15m",
-			)
-			log.Printf("Create workspace output: %s\n", output)
-
-			Expect(output).To(ContainSubstring("Workspace created"))
-			workspaceId = intutil.ExtractWorkspaceId(output)
-			Expect(workspaceId).NotTo(BeEmpty())
+			workspaceId = intutil.CreateTestWorkspace(teamId, workspaceName)
 		})
 
 		It("should open workspace successfully", func() {
@@ -67,24 +55,17 @@ var _ = Describe("Open Workspace Integration Tests", Label("workspace"), func() 
 	Context("Open Workspace Error Handling", func() {
 		It("should fail when workspace ID is missing", func() {
 			By("Attempting to open workspace without ID")
-			originalWsId := os.Getenv("CS_WORKSPACE_ID")
-			originalWsIdFallback := os.Getenv("WORKSPACE_ID")
-			_ = os.Unsetenv("CS_WORKSPACE_ID")
-			_ = os.Unsetenv("WORKSPACE_ID")
-			defer func() {
-				_ = os.Setenv("CS_WORKSPACE_ID", originalWsId)
-				_ = os.Setenv("WORKSPACE_ID", originalWsIdFallback)
-			}()
-
-			output, exitCode := intutil.RunCommandWithExitCode(
-				"open", "workspace",
-			)
-			log.Printf("Open without workspace ID output: %s (exit code: %d)\n", output, exitCode)
-			Expect(exitCode).NotTo(Equal(0))
-			Expect(output).To(Or(
-				ContainSubstring("workspace"),
-				ContainSubstring("required"),
-			))
+			intutil.WithClearedWorkspaceEnv(func() {
+				output, exitCode := intutil.RunCommandWithExitCode(
+					"open", "workspace",
+				)
+				log.Printf("Open without workspace ID output: %s (exit code: %d)\n", output, exitCode)
+				Expect(exitCode).NotTo(Equal(0))
+				Expect(output).To(Or(
+					ContainSubstring("workspace"),
+					ContainSubstring("required"),
+				))
+			})
 		})
 	})
 })
@@ -98,7 +79,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", Label("workspac
 
 	BeforeEach(func() {
 		teamId, _ = intutil.FailIfMissingEnvVars()
-		workspaceName = fmt.Sprintf("cli-edge-test-%d", time.Now().Unix())
+		workspaceName = intutil.NewWorkspaceName("edge")
 	})
 
 	AfterEach(func() {
@@ -111,18 +92,18 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", Label("workspac
 
 	Context("Workspace Creation Edge Cases", func() {
 		It("should create a workspace with a very long name", func() {
-			longName := fmt.Sprintf("cli-very-long-workspace-name-test-%d", time.Now().Unix())
+			longName := intutil.NewWorkspaceName("very-long-workspace-name")
 			By("Creating a workspace with a long name")
 			output := intutil.RunCommand(
 				"create", "workspace", longName,
 				"-t", teamId,
-				"-p", "8",
-				"--timeout", "15m",
+				"-p", intutil.DefaultPlanId,
+				"--timeout", intutil.DefaultCreateTimeout,
 			)
 			log.Printf("Create workspace with long name output: %s\n", output)
 
 			if output != "" && !strings.Contains(output, "error") {
-				Expect(output).To(ContainSubstring("Workspace created"))
+				Expect(output).To(ContainSubstring(intutil.WorkspaceCreatedOutput))
 				workspaceId = intutil.ExtractWorkspaceId(output)
 			}
 		})
@@ -132,7 +113,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", Label("workspac
 			output, exitCode := intutil.RunCommandWithExitCode(
 				"create", "workspace", workspaceName,
 				"-t", teamId,
-				"-p", "8",
+				"-p", intutil.DefaultPlanId,
 				"--timeout", "1s",
 			)
 			log.Printf("Create with short timeout output: %s (exit code: %d)\n", output, exitCode)
@@ -142,7 +123,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", Label("workspac
 					ContainSubstring("timeout"),
 					ContainSubstring("timed out"),
 				))
-			} else if strings.Contains(output, "Workspace created") {
+			} else if strings.Contains(output, intutil.WorkspaceCreatedOutput) {
 				workspaceId = intutil.ExtractWorkspaceId(output)
 			}
 		})
@@ -151,15 +132,7 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", Label("workspac
 	Context("Exec Command Edge Cases", func() {
 		BeforeEach(func() {
 			By("Creating a workspace")
-			output := intutil.RunCommand(
-				"create", "workspace", workspaceName,
-				"-t", teamId,
-				"-p", "8",
-				"--timeout", "15m",
-			)
-			Expect(output).To(ContainSubstring("Workspace created"))
-			workspaceId = intutil.ExtractWorkspaceId(output)
-			Expect(workspaceId).NotTo(BeEmpty())
+			workspaceId = intutil.CreateTestWorkspace(teamId, workspaceName)
 		})
 
 		It("should execute commands with multiple arguments", func() {
@@ -214,18 +187,10 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", Label("workspac
 	Context("Workspace Deletion Edge Cases", func() {
 		It("should prevent deletion without confirmation when not forced", func() {
 			By("Creating a workspace")
-			output := intutil.RunCommand(
-				"create", "workspace", workspaceName,
-				"-t", teamId,
-				"-p", "8",
-				"--timeout", "15m",
-			)
-			Expect(output).To(ContainSubstring("Workspace created"))
-			workspaceId = intutil.ExtractWorkspaceId(output)
-			Expect(workspaceId).NotTo(BeEmpty())
+			workspaceId = intutil.CreateTestWorkspace(teamId, workspaceName)
 
 			By("Attempting to delete without --yes flag")
-			output = intutil.RunCommand(
+			output := intutil.RunCommand(
 				"delete", "workspace",
 				"-w", workspaceId,
 				"--yes",
@@ -237,16 +202,9 @@ var _ = Describe("Workspace Edge Cases and Advanced Operations", Label("workspac
 
 		It("should fail gracefully when deleting already deleted workspace", func() {
 			By("Creating and deleting a workspace")
-			output := intutil.RunCommand(
-				"create", "workspace", workspaceName,
-				"-t", teamId,
-				"-p", "8",
-				"--timeout", "15m",
-			)
-			Expect(output).To(ContainSubstring("Workspace created"))
-			tempWsId := intutil.ExtractWorkspaceId(output)
+			tempWsId := intutil.CreateTestWorkspace(teamId, workspaceName)
 
-			output = intutil.RunCommand(
+			output := intutil.RunCommand(
 				"delete", "workspace",
 				"-w", tempWsId,
 				"--yes",

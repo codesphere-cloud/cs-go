@@ -23,7 +23,7 @@ var _ = Describe("Curl Workspace Integration Tests", Label("curl"), func() {
 
 	BeforeEach(func() {
 		teamId, _ = intutil.FailIfMissingEnvVars()
-		workspaceName = fmt.Sprintf("cli-curl-test-%d", time.Now().Unix())
+		workspaceName = intutil.NewWorkspaceName("curl")
 	})
 
 	AfterEach(func() {
@@ -37,20 +37,10 @@ var _ = Describe("Curl Workspace Integration Tests", Label("curl"), func() {
 	Context("Curl Command", func() {
 		BeforeEach(func() {
 			By("Creating a workspace for curl testing")
-			output := intutil.RunCommand(
-				"create", "workspace", workspaceName,
-				"-t", teamId,
-				"-p", "8",
-				"--timeout", "15m",
-			)
-			log.Printf("Create workspace output: %s\n", output)
-
-			Expect(output).To(ContainSubstring("Workspace created"))
-			workspaceId = intutil.ExtractWorkspaceId(output)
-			Expect(workspaceId).NotTo(BeEmpty())
+			workspaceId = intutil.CreateTestWorkspace(teamId, workspaceName)
 
 			By("Waiting for workspace to be fully provisioned")
-			time.Sleep(5 * time.Second)
+			time.Sleep(intutil.PostCreateWaitTime)
 		})
 
 		It("should send authenticated request to workspace", func() {
@@ -111,40 +101,17 @@ var _ = Describe("Curl Workspace Integration Tests", Label("curl"), func() {
 	Context("Curl Error Handling", func() {
 		It("should fail when workspace ID is missing", func() {
 			By("Attempting to curl without workspace ID")
-			originalWsId := os.Getenv("CS_WORKSPACE_ID")
-			originalWsIdFallback := os.Getenv("WORKSPACE_ID")
-			_ = os.Unsetenv("CS_WORKSPACE_ID")
-			_ = os.Unsetenv("WORKSPACE_ID")
-			defer func() {
-				_ = os.Setenv("CS_WORKSPACE_ID", originalWsId)
-				_ = os.Setenv("WORKSPACE_ID", originalWsIdFallback)
-			}()
+			intutil.WithClearedWorkspaceEnv(func() {
+				output, exitCode := intutil.RunCommandWithExitCode("curl", "/")
+				log.Printf("Curl without workspace ID output: %s (exit code: %d)\n", output, exitCode)
 
-			output, exitCode := intutil.RunCommandWithExitCode("curl", "/")
-			log.Printf("Curl without workspace ID output: %s (exit code: %d)\n", output, exitCode)
-
-			Expect(exitCode).NotTo(Equal(0))
-			Expect(output).To(Or(
-				ContainSubstring("workspace"),
-				ContainSubstring("required"),
-				ContainSubstring("not set"),
-			))
-		})
-
-		It("should fail gracefully with non-existent workspace", func() {
-			By("Attempting to curl non-existent workspace")
-			output, exitCode := intutil.RunCommandWithExitCode(
-				"curl", "/",
-				"-w", "99999999",
-			)
-			log.Printf("Curl non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
-
-			Expect(exitCode).NotTo(Equal(0))
-			Expect(output).To(Or(
-				ContainSubstring("failed to get workspace"),
-				ContainSubstring("not found"),
-				ContainSubstring("404"),
-			))
+				Expect(exitCode).NotTo(Equal(0))
+				Expect(output).To(Or(
+					ContainSubstring("workspace"),
+					ContainSubstring("required"),
+					ContainSubstring("not set"),
+				))
+			})
 		})
 
 		It("should require path argument", func() {

@@ -6,7 +6,6 @@ package int_test
 import (
 	"fmt"
 	"log"
-	"time"
 
 	intutil "github.com/codesphere-cloud/cs-go/int/util"
 	. "github.com/onsi/ginkgo/v2"
@@ -22,7 +21,7 @@ var _ = Describe("Start Pipeline Integration Tests", Label("pipeline"), func() {
 
 	BeforeEach(func() {
 		teamId, _ = intutil.FailIfMissingEnvVars()
-		workspaceName = fmt.Sprintf("cli-pipeline-test-%d", time.Now().Unix())
+		workspaceName = intutil.NewWorkspaceName("pipeline")
 	})
 
 	AfterEach(func() {
@@ -36,15 +35,7 @@ var _ = Describe("Start Pipeline Integration Tests", Label("pipeline"), func() {
 	Context("Start Pipeline Command", func() {
 		BeforeEach(func() {
 			By("Creating a workspace")
-			output := intutil.RunCommand(
-				"create", "workspace", workspaceName,
-				"-t", teamId,
-				"-p", "8",
-				"--timeout", "15m",
-			)
-			Expect(output).To(ContainSubstring("Workspace created"))
-			workspaceId = intutil.ExtractWorkspaceId(output)
-			Expect(workspaceId).NotTo(BeEmpty())
+			workspaceId = intutil.CreateTestWorkspace(teamId, workspaceName)
 		})
 
 		It("should start pipeline successfully", func() {

@@ -23,7 +23,7 @@ var _ = Describe("Wake Up Workspace Integration Tests", Label("wakeup"), func() 
 
 	BeforeEach(func() {
 		teamId, _ = intutil.FailIfMissingEnvVars()
-		workspaceName = fmt.Sprintf("cli-wakeup-test-%d", time.Now().Unix())
+		workspaceName = intutil.NewWorkspaceName("wakeup")
 	})
 
 	AfterEach(func() {
@@ -37,20 +37,10 @@ var _ = Describe("Wake Up Workspace Integration Tests", Label("wakeup"), func() 
 	Context("Wake Up Command", func() {
 		BeforeEach(func() {
 			By("Creating a workspace for wake-up testing")
-			output := intutil.RunCommand(
-				"create", "workspace", workspaceName,
-				"-t", teamId,
-				"-p", "8",
-				"--timeout", "15m",
-			)
-			log.Printf("Create workspace output: %s\n", output)
-
-			Expect(output).To(ContainSubstring("Workspace created"))
-			workspaceId = intutil.ExtractWorkspaceId(output)
-			Expect(workspaceId).NotTo(BeEmpty())
+			workspaceId = intutil.CreateTestWorkspace(teamId, workspaceName)
 
 			By("Waiting for workspace to be fully provisioned")
-			time.Sleep(5 * time.Second)
+			time.Sleep(intutil.PostCreateWaitTime)
 		})
 
 		It("should wake up workspace successfully", func() {
@@ -108,55 +98,22 @@ var _ = Describe("Wake Up Workspace Integration Tests", Label("wakeup"), func() 
 	Context("Wake Up Error Handling", func() {
 		It("should fail when workspace ID is missing", func() {
 			By("Attempting to wake up workspace without ID")
-			originalWsId := os.Getenv("CS_WORKSPACE_ID")
-			originalWsIdFallback := os.Getenv("WORKSPACE_ID")
-			_ = os.Unsetenv("CS_WORKSPACE_ID")
-			_ = os.Unsetenv("WORKSPACE_ID")
-			defer func() {
-				_ = os.Setenv("CS_WORKSPACE_ID", originalWsId)
-				_ = os.Setenv("WORKSPACE_ID", originalWsIdFallback)
-			}()
+			intutil.WithClearedWorkspaceEnv(func() {
+				output, exitCode := intutil.RunCommandWithExitCode("wake-up")
+				log.Printf("Wake up without workspace ID output: %s (exit code: %d)\n", output, exitCode)
 
-			output, exitCode := intutil.RunCommandWithExitCode("wake-up")
-			log.Printf("Wake up without workspace ID output: %s (exit code: %d)\n", output, exitCode)
-
-			Expect(exitCode).NotTo(Equal(0))
-			Expect(output).To(Or(
-				ContainSubstring("workspace"),
-				ContainSubstring("required"),
-				ContainSubstring("not set"),
-			))
-		})
-
-		It("should fail gracefully with non-existent workspace", func() {
-			By("Attempting to wake up non-existent workspace")
-			output, exitCode := intutil.RunCommandWithExitCode(
-				"wake-up",
-				"-w", "99999999",
-			)
-			log.Printf("Wake up non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
-
-			Expect(exitCode).NotTo(Equal(0))
-			Expect(output).To(Or(
-				ContainSubstring("failed to get workspace"),
-				ContainSubstring("not found"),
-				ContainSubstring("404"),
-			))
+				Expect(exitCode).NotTo(Equal(0))
+				Expect(output).To(Or(
+					ContainSubstring("workspace"),
+					ContainSubstring("required"),
+					ContainSubstring("not set"),
+				))
+			})
 		})
 
 		It("should handle workspace without dev domain gracefully", func() {
 			By("Creating a workspace (which might not have dev domain configured)")
-			output := intutil.RunCommand(
-				"create", "workspace", workspaceName,
-				"-t", teamId,
-				"-p", "8",
-				"--timeout", "15m",
-			)
-			log.Printf("Create workspace output: %s\n", output)
-
-			Expect(output).To(ContainSubstring("Workspace created"))
-			workspaceId = intutil.ExtractWorkspaceId(output)
-			Expect(workspaceId).NotTo(BeEmpty())
+			workspaceId = intutil.CreateTestWorkspace(teamId, workspaceName)
 
 			By("Attempting to wake up the workspace")
 			wakeupOutput, wakeupExitCode := intutil.RunCommandWithExitCode(

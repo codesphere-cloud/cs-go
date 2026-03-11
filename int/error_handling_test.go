@@ -18,35 +18,13 @@ var _ = Describe("Command Error Handling Tests", Label("error-handling"), func()
 			commandName string
 			args        []string
 		}{
-			{"open workspace", []string{"open", "workspace", "-w", "99999999"}},
-			{"log", []string{"log", "-w", "99999999"}},
-			{"start pipeline", []string{"start", "pipeline", "-w", "99999999"}},
-			{"git pull", []string{"git", "pull", "-w", "99999999"}},
-			{"set-env", []string{"set-env", "-w", "99999999", "TEST_VAR=test"}},
-			{"wake-up", []string{"wake-up", "-w", "99999999"}},
-			{"curl", []string{"curl", "/", "-w", "99999999"}},
-		}
-
-		for _, tc := range testCases {
-			By(fmt.Sprintf("Testing %s with non-existent workspace", tc.commandName))
-			output, exitCode := intutil.RunCommandWithExitCode(tc.args...)
-			log.Printf("%s non-existent workspace output: %s (exit code: %d)\n", tc.commandName, output, exitCode)
-			Expect(exitCode).NotTo(Equal(0))
-		}
-	})
-})
-
-var _ = Describe("Command Error Handling Tests - Additional", Label("error-handling"), func() {
-	It("should fail gracefully with non-existent workspace for all commands", func() {
-		testCases := []struct {
-			commandName string
-			args        []string
-		}{
-			{"open workspace", []string{"open", "workspace", "-w", "99999999"}},
-			{"log", []string{"log", "-w", "99999999"}},
-			{"start pipeline", []string{"start", "pipeline", "-w", "99999999"}},
-			{"git pull", []string{"git", "pull", "-w", "99999999"}},
-			{"set-env", []string{"set-env", "-w", "99999999", "TEST_VAR=test"}},
+			{"open workspace", []string{"open", "workspace", "-w", intutil.NonExistentWorkspaceId}},
+			{"log", []string{"log", "-w", intutil.NonExistentWorkspaceId}},
+			{"start pipeline", []string{"start", "pipeline", "-w", intutil.NonExistentWorkspaceId}},
+			{"git pull", []string{"git", "pull", "-w", intutil.NonExistentWorkspaceId}},
+			{"set-env", []string{"set-env", "-w", intutil.NonExistentWorkspaceId, "TEST_VAR=test"}},
+			{"wake-up", []string{"wake-up", "-w", intutil.NonExistentWorkspaceId}},
+			{"curl", []string{"curl", "/", "-w", intutil.NonExistentWorkspaceId}},
 		}
 
 		for _, tc := range testCases {
