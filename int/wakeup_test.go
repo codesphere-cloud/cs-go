@@ -5,6 +5,7 @@ package int_test
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"time"
 
@@ -42,7 +43,7 @@ var _ = Describe("Wake Up Workspace Integration Tests", Label("wakeup"), func() 
 				"-p", "8",
 				"--timeout", "15m",
 			)
-			fmt.Printf("Create workspace output: %s\n", output)
+			log.Printf("Create workspace output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("Workspace created"))
 			workspaceId = intutil.ExtractWorkspaceId(output)
@@ -58,7 +59,7 @@ var _ = Describe("Wake Up Workspace Integration Tests", Label("wakeup"), func() 
 				"wake-up",
 				"-w", workspaceId,
 			)
-			fmt.Printf("Wake up workspace output: %s\n", output)
+			log.Printf("Wake up workspace output: %s\n", output)
 
 			Expect(output).To(Or(
 				ContainSubstring("Waking up workspace"),
@@ -75,7 +76,7 @@ var _ = Describe("Wake Up Workspace Integration Tests", Label("wakeup"), func() 
 				"-w", workspaceId,
 				"--timeout", "5s",
 			)
-			fmt.Printf("Wake up with timeout output: %s (exit code: %d)\n", output, exitCode)
+			log.Printf("Wake up with timeout output: %s (exit code: %d)\n", output, exitCode)
 
 			Expect(output).To(Or(
 				ContainSubstring("Waking up workspace"),
@@ -93,7 +94,7 @@ var _ = Describe("Wake Up Workspace Integration Tests", Label("wakeup"), func() 
 
 			By("Waking up workspace using environment variable")
 			output := intutil.RunCommand("wake-up")
-			fmt.Printf("Wake up with env var output: %s\n", output)
+			log.Printf("Wake up with env var output: %s\n", output)
 
 			Expect(output).To(Or(
 				ContainSubstring("Waking up workspace"),
@@ -117,7 +118,7 @@ var _ = Describe("Wake Up Workspace Integration Tests", Label("wakeup"), func() 
 			}()
 
 			output, exitCode := intutil.RunCommandWithExitCode("wake-up")
-			fmt.Printf("Wake up without workspace ID output: %s (exit code: %d)\n", output, exitCode)
+			log.Printf("Wake up without workspace ID output: %s (exit code: %d)\n", output, exitCode)
 
 			Expect(exitCode).NotTo(Equal(0))
 			Expect(output).To(Or(
@@ -133,7 +134,7 @@ var _ = Describe("Wake Up Workspace Integration Tests", Label("wakeup"), func() 
 				"wake-up",
 				"-w", "99999999",
 			)
-			fmt.Printf("Wake up non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
+			log.Printf("Wake up non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
 
 			Expect(exitCode).NotTo(Equal(0))
 			Expect(output).To(Or(
@@ -151,7 +152,7 @@ var _ = Describe("Wake Up Workspace Integration Tests", Label("wakeup"), func() 
 				"-p", "8",
 				"--timeout", "15m",
 			)
-			fmt.Printf("Create workspace output: %s\n", output)
+			log.Printf("Create workspace output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("Workspace created"))
 			workspaceId = intutil.ExtractWorkspaceId(output)
@@ -162,7 +163,7 @@ var _ = Describe("Wake Up Workspace Integration Tests", Label("wakeup"), func() 
 				"wake-up",
 				"-w", workspaceId,
 			)
-			fmt.Printf("Wake up workspace output: %s (exit code: %d)\n", wakeupOutput, wakeupExitCode)
+			log.Printf("Wake up workspace output: %s (exit code: %d)\n", wakeupOutput, wakeupExitCode)
 
 			if wakeupExitCode != 0 {
 				Expect(wakeupOutput).To(Or(
@@ -178,7 +179,7 @@ var _ = Describe("Wake Up Workspace Integration Tests", Label("wakeup"), func() 
 		It("should display help information", func() {
 			By("Running wake-up --help")
 			output := intutil.RunCommand("wake-up", "--help")
-			fmt.Printf("Wake up help output: %s\n", output)
+			log.Printf("Wake up help output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("Wake up an on-demand workspace"))
 			Expect(output).To(ContainSubstring("--timeout"))

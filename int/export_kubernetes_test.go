@@ -227,6 +227,61 @@ func validateDockerCompose(content []byte) {
 	Expect(compose).To(HaveKey("services"), "docker-compose.yml should have a 'services' key")
 }
 
+// writeCiYml writes content to a file in the given directory.
+func writeCiYml(dir, filename, content string) {
+	GinkgoHelper()
+	err := os.WriteFile(filepath.Join(dir, filename), []byte(content), 0644)
+	Expect(err).NotTo(HaveOccurred())
+}
+
+// readFileContent reads a file and fails the test on error.
+func readFileContent(path string) []byte {
+	GinkgoHelper()
+	content, err := os.ReadFile(path)
+	Expect(err).NotTo(HaveOccurred())
+	return content
+}
+
+// generateDocker runs the generate docker command with common flags.
+func generateDocker(tempDir, baseImage, input, output string, extraArgs ...string) string {
+	GinkgoHelper()
+	args := []string{
+		"generate", "docker",
+		"--reporoot", tempDir,
+		"-b", baseImage,
+		"-i", input,
+		"-o", output,
+	}
+	args = append(args, extraArgs...)
+	return intutil.RunCommand(args...)
+}
+
+// generateKubernetes runs the generate kubernetes command with common flags.
+func generateKubernetes(tempDir, registry, input, output string, extraArgs ...string) string {
+	GinkgoHelper()
+	args := []string{
+		"generate", "kubernetes",
+		"--reporoot", tempDir,
+		"-r", registry,
+		"-i", input,
+		"-o", output,
+	}
+	args = append(args, extraArgs...)
+	return intutil.RunCommand(args...)
+}
+
+// readAndValidateServiceFile reads a K8s service YAML file and validates it.
+func readAndValidateServiceFile(path string) (*apps.Deployment, *core.Service) {
+	GinkgoHelper()
+	return validateServiceFile(readFileContent(path))
+}
+
+// readAndValidateIngress reads a K8s ingress YAML file and validates it.
+func readAndValidateIngress(path string) *networking.Ingress {
+	GinkgoHelper()
+	return unmarshalIngress(readFileContent(path))
+}
+
 var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 	var (
 		tempDir string
@@ -246,154 +301,90 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 
 	Context("Generate Docker Command", func() {
 		It("should generate Dockerfiles and docker-compose from flask-demo ci.yml", func() {
-			By("Creating ci.yml in temp directory")
-			ciYmlPath := filepath.Join(tempDir, "ci.yml")
-			err := os.WriteFile(ciYmlPath, []byte(flaskDemoCiYml), 0644)
-			Expect(err).NotTo(HaveOccurred())
+			writeCiYml(tempDir, "ci.yml", flaskDemoCiYml)
 
-			By("Running generate docker command")
-			output := intutil.RunCommand(
-				"generate", "docker",
-				"--reporoot", tempDir,
-				"-b", "ubuntu:latest",
-				"-i", "ci.yml",
-				"-o", "export",
-			)
-			fmt.Printf("Generate docker output: %s\n", output)
-
+			output := generateDocker(tempDir, "ubuntu:latest", "ci.yml", "export")
 			Expect(output).To(ContainSubstring("docker artifacts created"))
 			Expect(output).To(ContainSubstring("docker compose up"))
 
-			By("Verifying frontend-service Dockerfile was created")
-			frontendDockerfile := filepath.Join(tempDir, "export", "frontend-service", "Dockerfile")
-			Expect(frontendDockerfile).To(BeAnExistingFile())
-			content, err := os.ReadFile(frontendDockerfile)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(string(content)).To(ContainSubstring("FROM ubuntu:latest"))
-			Expect(string(content)).To(ContainSubstring("pip install"))
-			validateDockerfile(string(content))
+			By("Verifying service Dockerfiles and entrypoints")
+			for _, tc := range []struct {
+				service  string
+				entryCmd string
+			}{
+				{"frontend-service", "python app.py"},
+				{"backend-service", "python backend.py"},
+			} {
+				df := string(readFileContent(filepath.Join(tempDir, "export", tc.service, "Dockerfile")))
+				validateDockerfile(df)
+				if tc.service == "frontend-service" {
+					Expect(df).To(ContainSubstring("FROM ubuntu:latest"))
+					Expect(df).To(ContainSubstring("pip install"))
+				}
 
-			By("Verifying frontend-service entrypoint was created")
-			frontendEntrypoint := filepath.Join(tempDir, "export", "frontend-service", "entrypoint.sh")
-			Expect(frontendEntrypoint).To(BeAnExistingFile())
-			content, err = os.ReadFile(frontendEntrypoint)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(string(content)).To(ContainSubstring("python app.py"))
-			validateShellScript(string(content))
+				ep := string(readFileContent(filepath.Join(tempDir, "export", tc.service, "entrypoint.sh")))
+				validateShellScript(ep)
+				Expect(ep).To(ContainSubstring(tc.entryCmd))
+			}
 
-			By("Verifying backend-service Dockerfile was created")
-			backendDockerfile := filepath.Join(tempDir, "export", "backend-service", "Dockerfile")
-			Expect(backendDockerfile).To(BeAnExistingFile())
-			content, err = os.ReadFile(backendDockerfile)
-			Expect(err).NotTo(HaveOccurred())
-			validateDockerfile(string(content))
+			By("Verifying docker-compose.yml")
+			dc := readFileContent(filepath.Join(tempDir, "export", "docker-compose.yml"))
+			Expect(string(dc)).To(ContainSubstring("frontend-service"))
+			Expect(string(dc)).To(ContainSubstring("backend-service"))
+			validateDockerCompose(dc)
 
-			By("Verifying backend-service entrypoint was created")
-			backendEntrypoint := filepath.Join(tempDir, "export", "backend-service", "entrypoint.sh")
-			Expect(backendEntrypoint).To(BeAnExistingFile())
-			content, err = os.ReadFile(backendEntrypoint)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(string(content)).To(ContainSubstring("python backend.py"))
-			validateShellScript(string(content))
-
-			By("Verifying docker-compose.yml was created")
-			dockerComposePath := filepath.Join(tempDir, "export", "docker-compose.yml")
-			Expect(dockerComposePath).To(BeAnExistingFile())
-			content, err = os.ReadFile(dockerComposePath)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(string(content)).To(ContainSubstring("frontend-service"))
-			Expect(string(content)).To(ContainSubstring("backend-service"))
-			validateDockerCompose(content)
-
-			By("Verifying nginx config was created")
-			nginxConfigPath := filepath.Join(tempDir, "export", "nginx.conf")
-			Expect(nginxConfigPath).To(BeAnExistingFile())
+			Expect(filepath.Join(tempDir, "export", "nginx.conf")).To(BeAnExistingFile())
 		})
 
 		It("should generate Docker artifacts with different base image", func() {
-			By("Creating ci.yml in temp directory")
-			ciYmlPath := filepath.Join(tempDir, "ci.yml")
-			err := os.WriteFile(ciYmlPath, []byte(simpleCiYml), 0644)
-			Expect(err).NotTo(HaveOccurred())
+			writeCiYml(tempDir, "ci.yml", simpleCiYml)
 
-			By("Running generate docker with alpine base image")
-			output := intutil.RunCommand(
-				"generate", "docker",
-				"--reporoot", tempDir,
-				"-b", "alpine:latest",
-				"-i", "ci.yml",
-				"-o", "export",
-			)
-			fmt.Printf("Generate docker output: %s\n", output)
-
+			output := generateDocker(tempDir, "alpine:latest", "ci.yml", "export")
 			Expect(output).To(ContainSubstring("docker artifacts created"))
 
-			By("Verifying Dockerfile uses alpine base image")
-			dockerfile := filepath.Join(tempDir, "export", "web", "Dockerfile")
-			Expect(dockerfile).To(BeAnExistingFile())
-			content, err := os.ReadFile(dockerfile)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(string(content)).To(ContainSubstring("FROM alpine:latest"))
-			validateDockerfile(string(content))
+			df := string(readFileContent(filepath.Join(tempDir, "export", "web", "Dockerfile")))
+			Expect(df).To(ContainSubstring("FROM alpine:latest"))
+			validateDockerfile(df)
 		})
 
 		It("should fail when baseimage is not provided", func() {
-			By("Creating ci.yml in temp directory")
-			ciYmlPath := filepath.Join(tempDir, "ci.yml")
-			err := os.WriteFile(ciYmlPath, []byte(simpleCiYml), 0644)
-			Expect(err).NotTo(HaveOccurred())
+			writeCiYml(tempDir, "ci.yml", simpleCiYml)
 
-			By("Running generate docker without baseimage")
 			output, exitCode := intutil.RunCommandWithExitCode(
 				"generate", "docker",
 				"--reporoot", tempDir,
 				"-i", "ci.yml",
 			)
-			fmt.Printf("Generate docker without baseimage output: %s (exit code: %d)\n", output, exitCode)
-
 			Expect(exitCode).NotTo(Equal(0))
 			Expect(output).To(ContainSubstring("baseimage is required"))
 		})
 
 		It("should fail when ci.yml does not exist", func() {
-			By("Running generate docker without ci.yml")
-			output, exitCode := intutil.RunCommandWithExitCode(
+			_, exitCode := intutil.RunCommandWithExitCode(
 				"generate", "docker",
 				"--reporoot", tempDir,
 				"-b", "ubuntu:latest",
 				"-i", "nonexistent.yml",
 			)
-			fmt.Printf("Generate docker with nonexistent file output: %s (exit code: %d)\n", output, exitCode)
-
 			Expect(exitCode).NotTo(Equal(0))
 		})
 
 		It("should fail with invalid YAML content", func() {
-			By("Creating invalid ci.yml")
-			ciYmlPath := filepath.Join(tempDir, "ci.yml")
-			err := os.WriteFile(ciYmlPath, []byte(invalidYaml), 0644)
-			Expect(err).NotTo(HaveOccurred())
+			writeCiYml(tempDir, "ci.yml", invalidYaml)
 
-			By("Running generate docker with invalid YAML")
-			output, exitCode := intutil.RunCommandWithExitCode(
+			_, exitCode := intutil.RunCommandWithExitCode(
 				"generate", "docker",
 				"--reporoot", tempDir,
 				"-b", "ubuntu:latest",
 				"-i", "ci.yml",
 				"-o", "export",
 			)
-			fmt.Printf("Generate docker with invalid YAML output: %s (exit code: %d)\n", output, exitCode)
-
 			Expect(exitCode).NotTo(Equal(0))
 		})
 
 		It("should fail with ci.yml with no services", func() {
-			By("Creating ci.yml with empty run section")
-			ciYmlPath := filepath.Join(tempDir, "ci.yml")
-			err := os.WriteFile(ciYmlPath, []byte(emptyCiYml), 0644)
-			Expect(err).NotTo(HaveOccurred())
+			writeCiYml(tempDir, "ci.yml", emptyCiYml)
 
-			By("Running generate docker with empty services")
 			output, exitCode := intutil.RunCommandWithExitCode(
 				"generate", "docker",
 				"--reporoot", tempDir,
@@ -401,8 +392,6 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 				"-i", "ci.yml",
 				"-o", "export",
 			)
-			fmt.Printf("Generate docker with empty services output: %s (exit code: %d)\n", output, exitCode)
-
 			Expect(exitCode).NotTo(Equal(0))
 			Expect(output).To(ContainSubstring("at least one service is required"))
 		})
@@ -410,72 +399,42 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 
 	Context("Generate Kubernetes Command", func() {
 		BeforeEach(func() {
-			By("Creating ci.yml and generating docker artifacts first")
-			ciYmlPath := filepath.Join(tempDir, "ci.yml")
-			err := os.WriteFile(ciYmlPath, []byte(flaskDemoCiYml), 0644)
-			Expect(err).NotTo(HaveOccurred())
-
-			output := intutil.RunCommand(
-				"generate", "docker",
-				"--reporoot", tempDir,
-				"-b", "ubuntu:latest",
-				"-i", "ci.yml",
-				"-o", "export",
-			)
+			writeCiYml(tempDir, "ci.yml", flaskDemoCiYml)
+			output := generateDocker(tempDir, "ubuntu:latest", "ci.yml", "export")
 			Expect(output).To(ContainSubstring("docker artifacts created"))
 		})
 
 		It("should generate Kubernetes artifacts with registry and namespace", func() {
-			By("Running generate kubernetes command")
-			output := intutil.RunCommand(
-				"generate", "kubernetes",
-				"--reporoot", tempDir,
-				"-r", "ghcr.io/codesphere-cloud/flask-demo",
+			output := generateKubernetes(tempDir,
+				"ghcr.io/codesphere-cloud/flask-demo", "ci.yml", "export",
 				"-p", "cs-demo",
-				"-i", "ci.yml",
-				"-o", "export",
 				"-n", "flask-demo",
 				"--hostname", "flask-demo.local",
 			)
-			fmt.Printf("Generate kubernetes output: %s\n", output)
-
 			Expect(output).To(ContainSubstring("Kubernetes artifacts export successful"))
 			Expect(output).To(ContainSubstring("kubectl apply"))
 
-			By("Verifying kubernetes directory was created")
 			kubernetesDir := filepath.Join(tempDir, "export", "kubernetes")
 			info, err := os.Stat(kubernetesDir)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(info.IsDir()).To(BeTrue())
 
-			By("Verifying frontend-service deployment was created and is valid")
-			frontendServicePath := filepath.Join(kubernetesDir, "service-frontend-service.yml")
-			Expect(frontendServicePath).To(BeAnExistingFile())
-			content, err := os.ReadFile(frontendServicePath)
-			Expect(err).NotTo(HaveOccurred())
-			frontDep, frontSvc := validateServiceFile(content)
+			By("Verifying frontend-service")
+			frontDep, frontSvc := readAndValidateServiceFile(filepath.Join(kubernetesDir, "service-frontend-service.yml"))
 			Expect(frontDep.Namespace).To(Equal("flask-demo"))
 			Expect(frontDep.Spec.Template.Spec.Containers).To(HaveLen(1))
 			Expect(frontDep.Spec.Template.Spec.Containers[0].Image).To(Equal("ghcr.io/codesphere-cloud/flask-demo/cs-demo-frontend-service:latest"))
 			Expect(frontSvc.Namespace).To(Equal("flask-demo"))
 
-			By("Verifying backend-service deployment was created and is valid")
-			backendServicePath := filepath.Join(kubernetesDir, "service-backend-service.yml")
-			Expect(backendServicePath).To(BeAnExistingFile())
-			content, err = os.ReadFile(backendServicePath)
-			Expect(err).NotTo(HaveOccurred())
-			backDep, backSvc := validateServiceFile(content)
+			By("Verifying backend-service")
+			backDep, backSvc := readAndValidateServiceFile(filepath.Join(kubernetesDir, "service-backend-service.yml"))
 			Expect(backDep.Namespace).To(Equal("flask-demo"))
 			Expect(backDep.Spec.Template.Spec.Containers).To(HaveLen(1))
 			Expect(backDep.Spec.Template.Spec.Containers[0].Image).To(ContainSubstring("cs-demo-backend-service:latest"))
 			Expect(backSvc.Namespace).To(Equal("flask-demo"))
 
-			By("Verifying ingress was created and is valid")
-			ingressPath := filepath.Join(kubernetesDir, "ingress.yml")
-			Expect(ingressPath).To(BeAnExistingFile())
-			content, err = os.ReadFile(ingressPath)
-			Expect(err).NotTo(HaveOccurred())
-			ingress := unmarshalIngress(content)
+			By("Verifying ingress")
+			ingress := readAndValidateIngress(filepath.Join(kubernetesDir, "ingress.yml"))
 			Expect(ingress.Namespace).To(Equal("flask-demo"))
 			Expect(ingress.Spec.Rules).To(HaveLen(1))
 			Expect(ingress.Spec.Rules[0].Host).To(Equal("flask-demo.local"))
@@ -483,64 +442,39 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 		})
 
 		It("should generate Kubernetes artifacts with custom ingress class", func() {
-			By("Running generate kubernetes with custom ingress class")
-			output := intutil.RunCommand(
-				"generate", "kubernetes",
-				"--reporoot", tempDir,
-				"-r", "docker.io/myorg",
-				"-i", "ci.yml",
-				"-o", "export",
+			output := generateKubernetes(tempDir,
+				"docker.io/myorg", "ci.yml", "export",
 				"-n", "production",
 				"--hostname", "myapp.example.com",
 				"--ingressClass", "traefik",
 			)
-			fmt.Printf("Generate kubernetes with traefik output: %s\n", output)
-
 			Expect(output).To(ContainSubstring("Kubernetes artifacts export successful"))
 
-			By("Verifying ingress uses traefik class")
-			ingressPath := filepath.Join(tempDir, "export", "kubernetes", "ingress.yml")
-			content, err := os.ReadFile(ingressPath)
-			Expect(err).NotTo(HaveOccurred())
-			ingress := unmarshalIngress(content)
+			ingress := readAndValidateIngress(filepath.Join(tempDir, "export", "kubernetes", "ingress.yml"))
 			Expect(*ingress.Spec.IngressClassName).To(Equal("traefik"))
 		})
 
 		It("should generate Kubernetes artifacts with pull secret", func() {
-			By("Running generate kubernetes with pull secret")
-			output := intutil.RunCommand(
-				"generate", "kubernetes",
-				"--reporoot", tempDir,
-				"-r", "private-registry.io/myorg",
-				"-i", "ci.yml",
-				"-o", "export",
+			output := generateKubernetes(tempDir,
+				"private-registry.io/myorg", "ci.yml", "export",
 				"-n", "staging",
 				"--hostname", "staging.myapp.com",
 				"--pullsecret", "my-registry-secret",
 			)
-			fmt.Printf("Generate kubernetes with pull secret output: %s\n", output)
-
 			Expect(output).To(ContainSubstring("Kubernetes artifacts export successful"))
 
-			By("Verifying deployment includes pull secret")
-			frontendServicePath := filepath.Join(tempDir, "export", "kubernetes", "service-frontend-service.yml")
-			content, err := os.ReadFile(frontendServicePath)
-			Expect(err).NotTo(HaveOccurred())
-			dep, _ := validateServiceFile(content)
+			dep, _ := readAndValidateServiceFile(filepath.Join(tempDir, "export", "kubernetes", "service-frontend-service.yml"))
 			Expect(dep.Spec.Template.Spec.ImagePullSecrets).To(HaveLen(1))
 			Expect(dep.Spec.Template.Spec.ImagePullSecrets[0].Name).To(Equal("my-registry-secret"))
 		})
 
 		It("should fail when registry is not provided", func() {
-			By("Running generate kubernetes without registry")
 			output, exitCode := intutil.RunCommandWithExitCode(
 				"generate", "kubernetes",
 				"--reporoot", tempDir,
 				"-i", "ci.yml",
 				"-o", "export",
 			)
-			fmt.Printf("Generate kubernetes without registry output: %s (exit code: %d)\n", output, exitCode)
-
 			Expect(exitCode).NotTo(Equal(0))
 			Expect(output).To(ContainSubstring("registry is required"))
 		})
@@ -548,31 +482,18 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 
 	Context("Generate Images Command", func() {
 		BeforeEach(func() {
-			By("Creating ci.yml and generating docker artifacts first")
-			ciYmlPath := filepath.Join(tempDir, "ci.yml")
-			err := os.WriteFile(ciYmlPath, []byte(simpleCiYml), 0644)
-			Expect(err).NotTo(HaveOccurred())
-
-			output := intutil.RunCommand(
-				"generate", "docker",
-				"--reporoot", tempDir,
-				"-b", "ubuntu:latest",
-				"-i", "ci.yml",
-				"-o", "export",
-			)
+			writeCiYml(tempDir, "ci.yml", simpleCiYml)
+			output := generateDocker(tempDir, "ubuntu:latest", "ci.yml", "export")
 			Expect(output).To(ContainSubstring("docker artifacts created"))
 		})
 
 		It("should fail when registry is not provided for generate images", func() {
-			By("Running generate images without registry")
 			output, exitCode := intutil.RunCommandWithExitCode(
 				"generate", "images",
 				"--reporoot", tempDir,
 				"-i", "ci.yml",
 				"-o", "export",
 			)
-			fmt.Printf("Generate images without registry output: %s (exit code: %d)\n", output, exitCode)
-
 			Expect(exitCode).NotTo(Equal(0))
 			Expect(output).To(ContainSubstring("registry is required"))
 		})
@@ -580,42 +501,21 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 
 	Context("Full Export Workflow", func() {
 		It("should complete the full export workflow from ci.yml to Kubernetes artifacts", func() {
-			By("Step 1: Creating ci.yml with multi-service application")
-			ciYmlPath := filepath.Join(tempDir, "ci.yml")
-			err := os.WriteFile(ciYmlPath, []byte(flaskDemoCiYml), 0644)
-			Expect(err).NotTo(HaveOccurred())
+			writeCiYml(tempDir, "ci.yml", flaskDemoCiYml)
 
-			By("Step 2: Generate Docker artifacts")
-			dockerOutput := intutil.RunCommand(
-				"generate", "docker",
-				"--reporoot", tempDir,
-				"-b", "ubuntu:latest",
-				"-i", "ci.yml",
-				"-o", "export",
-			)
-			fmt.Printf("Docker generation output: %s\n", dockerOutput)
+			By("Generating Docker and Kubernetes artifacts")
+			dockerOutput := generateDocker(tempDir, "ubuntu:latest", "ci.yml", "export")
 			Expect(dockerOutput).To(ContainSubstring("docker artifacts created"))
 
-			// Verify Docker artifacts
-			Expect(filepath.Join(tempDir, "export", "frontend-service", "Dockerfile")).To(BeAnExistingFile())
-			Expect(filepath.Join(tempDir, "export", "backend-service", "Dockerfile")).To(BeAnExistingFile())
-			Expect(filepath.Join(tempDir, "export", "docker-compose.yml")).To(BeAnExistingFile())
-
-			By("Step 3: Generate Kubernetes artifacts")
-			k8sOutput := intutil.RunCommand(
-				"generate", "kubernetes",
-				"--reporoot", tempDir,
-				"-r", "ghcr.io/codesphere-cloud/flask-demo",
+			k8sOutput := generateKubernetes(tempDir,
+				"ghcr.io/codesphere-cloud/flask-demo", "ci.yml", "export",
 				"-p", "cs-demo",
-				"-i", "ci.yml",
-				"-o", "export",
 				"-n", "flask-demo-ns",
 				"--hostname", "colima-cluster",
 			)
-			fmt.Printf("Kubernetes generation output: %s\n", k8sOutput)
 			Expect(k8sOutput).To(ContainSubstring("Kubernetes artifacts export successful"))
 
-			By("Step 4: Verify all expected files exist")
+			By("Verifying all expected files exist")
 			expectedFiles := []string{
 				"export/frontend-service/Dockerfile",
 				"export/frontend-service/entrypoint.sh",
@@ -628,36 +528,23 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 				"export/kubernetes/service-backend-service.yml",
 				"export/kubernetes/ingress.yml",
 			}
-
 			for _, file := range expectedFiles {
-				fullPath := filepath.Join(tempDir, file)
-				Expect(fullPath).To(BeAnExistingFile(), fmt.Sprintf("Expected file %s to exist", file))
+				Expect(filepath.Join(tempDir, file)).To(BeAnExistingFile(), fmt.Sprintf("Expected file %s to exist", file))
 			}
 
-			By("Step 5: Validate generated Dockerfiles and shell scripts")
+			By("Validating Docker artifacts")
 			for _, svc := range []string{"frontend-service", "backend-service"} {
-				df, err := os.ReadFile(filepath.Join(tempDir, "export", svc, "Dockerfile"))
-				Expect(err).NotTo(HaveOccurred())
-				validateDockerfile(string(df))
-
-				ep, err := os.ReadFile(filepath.Join(tempDir, "export", svc, "entrypoint.sh"))
-				Expect(err).NotTo(HaveOccurred())
-				validateShellScript(string(ep))
+				validateDockerfile(string(readFileContent(filepath.Join(tempDir, "export", svc, "Dockerfile"))))
+				validateShellScript(string(readFileContent(filepath.Join(tempDir, "export", svc, "entrypoint.sh"))))
 			}
-			dc, err := os.ReadFile(filepath.Join(tempDir, "export", "docker-compose.yml"))
-			Expect(err).NotTo(HaveOccurred())
-			validateDockerCompose(dc)
+			validateDockerCompose(readFileContent(filepath.Join(tempDir, "export", "docker-compose.yml")))
 
-			By("Step 6: Verify Kubernetes manifests by unmarshalling into typed structs")
+			By("Validating Kubernetes manifests")
 			kubernetesDir := filepath.Join(tempDir, "export", "kubernetes")
 
-			// Validate ingress
-			ingressContent, err := os.ReadFile(filepath.Join(kubernetesDir, "ingress.yml"))
-			Expect(err).NotTo(HaveOccurred())
-			ingress := unmarshalIngress(ingressContent)
+			ingress := readAndValidateIngress(filepath.Join(kubernetesDir, "ingress.yml"))
 			Expect(ingress.Spec.Rules).To(HaveLen(1))
 			Expect(ingress.Spec.Rules[0].Host).To(Equal("colima-cluster"))
-			// Verify all paths are present in the ingress
 			ingressPaths := ingress.Spec.Rules[0].HTTP.Paths
 			pathStrings := make([]string, len(ingressPaths))
 			for i, p := range ingressPaths {
@@ -665,197 +552,103 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 			}
 			Expect(pathStrings).To(ContainElements("/", "/api"))
 
-			// Validate frontend service
-			frontendContent, err := os.ReadFile(filepath.Join(kubernetesDir, "service-frontend-service.yml"))
-			Expect(err).NotTo(HaveOccurred())
-			frontDep, _ := validateServiceFile(frontendContent)
+			frontDep, _ := readAndValidateServiceFile(filepath.Join(kubernetesDir, "service-frontend-service.yml"))
 			Expect(frontDep.Spec.Template.Spec.Containers[0].Image).To(Equal("ghcr.io/codesphere-cloud/flask-demo/cs-demo-frontend-service:latest"))
 
-			// Validate backend service
-			backendContent, err := os.ReadFile(filepath.Join(kubernetesDir, "service-backend-service.yml"))
-			Expect(err).NotTo(HaveOccurred())
-			backDep, _ := validateServiceFile(backendContent)
+			backDep, _ := readAndValidateServiceFile(filepath.Join(kubernetesDir, "service-backend-service.yml"))
 			Expect(backDep.Spec.Template.Spec.Containers[0].Image).To(Equal("ghcr.io/codesphere-cloud/flask-demo/cs-demo-backend-service:latest"))
 		})
 
 		It("should handle different ci.yml profiles", func() {
-			By("Creating multiple ci.yml profiles")
-			// Dev profile
 			devCiYml := strings.Replace(simpleCiYml, "npm start", "npm run dev", 1)
-			err := os.WriteFile(filepath.Join(tempDir, "ci.dev.yml"), []byte(devCiYml), 0644)
-			Expect(err).NotTo(HaveOccurred())
+			writeCiYml(tempDir, "ci.dev.yml", devCiYml)
 
-			// Prod profile
 			prodCiYml := strings.Replace(simpleCiYml, "npm start", "npm run prod", 1)
-			err = os.WriteFile(filepath.Join(tempDir, "ci.prod.yml"), []byte(prodCiYml), 0644)
-			Expect(err).NotTo(HaveOccurred())
+			writeCiYml(tempDir, "ci.prod.yml", prodCiYml)
 
-			By("Generating Docker artifacts for dev profile")
-			devDockerOutput := intutil.RunCommand(
-				"generate", "docker",
-				"--reporoot", tempDir,
-				"-b", "node:18",
-				"-i", "ci.dev.yml",
-				"-o", "export-dev",
-			)
-			Expect(devDockerOutput).To(ContainSubstring("docker artifacts created"))
+			devOutput := generateDocker(tempDir, "node:18", "ci.dev.yml", "export-dev")
+			Expect(devOutput).To(ContainSubstring("docker artifacts created"))
 
-			By("Generating Docker artifacts for prod profile")
-			prodDockerOutput := intutil.RunCommand(
-				"generate", "docker",
-				"--reporoot", tempDir,
-				"-b", "node:18-alpine",
-				"-i", "ci.prod.yml",
-				"-o", "export-prod",
-			)
-			Expect(prodDockerOutput).To(ContainSubstring("docker artifacts created"))
+			prodOutput := generateDocker(tempDir, "node:18-alpine", "ci.prod.yml", "export-prod")
+			Expect(prodOutput).To(ContainSubstring("docker artifacts created"))
 
 			By("Verifying dev and prod have different configurations")
-			devEntrypoint, err := os.ReadFile(filepath.Join(tempDir, "export-dev", "web", "entrypoint.sh"))
-			Expect(err).NotTo(HaveOccurred())
-			Expect(string(devEntrypoint)).To(ContainSubstring("npm run dev"))
-			validateShellScript(string(devEntrypoint))
+			for _, tc := range []struct {
+				exportDir string
+				entryCmd  string
+				baseImage string
+			}{
+				{"export-dev", "npm run dev", "FROM node:18"},
+				{"export-prod", "npm run prod", "FROM node:18-alpine"},
+			} {
+				ep := string(readFileContent(filepath.Join(tempDir, tc.exportDir, "web", "entrypoint.sh")))
+				validateShellScript(ep)
+				Expect(ep).To(ContainSubstring(tc.entryCmd))
 
-			prodEntrypoint, err := os.ReadFile(filepath.Join(tempDir, "export-prod", "web", "entrypoint.sh"))
-			Expect(err).NotTo(HaveOccurred())
-			Expect(string(prodEntrypoint)).To(ContainSubstring("npm run prod"))
-			validateShellScript(string(prodEntrypoint))
-
-			devDockerfile, err := os.ReadFile(filepath.Join(tempDir, "export-dev", "web", "Dockerfile"))
-			Expect(err).NotTo(HaveOccurred())
-			Expect(string(devDockerfile)).To(ContainSubstring("FROM node:18"))
-			validateDockerfile(string(devDockerfile))
-
-			prodDockerfile, err := os.ReadFile(filepath.Join(tempDir, "export-prod", "web", "Dockerfile"))
-			Expect(err).NotTo(HaveOccurred())
-			Expect(string(prodDockerfile)).To(ContainSubstring("FROM node:18-alpine"))
-			validateDockerfile(string(prodDockerfile))
+				df := string(readFileContent(filepath.Join(tempDir, tc.exportDir, "web", "Dockerfile")))
+				validateDockerfile(df)
+				Expect(df).To(ContainSubstring(tc.baseImage))
+			}
 		})
 	})
 
 	Context("Legacy ci.yml Format Support", func() {
 		It("should handle legacy ci.yml with path directly in network", func() {
-			By("Creating legacy format ci.yml")
-			ciYmlPath := filepath.Join(tempDir, "ci.yml")
-			err := os.WriteFile(ciYmlPath, []byte(legacyCiYml), 0644)
-			Expect(err).NotTo(HaveOccurred())
+			writeCiYml(tempDir, "ci.yml", legacyCiYml)
 
-			By("Generating Docker artifacts")
-			dockerOutput := intutil.RunCommand(
-				"generate", "docker",
-				"--reporoot", tempDir,
-				"-b", "ubuntu:latest",
-				"-i", "ci.yml",
-				"-o", "export",
-			)
-			fmt.Printf("Legacy Docker generation output: %s\n", dockerOutput)
+			dockerOutput := generateDocker(tempDir, "ubuntu:latest", "ci.yml", "export")
 			Expect(dockerOutput).To(ContainSubstring("docker artifacts created"))
 
-			By("Generating Kubernetes artifacts")
-			k8sOutput := intutil.RunCommand(
-				"generate", "kubernetes",
-				"--reporoot", tempDir,
-				"-r", "docker.io/myorg",
-				"-i", "ci.yml",
-				"-o", "export",
+			k8sOutput := generateKubernetes(tempDir,
+				"docker.io/myorg", "ci.yml", "export",
 				"-n", "legacy-app",
 				"--hostname", "legacy.local",
 			)
-			fmt.Printf("Legacy Kubernetes generation output: %s\n", k8sOutput)
 			Expect(k8sOutput).To(ContainSubstring("Kubernetes artifacts export successful"))
 
-			By("Verifying artifacts were created and are valid")
-			appDockerfile := filepath.Join(tempDir, "export", "app", "Dockerfile")
-			Expect(appDockerfile).To(BeAnExistingFile())
-			dfContent, err := os.ReadFile(appDockerfile)
-			Expect(err).NotTo(HaveOccurred())
-			validateDockerfile(string(dfContent))
-
-			serviceFilePath := filepath.Join(tempDir, "export", "kubernetes", "service-app.yml")
-			Expect(serviceFilePath).To(BeAnExistingFile())
-			serviceContent, err := os.ReadFile(serviceFilePath)
-			Expect(err).NotTo(HaveOccurred())
-			validateServiceFile(serviceContent)
-
-			ingressFilePath := filepath.Join(tempDir, "export", "kubernetes", "ingress.yml")
-			Expect(ingressFilePath).To(BeAnExistingFile())
-			ingressContent, err := os.ReadFile(ingressFilePath)
-			Expect(err).NotTo(HaveOccurred())
-			unmarshalIngress(ingressContent)
+			By("Verifying artifacts are valid")
+			validateDockerfile(string(readFileContent(filepath.Join(tempDir, "export", "app", "Dockerfile"))))
+			readAndValidateServiceFile(filepath.Join(tempDir, "export", "kubernetes", "service-app.yml"))
+			readAndValidateIngress(filepath.Join(tempDir, "export", "kubernetes", "ingress.yml"))
 		})
 	})
 
 	Context("Environment Variables in Docker Artifacts", func() {
 		It("should include environment variables in generated artifacts", func() {
-			By("Creating ci.yml")
-			ciYmlPath := filepath.Join(tempDir, "ci.yml")
-			err := os.WriteFile(ciYmlPath, []byte(simpleCiYml), 0644)
-			Expect(err).NotTo(HaveOccurred())
+			writeCiYml(tempDir, "ci.yml", simpleCiYml)
 
-			By("Generating Docker artifacts with environment variables")
-			output := intutil.RunCommand(
-				"generate", "docker",
-				"--reporoot", tempDir,
-				"-b", "node:18",
-				"-i", "ci.yml",
-				"-o", "export",
+			output := generateDocker(tempDir, "node:18", "ci.yml", "export",
 				"-e", "NODE_ENV=production",
 				"-e", "API_URL=https://api.example.com",
 			)
-			fmt.Printf("Docker generation with envs output: %s\n", output)
 			Expect(output).To(ContainSubstring("docker artifacts created"))
 
-			By("Verifying docker-compose contains environment variables")
-			dockerCompose, err := os.ReadFile(filepath.Join(tempDir, "export", "docker-compose.yml"))
-			Expect(err).NotTo(HaveOccurred())
-			content := string(dockerCompose)
-			Expect(content).To(ContainSubstring("NODE_ENV"))
-			Expect(content).To(ContainSubstring("API_URL"))
-			validateDockerCompose(dockerCompose)
+			dc := readFileContent(filepath.Join(tempDir, "export", "docker-compose.yml"))
+			Expect(string(dc)).To(ContainSubstring("NODE_ENV"))
+			Expect(string(dc)).To(ContainSubstring("API_URL"))
+			validateDockerCompose(dc)
 		})
 	})
 
 	Context("Force Overwrite Behavior", func() {
 		It("should overwrite existing files when --force is specified", func() {
-			By("Creating ci.yml")
-			ciYmlPath := filepath.Join(tempDir, "ci.yml")
-			err := os.WriteFile(ciYmlPath, []byte(simpleCiYml), 0644)
-			Expect(err).NotTo(HaveOccurred())
+			writeCiYml(tempDir, "ci.yml", simpleCiYml)
 
-			By("First generation")
-			output := intutil.RunCommand(
-				"generate", "docker",
-				"--reporoot", tempDir,
-				"-b", "ubuntu:latest",
-				"-i", "ci.yml",
-				"-o", "export",
-			)
+			output := generateDocker(tempDir, "ubuntu:latest", "ci.yml", "export")
 			Expect(output).To(ContainSubstring("docker artifacts created"))
 
-			By("Second generation with --force")
-			output = intutil.RunCommand(
-				"generate", "docker",
-				"--reporoot", tempDir,
-				"-b", "alpine:latest",
-				"-i", "ci.yml",
-				"-o", "export",
-				"--force",
-			)
+			output = generateDocker(tempDir, "alpine:latest", "ci.yml", "export", "--force")
 			Expect(output).To(ContainSubstring("docker artifacts created"))
 
-			By("Verifying files were overwritten with new base image")
-			dockerfile, err := os.ReadFile(filepath.Join(tempDir, "export", "web", "Dockerfile"))
-			Expect(err).NotTo(HaveOccurred())
-			Expect(string(dockerfile)).To(ContainSubstring("FROM alpine:latest"))
-			validateDockerfile(string(dockerfile))
+			df := string(readFileContent(filepath.Join(tempDir, "export", "web", "Dockerfile")))
+			Expect(df).To(ContainSubstring("FROM alpine:latest"))
+			validateDockerfile(df)
 		})
 	})
 
 	Context("Generate Command Help", func() {
 		It("should display help for generate docker command", func() {
 			output := intutil.RunCommand("generate", "docker", "--help")
-			fmt.Printf("Generate docker help: %s\n", output)
-
 			Expect(output).To(ContainSubstring("generated artifacts"))
 			Expect(output).To(ContainSubstring("-b, --baseimage"))
 			Expect(output).To(ContainSubstring("-i, --input"))
@@ -864,8 +657,6 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 
 		It("should display help for generate kubernetes command", func() {
 			output := intutil.RunCommand("generate", "kubernetes", "--help")
-			fmt.Printf("Generate kubernetes help: %s\n", output)
-
 			Expect(output).To(ContainSubstring("generated artifacts"))
 			Expect(output).To(ContainSubstring("-r, --registry"))
 			Expect(output).To(ContainSubstring("-p, --imagePrefix"))
@@ -877,8 +668,6 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 
 		It("should display help for generate images command", func() {
 			output := intutil.RunCommand("generate", "images", "--help")
-			fmt.Printf("Generate images help: %s\n", output)
-
 			Expect(output).To(ContainSubstring("generated images will be pushed"))
 			Expect(output).To(ContainSubstring("-r, --registry"))
 			Expect(output).To(ContainSubstring("-p, --imagePrefix"))

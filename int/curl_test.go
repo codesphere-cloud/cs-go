@@ -5,6 +5,7 @@ package int_test
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"time"
 
@@ -42,7 +43,7 @@ var _ = Describe("Curl Workspace Integration Tests", Label("curl"), func() {
 				"-p", "8",
 				"--timeout", "15m",
 			)
-			fmt.Printf("Create workspace output: %s\n", output)
+			log.Printf("Create workspace output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("Workspace created"))
 			workspaceId = intutil.ExtractWorkspaceId(output)
@@ -59,7 +60,7 @@ var _ = Describe("Curl Workspace Integration Tests", Label("curl"), func() {
 				"-w", workspaceId,
 				"--", "-k", "-s", "-o", "/dev/null", "-w", "%{http_code}",
 			)
-			fmt.Printf("Curl workspace output: %s\n", output)
+			log.Printf("Curl workspace output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("Sending request to workspace"))
 			Expect(output).To(ContainSubstring(workspaceId))
@@ -72,7 +73,7 @@ var _ = Describe("Curl Workspace Integration Tests", Label("curl"), func() {
 				"-w", workspaceId,
 				"--", "-k", "-s", "-o", "/dev/null", "-w", "%{http_code}",
 			)
-			fmt.Printf("Curl with custom path output: %s (exit code: %d)\n", output, exitCode)
+			log.Printf("Curl with custom path output: %s (exit code: %d)\n", output, exitCode)
 
 			Expect(output).To(ContainSubstring("Sending request to workspace"))
 		})
@@ -84,7 +85,7 @@ var _ = Describe("Curl Workspace Integration Tests", Label("curl"), func() {
 				"-w", workspaceId,
 				"--", "-k", "-I",
 			)
-			fmt.Printf("Curl with -I flag output: %s\n", output)
+			log.Printf("Curl with -I flag output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("Sending request to workspace"))
 		})
@@ -100,7 +101,7 @@ var _ = Describe("Curl Workspace Integration Tests", Label("curl"), func() {
 				"curl", "/",
 				"--", "-k", "-s", "-o", "/dev/null", "-w", "%{http_code}",
 			)
-			fmt.Printf("Curl with env var output: %s\n", output)
+			log.Printf("Curl with env var output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("Sending request to workspace"))
 			Expect(output).To(ContainSubstring(workspaceId))
@@ -120,7 +121,7 @@ var _ = Describe("Curl Workspace Integration Tests", Label("curl"), func() {
 			}()
 
 			output, exitCode := intutil.RunCommandWithExitCode("curl", "/")
-			fmt.Printf("Curl without workspace ID output: %s (exit code: %d)\n", output, exitCode)
+			log.Printf("Curl without workspace ID output: %s (exit code: %d)\n", output, exitCode)
 
 			Expect(exitCode).NotTo(Equal(0))
 			Expect(output).To(Or(
@@ -136,7 +137,7 @@ var _ = Describe("Curl Workspace Integration Tests", Label("curl"), func() {
 				"curl", "/",
 				"-w", "99999999",
 			)
-			fmt.Printf("Curl non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
+			log.Printf("Curl non-existent workspace output: %s (exit code: %d)\n", output, exitCode)
 
 			Expect(exitCode).NotTo(Equal(0))
 			Expect(output).To(Or(
@@ -152,7 +153,7 @@ var _ = Describe("Curl Workspace Integration Tests", Label("curl"), func() {
 				"curl",
 				"-w", "1234",
 			)
-			fmt.Printf("Curl without path output: %s (exit code: %d)\n", output, exitCode)
+			log.Printf("Curl without path output: %s (exit code: %d)\n", output, exitCode)
 
 			Expect(exitCode).NotTo(Equal(0))
 			Expect(output).To(Or(
@@ -167,7 +168,7 @@ var _ = Describe("Curl Workspace Integration Tests", Label("curl"), func() {
 		It("should display help information", func() {
 			By("Running curl --help")
 			output := intutil.RunCommand("curl", "--help")
-			fmt.Printf("Curl help output: %s\n", output)
+			log.Printf("Curl help output: %s\n", output)
 
 			Expect(output).To(ContainSubstring("Send authenticated HTTP requests"))
 			Expect(output).To(ContainSubstring("--timeout"))
