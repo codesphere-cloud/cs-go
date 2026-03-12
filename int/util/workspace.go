@@ -5,6 +5,7 @@ package util
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -13,7 +14,31 @@ import (
 	"time"
 
 	"github.com/codesphere-cloud/cs-go/api"
+	ginkgo "github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 )
+
+// CreateTestWorkspace creates a workspace with standard settings and returns the workspace ID.
+// It fails the test if creation fails or no workspace ID is returned.
+func CreateTestWorkspace(teamId, workspaceName string) string {
+	ginkgo.GinkgoHelper()
+	output := RunCommand(
+		"create", "workspace", workspaceName,
+		"-t", teamId,
+		"-p", DefaultPlanId,
+		"--timeout", DefaultCreateTimeout,
+	)
+	log.Printf("Create workspace output: %s\n", output)
+	gomega.Expect(output).To(gomega.ContainSubstring(WorkspaceCreatedOutput))
+	workspaceId := ExtractWorkspaceId(output)
+	gomega.Expect(workspaceId).NotTo(gomega.BeEmpty())
+	return workspaceId
+}
+
+// NewWorkspaceName generates a unique workspace name with the given prefix.
+func NewWorkspaceName(prefix string) string {
+	return fmt.Sprintf("cli-%s-test-%d", prefix, time.Now().Unix())
+}
 
 func CheckBillingStatus(teamId string) (bool, string) {
 	testName := "billing-check-temp"
@@ -125,15 +150,6 @@ func ExtractTeamId(output string) string {
 	}
 
 	return ""
-}
-
-func ContainsAny(s string, substrings []string) bool {
-	for _, substring := range substrings {
-		if strings.Contains(s, substring) {
-			return true
-		}
-	}
-	return false
 }
 
 func CleanupTeam(teamId string) {
