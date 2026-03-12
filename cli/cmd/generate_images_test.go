@@ -5,7 +5,6 @@ package cmd_test
 
 import (
 	"context"
-	"path"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -75,8 +74,7 @@ var _ = Describe("GenerateImages", func() {
 				Expect(err).To(Not(HaveOccurred()))
 			})
 			It("should not return an error", func() {
-				ciYmlPath := path.Join(c.Opts.RepoRoot, "ci.dev.yml")
-				mockExporter.EXPECT().ReadYmlFile(ciYmlPath).Return(&ci.CiYml{}, nil)
+				mockExporter.EXPECT().ReadYmlFile("ci.dev.yml").Return(&ci.CiYml{}, nil)
 				mockExporter.EXPECT().ExportImages(context.Background(), "my-registry.com", "").Return(nil)
 				err := c.GenerateImages(memoryFs, mockExporter)
 				Expect(err).To(Not(HaveOccurred()))

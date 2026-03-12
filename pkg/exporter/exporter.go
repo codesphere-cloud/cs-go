@@ -58,13 +58,11 @@ func (e *ExporterService) ReadYmlFile(path string) (*ci.CiYml, error) {
 }
 
 func (e *ExporterService) GetExportDir() string {
-	return filepath.Join(e.repoRoot, e.outputPath)
-
+	return e.outputPath
 }
 
 func (e *ExporterService) GetKubernetesDir() string {
-	return filepath.Join(e.repoRoot, e.outputPath, "kubernetes")
-
+	return filepath.Join(e.outputPath, "kubernetes")
 }
 
 // ExportDockerArtifacts exports Docker artifacts based on the provided input path, output path, base image, and environment variables.
@@ -90,9 +88,6 @@ func (e *ExporterService) ExportDockerArtifacts() error {
 		if err != nil {
 			return fmt.Errorf("error creating dockerfile for service %s: %w", serviceName, err)
 		}
-		log.Println(e.outputPath)
-		log.Println(e.GetExportDir())
-		log.Println(filepath.Join(e.GetExportDir(), serviceName))
 		err = e.fs.WriteFile(filepath.Join(e.GetExportDir(), serviceName), "Dockerfile", dockerfile, e.force)
 		if err != nil {
 			return fmt.Errorf("error writing dockerfile for service %s: %w", serviceName, err)
@@ -239,7 +234,6 @@ func (e *ExporterService) ExportImages(ctx context.Context, registry string, ima
 // CreateImageTag creates a Docker image tag from the registry, image prefix and service name.
 // It returns the full image tag in the format: <registry>/<imagePrefix>-<serviceName>:latest.
 func (e *ExporterService) CreateImageTag(registry string, imagePrefix string, serviceName string) (string, error) {
-	log.Println(imagePrefix)
 	if imagePrefix == "" {
 		tag, err := url.JoinPath(registry, fmt.Sprintf("%s:latest", serviceName))
 		if err != nil {

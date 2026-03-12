@@ -31,7 +31,7 @@ type GenerateKubernetesOpts struct {
 }
 
 func (c *GenerateKubernetesCmd) RunE(_ *cobra.Command, args []string) error {
-	fs := cs.NewOSFileSystem(".")
+	fs := cs.NewOSFileSystem(c.Opts.RepoRoot)
 
 	exporter := exporter.NewExporterService(fs, c.Opts.Output, "", []string{}, c.Opts.RepoRoot, c.Opts.Force)
 	if err := c.GenerateKubernetes(fs, exporter); err != nil {
@@ -88,7 +88,7 @@ func AddGenerateKubernetesCmd(generate *cobra.Command, opts *GenerateOpts) {
 }
 
 func (c *GenerateKubernetesCmd) GenerateKubernetes(fs *cs.FileSystem, exp exporter.Exporter) error {
-	ciInput := path.Join(c.Opts.RepoRoot, c.Opts.Input)
+	ciInput := c.Opts.Input
 	if c.Opts.Registry == "" {
 		return errors.New("registry is required")
 	}

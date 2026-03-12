@@ -4,8 +4,6 @@
 package cmd_test
 
 import (
-	"path"
-
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/stretchr/testify/mock"
@@ -61,7 +59,6 @@ var _ = Describe("GenerateKubernetes", func() {
 	})
 
 	Context("A new input file and registry is provided", func() {
-		var ciYmlPath string
 		BeforeEach(func() {
 			c.Opts.Registry = "my-registry.com"
 		})
@@ -71,8 +68,7 @@ var _ = Describe("GenerateKubernetes", func() {
 				Expect(err).To(Not(HaveOccurred()))
 			})
 			It("should not return an error", func() {
-				ciYmlPath = path.Join(c.Opts.RepoRoot, "ci.dev.yml")
-				mockExporter.EXPECT().ReadYmlFile(ciYmlPath).Return(&ci.CiYml{}, nil)
+				mockExporter.EXPECT().ReadYmlFile("ci.dev.yml").Return(&ci.CiYml{}, nil)
 				mockExporter.EXPECT().ExportKubernetesArtifacts("my-registry.com", "", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(nil)
 				err := c.GenerateKubernetes(memoryFs, mockExporter)
 				Expect(err).To(Not(HaveOccurred()))
