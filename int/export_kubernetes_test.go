@@ -172,9 +172,10 @@ func validateServiceFile(content []byte) (*apps.Deployment, *core.Service) {
 	return unmarshalDeployment(docs[0]), unmarshalService(docs[1])
 }
 
-// validateDockerfile performs basic structural validation of a Dockerfile.
-func validateDockerfile(content string) {
+// validateDockerfile reads a Dockerfile, performs structural validation, and runs hadolint if available.
+func validateDockerfile(path string) string {
 	GinkgoHelper()
+	content := string(readFileContent(path))
 	lines := strings.Split(strings.TrimSpace(content), "\n")
 	Expect(len(lines)).To(BeNumerically(">", 0), "Dockerfile should not be empty")
 
@@ -209,22 +210,29 @@ func validateDockerfile(content string) {
 		inContinuation = strings.HasSuffix(trimmed, "\\")
 	}
 	Expect(hasFrom).To(BeTrue(), "Dockerfile must contain a FROM instruction")
+	intutil.LintDockerfile(path)
+	return content
 }
 
-// validateShellScript validates that a shell script has a proper shebang and is non-empty.
-func validateShellScript(content string) {
+// validateShellScript reads a shell script, validates basic structure, and runs shellcheck if available.
+func validateShellScript(path string) string {
 	GinkgoHelper()
+	content := string(readFileContent(path))
 	Expect(content).NotTo(BeEmpty(), "Shell script should not be empty")
 	Expect(content).To(HavePrefix("#!/bin/bash"), "Shell script should start with #!/bin/bash shebang")
+	intutil.LintShellScript(path)
+	return content
 }
 
-// validateDockerCompose validates docker-compose.yml content is valid YAML with required structure.
-func validateDockerCompose(content []byte) {
+// validateDockerCompose reads a docker-compose.yml, validates it as YAML with required structure, and returns its content.
+func validateDockerCompose(path string) string {
 	GinkgoHelper()
+	content := readFileContent(path)
 	var compose map[string]interface{}
 	err := sigsyaml.Unmarshal(content, &compose)
 	Expect(err).NotTo(HaveOccurred(), "docker-compose.yml should be valid YAML")
 	Expect(compose).To(HaveKey("services"), "docker-compose.yml should have a 'services' key")
+	return string(content)
 }
 
 // writeCiYml writes content to a file in the given directory.
@@ -270,16 +278,20 @@ func generateKubernetes(tempDir, registry, input, output string, extraArgs ...st
 	return intutil.RunCommand(args...)
 }
 
-// readAndValidateServiceFile reads a K8s service YAML file and validates it.
+// readAndValidateServiceFile reads a K8s service YAML file, validates it, and runs kubeconform if available.
 func readAndValidateServiceFile(path string) (*apps.Deployment, *core.Service) {
 	GinkgoHelper()
-	return validateServiceFile(readFileContent(path))
+	dep, svc := validateServiceFile(readFileContent(path))
+	intutil.LintKubernetesManifest(path)
+	return dep, svc
 }
 
-// readAndValidateIngress reads a K8s ingress YAML file and validates it.
+// readAndValidateIngress reads a K8s ingress YAML file, validates it, and runs kubeconform if available.
 func readAndValidateIngress(path string) *networking.Ingress {
 	GinkgoHelper()
-	return unmarshalIngress(readFileContent(path))
+	ingress := unmarshalIngress(readFileContent(path))
+	intutil.LintKubernetesManifest(path)
+	return ingress
 }
 
 var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
@@ -315,23 +327,20 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 				{"frontend-service", "python app.py"},
 				{"backend-service", "python backend.py"},
 			} {
-				df := string(readFileContent(filepath.Join(tempDir, "export", tc.service, "Dockerfile")))
-				validateDockerfile(df)
+				df := validateDockerfile(filepath.Join(tempDir, "export", tc.service, "Dockerfile"))
 				if tc.service == "frontend-service" {
 					Expect(df).To(ContainSubstring("FROM ubuntu:latest"))
 					Expect(df).To(ContainSubstring("pip install"))
 				}
 
-				ep := string(readFileContent(filepath.Join(tempDir, "export", tc.service, "entrypoint.sh")))
-				validateShellScript(ep)
+				ep := validateShellScript(filepath.Join(tempDir, "export", tc.service, "entrypoint.sh"))
 				Expect(ep).To(ContainSubstring(tc.entryCmd))
 			}
 
 			By("Verifying docker-compose.yml")
-			dc := readFileContent(filepath.Join(tempDir, "export", "docker-compose.yml"))
-			Expect(string(dc)).To(ContainSubstring("frontend-service"))
-			Expect(string(dc)).To(ContainSubstring("backend-service"))
-			validateDockerCompose(dc)
+			dc := validateDockerCompose(filepath.Join(tempDir, "export", "docker-compose.yml"))
+			Expect(dc).To(ContainSubstring("frontend-service"))
+			Expect(dc).To(ContainSubstring("backend-service"))
 
 			Expect(filepath.Join(tempDir, "export", "nginx.conf")).To(BeAnExistingFile())
 		})
@@ -342,9 +351,8 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 			output := generateDocker(tempDir, "alpine:latest", "ci.yml", "export")
 			Expect(output).To(ContainSubstring("docker artifacts created"))
 
-			df := string(readFileContent(filepath.Join(tempDir, "export", "web", "Dockerfile")))
+			df := validateDockerfile(filepath.Join(tempDir, "export", "web", "Dockerfile"))
 			Expect(df).To(ContainSubstring("FROM alpine:latest"))
-			validateDockerfile(df)
 		})
 
 		It("should fail when baseimage is not provided", func() {
@@ -534,10 +542,10 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 
 			By("Validating Docker artifacts")
 			for _, svc := range []string{"frontend-service", "backend-service"} {
-				validateDockerfile(string(readFileContent(filepath.Join(tempDir, "export", svc, "Dockerfile"))))
-				validateShellScript(string(readFileContent(filepath.Join(tempDir, "export", svc, "entrypoint.sh"))))
+				validateDockerfile(filepath.Join(tempDir, "export", svc, "Dockerfile"))
+				validateShellScript(filepath.Join(tempDir, "export", svc, "entrypoint.sh"))
 			}
-			validateDockerCompose(readFileContent(filepath.Join(tempDir, "export", "docker-compose.yml")))
+			validateDockerCompose(filepath.Join(tempDir, "export", "docker-compose.yml"))
 
 			By("Validating Kubernetes manifests")
 			kubernetesDir := filepath.Join(tempDir, "export", "kubernetes")
@@ -581,12 +589,10 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 				{"export-dev", "npm run dev", "FROM node:18"},
 				{"export-prod", "npm run prod", "FROM node:18-alpine"},
 			} {
-				ep := string(readFileContent(filepath.Join(tempDir, tc.exportDir, "web", "entrypoint.sh")))
-				validateShellScript(ep)
+				ep := validateShellScript(filepath.Join(tempDir, tc.exportDir, "web", "entrypoint.sh"))
 				Expect(ep).To(ContainSubstring(tc.entryCmd))
 
-				df := string(readFileContent(filepath.Join(tempDir, tc.exportDir, "web", "Dockerfile")))
-				validateDockerfile(df)
+				df := validateDockerfile(filepath.Join(tempDir, tc.exportDir, "web", "Dockerfile"))
 				Expect(df).To(ContainSubstring(tc.baseImage))
 			}
 		})
@@ -607,7 +613,7 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 			Expect(k8sOutput).To(ContainSubstring("Kubernetes artifacts export successful"))
 
 			By("Verifying artifacts are valid")
-			validateDockerfile(string(readFileContent(filepath.Join(tempDir, "export", "app", "Dockerfile"))))
+			validateDockerfile(filepath.Join(tempDir, "export", "app", "Dockerfile"))
 			readAndValidateServiceFile(filepath.Join(tempDir, "export", "kubernetes", "service-app.yml"))
 			readAndValidateIngress(filepath.Join(tempDir, "export", "kubernetes", "ingress.yml"))
 		})
@@ -623,10 +629,9 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 			)
 			Expect(output).To(ContainSubstring("docker artifacts created"))
 
-			dc := readFileContent(filepath.Join(tempDir, "export", "docker-compose.yml"))
-			Expect(string(dc)).To(ContainSubstring("NODE_ENV"))
-			Expect(string(dc)).To(ContainSubstring("API_URL"))
-			validateDockerCompose(dc)
+			dc := validateDockerCompose(filepath.Join(tempDir, "export", "docker-compose.yml"))
+			Expect(dc).To(ContainSubstring("NODE_ENV"))
+			Expect(dc).To(ContainSubstring("API_URL"))
 		})
 	})
 
@@ -640,9 +645,8 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 			output = generateDocker(tempDir, "alpine:latest", "ci.yml", "export", "--force")
 			Expect(output).To(ContainSubstring("docker artifacts created"))
 
-			df := string(readFileContent(filepath.Join(tempDir, "export", "web", "Dockerfile")))
+			df := validateDockerfile(filepath.Join(tempDir, "export", "web", "Dockerfile"))
 			Expect(df).To(ContainSubstring("FROM alpine:latest"))
-			validateDockerfile(df)
 		})
 	})
 

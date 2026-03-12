@@ -50,6 +50,15 @@ jobs:
       - name: Make binaries executable
         run: chmod +x ./cs ./int.test
 
+      - name: Install linting tools
+        if: matrix.label == 'local'
+        run: |
+          sudo curl -sL -o /usr/local/bin/hadolint \
+            "https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64"
+          sudo chmod +x /usr/local/bin/hadolint
+          curl -sL "https://github.com/yannh/kubeconform/releases/download/v0.6.7/kubeconform-linux-amd64.tar.gz" | \
+            sudo tar xz -C /usr/local/bin
+
       - name: Run integration tests - ${{ matrix.label }}
         run: |
           mkdir -p int
