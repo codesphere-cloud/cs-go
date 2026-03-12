@@ -1,4 +1,5 @@
 name: Integration Tests
+run-name: "Integration Tests #${{ github.run_id }}"
 
 on:
   schedule:
@@ -8,7 +9,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      test-matrix: ${{ steps.labels.outputs.matrix }}
+      known-labels: ${{ steps.labels.outputs.known }}
     steps:
+      - name: Configure test labels
+        id: labels
+        run: |
+          # Add new labels here; 'unlabeled' is appended automatically for the matrix.
+          KNOWN="workspace,list,error-handling,log,pipeline,git,wakeup,curl,local"
+          echo "known=$KNOWN" >> "$GITHUB_OUTPUT"
+          echo "matrix=[\"$(echo "$KNOWN" | sed 's/,/","/g')\",\"unlabeled\"]" >> "$GITHUB_OUTPUT"
+
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Set up Go
@@ -36,7 +48,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        label: [workspace, list, error-handling, log, pipeline, git, wakeup, curl, local, unlabeled]
+        label: ${{ fromJSON(needs.build.outputs.test-matrix) }}
     env:
       CS_TOKEN: ${{ secrets.CS_TOKEN }}
       CS_API: ${{ secrets.CS_API }}
@@ -53,10 +65,12 @@ jobs:
       - name: Install linting tools
         if: matrix.label == 'local'
         run: |
+          HADOLINT_VERSION=$(curl -sL https://api.github.com/repos/hadolint/hadolint/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
           sudo curl -sL -o /usr/local/bin/hadolint \
-            "https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64"
+            "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/hadolint-Linux-x86_64"
           sudo chmod +x /usr/local/bin/hadolint
-          curl -sL "https://github.com/yannh/kubeconform/releases/download/v0.6.7/kubeconform-linux-amd64.tar.gz" | \
+          KUBECONFORM_VERSION=$(curl -sL https://api.github.com/repos/yannh/kubeconform/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
+          curl -sL "https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" | \
             sudo tar xz -C /usr/local/bin
 
       - name: Run integration tests - ${{ matrix.label }}
@@ -66,7 +80,8 @@ jobs:
           cd int
           if [ "${{ matrix.label }}" = "unlabeled" ]; then
             echo "::warning::Running tests without a known label. If tests are found here, please add a label to the Describe block."
-            ./int.test -test.v -ginkgo.label-filter='!local && !workspace && !list && !error-handling && !log && !pipeline && !git && !wakeup && !curl'
+            FILTER=$(echo "${{ needs.build.outputs.known-labels }}" | tr ',' '\n' | sed 's/^/!/' | paste -sd ' && ' -)
+            ./int.test -test.v -ginkgo.label-filter="$FILTER"
           else
             ./int.test -test.v -ginkgo.label-filter='${{ matrix.label }}'
           fi

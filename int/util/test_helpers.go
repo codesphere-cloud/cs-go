@@ -7,7 +7,6 @@ import (
 	"os"
 
 	ginkgo "github.com/onsi/ginkgo/v2"
-	"github.com/onsi/gomega"
 )
 
 func FailIfMissingEnvVars() (teamId, token string) {
@@ -36,15 +35,4 @@ func WithClearedWorkspaceEnv(fn func()) {
 		_ = os.Setenv("WORKSPACE_ID", originalWsIdFallback)
 	}()
 	fn()
-}
-
-// ExpectNonExistentWorkspaceError asserts that a command failed with a "not found" style error.
-func ExpectNonExistentWorkspaceError(output string, exitCode int) {
-	ginkgo.GinkgoHelper()
-	gomega.Expect(exitCode).NotTo(gomega.Equal(0))
-	gomega.Expect(output).To(gomega.Or(
-		gomega.ContainSubstring("failed to get workspace"),
-		gomega.ContainSubstring("not found"),
-		gomega.ContainSubstring("404"),
-	))
 }
