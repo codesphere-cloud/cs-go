@@ -1,4 +1,7 @@
 #!/bin/bash
+# Copyright (c) Codesphere Inc.
+# SPDX-License-Identifier: Apache-2.0
+
 set -euo pipefail
 
 # This script splits the current PR branch (kubernetes_integration_tests) into
