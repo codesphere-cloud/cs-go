@@ -80,7 +80,7 @@ jobs:
           cd int
           if [ "${{ matrix.label }}" = "unlabeled" ]; then
             echo "::warning::Running tests without a known label. If tests are found here, please add a label to the Describe block."
-            FILTER=$(echo "${{ needs.build.outputs.known-labels }}" | tr ',' '\n' | sed 's/^/!/' | paste -sd ' && ' -)
+            FILTER=$(echo "${{ needs.build.outputs.known-labels }}" | sed 's/[^,]*/!\0/g; s/,/ \&\& /g')
             ./int.test -test.v -ginkgo.label-filter="$FILTER"
           else
             ./int.test -test.v -ginkgo.label-filter='${{ matrix.label }}'
