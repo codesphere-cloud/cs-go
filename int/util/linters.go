@@ -4,6 +4,7 @@
 package util
 
 import (
+	"errors"
 	"fmt"
 	"os/exec"
 )
@@ -14,11 +15,13 @@ const (
 	KubeconformTool = "kubeconform"
 )
 
+var ErrToolNotFound = errors.New("tool not found on $PATH")
+
 // runLinter executes a linting tool on the file at the given path.
-// Returns an error if the tool is not found on $PATH or if linting reports issues.
+// Returns ErrToolNotFound if the tool is not on $PATH, or a lint error if the tool reports issues.
 func runLinter(tool string, args []string, path string) error {
 	if _, err := exec.LookPath(tool); err != nil {
-		return fmt.Errorf("%s not found on $PATH: %w", tool, err)
+		return fmt.Errorf("%w: %s", ErrToolNotFound, tool)
 	}
 	cmdArgs := append(args, path)
 	cmd := exec.Command(tool, cmdArgs...)

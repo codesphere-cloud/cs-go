@@ -4,6 +4,7 @@
 package util
 
 import (
+	"errors"
 	"os"
 	"path/filepath"
 	"testing"
@@ -31,10 +32,10 @@ var _ = Describe("Linters", func() {
 	})
 
 	Context("runLinter", func() {
-		It("should return an error when the tool is not found on PATH", func() {
+		It("should return ErrToolNotFound when the tool is not found on PATH", func() {
 			err := runLinter("nonexistent-tool-xyz", nil, "somefile.txt")
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(ContainSubstring("not found on $PATH"))
+			Expect(errors.Is(err, ErrToolNotFound)).To(BeTrue())
 		})
 
 		It("should return an error when the tool exits with a non-zero code", func() {
@@ -68,41 +69,38 @@ var _ = Describe("Linters", func() {
 	})
 
 	Context("LintDockerfile", func() {
-		It("should return an error when hadolint is not on PATH", func() {
+		It("should return ErrToolNotFound when hadolint is not on PATH", func() {
 			origPath := os.Getenv("PATH")
 			Expect(os.Setenv("PATH", tempDir)).To(Succeed())
 			defer func() { Expect(os.Setenv("PATH", origPath)).To(Succeed()) }()
 
 			err := LintDockerfile(filepath.Join(tempDir, "Dockerfile"))
-			Expect(err).To(HaveOccurred())
+			Expect(errors.Is(err, ErrToolNotFound)).To(BeTrue())
 			Expect(err.Error()).To(ContainSubstring(HadolintTool))
-			Expect(err.Error()).To(ContainSubstring("not found on $PATH"))
 		})
 	})
 
 	Context("LintShellScript", func() {
-		It("should return an error when shellcheck is not on PATH", func() {
+		It("should return ErrToolNotFound when shellcheck is not on PATH", func() {
 			origPath := os.Getenv("PATH")
 			Expect(os.Setenv("PATH", tempDir)).To(Succeed())
 			defer func() { Expect(os.Setenv("PATH", origPath)).To(Succeed()) }()
 
 			err := LintShellScript(filepath.Join(tempDir, "script.sh"))
-			Expect(err).To(HaveOccurred())
+			Expect(errors.Is(err, ErrToolNotFound)).To(BeTrue())
 			Expect(err.Error()).To(ContainSubstring(ShellcheckTool))
-			Expect(err.Error()).To(ContainSubstring("not found on $PATH"))
 		})
 	})
 
 	Context("LintKubernetesManifest", func() {
-		It("should return an error when kubeconform is not on PATH", func() {
+		It("should return ErrToolNotFound when kubeconform is not on PATH", func() {
 			origPath := os.Getenv("PATH")
 			Expect(os.Setenv("PATH", tempDir)).To(Succeed())
 			defer func() { Expect(os.Setenv("PATH", origPath)).To(Succeed()) }()
 
 			err := LintKubernetesManifest(filepath.Join(tempDir, "manifest.yml"))
-			Expect(err).To(HaveOccurred())
+			Expect(errors.Is(err, ErrToolNotFound)).To(BeTrue())
 			Expect(err.Error()).To(ContainSubstring(KubeconformTool))
-			Expect(err.Error()).To(ContainSubstring("not found on $PATH"))
 		})
 	})
 })

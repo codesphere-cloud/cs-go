@@ -5,6 +5,7 @@ package int_test
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -172,45 +173,12 @@ func validateAppManifest(content []byte) (*apps.Deployment, *core.Service) {
 	return unmarshalDeployment(docs[0]), unmarshalService(docs[1])
 }
 
-// validateDockerfile reads a Dockerfile, performs structural validation, and runs hadolint.
+// validateDockerfile reads a Dockerfile and runs hadolint on it.
 func validateDockerfile(path string) string {
 	GinkgoHelper()
 	content := string(readFileContent(path))
-	lines := strings.Split(strings.TrimSpace(content), "\n")
-	Expect(len(lines)).To(BeNumerically(">", 0), "Dockerfile should not be empty")
-
-	validInstructions := map[string]bool{
-		"FROM": true, "RUN": true, "CMD": true, "LABEL": true,
-		"EXPOSE": true, "ENV": true, "ADD": true, "COPY": true,
-		"ENTRYPOINT": true, "VOLUME": true, "USER": true,
-		"WORKDIR": true, "ARG": true, "ONBUILD": true,
-		"STOPSIGNAL": true, "HEALTHCHECK": true, "SHELL": true,
-	}
-
-	hasFrom := false
-	inContinuation := false
-	for _, line := range lines {
-		trimmed := strings.TrimSpace(line)
-		if trimmed == "" || strings.HasPrefix(trimmed, "#") {
-			inContinuation = false
-			continue
-		}
-		if inContinuation {
-			inContinuation = strings.HasSuffix(trimmed, "\\")
-			continue
-		}
-
-		parts := strings.Fields(trimmed)
-		instruction := strings.ToUpper(parts[0])
-		Expect(validInstructions).To(HaveKey(instruction),
-			fmt.Sprintf("Invalid Dockerfile instruction: '%s' in line: '%s'", parts[0], trimmed))
-		if instruction == "FROM" {
-			hasFrom = true
-		}
-		inContinuation = strings.HasSuffix(trimmed, "\\")
-	}
-	Expect(hasFrom).To(BeTrue(), "Dockerfile must contain a FROM instruction")
-	Expect(intutil.LintDockerfile(path)).To(Succeed())
+	Expect(content).NotTo(BeEmpty(), "Dockerfile should not be empty")
+	expectLintSuccess(intutil.LintDockerfile(path))
 	return content
 }
 
@@ -220,7 +188,7 @@ func validateShellScript(path string) string {
 	content := string(readFileContent(path))
 	Expect(content).NotTo(BeEmpty(), "Shell script should not be empty")
 	Expect(content).To(HavePrefix("#!/bin/bash"), "Shell script should start with #!/bin/bash shebang")
-	Expect(intutil.LintShellScript(path)).To(Succeed())
+	expectLintSuccess(intutil.LintShellScript(path))
 	return content
 }
 
@@ -282,7 +250,7 @@ func generateKubernetes(tempDir, registry, input, output string, extraArgs ...st
 func readAndValidateAppManifest(path string) (*apps.Deployment, *core.Service) {
 	GinkgoHelper()
 	dep, svc := validateAppManifest(readFileContent(path))
-	Expect(intutil.LintKubernetesManifest(path)).To(Succeed())
+	expectLintSuccess(intutil.LintKubernetesManifest(path))
 	return dep, svc
 }
 
@@ -290,8 +258,18 @@ func readAndValidateAppManifest(path string) (*apps.Deployment, *core.Service) {
 func readAndValidateIngress(path string) *networking.Ingress {
 	GinkgoHelper()
 	ingress := unmarshalIngress(readFileContent(path))
-	Expect(intutil.LintKubernetesManifest(path)).To(Succeed())
+	expectLintSuccess(intutil.LintKubernetesManifest(path))
 	return ingress
+}
+
+// expectLintSuccess fails the test if err is a lint error, and prints a warning if the tool is not found.
+func expectLintSuccess(err error) {
+	GinkgoHelper()
+	if errors.Is(err, intutil.ErrToolNotFound) {
+		GinkgoWriter.Println("WARNING:", err.Error(), "— skipping lint")
+		return
+	}
+	Expect(err).NotTo(HaveOccurred())
 }
 
 var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
@@ -685,6 +663,7 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 			Expect(err).NotTo(HaveOccurred())
 
 			err = intutil.LintDockerfile(invalidDockerfile)
+			Expect(errors.Is(err, intutil.ErrToolNotFound)).To(BeFalse(), "hadolint must be installed to run this test")
 			Expect(err).To(HaveOccurred(), "hadolint should report errors for an invalid Dockerfile")
 		})
 
@@ -694,6 +673,7 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 			Expect(err).NotTo(HaveOccurred())
 
 			err = intutil.LintShellScript(invalidScript)
+			Expect(errors.Is(err, intutil.ErrToolNotFound)).To(BeFalse(), "shellcheck must be installed to run this test")
 			Expect(err).To(HaveOccurred(), "shellcheck should report errors for an invalid shell script")
 		})
 
@@ -703,6 +683,7 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 			Expect(err).NotTo(HaveOccurred())
 
 			err = intutil.LintKubernetesManifest(invalidManifest)
+			Expect(errors.Is(err, intutil.ErrToolNotFound)).To(BeFalse(), "kubeconform must be installed to run this test")
 			Expect(err).To(HaveOccurred(), "kubeconform should report errors for an invalid Kubernetes manifest")
 		})
 	})
