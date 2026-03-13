@@ -26,19 +26,7 @@ var _ = AfterSuite(func() {
 
 	GinkgoWriter.Println("Running global cleanup for any orphaned test workspaces...")
 
-	prefixes := []string{
-		"cli-git-test-",
-		"cli-pipeline-test-",
-		"cli-log-test-",
-		"cli-open-test-",
-		"cli-setenv-test-",
-		"cli-edge-test-",
-		"cli-very-long-workspace-name-test-",
-		"cli-wakeup-test-",
-		"cli-curl-test-",
-	}
-
-	for _, prefix := range prefixes {
+	for _, prefix := range intutil.WorkspaceNamePrefixes {
 		intutil.CleanupAllWorkspacesInTeam(teamId, prefix)
 	}
 

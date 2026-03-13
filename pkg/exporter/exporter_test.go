@@ -71,20 +71,20 @@ var _ = Describe("GenerateDockerfile", func() {
 				err = e.ExportDockerArtifacts()
 				Expect(err).To(Not(HaveOccurred()))
 
-				Expect(memoryFs.DirExists("workspace-repo/export")).To(BeTrue())
-				Expect(memoryFs.FileExists("workspace-repo/export/docker-compose.yml")).To(BeTrue())
+				Expect(memoryFs.DirExists("./export")).To(BeTrue())
+				Expect(memoryFs.FileExists("./export/docker-compose.yml")).To(BeTrue())
 
-				Expect(memoryFs.DirExists("workspace-repo/export/frontend")).To(BeTrue())
-				Expect(memoryFs.FileExists("workspace-repo/export/frontend/Dockerfile")).To(BeTrue())
-				Expect(memoryFs.FileExists("workspace-repo/export/frontend/entrypoint.sh")).To(BeTrue())
+				Expect(memoryFs.DirExists("./export/frontend")).To(BeTrue())
+				Expect(memoryFs.FileExists("./export/frontend/Dockerfile")).To(BeTrue())
+				Expect(memoryFs.FileExists("./export/frontend/entrypoint.sh")).To(BeTrue())
 
 				err = e.ExportKubernetesArtifacts("registry", "image", mock.Anything, mock.Anything, mock.Anything, mock.Anything)
 				Expect(err).To(Not(HaveOccurred()))
 
-				Expect(memoryFs.DirExists("workspace-repo/export/kubernetes")).To(BeTrue())
-				Expect(memoryFs.FileExists("workspace-repo/export/kubernetes/ingress.yml")).To(BeTrue())
+				Expect(memoryFs.DirExists("./export/kubernetes")).To(BeTrue())
+				Expect(memoryFs.FileExists("./export/kubernetes/ingress.yml")).To(BeTrue())
 
-				Expect(memoryFs.FileExists("workspace-repo/export/kubernetes/service-frontend.yml")).To(BeTrue())
+				Expect(memoryFs.FileExists("./export/kubernetes/service-frontend.yml")).To(BeTrue())
 			})
 		})
 	})

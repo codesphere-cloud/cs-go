@@ -1,4 +1,5 @@
 name: Integration Tests
+run-name: "Integration Tests #${{ github.run_id }}"
 
 on:
   schedule:
@@ -6,9 +7,20 @@ on:
   workflow_call:
 
 jobs:
-  integration-tests:
+  build:
     runs-on: ubuntu-latest
+    outputs:
+      test-matrix: ${{ steps.labels.outputs.matrix }}
+      known-labels: ${{ steps.labels.outputs.known }}
     steps:
+      - name: Configure test labels
+        id: labels
+        run: |
+          # Add new labels here; 'unlabeled' is appended automatically for the matrix.
+          KNOWN="workspace,list,error-handling,log,pipeline,git,wakeup,curl,local"
+          echo "known=$KNOWN" >> "$GITHUB_OUTPUT"
+          echo "matrix=[\"$(echo "$KNOWN" | sed 's/,/","/g')\",\"unlabeled\"]" >> "$GITHUB_OUTPUT"
+
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Set up Go
@@ -16,22 +28,84 @@ jobs:
         with:
           go-version-file: 'go.mod'
 
-      - name: Run Integration Tests
-        env:
-          CS_TOKEN: ${{ secrets.CS_TOKEN }}
-          CS_API: ${{ secrets.CS_API }}
-          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
-        run: make test-int
+      - name: Build CLI and test binary
+        run: |
+          make build
+          go test -c -o int.test ./int
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: test-artifacts-${{ github.run_id }}
+          path: |
+            cs
+            int.test
+          retention-days: 1
+
+  integration-tests:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        label: ${{ fromJSON(needs.build.outputs.test-matrix) }}
+    env:
+      CS_TOKEN: ${{ secrets.CS_TOKEN }}
+      CS_API: ${{ secrets.CS_API }}
+      CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: test-artifacts-${{ github.run_id }}
+
+      - name: Make binaries executable
+        run: chmod +x ./cs ./int.test
+
+      - name: Install linting tools
+        if: matrix.label == 'local'
+        run: |
+          HADOLINT_VERSION=$(curl -sL https://api.github.com/repos/hadolint/hadolint/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
+          sudo curl -sL -o /usr/local/bin/hadolint \
+            "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/hadolint-Linux-x86_64"
+          sudo chmod +x /usr/local/bin/hadolint
+          KUBECONFORM_VERSION=$(curl -sL https://api.github.com/repos/yannh/kubeconform/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
+          curl -sL "https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" | \
+            sudo tar xz -C /usr/local/bin
+
+      - name: Run integration tests - ${{ matrix.label }}
+        run: |
+          mkdir -p int
+          mv int.test int/
+          cd int
+          if [ "${{ matrix.label }}" = "unlabeled" ]; then
+            echo "::warning::Running tests without a known label. If tests are found here, please add a label to the Describe block."
+            FILTER=$(echo "${{ needs.build.outputs.known-labels }}" | sed 's/[^,]*/!\0/g; s/,/ \&\& /g')
+            ./int.test -test.v -ginkgo.label-filter="$FILTER"
+          else
+            ./int.test -test.v -ginkgo.label-filter='${{ matrix.label }}'
+          fi
+
+  cleanup:
+    needs: integration-tests
+    if: always()
+    runs-on: ubuntu-latest
+    env:
+      CS_TOKEN: ${{ secrets.CS_TOKEN }}
+      CS_API: ${{ secrets.CS_API }}
+      CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: test-artifacts-${{ github.run_id }}
+
+      - name: Make binary executable
+        run: chmod +x ./cs
 
       - name: Cleanup Orphaned Test Resources
-        if: always()  # Run even if tests fail
-        env:
-          CS_TOKEN: ${{ secrets.CS_TOKEN }}
-          CS_API: ${{ secrets.CS_API }}
-          CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
         run: |
           echo "Cleaning up any orphaned test workspaces..."
-          # List all workspaces and delete any with test name prefixes
           ./cs list workspaces -t $CS_TEAM_ID | grep -E "cli-(test|git-test|pipeline-test|log-test|sync-test|open-test|setenv-test|edge-test|wakeup-test|curl-test)-" | awk '{print $2}' | while read ws_id; do
             if [ ! -z "$ws_id" ]; then
               echo "Deleting orphaned workspace: $ws_id"
