@@ -6,9 +6,6 @@ package util
 import (
 	"fmt"
 	"os/exec"
-
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
 )
 
 const (
@@ -18,33 +15,31 @@ const (
 )
 
 // runLinter executes a linting tool on the file at the given path.
-// If the tool is not found on $PATH the lint step is skipped with a warning.
-func runLinter(tool string, args []string, path string) {
-	GinkgoHelper()
+// Returns an error if the tool is not found on $PATH or if linting reports issues.
+func runLinter(tool string, args []string, path string) error {
 	if _, err := exec.LookPath(tool); err != nil {
-		GinkgoWriter.Println(fmt.Sprintf("%s not found, skipping lint for %s", tool, path))
-		return
+		return fmt.Errorf("%s not found on $PATH: %w", tool, err)
 	}
 	cmdArgs := append(args, path)
 	cmd := exec.Command(tool, cmdArgs...)
 	output, err := cmd.CombinedOutput()
-	Expect(err).NotTo(HaveOccurred(), "%s errors in %s:\n%s", tool, path, string(output))
+	if err != nil {
+		return fmt.Errorf("%s errors in %s:\n%s", tool, path, string(output))
+	}
+	return nil
 }
 
 // LintDockerfile runs hadolint on the Dockerfile at the given path.
-func LintDockerfile(path string) {
-	GinkgoHelper()
-	runLinter(HadolintTool, []string{"--failure-threshold", "error"}, path)
+func LintDockerfile(path string) error {
+	return runLinter(HadolintTool, []string{"--failure-threshold", "error"}, path)
 }
 
 // LintShellScript runs shellcheck on the shell script at the given path.
-func LintShellScript(path string) {
-	GinkgoHelper()
-	runLinter(ShellcheckTool, []string{"-S", "error"}, path)
+func LintShellScript(path string) error {
+	return runLinter(ShellcheckTool, []string{"-S", "error"}, path)
 }
 
 // LintKubernetesManifest runs kubeconform on the Kubernetes manifest at the given path.
-func LintKubernetesManifest(path string) {
-	GinkgoHelper()
-	runLinter(KubeconformTool, nil, path)
+func LintKubernetesManifest(path string) error {
+	return runLinter(KubeconformTool, nil, path)
 }

@@ -164,15 +164,15 @@ func unmarshalIngress(yamlContent []byte) *networking.Ingress {
 	return ingress
 }
 
-// validateServiceFile validates a K8s service YAML file containing a Deployment and Service.
-func validateServiceFile(content []byte) (*apps.Deployment, *core.Service) {
+// validateAppManifest validates a K8s YAML file containing a Deployment and Service.
+func validateAppManifest(content []byte) (*apps.Deployment, *core.Service) {
 	GinkgoHelper()
 	docs := splitYAMLDocuments(content)
-	Expect(docs).To(HaveLen(2), "Service file should contain a Deployment and a Service document")
+	Expect(docs).To(HaveLen(2), "App manifest should contain a Deployment and a Service document")
 	return unmarshalDeployment(docs[0]), unmarshalService(docs[1])
 }
 
-// validateDockerfile reads a Dockerfile, performs structural validation, and runs hadolint if available.
+// validateDockerfile reads a Dockerfile, performs structural validation, and runs hadolint.
 func validateDockerfile(path string) string {
 	GinkgoHelper()
 	content := string(readFileContent(path))
@@ -210,17 +210,17 @@ func validateDockerfile(path string) string {
 		inContinuation = strings.HasSuffix(trimmed, "\\")
 	}
 	Expect(hasFrom).To(BeTrue(), "Dockerfile must contain a FROM instruction")
-	intutil.LintDockerfile(path)
+	Expect(intutil.LintDockerfile(path)).To(Succeed())
 	return content
 }
 
-// validateShellScript reads a shell script, validates basic structure, and runs shellcheck if available.
+// validateShellScript reads a shell script, validates basic structure, and runs shellcheck.
 func validateShellScript(path string) string {
 	GinkgoHelper()
 	content := string(readFileContent(path))
 	Expect(content).NotTo(BeEmpty(), "Shell script should not be empty")
 	Expect(content).To(HavePrefix("#!/bin/bash"), "Shell script should start with #!/bin/bash shebang")
-	intutil.LintShellScript(path)
+	Expect(intutil.LintShellScript(path)).To(Succeed())
 	return content
 }
 
@@ -278,19 +278,19 @@ func generateKubernetes(tempDir, registry, input, output string, extraArgs ...st
 	return intutil.RunCommand(args...)
 }
 
-// readAndValidateServiceFile reads a K8s service YAML file, validates it, and runs kubeconform if available.
-func readAndValidateServiceFile(path string) (*apps.Deployment, *core.Service) {
+// readAndValidateAppManifest reads a K8s app manifest YAML file, validates it, and runs kubeconform.
+func readAndValidateAppManifest(path string) (*apps.Deployment, *core.Service) {
 	GinkgoHelper()
-	dep, svc := validateServiceFile(readFileContent(path))
-	intutil.LintKubernetesManifest(path)
+	dep, svc := validateAppManifest(readFileContent(path))
+	Expect(intutil.LintKubernetesManifest(path)).To(Succeed())
 	return dep, svc
 }
 
-// readAndValidateIngress reads a K8s ingress YAML file, validates it, and runs kubeconform if available.
+// readAndValidateIngress reads a K8s ingress YAML file, validates it, and runs kubeconform.
 func readAndValidateIngress(path string) *networking.Ingress {
 	GinkgoHelper()
 	ingress := unmarshalIngress(readFileContent(path))
-	intutil.LintKubernetesManifest(path)
+	Expect(intutil.LintKubernetesManifest(path)).To(Succeed())
 	return ingress
 }
 
@@ -428,14 +428,14 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 			Expect(info.IsDir()).To(BeTrue())
 
 			By("Verifying frontend-service")
-			frontDep, frontSvc := readAndValidateServiceFile(filepath.Join(kubernetesDir, "service-frontend-service.yml"))
+			frontDep, frontSvc := readAndValidateAppManifest(filepath.Join(kubernetesDir, "service-frontend-service.yml"))
 			Expect(frontDep.Namespace).To(Equal("flask-demo"))
 			Expect(frontDep.Spec.Template.Spec.Containers).To(HaveLen(1))
 			Expect(frontDep.Spec.Template.Spec.Containers[0].Image).To(Equal("ghcr.io/codesphere-cloud/flask-demo/cs-demo-frontend-service:latest"))
 			Expect(frontSvc.Namespace).To(Equal("flask-demo"))
 
 			By("Verifying backend-service")
-			backDep, backSvc := readAndValidateServiceFile(filepath.Join(kubernetesDir, "service-backend-service.yml"))
+			backDep, backSvc := readAndValidateAppManifest(filepath.Join(kubernetesDir, "service-backend-service.yml"))
 			Expect(backDep.Namespace).To(Equal("flask-demo"))
 			Expect(backDep.Spec.Template.Spec.Containers).To(HaveLen(1))
 			Expect(backDep.Spec.Template.Spec.Containers[0].Image).To(ContainSubstring("cs-demo-backend-service:latest"))
@@ -471,7 +471,7 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 			)
 			Expect(output).To(ContainSubstring("Kubernetes artifacts export successful"))
 
-			dep, _ := readAndValidateServiceFile(filepath.Join(tempDir, "export", "kubernetes", "service-frontend-service.yml"))
+			dep, _ := readAndValidateAppManifest(filepath.Join(tempDir, "export", "kubernetes", "service-frontend-service.yml"))
 			Expect(dep.Spec.Template.Spec.ImagePullSecrets).To(HaveLen(1))
 			Expect(dep.Spec.Template.Spec.ImagePullSecrets[0].Name).To(Equal("my-registry-secret"))
 		})
@@ -560,10 +560,10 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 			}
 			Expect(pathStrings).To(ContainElements("/", "/api"))
 
-			frontDep, _ := readAndValidateServiceFile(filepath.Join(kubernetesDir, "service-frontend-service.yml"))
+			frontDep, _ := readAndValidateAppManifest(filepath.Join(kubernetesDir, "service-frontend-service.yml"))
 			Expect(frontDep.Spec.Template.Spec.Containers[0].Image).To(Equal("ghcr.io/codesphere-cloud/flask-demo/cs-demo-frontend-service:latest"))
 
-			backDep, _ := readAndValidateServiceFile(filepath.Join(kubernetesDir, "service-backend-service.yml"))
+			backDep, _ := readAndValidateAppManifest(filepath.Join(kubernetesDir, "service-backend-service.yml"))
 			Expect(backDep.Spec.Template.Spec.Containers[0].Image).To(Equal("ghcr.io/codesphere-cloud/flask-demo/cs-demo-backend-service:latest"))
 		})
 
@@ -614,7 +614,7 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 
 			By("Verifying artifacts are valid")
 			validateDockerfile(filepath.Join(tempDir, "export", "app", "Dockerfile"))
-			readAndValidateServiceFile(filepath.Join(tempDir, "export", "kubernetes", "service-app.yml"))
+			readAndValidateAppManifest(filepath.Join(tempDir, "export", "kubernetes", "service-app.yml"))
 			readAndValidateIngress(filepath.Join(tempDir, "export", "kubernetes", "ingress.yml"))
 		})
 	})
@@ -675,6 +675,35 @@ var _ = Describe("Kubernetes Export Integration Tests", Label("local"), func() {
 			Expect(output).To(ContainSubstring("generated images will be pushed"))
 			Expect(output).To(ContainSubstring("-r, --registry"))
 			Expect(output).To(ContainSubstring("-p, --imagePrefix"))
+		})
+	})
+
+	Context("Linter Validation with Invalid Files", func() {
+		It("should detect errors in an invalid Dockerfile", func() {
+			invalidDockerfile := filepath.Join(tempDir, "Dockerfile.invalid")
+			err := os.WriteFile(invalidDockerfile, []byte("INVALID_INSTRUCTION something\n"), 0644)
+			Expect(err).NotTo(HaveOccurred())
+
+			err = intutil.LintDockerfile(invalidDockerfile)
+			Expect(err).To(HaveOccurred(), "hadolint should report errors for an invalid Dockerfile")
+		})
+
+		It("should detect errors in an invalid shell script", func() {
+			invalidScript := filepath.Join(tempDir, "bad.sh")
+			err := os.WriteFile(invalidScript, []byte("#!/bin/bash\necho $UNQUOTED_VAR[\n"), 0644)
+			Expect(err).NotTo(HaveOccurred())
+
+			err = intutil.LintShellScript(invalidScript)
+			Expect(err).To(HaveOccurred(), "shellcheck should report errors for an invalid shell script")
+		})
+
+		It("should detect errors in an invalid Kubernetes manifest", func() {
+			invalidManifest := filepath.Join(tempDir, "bad-manifest.yml")
+			err := os.WriteFile(invalidManifest, []byte("apiVersion: v1\nkind: UnknownResource\nmetadata:\n  name: test\n"), 0644)
+			Expect(err).NotTo(HaveOccurred())
+
+			err = intutil.LintKubernetesManifest(invalidManifest)
+			Expect(err).To(HaveOccurred(), "kubeconform should report errors for an invalid Kubernetes manifest")
 		})
 	})
 })
