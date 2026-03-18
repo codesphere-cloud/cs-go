@@ -24,9 +24,11 @@ var _ = Describe("Workspace", func() {
 		mockClient = cmd.NewMockClient(GinkgoT())
 		teamId = -1
 		l = cmd.ListWorkspacesCmd{
-			Opts: &cmd.GlobalOptions{
-				Env:    mockEnv,
-				TeamId: -1, // force using the env mock to get a team ID
+			Opts: &cmd.ListOptions{
+				GlobalOptions: &cmd.GlobalOptions{
+					Env:    mockEnv,
+					TeamId: -1, // force using the env mock to get a team ID
+				},
 			},
 		}
 	})

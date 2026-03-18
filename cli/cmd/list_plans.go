@@ -15,12 +15,12 @@ import (
 
 type ListPlansCmd struct {
 	cmd  *cobra.Command
-	Opts *GlobalOptions
+	Opts *ListOptions
 }
 
 func (c *ListPlansCmd) RunE(_ *cobra.Command, args []string) error {
 
-	client, err := NewClient(*c.Opts)
+	client, err := NewClient(*c.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -28,6 +28,13 @@ func (c *ListPlansCmd) RunE(_ *cobra.Command, args []string) error {
 	plans, err := client.ListWorkspacePlans()
 	if err != nil {
 		return fmt.Errorf("failed to list plans: %s", err)
+	}
+
+	switch c.Opts.OutputFormat {
+	case OutputFormatJSON:
+		return io.PrintJSON(plans)
+	case OutputFormatYAML:
+		return io.PrintYAML(plans)
 	}
 
 	t := io.GetTableWriter()
@@ -65,7 +72,7 @@ func formatBytesAsGib(in int) string {
 	return fmt.Sprintf("%.2f", float32(in)/1024/1024/1024)
 }
 
-func AddListPlansCmd(list *cobra.Command, opts *GlobalOptions) {
+func AddListPlansCmd(list *cobra.Command, opts *ListOptions) {
 	plans := ListPlansCmd{
 		cmd: &cobra.Command{
 			Use:   "plans",
