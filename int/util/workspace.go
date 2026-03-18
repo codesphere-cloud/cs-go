@@ -164,24 +164,3 @@ func CleanupTeam(teamId string) {
 		log.Printf("Cleanup team %s: %s\n", teamId, output)
 	}
 }
-
-func CleanupAllWorkspacesInTeam(teamId string, namePrefix string) {
-	if teamId == "" {
-		return
-	}
-
-	output := RunCommand("list", "workspaces", "-t", teamId)
-	lines := strings.Split(output, "\n")
-
-	for _, line := range lines {
-		if strings.Contains(line, namePrefix) {
-			re := regexp.MustCompile(`\|\s*\d+\s*\|\s*(\d+)\s*\|`)
-			matches := re.FindStringSubmatch(line)
-			if len(matches) >= 2 {
-				workspaceId := matches[1]
-				log.Printf("Found orphaned workspace %s with prefix %s, cleaning up...\n", workspaceId, namePrefix)
-				CleanupWorkspace(workspaceId)
-			}
-		}
-	}
-}

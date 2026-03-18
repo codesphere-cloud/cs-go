@@ -1,0 +1,49 @@
+name: Cleanup Stale Workspaces
+description: This workflow runs every hour and deletes Codesphere workspaces
+  left over by integration tests that are older than one hour.
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    env:
+      CS_TOKEN: ${{ secrets.CS_TOKEN }}
+      CS_API: ${{ secrets.CS_API }}
+      CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
+    steps:
+      - name: Download Latest cs-go Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release download \
+            -R codesphere-cloud/cs-go \
+            -p "*linux_amd64" \
+            -O ./cs
+          chmod +x ./cs
+
+      - name: Delete Workspaces Older Than One Hour
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${CS_TEAM_ID:-}" ]]; then
+            echo "CS_TEAM_ID is required. Set secrets.CS_TEAM_ID."
+            exit 1
+          fi
+
+          CUTOFF_DATE=`date +%Y-%m-%d'T'%H:%M'Z' -d "1 hour ago"`
+
+          # TODO: Remove the 2>&1 and sed part once the json output is done with fmt.
+          ./cs list workspaces -o json 2>&1 | sed 's/^.*\[/[/' | jq -r --arg date "$CUTOFF_DATE" '.[] | select(.createdAt < $date) | .id' | while read input; do
+            echo "Deleting stale workspace with ID $input"
+            ./cs delete workspace -w $input --yes
+          done

@@ -55,7 +55,7 @@ func (c *CurlCmd) RunE(_ *cobra.Command, args []string) error {
 	}
 
 	path := "/"
-    curlArgs := args
+	curlArgs := args
 
 	if len(args) > 0 && strings.HasPrefix(args[0], "/") {
 		path = args[0]
