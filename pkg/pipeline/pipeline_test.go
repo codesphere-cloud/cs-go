@@ -45,7 +45,6 @@ var _ = Describe("Runner", func() {
 		cfg = pipeline.Config{
 			Profile: "",
 			Timeout: 30 * time.Second,
-			ApiUrl:  "https://codesphere.com/api",
 		}
 	})
 
@@ -84,7 +83,7 @@ var _ = Describe("Runner", func() {
 				)
 
 				mockClient.EXPECT().StreamLogs(
-					mock.Anything, cfg.ApiUrl, wsId, "prepare", 0, mock.Anything,
+					mock.Anything, wsId, "prepare", 0, mock.Anything,
 				).Return(nil)
 
 				err := runner.RunStages(wsId, []string{"prepare"}, cfg)
@@ -120,16 +119,16 @@ var _ = Describe("Runner", func() {
 				// Step 0 stream
 				step0Called := make(chan struct{})
 				mockClient.EXPECT().StreamLogs(
-					mock.Anything, cfg.ApiUrl, wsId, "prepare", 0, mock.Anything,
-				).RunAndReturn(func(_ context.Context, _ string, _ int, _ string, _ int, _ io.Writer) error {
+					mock.Anything, wsId, "prepare", 0, mock.Anything,
+				).RunAndReturn(func(_ context.Context, _ int, _ string, _ int, _ io.Writer) error {
 					close(step0Called)
 					return nil
 				})
 
 				// Step 1 stream — only called after step 0
 				mockClient.EXPECT().StreamLogs(
-					mock.Anything, cfg.ApiUrl, wsId, "prepare", 1, mock.Anything,
-				).RunAndReturn(func(_ context.Context, _ string, _ int, _ string, _ int, _ io.Writer) error {
+					mock.Anything, wsId, "prepare", 1, mock.Anything,
+				).RunAndReturn(func(_ context.Context, _ int, _ string, _ int, _ io.Writer) error {
 					select {
 					case <-step0Called:
 						// good — step 0 was called first
@@ -144,15 +143,13 @@ var _ = Describe("Runner", func() {
 			})
 		})
 
-		Context("when ApiUrl is empty", func() {
+		Context("when stage finishes immediately", func() {
 			It("does not call StreamLogs", func() {
-				cfg.ApiUrl = ""
-
 				startCall := mockClient.EXPECT().StartPipelineStage(wsId, cfg.Profile, "prepare").Return(nil).Call
 				mockClient.EXPECT().GetPipelineState(wsId, "prepare").Return([]api.PipelineStatus{
 					statusWithSteps("codesphere-ide", "success", "success"),
 				}, nil).NotBefore(startCall)
-				// StreamLogs should NOT be called — mockery will fail if it is
+				// StreamLogs should NOT be called
 
 				err := runner.RunStages(wsId, []string{"prepare"}, cfg)
 				Expect(err).ToNot(HaveOccurred())

@@ -10,9 +10,7 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"os"
 	"slices"
-	"sync"
 	"time"
 
 	"github.com/codesphere-cloud/cs-go/api"
@@ -25,14 +23,13 @@ type Client interface {
 	StartPipelineStage(wsId int, profile string, stage string) error
 	GetPipelineState(wsId int, stage string) ([]api.PipelineStatus, error)
 	DeployLandscape(wsId int, profile string) error
-	StreamLogs(ctx context.Context, apiUrl string, wsId int, stage string, step int, w io.Writer) error
+	StreamLogs(ctx context.Context, wsId int, stage string, step int, w io.Writer) error
 }
 
 // Config holds parameters for pipeline execution.
 type Config struct {
 	Profile string
 	Timeout time.Duration
-	ApiUrl  string
 }
 
 // Runner orchestrates pipeline stage execution.
@@ -61,11 +58,11 @@ func (r *Runner) RunStages(wsId int, stages []string, cfg Config) error {
 	for _, stage := range stages {
 		// Sync the landscape before the run stage
 		if stage == "run" {
-			fmt.Println("  🔄 Syncing landscape...")
+			log.Println("  🔄 Syncing landscape...")
 			if err := r.Client.DeployLandscape(wsId, cfg.Profile); err != nil {
 				return fmt.Errorf("syncing landscape: %w", err)
 			}
-			fmt.Println("  ✅ Landscape synced.")
+			log.Println("  ✅ Landscape synced.")
 		}
 
 		if err := r.runStage(wsId, stage, cfg); err != nil {
@@ -83,63 +80,13 @@ func (r *Runner) runStage(wsId int, stage string, cfg Config) error {
 		return fmt.Errorf("failed to start pipeline stage %s: %w", stage, err)
 	}
 
-	// Step-aware log streaming for non-run stages.
-	// Each step gets its own context; when a new step is discovered the
-	// previous step's stream is cancelled and drained before moving on.
-	streamEnabled := stage != "run" && cfg.ApiUrl != ""
-	streamingStep := -1
-	var stepCancel context.CancelFunc
-	var stepWg sync.WaitGroup
+	streamer := newStepStreamer(r.Client, wsId, stage)
+	defer streamer.drain()
 
-	// drainStream waits for the current stream to deliver logs, then cancels.
-	drainStream := func() {
-		if stepCancel == nil {
-			return
-		}
-		done := make(chan struct{})
-		go func() {
-			stepWg.Wait()
-			close(done)
-		}()
-		select {
-		case <-done:
-		case <-time.After(3 * time.Second):
-			stepCancel()
-			stepWg.Wait()
-		}
-	}
-
-	startStreamForStep := func(step int, totalSteps int) {
-		if !streamEnabled || step <= streamingStep {
-			return
-		}
-
-		// Drain previous step before starting next
-		drainStream()
-
-		streamingStep = step
-		fmt.Printf("\n  📋 Step %d/%d\n", step+1, totalSteps)
-
-		ctx, cancel := context.WithCancel(context.Background())
-		stepCancel = cancel
-		stepWg.Add(1)
-		go func() {
-			defer stepWg.Done()
-			if err := r.Client.StreamLogs(ctx, cfg.ApiUrl, wsId, stage, step, os.Stdout); err != nil {
-				_, _ = fmt.Fprintf(os.Stderr, "⚠ log stream error (step %d): %v\n", step, err)
-			}
-		}()
-	}
-
-	err := r.waitForStageWithStepCallback(wsId, stage, cfg, startStreamForStep)
-
-	// Drain final step's logs
-	drainStream()
-
-	return err
+	return r.waitForStage(wsId, stage, cfg, streamer)
 }
 
-func (r *Runner) waitForStageWithStepCallback(wsId int, stage string, cfg Config, onStep func(step int, total int)) error {
+func (r *Runner) waitForStage(wsId int, stage string, cfg Config, streamer *stepStreamer) error {
 	delay := 5 * time.Second
 	timeout := cfg.Timeout
 	if timeout == 0 {
@@ -156,17 +103,14 @@ func (r *Runner) waitForStageWithStepCallback(wsId int, stage string, cfg Config
 		}
 
 		// Discover active step from IDE server's Steps array
-		if onStep != nil {
-			for _, s := range status {
-				if s.Server == IdeServer {
-					total := len(s.Steps)
-					for i, step := range s.Steps {
-						if step.State == "running" || step.State == "success" {
-							onStep(i, total)
-						}
+		for _, s := range status {
+			if s.Server == IdeServer {
+				for i, step := range s.Steps {
+					if step.State == "running" {
+						streamer.startStep(i, len(s.Steps))
 					}
-					break
 				}
+				break
 			}
 		}
 

@@ -238,8 +238,8 @@ type logEntry struct {
 // log entries to the provided writer until the context is cancelled or the
 // stream ends. This is used during pipeline execution to provide real-time
 // log output.
-func (c *Client) StreamLogs(ctx context.Context, apiUrl string, wsId int, stage string, step int, w io.Writer) error {
-	endpoint := fmt.Sprintf("%s/workspaces/%d/logs/%s/%d", apiUrl, wsId, stage, step)
+func (c *Client) StreamLogs(ctx context.Context, wsId int, stage string, step int, w io.Writer) error {
+	endpoint := fmt.Sprintf("%s/workspaces/%d/logs/%s/%d", c.baseUrl.String(), wsId, stage, step)
 
 	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
