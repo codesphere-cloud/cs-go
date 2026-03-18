@@ -112,7 +112,7 @@ func PrintJSON(v any) error {
 	if err != nil {
 		return fmt.Errorf("failed to marshal JSON: %w", err)
 	}
-	fmt.Println(string(jsonBytes))
+	log.Println(string(jsonBytes))
 	return nil
 }
 
@@ -121,6 +121,6 @@ func PrintYAML(v any) error {
 	if err != nil {
 		return fmt.Errorf("failed to marshal YAML: %w", err)
 	}
-	fmt.Println(string(yamlBytes))
+	log.Println(string(yamlBytes))
 	return nil
 }
