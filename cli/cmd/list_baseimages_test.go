@@ -19,6 +19,7 @@ var _ = Describe("ListBaseimagesCmd", func() {
 	var (
 		c          cmd.ListBaseimagesCmd
 		globalOpts *cmd.GlobalOptions
+		listOpts   *cmd.ListOptions
 		mockEnv    *cmd.MockEnv
 		mockClient *cmd.MockClient
 	)
@@ -29,8 +30,11 @@ var _ = Describe("ListBaseimagesCmd", func() {
 		globalOpts = &cmd.GlobalOptions{
 			Env: mockEnv,
 		}
+		listOpts = &cmd.ListOptions{
+			GlobalOptions: globalOpts,
+		}
 		c = cmd.ListBaseimagesCmd{
-			Opts: globalOpts,
+			Opts: listOpts,
 		}
 	})
 
@@ -103,17 +107,19 @@ var _ = Describe("ListBaseimagesCmd", func() {
 
 var _ = Describe("AddListBaseimagesCmd", func() {
 	var (
-		parentCmd  *cobra.Command
-		globalOpts *cmd.GlobalOptions
+		parentCmd *cobra.Command
+		listOpts  *cmd.ListOptions
 	)
 
 	BeforeEach(func() {
 		parentCmd = &cobra.Command{Use: "list"}
-		globalOpts = &cmd.GlobalOptions{}
+		listOpts = &cmd.ListOptions{
+			GlobalOptions: &cmd.GlobalOptions{},
+		}
 	})
 
 	It("adds the baseimages command with correct properties", func() {
-		cmd.AddListBaseimagesCmd(parentCmd, globalOpts)
+		cmd.AddListBaseimagesCmd(parentCmd, listOpts)
 
 		var baseimagesCmd *cobra.Command
 		for _, c := range parentCmd.Commands() {

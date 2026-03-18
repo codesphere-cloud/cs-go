@@ -15,11 +15,11 @@ import (
 )
 
 type ListWorkspacesCmd struct {
-	Opts *GlobalOptions
+	Opts *ListOptions
 	cmd  *cobra.Command
 }
 
-func addListWorkspacesCmd(p *cobra.Command, opts *GlobalOptions) {
+func addListWorkspacesCmd(p *cobra.Command, opts *ListOptions) {
 	l := ListWorkspacesCmd{
 		cmd: &cobra.Command{
 			Use:   "workspaces",
@@ -36,7 +36,7 @@ func addListWorkspacesCmd(p *cobra.Command, opts *GlobalOptions) {
 }
 
 func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {
-	client, err := NewClient(*l.Opts)
+	client, err := NewClient(*l.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -46,6 +46,12 @@ func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {
 		return fmt.Errorf("failed to list workspaces: %w", err)
 	}
 
+	switch l.Opts.OutputFormat {
+	case OutputFormatJSON:
+		return io.PrintJSON(workspaces)
+	case OutputFormatYAML:
+		return io.PrintYAML(workspaces)
+	}
 	t := io.GetTableWriter()
 	t.AppendHeader(table.Row{"Team ID", "ID", "Name", "Repository", "Dev Domain"})
 	for _, w := range workspaces {

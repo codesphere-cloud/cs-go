@@ -5,6 +5,7 @@ package io
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -13,6 +14,7 @@ import (
 	"strings"
 
 	"github.com/jedib0t/go-pretty/v6/table"
+	"go.yaml.in/yaml/v2"
 )
 
 func GetTableWriter() table.Writer {
@@ -103,4 +105,22 @@ func Verboseln(verbose bool, output ...interface{}) {
 	if verbose {
 		log.Println(output...)
 	}
+}
+
+func PrintJSON(v any) error {
+	jsonBytes, err := json.MarshalIndent(v, "", "  ")
+	if err != nil {
+		return fmt.Errorf("failed to marshal JSON: %w", err)
+	}
+	fmt.Println(string(jsonBytes))
+	return nil
+}
+
+func PrintYAML(v any) error {
+	yamlBytes, err := yaml.Marshal(v)
+	if err != nil {
+		return fmt.Errorf("failed to marshal YAML: %w", err)
+	}
+	fmt.Println(string(yamlBytes))
+	return nil
 }
