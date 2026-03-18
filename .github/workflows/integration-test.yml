@@ -85,31 +85,3 @@ jobs:
           else
             ./int.test -test.v -ginkgo.label-filter='${{ matrix.label }}'
           fi
-
-  cleanup:
-    needs: integration-tests
-    if: always()
-    runs-on: ubuntu-latest
-    env:
-      CS_TOKEN: ${{ secrets.CS_TOKEN }}
-      CS_API: ${{ secrets.CS_API }}
-      CS_TEAM_ID: ${{ secrets.CS_TEAM_ID }}
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
-        with:
-          name: test-artifacts-${{ github.run_id }}
-
-      - name: Make binary executable
-        run: chmod +x ./cs
-
-      - name: Cleanup Orphaned Test Resources
-        run: |
-          echo "Cleaning up any orphaned test workspaces..."
-          ./cs list workspaces -t $CS_TEAM_ID | grep -E "cli-(test|git-test|pipeline-test|log-test|sync-test|open-test|setenv-test|edge-test|wakeup-test|curl-test)-" | awk '{print $2}' | while read ws_id; do
-            if [ ! -z "$ws_id" ]; then
-              echo "Deleting orphaned workspace: $ws_id"
-              ./cs delete workspace -w $ws_id --yes || true
-            fi
-          done
-          echo "Cleanup complete"
