@@ -27,6 +27,9 @@ func runLinter(tool string, args []string, path string) error {
 	cmd := exec.Command(tool, cmdArgs...)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
+		if len(output) == 0 {
+			return fmt.Errorf("%s failed for %s: %w", tool, path, err)
+		}
 		return fmt.Errorf("%s errors in %s:\n%s", tool, path, string(output))
 	}
 	return nil
