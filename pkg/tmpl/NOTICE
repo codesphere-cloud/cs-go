@@ -365,9 +365,9 @@ License URL: https://gitlab.com/gitlab-org/api/blob/client-go/v1.46.0/client-go/
  
 ----------
 Module: go.yaml.in/yaml/v2
-Version: v2.4.3
+Version: v2.4.4
 License: Apache-2.0
-License URL: https://github.com/yaml/go-yaml/blob/v2.4.3/LICENSE
+License URL: https://github.com/yaml/go-yaml/blob/v2.4.4/LICENSE
  
 ----------
 Module: go.yaml.in/yaml/v3

@@ -64,14 +64,17 @@ jobs:
 
       - name: Install linting tools
         if: matrix.label == 'local'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          HADOLINT_VERSION=$(curl -fsSL https://api.github.com/repos/hadolint/hadolint/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
+          HADOLINT_VERSION=$(gh release view --repo hadolint/hadolint --json tagName -q '.tagName')
           [ -n "$HADOLINT_VERSION" ] || { echo "::error::Failed to fetch hadolint version"; exit 1; }
           sudo curl -fsSL -o /usr/local/bin/hadolint \
             "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/hadolint-Linux-x86_64"
           sudo chmod +x /usr/local/bin/hadolint
           hadolint --version
-          KUBECONFORM_VERSION=$(curl -fsSL https://api.github.com/repos/yannh/kubeconform/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
+          KUBECONFORM_VERSION=$(gh release view --repo yannh/kubeconform --json tagName -q '.tagName')
           [ -n "$KUBECONFORM_VERSION" ] || { echo "::error::Failed to fetch kubeconform version"; exit 1; }
           curl -fsSL "https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" | \
             sudo tar xz -C /usr/local/bin
