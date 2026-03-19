@@ -215,7 +215,7 @@ var _ = Describe("Workspace", func() {
 			It("Returns error after all retries exhausted", func() {
 				wsApiMock.EXPECT().WorkspacesCreateWorkspace(mock.Anything).
 					Return(openapi_client.ApiWorkspacesCreateWorkspaceRequest{ApiService: wsApiMock})
-				wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(nil, nil, retryableErr).Times(3)
+				wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(nil, nil, retryableErr).Times(5)
 
 				newWs, err := client.DeployWorkspace(
 					api.DeployWorkspaceArgs{Timeout: 1 * time.Millisecond},
