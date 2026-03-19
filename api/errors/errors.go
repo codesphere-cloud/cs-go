@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/codesphere-cloud/cs-go/api/openapi_client"
@@ -92,4 +93,18 @@ func FormatAPIError(r *http.Response, err error) error {
 	}
 
 	return fmt.Errorf("codesphere API returned error %d (%s): %s", apiErr.Status, apiErr.Title, apiErr.Detail)
+}
+
+// IsRetryable returns true if the error is a server error (HTTP 500, 502, 503, 504).
+func IsRetryable(err error) bool {
+	if err == nil {
+		return false
+	}
+	msg := err.Error()
+	for _, code := range []string{"error 500", "error 502", "error 503", "error 504"} {
+		if strings.Contains(msg, code) {
+			return true
+		}
+	}
+	return false
 }

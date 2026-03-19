@@ -179,7 +179,7 @@ type DeployWorkspaceArgs struct {
 //
 // Returns [TimedOut] error if the timeout is reached
 func (client Client) DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, error) {
-	workspace, err := client.CreateWorkspace(CreateWorkspaceArgs{
+	createArgs := CreateWorkspaceArgs{
 		TeamId:            args.TeamId,
 		Name:              args.Name,
 		PlanId:            args.PlanId,
@@ -192,7 +192,20 @@ func (client Client) DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, erro
 		WelcomeMessage:    nil,
 		Replicas:          1,
 		VpnConfig:         args.VpnConfigName,
-	})
+	}
+
+	var workspace *Workspace
+	var err error
+	for attempt := 0; attempt < 3; attempt++ {
+		workspace, err = client.CreateWorkspace(createArgs)
+		if err == nil {
+			break
+		}
+		if !errors.IsRetryable(err) {
+			return nil, err
+		}
+		time.Sleep(time.Duration(attempt+1) * 5 * time.Second)
+	}
 	if err != nil {
 		return nil, err
 	}
