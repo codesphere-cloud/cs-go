@@ -196,7 +196,7 @@ func (client Client) DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, erro
 
 	var workspace *Workspace
 	var err error
-	for attempt := 0; attempt < 3; attempt++ {
+	for attempt := 0; attempt < 5; attempt++ {
 		workspace, err = client.CreateWorkspace(createArgs)
 		if err == nil {
 			break
