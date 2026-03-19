@@ -64,6 +64,7 @@ jobs:
 
       - name: Install linting tools
         if: matrix.label == 'local'
+        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
