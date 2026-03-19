@@ -5,10 +5,12 @@ package api_test
 
 import (
 	"context"
+	"fmt"
+	"time"
+
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/stretchr/testify/mock"
-	"time"
 
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/api/errors"
@@ -128,39 +130,144 @@ var _ = Describe("Workspace", func() {
 	})
 
 	Context("DeployWorkspace", func() {
-		BeforeEach(func() {
-			mockWorkspaceStatus(wsApiMock, ws.Id, true)
-			wsApiMock.EXPECT().WorkspacesCreateWorkspace(mock.Anything).
-				Return(openapi_client.ApiWorkspacesCreateWorkspaceRequest{ApiService: wsApiMock})
-			wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(&ws, nil, nil)
-		})
+		Context("when CreateWorkspace succeeds immediately", func() {
+			BeforeEach(func() {
+				mockWorkspaceStatus(wsApiMock, ws.Id, true)
+				wsApiMock.EXPECT().WorkspacesCreateWorkspace(mock.Anything).
+					Return(openapi_client.ApiWorkspacesCreateWorkspaceRequest{ApiService: wsApiMock})
+				wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(&ws, nil, nil)
+			})
 
-		It("Returns workspace on success", func() {
-			newWs, err := client.DeployWorkspace(
-				api.DeployWorkspaceArgs{Timeout: 1 * time.Millisecond},
-			)
+			It("Returns workspace on success", func() {
+				newWs, err := client.DeployWorkspace(
+					api.DeployWorkspaceArgs{Timeout: 1 * time.Millisecond},
+				)
 
-			Expect(err).NotTo(HaveOccurred())
-			Expect(newWs.Name).To(Equal(ws.Name))
-		})
+				Expect(err).NotTo(HaveOccurred())
+				Expect(newWs.Name).To(Equal(ws.Name))
+			})
 
-		It("Calls SetEnvVar endpoint when env vars are set", func() {
-			wsApiMock.EXPECT().WorkspacesSetEnvVar(mock.Anything, float32(0)).
-				Return(openapi_client.ApiWorkspacesSetEnvVarRequest{ApiService: wsApiMock})
-			wsApiMock.EXPECT().WorkspacesSetEnvVarExecute(mock.Anything).Return(nil, nil).Once()
+			It("Calls SetEnvVar endpoint when env vars are set", func() {
+				wsApiMock.EXPECT().WorkspacesSetEnvVar(mock.Anything, float32(0)).
+					Return(openapi_client.ApiWorkspacesSetEnvVarRequest{ApiService: wsApiMock})
+				wsApiMock.EXPECT().WorkspacesSetEnvVarExecute(mock.Anything).Return(nil, nil).Once()
 
-			newWs, err := client.DeployWorkspace(
-				api.DeployWorkspaceArgs{
-					Timeout: 1 * time.Millisecond,
-					EnvVars: map[string]string{
-						"foo":  "bar",
-						"some": "thing",
+				newWs, err := client.DeployWorkspace(
+					api.DeployWorkspaceArgs{
+						Timeout: 1 * time.Millisecond,
+						EnvVars: map[string]string{
+							"foo":  "bar",
+							"some": "thing",
+						},
 					},
-				},
-			)
+				)
 
-			Expect(err).NotTo(HaveOccurred())
-			Expect(newWs.Name).To(Equal(ws.Name))
+				Expect(err).NotTo(HaveOccurred())
+				Expect(newWs.Name).To(Equal(ws.Name))
+			})
+
+			It("Does not call SetEnvVar when env vars are empty", func() {
+				newWs, err := client.DeployWorkspace(
+					api.DeployWorkspaceArgs{
+						Timeout: 1 * time.Millisecond,
+						EnvVars: map[string]string{},
+					},
+				)
+
+				Expect(err).NotTo(HaveOccurred())
+				Expect(newWs.Name).To(Equal(ws.Name))
+			})
+		})
+
+		Context("retry logic", func() {
+			retryableErr := fmt.Errorf("codesphere API returned error 502 (Bad Gateway): temporarily unavailable")
+			nonRetryableErr := fmt.Errorf("codesphere API returned error 400 (Bad Request): invalid input")
+
+			It("Retries on retryable error and succeeds", func() {
+				mockWorkspaceStatus(wsApiMock, ws.Id, true)
+				wsApiMock.EXPECT().WorkspacesCreateWorkspace(mock.Anything).
+					Return(openapi_client.ApiWorkspacesCreateWorkspaceRequest{ApiService: wsApiMock})
+				wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(nil, nil, retryableErr).Once()
+				wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(&ws, nil, nil).Once()
+
+				newWs, err := client.DeployWorkspace(
+					api.DeployWorkspaceArgs{Timeout: 1 * time.Millisecond},
+				)
+
+				Expect(err).NotTo(HaveOccurred())
+				Expect(newWs.Name).To(Equal(ws.Name))
+			})
+
+			It("Fails immediately on non-retryable error", func() {
+				wsApiMock.EXPECT().WorkspacesCreateWorkspace(mock.Anything).
+					Return(openapi_client.ApiWorkspacesCreateWorkspaceRequest{ApiService: wsApiMock})
+				wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(nil, nil, nonRetryableErr).Once()
+
+				newWs, err := client.DeployWorkspace(
+					api.DeployWorkspaceArgs{Timeout: 1 * time.Millisecond},
+				)
+
+				Expect(err).To(HaveOccurred())
+				Expect(err).To(MatchError(ContainSubstring("error 400")))
+				Expect(newWs).To(BeNil())
+			})
+
+			It("Returns error after all retries exhausted", func() {
+				wsApiMock.EXPECT().WorkspacesCreateWorkspace(mock.Anything).
+					Return(openapi_client.ApiWorkspacesCreateWorkspaceRequest{ApiService: wsApiMock})
+				wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(nil, nil, retryableErr).Times(5)
+
+				newWs, err := client.DeployWorkspace(
+					api.DeployWorkspaceArgs{Timeout: 1 * time.Millisecond},
+				)
+
+				Expect(err).To(HaveOccurred())
+				Expect(err).To(MatchError(ContainSubstring("error 502")))
+				Expect(newWs).To(BeNil())
+			})
+		})
+
+		Context("when WaitForWorkspaceRunning times out", func() {
+			It("Returns workspace and timeout error", func() {
+				mockWorkspaceStatus(wsApiMock, ws.Id, false, false)
+				wsApiMock.EXPECT().WorkspacesCreateWorkspace(mock.Anything).
+					Return(openapi_client.ApiWorkspacesCreateWorkspaceRequest{ApiService: wsApiMock})
+				wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(&ws, nil, nil)
+
+				newWs, err := client.DeployWorkspace(
+					api.DeployWorkspaceArgs{Timeout: 1 * time.Second},
+				)
+
+				Expect(err).To(BeAssignableToTypeOf(&errors.TimedOutError{}))
+				Expect(newWs).NotTo(BeNil())
+				Expect(newWs.Name).To(Equal(ws.Name))
+			})
+		})
+
+		Context("when SetEnvVarOnWorkspace fails", func() {
+			It("Returns workspace and error", func() {
+				mockWorkspaceStatus(wsApiMock, ws.Id, true)
+				wsApiMock.EXPECT().WorkspacesCreateWorkspace(mock.Anything).
+					Return(openapi_client.ApiWorkspacesCreateWorkspaceRequest{ApiService: wsApiMock})
+				wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(&ws, nil, nil)
+
+				envErr := fmt.Errorf("codesphere API returned error 500 (Internal Server Error): failed to set env")
+				wsApiMock.EXPECT().WorkspacesSetEnvVar(mock.Anything, float32(0)).
+					Return(openapi_client.ApiWorkspacesSetEnvVarRequest{ApiService: wsApiMock})
+				wsApiMock.EXPECT().WorkspacesSetEnvVarExecute(mock.Anything).Return(nil, envErr).Once()
+
+				newWs, err := client.DeployWorkspace(
+					api.DeployWorkspaceArgs{
+						Timeout: 1 * time.Millisecond,
+						EnvVars: map[string]string{"key": "val"},
+					},
+				)
+
+				Expect(err).To(HaveOccurred())
+				Expect(err).To(MatchError(ContainSubstring("error 500")))
+				Expect(newWs).NotTo(BeNil())
+				Expect(newWs.Name).To(Equal(ws.Name))
+			})
 		})
 	})
 })
