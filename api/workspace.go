@@ -204,7 +204,7 @@ func (client Client) DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, erro
 		if !errors.IsRetryable(err) {
 			return nil, err
 		}
-		time.Sleep(time.Duration(attempt+1) * 5 * time.Second)
+		client.time.Sleep(time.Duration(attempt+1) * 5 * time.Second)
 	}
 	if err != nil {
 		return nil, err
