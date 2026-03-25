@@ -10,30 +10,11 @@ import (
 	"fmt"
 	"io"
 	"net/url"
-	"time"
 
 	"github.com/codesphere-cloud/cs-go/api"
 )
 
-type Client interface {
-	ListTeams() ([]api.Team, error)
-	ListWorkspaces(teamId int) ([]api.Workspace, error)
-	ListBaseimages() ([]api.Baseimage, error)
-	GetWorkspace(workspaceId int) (api.Workspace, error)
-	WorkspaceStatus(workspaceId int) (*api.WorkspaceStatus, error)
-	WaitForWorkspaceRunning(workspace *api.Workspace, timeout time.Duration) error
-	ScaleWorkspace(wsId int, replicas int) error
-	ScaleLandscapeServices(wsId int, services map[string]int) error
-	SetEnvVarOnWorkspace(workspaceId int, vars map[string]string) error
-	ExecCommand(workspaceId int, command string, workdir string, env map[string]string) (string, string, error)
-	ListWorkspacePlans() ([]api.WorkspacePlan, error)
-	DeployWorkspace(args api.DeployWorkspaceArgs) (*api.Workspace, error)
-	DeleteWorkspace(wsId int) error
-	StartPipelineStage(wsId int, profile string, stage string) error
-	GetPipelineState(wsId int, stage string) ([]api.PipelineStatus, error)
-	GitPull(wsId int, remote string, branch string) error
-	DeployLandscape(wsId int, profile string) error
-}
+type Client = api.Client
 
 // CommandExecutor abstracts command execution for testing
 type CommandExecutor interface {
@@ -41,7 +22,7 @@ type CommandExecutor interface {
 }
 
 func NewClient(opts GlobalOptions) (Client, error) {
-	token, err := opts.Env.GetApiToken()
+	token, err := opts.Env().GetApiToken()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get API token: %w", err)
 	}

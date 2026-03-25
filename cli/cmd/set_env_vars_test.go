@@ -8,11 +8,12 @@ import (
 	. "github.com/onsi/gomega"
 
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 )
 
 var _ = Describe("SetEnvVars", func() {
 	var (
-		mockEnv    *cmd.MockEnv
+		mockEnv    *cs.MockEnv
 		mockClient *cmd.MockClient
 		e          *cmd.SetEnvVarCmd
 		envVars    []string
@@ -20,15 +21,14 @@ var _ = Describe("SetEnvVars", func() {
 	)
 
 	JustBeforeEach(func() {
-		mockEnv = cmd.NewMockEnv(GinkgoT())
+		mockEnv = cs.NewMockEnv(GinkgoT())
 		mockClient = cmd.NewMockClient(GinkgoT())
 		wsId = 42
 		e = &cmd.SetEnvVarCmd{
 			Opts: cmd.SetEnvVarOptions{
-				GlobalOptions: &cmd.GlobalOptions{
-					Env:         mockEnv,
+				GlobalOptions: cmd.NewGlobalOptionsWithCustomEnv(cmd.GlobalOptions{
 					WorkspaceId: wsId,
-				},
+				}, mockEnv),
 				EnvVar: &envVars,
 			},
 		}

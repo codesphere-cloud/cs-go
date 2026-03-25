@@ -12,12 +12,13 @@ import (
 	"github.com/codesphere-cloud/cs-go/pkg/ci"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/exporter"
+	"github.com/codesphere-cloud/cs-go/pkg/util"
 )
 
 var _ = Describe("GenerateKubernetes", func() {
 	var (
-		memoryFs     *cs.FileSystem
-		mockEnv      *cmd.MockEnv
+		memoryFs     *util.FileSystem
+		mockEnv      *cs.MockEnv
 		mockExporter *exporter.MockExporter
 		c            *cmd.GenerateKubernetesCmd
 		wsId         int
@@ -25,8 +26,8 @@ var _ = Describe("GenerateKubernetes", func() {
 	)
 
 	BeforeEach(func() {
-		memoryFs = cs.NewMemFileSystem()
-		mockEnv = cmd.NewMockEnv(GinkgoT())
+		memoryFs = util.NewMemFileSystem()
+		mockEnv = cs.NewMockEnv(GinkgoT())
 		mockExporter = exporter.NewMockExporter(GinkgoT())
 		repoRoot = "workspace-repo"
 
@@ -36,10 +37,9 @@ var _ = Describe("GenerateKubernetes", func() {
 		c = &cmd.GenerateKubernetesCmd{
 			Opts: &cmd.GenerateKubernetesOpts{
 				GenerateOpts: &cmd.GenerateOpts{
-					GlobalOptions: &cmd.GlobalOptions{
-						Env:         mockEnv,
+					GlobalOptions: cmd.NewGlobalOptionsWithCustomEnv(cmd.GlobalOptions{
 						WorkspaceId: wsId,
-					},
+					}, mockEnv),
 					Input:  defaultInput,
 					Output: defaultOutput,
 				},

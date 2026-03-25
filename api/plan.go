@@ -12,7 +12,7 @@ import (
 // Fetches the workspace plan for a given name.
 //
 // Returns [NotFound] if no plan with the given Id could be found
-func (client *Client) PlanByName(name string) (WorkspacePlan, error) {
+func (client *RealClient) PlanByName(name string) (WorkspacePlan, error) {
 	plans, err := client.ListWorkspacePlans()
 	if err != nil {
 		return WorkspacePlan{}, err
@@ -23,10 +23,10 @@ func (client *Client) PlanByName(name string) (WorkspacePlan, error) {
 			return p, nil
 		}
 	}
-	return WorkspacePlan{}, cserrors.NotFound(fmt.Sprintf("no team with name %s found", name))
+	return WorkspacePlan{}, cserrors.NotFound(fmt.Sprintf("no workspace plan with name %s found", name))
 }
 
-func (c *Client) ListWorkspacePlans() ([]WorkspacePlan, error) {
+func (c *RealClient) ListWorkspacePlans() ([]WorkspacePlan, error) {
 	plans, r, err := c.api.MetadataAPI.MetadataGetWorkspacePlans(c.ctx).Execute()
 	return plans, cserrors.FormatAPIError(r, err)
 }

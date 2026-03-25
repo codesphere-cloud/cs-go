@@ -113,11 +113,11 @@ func CleanupWorkspace(workspaceId string) {
 	}
 }
 
-func WaitForWorkspaceRunning(client *api.Client, workspaceId int, timeout time.Duration) error {
+func WaitForWorkspaceRunning(client *api.RealClient, workspaceId int, timeout time.Duration) error {
 	return client.WaitForWorkspaceRunning(&api.Workspace{Id: workspaceId}, timeout)
 }
 
-func ScaleWorkspace(client *api.Client, workspaceId int, replicas int) error {
+func ScaleWorkspace(client *api.RealClient, workspaceId int, replicas int) error {
 	return client.ScaleWorkspace(workspaceId, replicas)
 }
 

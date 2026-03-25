@@ -108,7 +108,7 @@ func (l *LogCmd) RunE(_ *cobra.Command, args []string) (err error) {
 func (l *LogCmd) printAllLogs() error {
 	log.Println("Printing logs of all replicas")
 
-	replicas, err := cs.GetPipelineStatus(l.scope.workspaceId, *l.scope.stage)
+	replicas, err := cs.GetPipelineStatus(l.scope.workspaceId, *l.scope.stage, l.opts.StateFile)
 	if err != nil {
 		return fmt.Errorf("failed to get pipeline status: %w", err)
 	}
@@ -143,7 +143,7 @@ func (l *LogCmd) printLogsOfStage() error {
 		*l.scope.stage,
 		*l.scope.step,
 	)
-	return printLogsOfEndpoint("", endpoint)
+	return l.printLogsOfEndpoint("", endpoint)
 }
 
 func (l *LogCmd) printLogsOfReplica(prefix string) error {
@@ -154,7 +154,7 @@ func (l *LogCmd) printLogsOfReplica(prefix string) error {
 		*l.scope.step,
 		*l.scope.replica,
 	)
-	return printLogsOfEndpoint(prefix, endpoint)
+	return l.printLogsOfEndpoint(prefix, endpoint)
 }
 
 func (l *LogCmd) printLogsOfServer() error {
@@ -165,10 +165,10 @@ func (l *LogCmd) printLogsOfServer() error {
 		*l.scope.step,
 		*l.scope.server,
 	)
-	return printLogsOfEndpoint("", endpoint)
+	return l.printLogsOfEndpoint("", endpoint)
 }
 
-func printLogsOfEndpoint(prefix string, endpoint string) error {
+func (l *LogCmd) printLogsOfEndpoint(prefix string, endpoint string) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -179,7 +179,7 @@ func printLogsOfEndpoint(prefix string, endpoint string) error {
 
 	// Set the Accept header to indicate SSE
 	req.Header.Set("Accept", "text/event-stream")
-	err = cs.SetAuthoriziationHeader(req)
+	err = cs.SetAuthoriziationHeader(req, l.opts.StateFile)
 	if err != nil {
 		return fmt.Errorf("failed to set header: %w", err)
 	}

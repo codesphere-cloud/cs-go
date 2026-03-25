@@ -13,11 +13,12 @@ import (
 
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 )
 
 var _ = Describe("Curl", func() {
 	var (
-		mockEnv      *cmd.MockEnv
+		mockEnv      *cs.MockEnv
 		mockClient   *cmd.MockClient
 		mockExecutor *cmd.MockCommandExecutor
 		c            *cmd.CurlCmd
@@ -30,7 +31,7 @@ var _ = Describe("Curl", func() {
 
 	JustBeforeEach(func() {
 		mockClient = cmd.NewMockClient(GinkgoT())
-		mockEnv = cmd.NewMockEnv(GinkgoT())
+		mockEnv = cs.NewMockEnv(GinkgoT())
 		mockExecutor = cmd.NewMockCommandExecutor(GinkgoT())
 		wsId = 42
 		teamId = 21
@@ -44,10 +45,9 @@ var _ = Describe("Curl", func() {
 		}
 		c = &cmd.CurlCmd{
 			Opts: cmd.CurlOptions{
-				GlobalOptions: &cmd.GlobalOptions{
-					Env:         mockEnv,
+				GlobalOptions: cmd.NewGlobalOptionsWithCustomEnv(cmd.GlobalOptions{
 					WorkspaceId: wsId,
-				},
+				}, mockEnv),
 				Timeout:  30 * time.Second,
 				Executor: mockExecutor,
 			},

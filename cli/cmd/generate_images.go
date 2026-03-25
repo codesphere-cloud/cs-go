@@ -9,9 +9,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/exporter"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
+	"github.com/codesphere-cloud/cs-go/pkg/util"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +27,7 @@ type GenerateImagesOpts struct {
 }
 
 func (c *GenerateImagesCmd) RunE(_ *cobra.Command, args []string) error {
-	fs := cs.NewOSFileSystem(c.Opts.RepoRoot)
+	fs := util.NewOSFileSystem(c.Opts.RepoRoot)
 
 	exporter := exporter.NewExporterService(fs, c.Opts.Output, "", []string{}, c.Opts.RepoRoot, c.Opts.Force)
 	if err := c.GenerateImages(fs, exporter); err != nil {
@@ -67,7 +67,7 @@ func AddGenerateImagesCmd(generate *cobra.Command, opts *GenerateOpts) {
 	images.cmd.RunE = images.RunE
 }
 
-func (c *GenerateImagesCmd) GenerateImages(fs *cs.FileSystem, exp exporter.Exporter) error {
+func (c *GenerateImagesCmd) GenerateImages(fs *util.FileSystem, exp exporter.Exporter) error {
 	ciInput := c.Opts.Input
 	if c.Opts.Registry == "" {
 		return errors.New("registry is required")

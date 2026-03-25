@@ -91,7 +91,7 @@ func (l *ListWorkspacesCmd) getTeamIds(client Client) (teams []int, err error) {
 	if err != nil {
 		log.Println("No team ID provided via flag or environment variable, listing workspaces of all teams")
 	}
-	if teamIdEnv >= 0 {
+	if teamIdEnv > 0 {
 		teams = append(teams, teamIdEnv)
 		return
 	}

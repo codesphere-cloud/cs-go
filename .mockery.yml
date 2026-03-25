@@ -9,7 +9,7 @@ formatter: gofmt
 log-level: info
 structname: "{{.Mock}}{{.InterfaceName}}"
 pkgname: "{{.SrcPackageName}}"
-recursive: false
+recursive: true
 require-template-schema-exists: true
 template: testify
 template-schema: "{{.Template}}.schema.json"
@@ -27,6 +27,10 @@ packages:
       all: true
     interfaces:
   github.com/codesphere-cloud/cs-go/api:
+    config:
+      all: true
+    interfaces:
+  github.com/codesphere-cloud/cs-go/pkg/cs:
     config:
       all: true
     interfaces:

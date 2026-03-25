@@ -15,19 +15,8 @@ import (
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/api/errors"
 	"github.com/codesphere-cloud/cs-go/api/openapi_client"
+	"github.com/codesphere-cloud/cs-go/pkg/testutil"
 )
-
-func mockTime() *api.MockTime {
-	currentTime := time.Unix(1746190963, 0)
-	m := api.NewMockTime(GinkgoT())
-	m.EXPECT().Now().RunAndReturn(func() time.Time {
-		return currentTime
-	}).Maybe()
-	m.EXPECT().Sleep(mock.Anything).Run(func(delay time.Duration) {
-		currentTime = currentTime.Add(delay)
-	}).Maybe()
-	return m
-}
 
 func mockWorkspaceStatus(wsApiMock *openapi_client.MockWorkspacesAPI, workspaceId int, isRunning ...bool) {
 	wsApiMock.EXPECT().WorkspacesGetWorkspaceStatus(mock.Anything, float32(workspaceId)).
@@ -44,12 +33,12 @@ var _ = Describe("Workspace", func() {
 	var (
 		ws        api.Workspace
 		wsApiMock *openapi_client.MockWorkspacesAPI
-		client    *api.Client
+		client    *api.RealClient
 	)
 
 	BeforeEach(func() {
 		wsApiMock = openapi_client.NewMockWorkspacesAPI(GinkgoT())
-		mockTime := mockTime()
+		mockTime := testutil.MockTime()
 		apis := openapi_client.APIClient{
 			WorkspacesAPI: wsApiMock,
 		}

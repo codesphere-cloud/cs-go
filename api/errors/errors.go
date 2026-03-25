@@ -108,3 +108,11 @@ func IsRetryable(err error) bool {
 	}
 	return false
 }
+
+func IsNotFound(err error) bool {
+	if err == nil {
+		return false
+	}
+	msg := err.Error()
+	return strings.Contains(msg, "error 404")
+}

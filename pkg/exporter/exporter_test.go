@@ -8,8 +8,8 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/stretchr/testify/mock"
 
-	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/exporter"
+	"github.com/codesphere-cloud/cs-go/pkg/util"
 )
 
 const ymlContent = `
@@ -32,7 +32,7 @@ run:
 
 var _ = Describe("GenerateDockerfile", func() {
 	var (
-		memoryFs         *cs.FileSystem
+		memoryFs         *util.FileSystem
 		e                exporter.Exporter
 		defaultInput     string
 		defaultOutput    string
@@ -43,7 +43,7 @@ var _ = Describe("GenerateDockerfile", func() {
 		defaultInput = "ci.yml"
 		defaultOutput = "./export"
 		defaultBaseImage = "alpine:latest"
-		memoryFs = cs.NewMemFileSystem()
+		memoryFs = util.NewMemFileSystem()
 		e = exporter.NewExporterService(memoryFs, defaultOutput, defaultBaseImage, []string{}, "workspace-repo", false)
 	})
 

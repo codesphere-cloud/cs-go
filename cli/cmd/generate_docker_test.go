@@ -17,12 +17,13 @@ import (
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/exporter"
 	"github.com/codesphere-cloud/cs-go/pkg/git"
+	"github.com/codesphere-cloud/cs-go/pkg/util"
 )
 
 var _ = Describe("GenerateDocker", func() {
 	var (
-		memoryFs     *cs.FileSystem
-		mockEnv      *cmd.MockEnv
+		memoryFs     *util.FileSystem
+		mockEnv      *cs.MockEnv
 		mockExporter *exporter.MockExporter
 		mockGit      *git.MockGit
 		mockClient   *cmd.MockClient
@@ -31,8 +32,8 @@ var _ = Describe("GenerateDocker", func() {
 	)
 
 	BeforeEach(func() {
-		memoryFs = cs.NewMemFileSystem()
-		mockEnv = cmd.NewMockEnv(GinkgoT())
+		memoryFs = util.NewMemFileSystem()
+		mockEnv = cs.NewMockEnv(GinkgoT())
 		mockExporter = exporter.NewMockExporter(GinkgoT())
 		mockGit = git.NewMockGit(GinkgoT())
 		mockClient = cmd.NewMockClient(GinkgoT())
@@ -43,10 +44,9 @@ var _ = Describe("GenerateDocker", func() {
 		c = &cmd.GenerateDockerCmd{
 			Opts: &cmd.GenerateDockerOpts{
 				GenerateOpts: &cmd.GenerateOpts{
-					GlobalOptions: &cmd.GlobalOptions{
+					GlobalOptions: cmd.NewGlobalOptionsWithCustomEnv(cmd.GlobalOptions{
 						WorkspaceId: -1,
-						Env:         mockEnv,
-					},
+					}, mockEnv),
 					Input:  defaultInput,
 					Output: defaultOutput,
 				},
@@ -119,11 +119,10 @@ var _ = Describe("GenerateDocker", func() {
 				cmd := &cmd.GenerateDockerCmd{
 					Opts: &cmd.GenerateDockerOpts{
 						GenerateOpts: &cmd.GenerateOpts{
-							GlobalOptions: &cmd.GlobalOptions{
-								Env:         mockEnv,
+							GlobalOptions: cmd.NewGlobalOptionsWithCustomEnv(cmd.GlobalOptions{
 								WorkspaceId: -1,
 								// WorkspaceId is -1 (default), so it will use env var
-							},
+							}, mockEnv),
 						},
 						BaseImage: "alpine:latest",
 					},
@@ -147,10 +146,9 @@ var _ = Describe("GenerateDocker", func() {
 				cmd := &cmd.GenerateDockerCmd{
 					Opts: &cmd.GenerateDockerOpts{
 						GenerateOpts: &cmd.GenerateOpts{
-							GlobalOptions: &cmd.GlobalOptions{
-								Env:         mockEnv,
+							GlobalOptions: cmd.NewGlobalOptionsWithCustomEnv(cmd.GlobalOptions{
 								WorkspaceId: flagWsId,
-							},
+							}, mockEnv),
 						},
 						BaseImage: "alpine:latest",
 					},

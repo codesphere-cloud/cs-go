@@ -1,10 +1,11 @@
 // Copyright (c) Codesphere Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-package cs
+package util
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 
@@ -79,6 +80,22 @@ func (f *FileSystem) CreateFile(filename string) (billy.File, error) {
 	}
 
 	return file, nil
+}
+
+// ReadFile reads the contents of the specified file and returns it as a byte slice.
+func (f *FileSystem) ReadFile(filename string) ([]byte, error) {
+	file, err := f.Open(filename)
+	if err != nil {
+		return nil, fmt.Errorf("error opening file: %w", err)
+	}
+	defer func() { _ = file.Close() }()
+
+	data, err := io.ReadAll(file)
+	if err != nil {
+		return nil, fmt.Errorf("error reading file: %w", err)
+	}
+
+	return data, nil
 }
 
 // WriteFile creates a file at the specified path and writes data to it.

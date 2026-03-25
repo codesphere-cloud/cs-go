@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 
 	"github.com/codesphere-cloud/cs-go/pkg/ci"
-	"github.com/codesphere-cloud/cs-go/pkg/cs"
+	"github.com/codesphere-cloud/cs-go/pkg/util"
 	templates "github.com/codesphere-cloud/cs-go/tmpl/docker"
 	"github.com/codesphere-cloud/cs-go/tmpl/k8s"
 )
@@ -25,7 +25,7 @@ type Exporter interface {
 }
 
 type ExporterService struct {
-	fs         *cs.FileSystem
+	fs         *util.FileSystem
 	ymlContent *ci.CiYml
 	outputPath string
 	baseImage  string
@@ -34,7 +34,7 @@ type ExporterService struct {
 	force      bool
 }
 
-func NewExporterService(fs *cs.FileSystem, outputPath string, baseImage string, envVars []string, repoRoot string, force bool) Exporter {
+func NewExporterService(fs *util.FileSystem, outputPath string, baseImage string, envVars []string, repoRoot string, force bool) Exporter {
 	return &ExporterService{
 		fs:         fs,
 		outputPath: outputPath,

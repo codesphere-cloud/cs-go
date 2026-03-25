@@ -12,15 +12,19 @@ import (
 	"strings"
 )
 
-type Browser struct{}
-
-func NewBrowser() *Browser {
-	return &Browser{}
+type Browser interface {
+	OpenIde(path string, statefile string) error
 }
 
-func (b *Browser) OpenIde(path string) error {
+type RealBrowser struct{}
+
+func NewBrowser() Browser {
+	return &RealBrowser{}
+}
+
+func (b *RealBrowser) OpenIde(path string, statefile string) error {
 	re := regexp.MustCompile(`/api`)
-	ideUrl := re.ReplaceAllString(NewEnv().GetApiUrl(), "/ide")
+	ideUrl := re.ReplaceAllString(NewEnv(statefile).GetApiUrl(), "/ide")
 	if !strings.HasPrefix(path, "/") {
 		ideUrl += "/"
 	}
