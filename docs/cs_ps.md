@@ -1,19 +1,19 @@
-## cs licenses
+## cs ps
 
-Print license information
+List services of a workspace
 
 ### Synopsis
 
-Print information about the Codesphere CLI license and open source licenses of dependencies.
+Lists all services of a workspace with their current state.
 
 ```
-cs licenses [flags]
+cs ps [flags]
 ```
 
 ### Options
 
 ```
-  -h, --help   help for licenses
+  -h, --help   help for ps
 ```
 
 ### Options inherited from parent commands

@@ -53,15 +53,16 @@ $ cs generate kubernetes -w 1234 -i ci.prod.yml
 ### Options inherited from parent commands
 
 ```
-  -a, --api string        URL of Codesphere API (can also be CS_API)
-      --branch string     Branch of the repository to clone if the input file is not found (default "main")
-  -f, --force             Overwrite any files if existing
-  -i, --input string      CI profile to use as input for generation, relative to repository root (default "ci.yml")
-  -o, --output string     Output path of the folder including generated artifacts, relative to repository root (default "export")
-      --reporoot string   root directory of the workspace repository to export. Will be used to clone the repository if it doesn't exist. (default "./workspace-repo")
-  -t, --team int          Team ID (relevant for some commands, can also be CS_TEAM_ID) (default -1)
-  -v, --verbose           Verbose output
-  -w, --workspace int     Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)
+  -a, --api string          URL of Codesphere API (can also be CS_API)
+      --branch string       Branch of the repository to clone if the input file is not found (default "main")
+  -f, --force               Overwrite any files if existing
+  -i, --input string        CI profile to use as input for generation, relative to repository root (default "ci.yml")
+  -o, --output string       Output path of the folder including generated artifacts, relative to repository root (default "export")
+      --reporoot string     root directory of the workspace repository to export. Will be used to clone the repository if it doesn't exist. (default "./workspace-repo")
+      --state-file string   Path to the state file, defaults to .cs-up.yaml (default ".cs-up.yaml")
+  -t, --team int            Team ID (relevant for some commands, can also be CS_TEAM_ID) (default -1)
+  -v, --verbose             Verbose output
+  -w, --workspace int       Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)
 ```
 
 ### SEE ALSO
