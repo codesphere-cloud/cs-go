@@ -5,7 +5,7 @@ package util
 
 import (
 	"bytes"
-	"fmt"
+	"log"
 	"os"
 	"os/exec"
 
@@ -17,7 +17,7 @@ func RunCommandInBackground(outputBuffer *bytes.Buffer, args ...string) *exec.Cm
 
 	command.Env = os.Environ()
 
-	fmt.Println(args)
+	log.Println(args)
 	command.Stdout = outputBuffer
 	command.Stderr = outputBuffer
 

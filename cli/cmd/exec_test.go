@@ -32,9 +32,9 @@ var _ = Describe("Exec", func() {
 	JustBeforeEach(func() {
 		e = &cmd.ExecCmd{
 			Opts: cmd.ExecOptions{
-				GlobalOptions: cmd.GlobalOptions{
+				GlobalOptions: &cmd.GlobalOptions{
 					Env:         mockEnv,
-					WorkspaceId: &wsId,
+					WorkspaceId: wsId,
 				},
 				EnvVar:  &envVars,
 				WorkDir: &workDir,

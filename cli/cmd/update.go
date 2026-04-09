@@ -4,10 +4,11 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
+	"log"
 
-	"github.com/blang/semver"
-	"github.com/rhysd/go-github-selfupdate/selfupdate"
+	"github.com/creativeprojects/go-selfupdate"
 	"github.com/spf13/cobra"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
@@ -35,16 +36,16 @@ func AddUpdateCmd(rootCmd *cobra.Command) {
 }
 
 func SelfUpdate() error {
-	v := semver.MustParse(cs.Version())
-	latest, err := selfupdate.UpdateSelf(v, "codesphere-cloud/cs-go")
+	currentVersion := cs.Version()
+	latest, err := selfupdate.UpdateSelf(context.Background(), currentVersion, selfupdate.ParseSlug("codesphere-cloud/cs-go"))
 	if err != nil {
 		return fmt.Errorf("update failed: %w", err)
 	}
-	if latest.Version.Equals(v) {
-		fmt.Println("Current cs CLI is the latest version", cs.Version())
+	if latest.LessOrEqual(currentVersion) {
+		log.Println("Current cs CLI is the latest version", currentVersion)
 		return nil
 	}
-	fmt.Println("Successfully updated to version", latest.Version)
-	fmt.Println("Release notes:\n", latest.ReleaseNotes)
+	log.Println("Successfully updated to version", latest.Version())
+	log.Println("Release notes:\n", latest.ReleaseNotes)
 	return nil
 }

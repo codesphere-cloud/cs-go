@@ -6,6 +6,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"slices"
 	"strings"
@@ -23,7 +24,7 @@ type CreateWorkspaceCmd struct {
 }
 
 type CreateWorkspaceOpts struct {
-	GlobalOptions
+	*GlobalOptions
 	Repo            *string
 	Vpn             *string
 	Env             *[]string
@@ -36,7 +37,7 @@ type CreateWorkspaceOpts struct {
 }
 
 func (c *CreateWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
-	client, err := NewClient(c.Opts.GlobalOptions)
+	client, err := NewClient(*c.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -65,18 +66,18 @@ func (c *CreateWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
 		branch = *ws.InitialBranch.Get()
 	}
 
-	fmt.Println("Workspace created:")
-	fmt.Printf("\nID: %d\n", ws.Id)
-	fmt.Printf("Name: %s\n", ws.Name)
-	fmt.Printf("Team ID: %d\n", ws.TeamId)
-	fmt.Printf("Git Repository: %s\n", giturl)
-	fmt.Printf("Branch: %s\n", branch)
-	fmt.Printf("To open it in the Codesphere IDE run '%s open workspace -w %d'", os.Args[0], ws.Id)
+	log.Println("Workspace created:")
+	log.Printf("\nID: %d\n", ws.Id)
+	log.Printf("Name: %s\n", ws.Name)
+	log.Printf("Team ID: %d\n", ws.TeamId)
+	log.Printf("Git Repository: %s\n", giturl)
+	log.Printf("Branch: %s\n", branch)
+	log.Printf("To open it in the Codesphere IDE run '%s open workspace -w %d'", os.Args[0], ws.Id)
 
 	return nil
 }
 
-func AddCreateWorkspaceCmd(create *cobra.Command, opts GlobalOptions) {
+func AddCreateWorkspaceCmd(create *cobra.Command, opts *GlobalOptions) {
 	workspace := CreateWorkspaceCmd{
 		cmd: &cobra.Command{
 			Use:   "workspace",

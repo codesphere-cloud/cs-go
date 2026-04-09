@@ -54,9 +54,9 @@ var _ = Describe("CreateWorkspace", func() {
 		teamId = 21
 		c = &cmd.CreateWorkspaceCmd{
 			Opts: cmd.CreateWorkspaceOpts{
-				GlobalOptions: cmd.GlobalOptions{
+				GlobalOptions: &cmd.GlobalOptions{
 					Env:    mockEnv,
-					TeamId: &teamId,
+					TeamId: teamId,
 				},
 				Env:       &env,
 				Repo:      repo,
@@ -98,7 +98,7 @@ var _ = Describe("CreateWorkspace", func() {
 			createCmd := &cobra.Command{Use: "create"}
 			opts := &cmd.GlobalOptions{Env: cs.NewEnv()}
 
-			cmd.AddCreateWorkspaceCmd(createCmd, *opts)
+			cmd.AddCreateWorkspaceCmd(createCmd, opts)
 
 			createCmd.SetArgs([]string{
 				"workspace",

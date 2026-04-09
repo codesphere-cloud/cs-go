@@ -12,7 +12,7 @@ type GitCmd struct {
 	cmd *cobra.Command
 }
 
-func AddGitCmd(rootCmd *cobra.Command, opts GlobalOptions) {
+func AddGitCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	git := GitCmd{
 		cmd: &cobra.Command{
 			Use:   "git",

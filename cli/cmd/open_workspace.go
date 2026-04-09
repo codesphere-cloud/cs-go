@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
@@ -13,7 +14,7 @@ import (
 
 type OpenWorkspaceCmd struct {
 	cmd  *cobra.Command
-	Opts GlobalOptions
+	Opts *GlobalOptions
 }
 
 type Browser interface {
@@ -21,7 +22,7 @@ type Browser interface {
 }
 
 func (c *OpenWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
-	client, err := NewClient(c.Opts)
+	client, err := NewClient(*c.Opts)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -34,7 +35,7 @@ func (c *OpenWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
 	return c.OpenWorkspace(cs.NewBrowser(), client, wsId)
 }
 
-func AddOpenWorkspaceCmd(open *cobra.Command, opts GlobalOptions) {
+func AddOpenWorkspaceCmd(open *cobra.Command, opts *GlobalOptions) {
 	workspace := OpenWorkspaceCmd{
 		cmd: &cobra.Command{
 			Use:   "workspace",
@@ -57,7 +58,7 @@ func (cmd *OpenWorkspaceCmd) OpenWorkspace(browser Browser, client Client, wsId 
 		return fmt.Errorf("failed to get workspace: %w", err)
 	}
 
-	fmt.Printf("Opening workspace %d in Codesphere IDE\n", wsId)
+	log.Printf("Opening workspace %d in Codesphere IDE\n", wsId)
 
 	err = browser.OpenIde(fmt.Sprintf("teams/%d/workspaces/%d", workspace.TeamId, wsId))
 	if err != nil {

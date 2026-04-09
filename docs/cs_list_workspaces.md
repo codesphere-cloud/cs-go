@@ -14,7 +14,7 @@ cs list workspaces [flags]
 
 ```
 # List all workspaces
-$ cs list workspaces --team-id <team-id>
+$ cs list workspaces -t <team-id>
 ```
 
 ### Options
@@ -27,6 +27,7 @@ $ cs list workspaces --team-id <team-id>
 
 ```
   -a, --api string      URL of Codesphere API (can also be CS_API)
+  -o, --output string   Output format (table, json, yaml) (default "table")
   -t, --team int        Team ID (relevant for some commands, can also be CS_TEAM_ID) (default -1)
   -v, --verbose         Verbose output
   -w, --workspace int   Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)

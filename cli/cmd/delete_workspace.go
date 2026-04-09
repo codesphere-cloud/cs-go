@@ -6,6 +6,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"log"
 
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
@@ -22,7 +23,7 @@ type DeleteWorkspaceCmd struct {
 }
 
 type DeleteWorkspaceOpts struct {
-	GlobalOptions
+	*GlobalOptions
 	Confirmed *bool
 }
 
@@ -32,7 +33,7 @@ func (c *DeleteWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
 	}
 
-	client, err := NewClient(c.Opts.GlobalOptions)
+	client, err := NewClient(*c.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -40,7 +41,7 @@ func (c *DeleteWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
 	return c.DeleteWorkspace(client, wsId)
 }
 
-func AddDeleteWorkspaceCmd(delete *cobra.Command, opts GlobalOptions) {
+func AddDeleteWorkspaceCmd(delete *cobra.Command, opts *GlobalOptions) {
 	workspace := DeleteWorkspaceCmd{
 		cmd: &cobra.Command{
 			Use:   "workspace",
@@ -65,7 +66,7 @@ func (c *DeleteWorkspaceCmd) DeleteWorkspace(client Client, wsId int) error {
 	}
 
 	if !*c.Opts.Confirmed {
-		fmt.Printf("Please confirm deletion of workspace '%s', ID %d, in team %d by entering its name:\n", workspace.Name, workspace.Id, workspace.TeamId)
+		log.Printf("Please confirm deletion of workspace '%s', ID %d, in team %d by entering its name:\n", workspace.Name, workspace.Id, workspace.TeamId)
 		confirmation := c.Prompt.InputPrompt("Confirmation delete")
 
 		if confirmation != workspace.Name {
@@ -78,6 +79,6 @@ func (c *DeleteWorkspaceCmd) DeleteWorkspace(client Client, wsId int) error {
 		return err
 	}
 
-	fmt.Printf("Workspace %d deleted successfully\n", wsId)
+	log.Printf("Workspace %d deleted successfully\n", wsId)
 	return nil
 }

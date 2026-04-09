@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
@@ -17,11 +18,11 @@ type SetEnvVarCmd struct {
 }
 
 type SetEnvVarOptions struct {
-	GlobalOptions
+	*GlobalOptions
 	EnvVar *[]string
 }
 
-func AddSetEnvVarCmd(p *cobra.Command, opts GlobalOptions) {
+func AddSetEnvVarCmd(p *cobra.Command, opts *GlobalOptions) {
 	l := SetEnvVarCmd{
 		cmd: &cobra.Command{
 			Use:   "set-env",
@@ -44,7 +45,7 @@ func (l *SetEnvVarCmd) parseFlags() {
 }
 
 func (l *SetEnvVarCmd) RunE(_ *cobra.Command, args []string) (err error) {
-	client, err := NewClient(l.Opts.GlobalOptions)
+	client, err := NewClient(*l.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -67,6 +68,6 @@ func (l *SetEnvVarCmd) SetEnvironmentVariables(client Client) (err error) {
 		return fmt.Errorf("failed to set environment variables %v: %w", envVarMap, err)
 	}
 
-	fmt.Printf("Environment variables set successfully on workspace %d\n", wsId)
+	log.Printf("Environment variables set successfully on workspace %d\n", wsId)
 	return nil
 }

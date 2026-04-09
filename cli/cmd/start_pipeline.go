@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"slices"
 	"time"
 
@@ -21,7 +22,7 @@ type StartPipelineCmd struct {
 }
 
 type StartPipelineOpts struct {
-	GlobalOptions
+	*GlobalOptions
 	Profile *string
 	Timeout *time.Duration
 }
@@ -35,7 +36,7 @@ func (c *StartPipelineCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
 	}
 
-	client, err := NewClient(c.Opts.GlobalOptions)
+	client, err := NewClient(*c.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -43,7 +44,7 @@ func (c *StartPipelineCmd) RunE(_ *cobra.Command, args []string) error {
 	return c.StartPipelineStages(client, workspaceId, args)
 }
 
-func AddStartPipelineCmd(start *cobra.Command, opts GlobalOptions) {
+func AddStartPipelineCmd(start *cobra.Command, opts *GlobalOptions) {
 	pipeline := StartPipelineCmd{
 		cmd: &cobra.Command{
 			Use:   "pipeline",
@@ -98,11 +99,11 @@ func isValidStage(stage string) bool {
 }
 
 func (c *StartPipelineCmd) startStage(client Client, wsId int, stage string) error {
-	fmt.Printf("starting %s stage on workspace %d...", stage, wsId)
+	log.Printf("starting %s stage on workspace %d...", stage, wsId)
 
 	err := client.StartPipelineStage(wsId, *c.Opts.Profile, stage)
 	if err != nil {
-		fmt.Println()
+		log.Println()
 		return fmt.Errorf("failed to start pipeline stage %s: %w", stage, err)
 	}
 
@@ -121,30 +122,30 @@ func (c *StartPipelineCmd) waitForPipelineStage(client Client, wsId int, stage s
 	for {
 		status, err := client.GetPipelineState(wsId, stage)
 		if err != nil {
-			fmt.Printf("\nError getting pipeline status: %s, trying again...", err.Error())
+			log.Printf("\nError getting pipeline status: %s, trying again...", err.Error())
 			c.Time.Sleep(delay)
 			continue
 		}
 
 		if c.allFinished(status) {
-			fmt.Println("(finished)")
+			log.Println("(finished)")
 			break
 		}
 
 		if allRunning(status) && stage == "run" {
-			fmt.Println("(running)")
+			log.Println("(running)")
 			break
 		}
 
 		err = shouldAbort(status)
 		if err != nil {
-			fmt.Println("(failed)")
+			log.Println("(failed)")
 			return fmt.Errorf("stage %s failed: %w", stage, err)
 		}
 
-		fmt.Print(".")
+		log.Print(".")
 		if c.Time.Now().After(maxWaitTime) {
-			fmt.Println()
+			log.Println()
 			return fmt.Errorf("timed out waiting for pipeline stage %s to be complete", stage)
 		}
 		c.Time.Sleep(delay)
@@ -163,9 +164,9 @@ func allRunning(status []api.PipelineStatus) bool {
 }
 
 func (c *StartPipelineCmd) allFinished(status []api.PipelineStatus) bool {
-	io.Verboseln(*c.Opts.Verbose, "====")
+	io.Verboseln(c.Opts.Verbose, "====")
 	for _, s := range status {
-		io.Verbosef(*c.Opts.Verbose, "Server: %s, State: %s, Replica: %s\n", s.Server, s.State, s.Replica)
+		io.Verbosef(c.Opts.Verbose, "Server: %s, State: %s, Replica: %s\n", s.Server, s.State, s.Replica)
 	}
 	for _, s := range status {
 		// Prepare and Test stage is only running in the IDE server, ignore customer servers

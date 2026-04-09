@@ -5,7 +5,7 @@ package cmd
 
 import (
 	_ "embed"
-	"fmt"
+	"log"
 
 	"github.com/codesphere-cloud/cs-go/pkg/tmpl"
 	"github.com/spf13/cobra"
@@ -16,13 +16,13 @@ type LicensesCmd struct {
 }
 
 func (c *LicensesCmd) RunE(_ *cobra.Command, args []string) error {
-	fmt.Println("Codesphere CLI License:")
-	fmt.Println(tmpl.License())
+	log.Println("Codesphere CLI License:")
+	log.Println(tmpl.License())
 
-	fmt.Println("=================================")
+	log.Println("=================================")
 
-	fmt.Println("Codesphere CLI licenses included work:")
-	fmt.Println(tmpl.Notice())
+	log.Println("Codesphere CLI licenses included work:")
+	log.Println(tmpl.Notice())
 
 	return nil
 }

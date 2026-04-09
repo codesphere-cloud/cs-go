@@ -5,6 +5,7 @@ package cs
 
 import (
 	"fmt"
+	"log"
 	"os/exec"
 	"regexp"
 	"runtime"
@@ -25,7 +26,7 @@ func (b *Browser) OpenIde(path string) error {
 	}
 	url := ideUrl + path
 
-	fmt.Printf("Opening %s in web browser...\n", url)
+	log.Printf("Opening %s in web browser...\n", url)
 
 	var err error
 	switch runtime.GOOS {

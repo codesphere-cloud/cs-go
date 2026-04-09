@@ -4,15 +4,30 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
 )
+
+type OutputFormat string
+
+const (
+	OutputFormatTable OutputFormat = "table"
+	OutputFormatJSON  OutputFormat = "json"
+	OutputFormatYAML  OutputFormat = "yaml"
+)
+
+type ListOptions struct {
+	*GlobalOptions
+	OutputFormat OutputFormat
+}
 
 type ListCmd struct {
 	cmd *cobra.Command
 }
 
-func AddListCmd(rootCmd *cobra.Command, opts GlobalOptions) {
+func AddListCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	l := ListCmd{
 		cmd: &cobra.Command{
 			Use:   "list",
@@ -23,9 +38,19 @@ func AddListCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 			}),
 		},
 	}
+
+	listOpts := &ListOptions{GlobalOptions: opts}
+	l.cmd.PersistentFlags().StringVarP((*string)(&listOpts.OutputFormat), "output", "o", "table", "Output format (table, json, yaml)")
+	l.cmd.PersistentPreRunE = func(_ *cobra.Command, _ []string) error {
+		if listOpts.OutputFormat != OutputFormatTable && listOpts.OutputFormat != OutputFormatJSON && listOpts.OutputFormat != OutputFormatYAML {
+			return fmt.Errorf("invalid output format: %s", listOpts.OutputFormat)
+		}
+		return nil
+	}
+
 	AddCmd(rootCmd, l.cmd)
-	addListWorkspacesCmd(l.cmd, opts)
-	AddListBaseimagesCmd(l.cmd, opts)
-	addListTeamsCmd(l.cmd, opts)
-	AddListPlansCmd(l.cmd, opts)
+	addListWorkspacesCmd(l.cmd, listOpts)
+	AddListBaseimagesCmd(l.cmd, listOpts)
+	addListTeamsCmd(l.cmd, listOpts)
+	AddListPlansCmd(l.cmd, listOpts)
 }

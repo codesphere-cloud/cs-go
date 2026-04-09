@@ -13,11 +13,11 @@ import (
 )
 
 type ListBaseimagesCmd struct {
-	Opts GlobalOptions
+	Opts *ListOptions
 	cmd  *cobra.Command
 }
 
-func AddListBaseimagesCmd(p *cobra.Command, opts GlobalOptions) {
+func AddListBaseimagesCmd(p *cobra.Command, opts *ListOptions) {
 	l := ListBaseimagesCmd{
 		cmd: &cobra.Command{
 			Use:   "baseimages",
@@ -34,7 +34,7 @@ func AddListBaseimagesCmd(p *cobra.Command, opts GlobalOptions) {
 }
 
 func (l *ListBaseimagesCmd) RunE(_ *cobra.Command, args []string) (err error) {
-	client, err := NewClient(l.Opts)
+	client, err := NewClient(*l.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -51,6 +51,13 @@ func (l *ListBaseimagesCmd) ListBaseimages(client Client) error {
 	baseimages, err := client.ListBaseimages()
 	if err != nil {
 		return fmt.Errorf("failed to list baseimages: %w", err)
+	}
+
+	switch l.Opts.OutputFormat {
+	case OutputFormatJSON:
+		return io.PrintJSON(baseimages)
+	case OutputFormatYAML:
+		return io.PrintYAML(baseimages)
 	}
 
 	t := io.GetTableWriter()

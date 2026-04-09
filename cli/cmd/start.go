@@ -11,7 +11,7 @@ type StartCmd struct {
 	cmd *cobra.Command
 }
 
-func AddStartCmd(rootCmd *cobra.Command, opts GlobalOptions) {
+func AddStartCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	start := StartCmd{
 		cmd: &cobra.Command{
 			Use:   "start",

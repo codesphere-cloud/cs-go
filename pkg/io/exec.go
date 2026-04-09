@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"os/exec"
 	"sync"
@@ -62,12 +63,12 @@ func StreamOutput(wg *sync.WaitGroup, input io.Reader, output io.Writer) {
 		for scanner.Scan() {
 			_, err := fmt.Fprintln(output, scanner.Text())
 			if err != nil {
-				fmt.Printf("error reading input: %v\n", err)
+				log.Printf("error reading input: %v\n", err)
 			}
 		}
 		err := scanner.Err()
 		if err != nil && err != io.EOF { // io.EOF is expected at end of stream
-			fmt.Printf("error reading input: %v\n", err)
+			log.Printf("error reading input: %v\n", err)
 		}
 	}()
 }

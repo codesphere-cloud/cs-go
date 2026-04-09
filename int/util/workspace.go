@@ -6,6 +6,7 @@ package util
 import (
 	"bytes"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"regexp"
@@ -13,7 +14,31 @@ import (
 	"time"
 
 	"github.com/codesphere-cloud/cs-go/api"
+	ginkgo "github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 )
+
+// CreateTestWorkspace creates a workspace with standard settings and returns the workspace ID.
+// It fails the test if creation fails or no workspace ID is returned.
+func CreateTestWorkspace(teamId, workspaceName string) string {
+	ginkgo.GinkgoHelper()
+	output := RunCommand(
+		"create", "workspace", workspaceName,
+		"-t", teamId,
+		"-p", DefaultPlanId,
+		"--timeout", DefaultCreateTimeout,
+	)
+	log.Printf("Create workspace output: %s\n", output)
+	gomega.Expect(output).To(gomega.ContainSubstring(WorkspaceCreatedOutput))
+	workspaceId := ExtractWorkspaceId(output)
+	gomega.Expect(workspaceId).NotTo(gomega.BeEmpty())
+	return workspaceId
+}
+
+// NewWorkspaceName generates a unique workspace name with the given prefix.
+func NewWorkspaceName(prefix string) string {
+	return fmt.Sprintf("cli-%s-test-%d", prefix, time.Now().Unix())
+}
 
 func CheckBillingStatus(teamId string) (bool, string) {
 	testName := "billing-check-temp"
@@ -82,14 +107,18 @@ func CleanupWorkspace(workspaceId string) {
 
 	output, exitCode := RunCommandWithExitCode("delete", "workspace", "-w", workspaceId, "--yes")
 	if exitCode != 0 {
-		fmt.Printf("Warning: Failed to cleanup workspace %s (exit code %d): %s\n", workspaceId, exitCode, output)
+		log.Printf("Warning: Failed to cleanup workspace %s (exit code %d): %s\n", workspaceId, exitCode, output)
 	} else {
-		fmt.Printf("Cleanup workspace %s: success\n", workspaceId)
+		log.Printf("Cleanup workspace %s: success\n", workspaceId)
 	}
 }
 
 func WaitForWorkspaceRunning(client *api.Client, workspaceId int, timeout time.Duration) error {
 	return client.WaitForWorkspaceRunning(&api.Workspace{Id: workspaceId}, timeout)
+}
+
+func ScaleWorkspace(client *api.Client, workspaceId int, replicas int) error {
+	return client.ScaleWorkspace(workspaceId, replicas)
 }
 
 func VerifyWorkspaceExists(workspaceId, teamId string) bool {
@@ -123,15 +152,6 @@ func ExtractTeamId(output string) string {
 	return ""
 }
 
-func ContainsAny(s string, substrings []string) bool {
-	for _, substring := range substrings {
-		if strings.Contains(s, substring) {
-			return true
-		}
-	}
-	return false
-}
-
 func CleanupTeam(teamId string) {
 	if teamId == "" {
 		return
@@ -139,29 +159,8 @@ func CleanupTeam(teamId string) {
 
 	output, exitCode := RunCommandWithExitCode("delete", "team", "-t", teamId, "--force")
 	if exitCode != 0 {
-		fmt.Printf("Warning: Failed to cleanup team %s (exit code %d): %s\n", teamId, exitCode, output)
+		log.Printf("Warning: Failed to cleanup team %s (exit code %d): %s\n", teamId, exitCode, output)
 	} else {
-		fmt.Printf("Cleanup team %s: %s\n", teamId, output)
-	}
-}
-
-func CleanupAllWorkspacesInTeam(teamId string, namePrefix string) {
-	if teamId == "" {
-		return
-	}
-
-	output := RunCommand("list", "workspaces", "-t", teamId)
-	lines := strings.Split(output, "\n")
-
-	for _, line := range lines {
-		if strings.Contains(line, namePrefix) {
-			re := regexp.MustCompile(`\|\s*\d+\s*\|\s*(\d+)\s*\|`)
-			matches := re.FindStringSubmatch(line)
-			if len(matches) >= 2 {
-				workspaceId := matches[1]
-				fmt.Printf("Found orphaned workspace %s with prefix %s, cleaning up...\n", workspaceId, namePrefix)
-				CleanupWorkspace(workspaceId)
-			}
-		}
+		log.Printf("Cleanup team %s: %s\n", teamId, output)
 	}
 }

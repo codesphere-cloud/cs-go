@@ -6,6 +6,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"log"
 	"path"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
@@ -30,15 +31,15 @@ type GenerateKubernetesOpts struct {
 }
 
 func (c *GenerateKubernetesCmd) RunE(_ *cobra.Command, args []string) error {
-	fs := cs.NewOSFileSystem(".")
+	fs := cs.NewOSFileSystem(c.Opts.RepoRoot)
 
 	exporter := exporter.NewExporterService(fs, c.Opts.Output, "", []string{}, c.Opts.RepoRoot, c.Opts.Force)
 	if err := c.GenerateKubernetes(fs, exporter); err != nil {
 		return fmt.Errorf("failed to generate kubernetes: %w", err)
 	}
 
-	fmt.Println("Kubernetes artifacts export successful. You can apply the resources with the following command:")
-	fmt.Printf("kubectl apply -f %s\n", path.Join(c.Opts.RepoRoot, c.Opts.Output, "kubernetes"))
+	log.Println("Kubernetes artifacts export successful. You can apply the resources with the following command:")
+	log.Printf("kubectl apply -f %s\n", path.Join(c.Opts.RepoRoot, c.Opts.Output, "kubernetes"))
 	return nil
 }
 
@@ -87,7 +88,7 @@ func AddGenerateKubernetesCmd(generate *cobra.Command, opts *GenerateOpts) {
 }
 
 func (c *GenerateKubernetesCmd) GenerateKubernetes(fs *cs.FileSystem, exp exporter.Exporter) error {
-	ciInput := path.Join(c.Opts.RepoRoot, c.Opts.Input)
+	ciInput := c.Opts.Input
 	if c.Opts.Registry == "" {
 		return errors.New("registry is required")
 	}
