@@ -19,7 +19,7 @@ func AddDeleteCmd(rootCmd *cobra.Command, opt GlobalOptions) {
 			Long:  `Delete Codesphere resources, e.g. workspaces.`,
 		},
 	}
-	rootCmd.AddCommand(delete.cmd)
+	AddCmd(rootCmd, delete.cmd)
 
 	// Add child commands here
 	AddDeleteWorkspaceCmd(delete.cmd, opt)

@@ -90,7 +90,7 @@ func AddGenerateDockerCmd(generate *cobra.Command, opts *GenerateOpts) {
 	docker.cmd.Flags().StringVarP(&docker.Opts.BaseImage, "baseimage", "b", "", "Base image for the docker")
 	docker.cmd.Flags().StringArrayVarP(&docker.Opts.Envs, "env", "e", []string{}, "Env vars to put into generated artifacts")
 
-	generate.AddCommand(docker.cmd)
+	AddCmd(generate, docker.cmd)
 	docker.cmd.RunE = docker.RunE
 }
 

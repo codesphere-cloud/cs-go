@@ -39,7 +39,7 @@ func AddGenerateCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 	generate.cmd.PersistentFlags().BoolVarP(&generate.Opts.Force, "force", "f", false, "Overwrite any files if existing")
 	generate.cmd.PersistentFlags().StringVar(&generate.Opts.RepoRoot, "reporoot", "./workspace-repo", "root directory of the workspace repository to export. Will be used to clone the repository if it doesn't exist.")
 
-	rootCmd.AddCommand(generate.cmd)
+	AddCmd(rootCmd, generate.cmd)
 
 	AddGenerateDockerCmd(generate.cmd, generate.Opts)
 	AddGenerateKubernetesCmd(generate.cmd, generate.Opts)

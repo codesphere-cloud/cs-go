@@ -67,7 +67,7 @@ func AddLogCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 	}
 	logCmd.cmd.RunE = logCmd.RunE
 	logCmd.parseLogCmdFlags()
-	rootCmd.AddCommand(logCmd.cmd)
+	AddCmd(rootCmd, logCmd.cmd)
 }
 
 func (logCmd *LogCmd) parseLogCmdFlags() {

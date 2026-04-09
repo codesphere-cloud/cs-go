@@ -31,7 +31,7 @@ func addListWorkspacesCmd(p *cobra.Command, opts GlobalOptions) {
 		Opts: opts,
 	}
 	l.cmd.RunE = l.RunE
-	p.AddCommand(l.cmd)
+	AddCmd(p, l.cmd)
 }
 
 func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {

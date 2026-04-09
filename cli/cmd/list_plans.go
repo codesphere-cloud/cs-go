@@ -76,6 +76,6 @@ func AddListPlansCmd(list *cobra.Command, opts GlobalOptions) {
 		},
 		Opts: opts,
 	}
-	list.AddCommand(plans.cmd)
+	AddCmd(list, plans.cmd)
 	plans.cmd.RunE = plans.RunE
 }

@@ -113,7 +113,7 @@ func AddCreateWorkspaceCmd(create *cobra.Command, opts GlobalOptions) {
 	workspace.Opts.Baseimage = workspace.cmd.Flags().String("base-image", "", "Base image to use for the workspace, e.g. 'ubuntu-24.04'")
 	workspace.Opts.PublicDevDomain = workspace.cmd.Flags().Bool("public-dev-domain", false, "Whether to create enable a public development domain (defaults to the public api default)")
 
-	create.AddCommand(workspace.cmd)
+	AddCmd(create, workspace.cmd)
 	workspace.cmd.RunE = workspace.RunE
 }
 

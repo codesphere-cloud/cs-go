@@ -23,7 +23,7 @@ func AddGitCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 				like pulling or switching to a specific branch.`),
 		},
 	}
-	rootCmd.AddCommand(git.cmd)
+	AddCmd(rootCmd, git.cmd)
 
 	// Add child commands here
 	AddGitPullCmd(git.cmd, opts)

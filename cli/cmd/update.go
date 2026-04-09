@@ -30,7 +30,7 @@ func AddUpdateCmd(rootCmd *cobra.Command) {
 			Long:  `Updates the Codesphere CLI to the latest release from GitHub.`,
 		},
 	}
-	rootCmd.AddCommand(update.cmd)
+	AddCmd(rootCmd, update.cmd)
 	update.cmd.RunE = update.RunE
 }
 

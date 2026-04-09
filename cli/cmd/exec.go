@@ -57,7 +57,7 @@ func AddExecCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 	}
 	exec.Opts.EnvVar = exec.cmd.Flags().StringArrayP("env", "e", []string{}, "Additional environment variables to pass to the command in the form key=val")
 	exec.Opts.WorkDir = exec.cmd.Flags().StringP("workdir", "d", "", "Working directory for the command")
-	rootCmd.AddCommand(exec.cmd)
+	AddCmd(rootCmd, exec.cmd)
 	exec.cmd.RunE = exec.RunE
 }
 

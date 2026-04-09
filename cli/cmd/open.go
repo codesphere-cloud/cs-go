@@ -28,7 +28,7 @@ func AddOpenCmd(rootCmd *cobra.Command, opts GlobalOptions) {
 			Long:  `Open the Codesphere IDE.`,
 		},
 	}
-	rootCmd.AddCommand(open.cmd)
+	AddCmd(rootCmd, open.cmd)
 	open.cmd.RunE = open.RunE
 	AddOpenWorkspaceCmd(open.cmd, opts)
 }
