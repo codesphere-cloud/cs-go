@@ -30,6 +30,18 @@ jobs:
       - name: Test
         run: make test
 
+      - name: Slack Notification on Failure
+        if: ${{ failure() && github.ref == 'refs/heads/main' }}
+        run: |
+          curl -X POST \
+            -H 'Content-type: application/json' \
+            --data '{
+              "channel": "#team-oms-sdk",
+              "icon_emoji": ":siren:",
+              "text": "🚨 Build Job Failure 🚨\nRepository: ${{ github.repository }}\nBranch/Ref: `${{ github.ref }}`\nRun url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            }' \
+            ${{ secrets.SLACK_WEBHOOK }}
+
   integration-tests:
     uses: ./.github/workflows/integration-test.yml
     secrets: inherit
