@@ -277,7 +277,9 @@ func (p *Proxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func AddMonitorCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	monitor := MonitorCmd{
 		Cmd: &cobra.Command{
-			Use:   "monitor",
+			Use: "monitor",
+			// Args is set to ArbitraryArgs to allow any command with any number of arguments and flags to be passed to monitor without cobra trying to parse them.
+			Args:  cobra.ArbitraryArgs,
 			Short: "Monitor a command and report health information",
 			Long: csio.Long(`Loops over running a command and report information in a health endpoint.
 
