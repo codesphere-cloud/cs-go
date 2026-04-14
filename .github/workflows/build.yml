@@ -40,7 +40,7 @@ jobs:
               "icon_emoji": ":siren:",
               "text": "🚨 Build Job Failure 🚨\nRepository: ${{ github.repository }}\nBranch/Ref: `${{ github.ref }}`\nRun url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             }' \
-            ${{ secrets.SLACK_WEBHOOK }}
+            ${{ secrets.PACKAGE_JOB_SLACK_WEBHOOK }}
 
   integration-tests:
     uses: ./.github/workflows/integration-test.yml
