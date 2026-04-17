@@ -5,9 +5,9 @@ This project includes code licensed under the following terms:
  
 ----------
 Module: code.gitea.io/sdk/gitea
-Version: v0.23.2
+Version: v0.24.1
 License: MIT
-License URL: https://gitea.com/gitea/go-sdk/src/tag/gitea/v0.23.2/gitea/LICENSE
+License URL: https://gitea.com/gitea/go-sdk/src/tag/gitea/v0.24.1/gitea/LICENSE
  
 ----------
 Module: dario.cat/mergo
@@ -17,9 +17,9 @@ License URL: https://github.com/imdario/mergo/blob/v1.0.2/LICENSE
  
 ----------
 Module: github.com/42wim/httpsig
-Version: v1.2.3
+Version: v1.2.4
 License: BSD-3-Clause
-License URL: https://github.com/42wim/httpsig/blob/v1.2.3/LICENSE
+License URL: https://github.com/42wim/httpsig/blob/v1.2.4/LICENSE
  
 ----------
 Module: github.com/Masterminds/semver/v3
@@ -29,9 +29,9 @@ License URL: https://github.com/Masterminds/semver/blob/v3.4.0/LICENSE.txt
  
 ----------
 Module: github.com/ProtonMail/go-crypto
-Version: v1.3.0
+Version: v1.4.0
 License: BSD-3-Clause
-License URL: https://github.com/ProtonMail/go-crypto/blob/v1.3.0/LICENSE
+License URL: https://github.com/ProtonMail/go-crypto/blob/v1.4.0/LICENSE
  
 ----------
 Module: github.com/beorn7/perks/quantile
@@ -125,9 +125,9 @@ License URL: https://github.com/go-git/go-billy/blob/v5.8.0/LICENSE
  
 ----------
 Module: github.com/go-git/go-git/v5
-Version: v5.17.0
+Version: v5.17.2
 License: Apache-2.0
-License URL: https://github.com/go-git/go-git/blob/v5.17.0/LICENSE
+License URL: https://github.com/go-git/go-git/blob/v5.17.2/LICENSE
  
 ----------
 Module: github.com/go-logr/logr
@@ -185,9 +185,9 @@ License URL: https://github.com/jbenet/go-context/blob/d14ea06fba99/LICENSE
  
 ----------
 Module: github.com/jedib0t/go-pretty/v6
-Version: v6.7.8
+Version: v6.7.9
 License: MIT
-License URL: https://github.com/jedib0t/go-pretty/blob/v6.7.8/LICENSE
+License URL: https://github.com/jedib0t/go-pretty/blob/v6.7.9/LICENSE
  
 ----------
 Module: github.com/json-iterator/go
@@ -395,9 +395,9 @@ License URL: https://cs.opensource.google/go/x/net/+/v0.52.0:LICENSE
  
 ----------
 Module: golang.org/x/oauth2
-Version: v0.35.0
+Version: v0.36.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/oauth2/+/v0.35.0:LICENSE
+License URL: https://cs.opensource.google/go/x/oauth2/+/v0.36.0:LICENSE
  
 ----------
 Module: golang.org/x/sync/errgroup
