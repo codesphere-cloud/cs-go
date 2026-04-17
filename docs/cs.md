@@ -9,11 +9,12 @@ Manage and debug resources deployed in Codesphere via command line.
 ### Options
 
 ```
-  -a, --api string      URL of Codesphere API (can also be CS_API)
-  -h, --help            help for cs
-  -t, --team int        Team ID (relevant for some commands, can also be CS_TEAM_ID) (default -1)
-  -v, --verbose         Verbose output
-  -w, --workspace int   Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)
+  -a, --api string          URL of Codesphere API (can also be CS_API)
+  -h, --help                help for cs
+      --state-file string   Path to the state file, defaults to .cs-up.yaml (default ".cs-up.yaml")
+  -t, --team int            Team ID (relevant for some commands, can also be CS_TEAM_ID) (default -1)
+  -v, --verbose             Verbose output
+  -w, --workspace int       Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)
 ```
 
 ### SEE ALSO
@@ -29,10 +30,12 @@ Manage and debug resources deployed in Codesphere via command line.
 * [cs log](cs_log.md)	 - Retrieve run logs from services
 * [cs monitor](cs_monitor.md)	 - Monitor a command and report health information
 * [cs open](cs_open.md)	 - Open the Codesphere IDE
+* [cs ps](cs_ps.md)	 - List services of a workspace
 * [cs scale](cs_scale.md)	 - Scale Codesphere resources
 * [cs set-env](cs_set-env.md)	 - Set environment variables
 * [cs start](cs_start.md)	 - Start workspace pipeline
 * [cs sync](cs_sync.md)	 - Sync Codesphere resources
+* [cs up](cs_up.md)	 - Deploy your local code to Codesphere
 * [cs update](cs_update.md)	 - Update Codesphere CLI
 * [cs version](cs_version.md)	 - Print version
 * [cs wake-up](cs_wake-up.md)	 - Wake up an on-demand workspace

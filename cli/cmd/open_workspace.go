@@ -17,10 +17,6 @@ type OpenWorkspaceCmd struct {
 	Opts *GlobalOptions
 }
 
-type Browser interface {
-	OpenIde(path string) error
-}
-
 func (c *OpenWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
 	client, err := NewClient(*c.Opts)
 	if err != nil {
@@ -52,7 +48,7 @@ func AddOpenWorkspaceCmd(open *cobra.Command, opts *GlobalOptions) {
 	workspace.cmd.RunE = workspace.RunE
 }
 
-func (cmd *OpenWorkspaceCmd) OpenWorkspace(browser Browser, client Client, wsId int) error {
+func (cmd *OpenWorkspaceCmd) OpenWorkspace(browser cs.Browser, client Client, wsId int) error {
 	workspace, err := client.GetWorkspace(wsId)
 	if err != nil {
 		return fmt.Errorf("failed to get workspace: %w", err)
@@ -60,7 +56,7 @@ func (cmd *OpenWorkspaceCmd) OpenWorkspace(browser Browser, client Client, wsId 
 
 	log.Printf("Opening workspace %d in Codesphere IDE\n", wsId)
 
-	err = browser.OpenIde(fmt.Sprintf("teams/%d/workspaces/%d", workspace.TeamId, wsId))
+	err = browser.OpenIde(fmt.Sprintf("teams/%d/workspaces/%d", workspace.TeamId, wsId), cmd.Opts.StateFile)
 	if err != nil {
 		return fmt.Errorf("failed to open web browser: %w", err)
 	}

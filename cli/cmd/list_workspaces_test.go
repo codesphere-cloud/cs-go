@@ -6,6 +6,7 @@ package cmd_test
 import (
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -13,22 +14,21 @@ import (
 
 var _ = Describe("Workspace", func() {
 	var (
-		mockEnv    *cmd.MockEnv
+		mockEnv    *cs.MockEnv
 		mockClient *cmd.MockClient
 		l          cmd.ListWorkspacesCmd
 		teamId     int
 	)
 
 	BeforeEach(func() {
-		mockEnv = cmd.NewMockEnv(GinkgoT())
+		mockEnv = cs.NewMockEnv(GinkgoT())
 		mockClient = cmd.NewMockClient(GinkgoT())
 		teamId = -1
 		l = cmd.ListWorkspacesCmd{
 			Opts: &cmd.ListOptions{
-				GlobalOptions: &cmd.GlobalOptions{
-					Env:    mockEnv,
-					TeamId: -1, // force using the env mock to get a team ID
-				},
+				GlobalOptions: cmd.NewGlobalOptionsWithCustomEnv(cmd.GlobalOptions{
+					TeamId: -1,
+				}, mockEnv),
 			},
 		}
 	})
@@ -39,11 +39,11 @@ var _ = Describe("Workspace", func() {
 
 	Context("when team ID is set", func() {
 		BeforeEach(func() {
-			teamId = 0
+			teamId = 42
 		})
 
 		It("lists workspaces of single team", func() {
-			mockClient.EXPECT().ListWorkspaces(0).Return([]api.Workspace{}, nil)
+			mockClient.EXPECT().ListWorkspaces(42).Return([]api.Workspace{}, nil)
 
 			w, err := l.ListWorkspaces(mockClient)
 			Expect(w).To(Equal([]api.Workspace{}))

@@ -8,16 +8,18 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/stretchr/testify/mock"
 
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 )
 
 var _ = Describe("GenerateWorkspacePath", func() {
 	var (
-		mockEnv     *cmd.MockEnv
+		mockEnv     *cs.MockEnv
 		mockClient  *cmd.MockClient
-		mockBrowser *cmd.MockBrowser
+		mockBrowser *cs.MockBrowser
 		o           *cmd.OpenWorkspaceCmd
 		wsId        int
 		teamId      int
@@ -25,15 +27,14 @@ var _ = Describe("GenerateWorkspacePath", func() {
 
 	JustBeforeEach(func() {
 		mockClient = cmd.NewMockClient(GinkgoT())
-		mockBrowser = cmd.NewMockBrowser(GinkgoT())
-		mockEnv = cmd.NewMockEnv(GinkgoT())
+		mockBrowser = cs.NewMockBrowser(GinkgoT())
+		mockEnv = cs.NewMockEnv(GinkgoT())
 		wsId = 42
 		teamId = 21
 		o = &cmd.OpenWorkspaceCmd{
-			Opts: &cmd.GlobalOptions{
-				Env:         mockEnv,
+			Opts: cmd.NewGlobalOptionsWithCustomEnv(cmd.GlobalOptions{
 				WorkspaceId: wsId,
-			},
+			}, mockEnv),
 		}
 	})
 
@@ -42,7 +43,7 @@ var _ = Describe("GenerateWorkspacePath", func() {
 			Id:     wsId,
 			TeamId: teamId,
 		}, nil)
-		mockBrowser.EXPECT().OpenIde(fmt.Sprintf("teams/%d/workspaces/%d", teamId, wsId)).Return(nil)
+		mockBrowser.EXPECT().OpenIde(fmt.Sprintf("teams/%d/workspaces/%d", teamId, wsId), mock.Anything).Return(nil)
 		err := o.OpenWorkspace(mockBrowser, mockClient, wsId)
 		Expect(err).ToNot(HaveOccurred())
 

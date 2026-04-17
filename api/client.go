@@ -7,12 +7,34 @@ import (
 	"context"
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/codesphere-cloud/cs-go/api/errors"
 	"github.com/codesphere-cloud/cs-go/api/openapi_client"
 )
 
-type Client struct {
+type Client interface {
+	ListTeams() ([]Team, error)
+	ListWorkspaces(teamId int) ([]Workspace, error)
+	ListBaseimages() ([]Baseimage, error)
+	GetWorkspace(workspaceId int) (Workspace, error)
+	WorkspaceStatus(workspaceId int) (*WorkspaceStatus, error)
+	WaitForWorkspaceRunning(workspace *Workspace, timeout time.Duration) error
+	ScaleWorkspace(wsId int, replicas int) error
+	ScaleLandscapeServices(wsId int, services map[string]int) error
+	SetEnvVarOnWorkspace(workspaceId int, vars map[string]string) error
+	ExecCommand(workspaceId int, command string, workdir string, env map[string]string) (string, string, error)
+	ListWorkspacePlans() ([]WorkspacePlan, error)
+	DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, error)
+	DeleteWorkspace(wsId int) error
+	StartPipelineStage(wsId int, profile string, stage string) error
+	GetPipelineState(wsId int, stage string) ([]PipelineStatus, error)
+	GitPull(wsId int, remote string, branch string) error
+	DeployLandscape(wsId int, profile string) error
+	WakeUpWorkspace(wsId int, token string, profile string, timeout time.Duration) error
+}
+
+type RealClient struct {
 	ctx  context.Context
 	api  *openapi_client.APIClient
 	time Time
@@ -41,15 +63,15 @@ func (c Configuration) GetApiUrl() *url.URL {
 }
 
 // For use in tests
-func NewClientWithCustomDeps(ctx context.Context, opts Configuration, api *openapi_client.APIClient, time Time) *Client {
-	return &Client{
+func NewClientWithCustomDeps(ctx context.Context, opts Configuration, api *openapi_client.APIClient, time Time) *RealClient {
+	return &RealClient{
 		ctx:  context.WithValue(ctx, openapi_client.ContextAccessToken, opts.Token),
 		api:  api,
 		time: time,
 	}
 }
 
-func NewClient(ctx context.Context, opts Configuration) *Client {
+func NewClient(ctx context.Context, opts Configuration) *RealClient {
 	cfg := openapi_client.NewConfiguration()
 	cfg.HTTPClient = NewHttpClient()
 	cfg.Servers = []openapi_client.ServerConfiguration{{
@@ -81,32 +103,32 @@ func NewHttpClient() *http.Client {
 	}
 }
 
-func (c *Client) ListDataCenters() ([]DataCenter, error) {
+func (c *RealClient) ListDataCenters() ([]DataCenter, error) {
 	datacenters, r, err := c.api.MetadataAPI.MetadataGetDatacenters(c.ctx).Execute()
 	return datacenters, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) ListDomains(teamId int) ([]Domain, error) {
+func (c *RealClient) ListDomains(teamId int) ([]Domain, error) {
 	domains, r, err := c.api.DomainsAPI.DomainsListDomains(c.ctx, float32(teamId)).Execute()
 	return domains, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) GetDomain(teamId int, domainName string) (*Domain, error) {
+func (c *RealClient) GetDomain(teamId int, domainName string) (*Domain, error) {
 	domain, r, err := c.api.DomainsAPI.DomainsGetDomain(c.ctx, float32(teamId), domainName).Execute()
 	return domain, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) CreateDomain(teamId int, domainName string) (*Domain, error) {
+func (c *RealClient) CreateDomain(teamId int, domainName string) (*Domain, error) {
 	domain, r, err := c.api.DomainsAPI.DomainsCreateDomain(c.ctx, float32(teamId), domainName).Execute()
 	return domain, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) DeleteDomain(teamId int, domainName string) error {
+func (c *RealClient) DeleteDomain(teamId int, domainName string) error {
 	r, err := c.api.DomainsAPI.DomainsDeleteDomain(c.ctx, float32(teamId), domainName).Execute()
 	return errors.FormatAPIError(r, err)
 }
 
-func (c *Client) UpdateDomain(
+func (c *RealClient) UpdateDomain(
 	teamId int, domainName string, args UpdateDomainArgs,
 ) (*Domain, error) {
 	domain, r, err := c.api.DomainsAPI.
@@ -116,7 +138,7 @@ func (c *Client) UpdateDomain(
 	return domain, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) VerifyDomain(
+func (c *RealClient) VerifyDomain(
 	teamId int, domainName string,
 ) (*DomainVerificationStatus, error) {
 	status, r, err := c.api.DomainsAPI.
@@ -124,7 +146,7 @@ func (c *Client) VerifyDomain(
 	return status, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) UpdateWorkspaceConnections(
+func (c *RealClient) UpdateWorkspaceConnections(
 	teamId int, domainName string, connections PathToWorkspaces,
 ) (*Domain, error) {
 	req := make(map[string][]int)
@@ -141,7 +163,7 @@ func (c *Client) UpdateWorkspaceConnections(
 	return domain, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) ListBaseimages() ([]Baseimage, error) {
+func (c *RealClient) ListBaseimages() ([]Baseimage, error) {
 	baseimages, r, err := c.api.MetadataAPI.MetadataGetWorkspaceBaseImages(c.ctx).Execute()
 	return baseimages, errors.FormatAPIError(r, err)
 }

@@ -13,6 +13,7 @@ import (
 
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 )
 
 var _ = Describe("ListBaseimagesCmd", func() {
@@ -20,16 +21,14 @@ var _ = Describe("ListBaseimagesCmd", func() {
 		c          cmd.ListBaseimagesCmd
 		globalOpts *cmd.GlobalOptions
 		listOpts   *cmd.ListOptions
-		mockEnv    *cmd.MockEnv
+		mockEnv    *cs.MockEnv
 		mockClient *cmd.MockClient
 	)
 
 	BeforeEach(func() {
-		mockEnv = cmd.NewMockEnv(GinkgoT())
+		mockEnv = cs.NewMockEnv(GinkgoT())
 		mockClient = cmd.NewMockClient(GinkgoT())
-		globalOpts = &cmd.GlobalOptions{
-			Env: mockEnv,
-		}
+		globalOpts = cmd.NewGlobalOptionsWithCustomEnv(cmd.GlobalOptions{}, mockEnv)
 		listOpts = &cmd.ListOptions{
 			GlobalOptions: globalOpts,
 		}
@@ -114,7 +113,7 @@ var _ = Describe("AddListBaseimagesCmd", func() {
 	BeforeEach(func() {
 		parentCmd = &cobra.Command{Use: "list"}
 		listOpts = &cmd.ListOptions{
-			GlobalOptions: &cmd.GlobalOptions{},
+			GlobalOptions: cmd.NewGlobalOptionsWithCustomEnv(cmd.GlobalOptions{}, cs.NewMockEnv(GinkgoT())),
 		}
 	})
 

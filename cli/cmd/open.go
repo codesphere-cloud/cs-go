@@ -12,12 +12,13 @@ import (
 )
 
 type OpenCmd struct {
-	cmd *cobra.Command
+	cmd  *cobra.Command
+	Opts *GlobalOptions
 }
 
 func (c *OpenCmd) RunE(_ *cobra.Command, args []string) error {
 	log.Println("Opening Codesphere IDE")
-	return cs.NewBrowser().OpenIde("")
+	return cs.NewBrowser().OpenIde("", c.Opts.StateFile)
 }
 
 func AddOpenCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
@@ -27,6 +28,7 @@ func AddOpenCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 			Short: "Open the Codesphere IDE",
 			Long:  `Open the Codesphere IDE.`,
 		},
+		Opts: opts,
 	}
 	rootCmd.AddCommand(open.cmd)
 	open.cmd.RunE = open.RunE

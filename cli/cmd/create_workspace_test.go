@@ -18,7 +18,7 @@ import (
 
 var _ = Describe("CreateWorkspace", func() {
 	var (
-		mockEnv      *cmd.MockEnv
+		mockEnv      *cs.MockEnv
 		mockClient   *cmd.MockClient
 		c            *cmd.CreateWorkspaceCmd
 		teamId       int
@@ -49,15 +49,14 @@ var _ = Describe("CreateWorkspace", func() {
 
 	JustBeforeEach(func() {
 		mockClient = cmd.NewMockClient(GinkgoT())
-		mockEnv = cmd.NewMockEnv(GinkgoT())
+		mockEnv = cs.NewMockEnv(GinkgoT())
 		wsName = "foo-workspace"
 		teamId = 21
 		c = &cmd.CreateWorkspaceCmd{
 			Opts: cmd.CreateWorkspaceOpts{
-				GlobalOptions: &cmd.GlobalOptions{
-					Env:    mockEnv,
+				GlobalOptions: cmd.NewGlobalOptionsWithCustomEnv(cmd.GlobalOptions{
 					TeamId: teamId,
-				},
+				}, mockEnv),
 				Env:       &env,
 				Repo:      repo,
 				Vpn:       vpn,
@@ -96,7 +95,7 @@ var _ = Describe("CreateWorkspace", func() {
 	Context("All values are set", func() {
 		It("Creates workspace with all flags set", func() {
 			createCmd := &cobra.Command{Use: "create"}
-			opts := &cmd.GlobalOptions{Env: cs.NewEnv()}
+			opts := cmd.NewGlobalOptionsWithCustomEnv(cmd.GlobalOptions{}, cs.NewMockEnv(GinkgoT()))
 
 			cmd.AddCreateWorkspaceCmd(createCmd, opts)
 

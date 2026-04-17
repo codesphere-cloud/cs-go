@@ -11,11 +11,12 @@ import (
 
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 )
 
 var _ = Describe("DeleteWorkspace", func() {
 	var (
-		mockEnv    *cmd.MockEnv
+		mockEnv    *cs.MockEnv
 		mockClient *cmd.MockClient
 		mockPrompt *cmd.MockPrompt
 		c          *cmd.DeleteWorkspaceCmd
@@ -27,14 +28,13 @@ var _ = Describe("DeleteWorkspace", func() {
 
 	JustBeforeEach(func() {
 		mockClient = cmd.NewMockClient(GinkgoT())
-		mockEnv = cmd.NewMockEnv(GinkgoT())
+		mockEnv = cs.NewMockEnv(GinkgoT())
 		mockPrompt = cmd.NewMockPrompt(GinkgoT())
 		c = &cmd.DeleteWorkspaceCmd{
 			Opts: cmd.DeleteWorkspaceOpts{
-				GlobalOptions: &cmd.GlobalOptions{
-					Env:         mockEnv,
+				GlobalOptions: cmd.NewGlobalOptionsWithCustomEnv(cmd.GlobalOptions{
 					WorkspaceId: wsId,
-				},
+				}, mockEnv),
 				Confirmed: &confirmed,
 			},
 			Prompt: mockPrompt,

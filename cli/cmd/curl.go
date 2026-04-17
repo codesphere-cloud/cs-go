@@ -49,7 +49,7 @@ func (c *CurlCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
 	}
 
-	token, err := c.Opts.Env.GetApiToken()
+	token, err := c.Opts.Env().GetApiToken()
 	if err != nil {
 		return fmt.Errorf("failed to get API token: %w", err)
 	}

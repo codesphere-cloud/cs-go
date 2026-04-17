@@ -12,12 +12,12 @@ import (
 	"time"
 )
 
-func (c *Client) ListWorkspaces(teamId int) ([]Workspace, error) {
+func (c *RealClient) ListWorkspaces(teamId int) ([]Workspace, error) {
 	workspaces, r, err := c.api.WorkspacesAPI.WorkspacesListWorkspaces(c.ctx, float32(teamId)).Execute()
 	return workspaces, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) GetWorkspace(workspaceId int) (Workspace, error) {
+func (c *RealClient) GetWorkspace(workspaceId int) (Workspace, error) {
 	workspace, r, err := c.api.WorkspacesAPI.WorkspacesGetWorkspace(c.ctx, float32(workspaceId)).Execute()
 
 	if workspace != nil {
@@ -26,22 +26,22 @@ func (c *Client) GetWorkspace(workspaceId int) (Workspace, error) {
 	return Workspace{}, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) DeleteWorkspace(workspaceId int) error {
+func (c *RealClient) DeleteWorkspace(workspaceId int) error {
 	r, err := c.api.WorkspacesAPI.WorkspacesDeleteWorkspace(c.ctx, float32(workspaceId)).Execute()
 	return errors.FormatAPIError(r, err)
 }
 
-func (c *Client) WorkspaceStatus(workspaceId int) (*WorkspaceStatus, error) {
+func (c *RealClient) WorkspaceStatus(workspaceId int) (*WorkspaceStatus, error) {
 	status, r, err := c.api.WorkspacesAPI.WorkspacesGetWorkspaceStatus(c.ctx, float32(workspaceId)).Execute()
 	return status, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) CreateWorkspace(args CreateWorkspaceArgs) (*Workspace, error) {
+func (c *RealClient) CreateWorkspace(args CreateWorkspaceArgs) (*Workspace, error) {
 	workspace, r, err := c.api.WorkspacesAPI.WorkspacesCreateWorkspace(c.ctx).WorkspacesCreateWorkspaceRequest(args).Execute()
 	return workspace, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string) error {
+func (c *RealClient) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string) error {
 	vars := []openapi_client.WorkspacesCreateWorkspaceRequestEnvInner{}
 	for k, v := range envVars {
 		vars = append(vars, openapi_client.WorkspacesCreateWorkspaceRequestEnvInner{
@@ -56,7 +56,7 @@ func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string
 	return errors.FormatAPIError(r, err)
 }
 
-func (c *Client) ExecCommand(workspaceId int, command string, workdir string, env map[string]string) (string, string, error) {
+func (c *RealClient) ExecCommand(workspaceId int, command string, workdir string, env map[string]string) (string, string, error) {
 
 	workdirP := &workdir
 	if workdir == "" {
@@ -80,7 +80,7 @@ func (c *Client) ExecCommand(workspaceId int, command string, workdir string, en
 	return res.Output, res.Error, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) DeployLandscape(wsId int, profile string) error {
+func (c *RealClient) DeployLandscape(wsId int, profile string) error {
 	if profile == "ci.yml" || profile == "" {
 		req := c.api.WorkspacesAPI.WorkspacesDeployLandscape(c.ctx, float32(wsId))
 		r, err := req.Execute()
@@ -91,7 +91,7 @@ func (c *Client) DeployLandscape(wsId int, profile string) error {
 	return errors.FormatAPIError(r, err)
 }
 
-func (c *Client) StartPipelineStage(wsId int, profile string, stage string) error {
+func (c *RealClient) StartPipelineStage(wsId int, profile string, stage string) error {
 	if profile == "ci.yml" || profile == "" {
 		req := c.api.WorkspacesAPI.WorkspacesStartPipelineStage(c.ctx, float32(wsId), stage)
 		r, err := req.Execute()
@@ -102,7 +102,7 @@ func (c *Client) StartPipelineStage(wsId int, profile string, stage string) erro
 	return errors.FormatAPIError(r, err)
 }
 
-func (c *Client) GetPipelineState(wsId int, stage string) ([]PipelineStatus, error) {
+func (c *RealClient) GetPipelineState(wsId int, stage string) ([]PipelineStatus, error) {
 	req := c.api.WorkspacesAPI.WorkspacesPipelineStatus(c.ctx, float32(wsId), stage)
 	res, r, err := req.Execute()
 	return res, errors.FormatAPIError(r, err)
@@ -110,7 +110,7 @@ func (c *Client) GetPipelineState(wsId int, stage string) ([]PipelineStatus, err
 
 // ScaleWorkspace sets the number of replicas for a workspace.
 // For on-demand workspaces, setting replicas to 1 wakes up the workspace.
-func (c *Client) ScaleWorkspace(wsId int, replicas int) error {
+func (c *RealClient) ScaleWorkspace(wsId int, replicas int) error {
 	req := c.api.WorkspacesAPI.WorkspacesUpdateWorkspace(c.ctx, float32(wsId)).
 		WorkspacesUpdateWorkspaceRequest(openapi_client.WorkspacesUpdateWorkspaceRequest{
 			Replicas: &replicas,
@@ -121,7 +121,7 @@ func (c *Client) ScaleWorkspace(wsId int, replicas int) error {
 
 // ScaleLandscapeServices scales landscape services by name.
 // The services map contains service name -> replica count.
-func (c *Client) ScaleLandscapeServices(wsId int, services map[string]int) error {
+func (c *RealClient) ScaleLandscapeServices(wsId int, services map[string]int) error {
 	req := c.api.WorkspacesAPI.WorkspacesScaleLandscapeServices(c.ctx, float32(wsId)).
 		RequestBody(services)
 	resp, err := req.Execute()
@@ -131,7 +131,7 @@ func (c *Client) ScaleLandscapeServices(wsId int, services map[string]int) error
 // Waits for a given workspace to be running.
 //
 // Returns [TimedOut] error if the workspace does not become running in time.
-func (client *Client) WaitForWorkspaceRunning(workspace *Workspace, timeout time.Duration) error {
+func (client *RealClient) WaitForWorkspaceRunning(workspace *Workspace, timeout time.Duration) error {
 	delay := 5 * time.Second
 
 	maxWaitTime := client.time.Now().Add(timeout)
@@ -178,7 +178,7 @@ type DeployWorkspaceArgs struct {
 // Deploys a workspace with the given configuration.
 //
 // Returns [TimedOut] error if the timeout is reached
-func (client Client) DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, error) {
+func (client *RealClient) DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, error) {
 	createArgs := CreateWorkspaceArgs{
 		TeamId:            args.TeamId,
 		Name:              args.Name,
@@ -221,7 +221,7 @@ func (client Client) DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, erro
 	return workspace, nil
 }
 
-func (c Client) GitPull(workspaceId int, remote string, branch string) error {
+func (c *RealClient) GitPull(workspaceId int, remote string, branch string) error {
 	if remote == "" {
 		req := c.api.WorkspacesAPI.WorkspacesGitPull(c.ctx, float32(workspaceId))
 		r, err := req.Execute()

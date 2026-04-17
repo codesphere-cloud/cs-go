@@ -23,9 +23,8 @@ type ReplicaStatus struct {
 	Server  string `json:"server"`
 }
 
-func GetPipelineStatus(ws int, stage string) (res []ReplicaStatus, err error) {
-
-	status, err := Get(fmt.Sprintf("workspaces/%d/pipeline/%s", ws, stage))
+func GetPipelineStatus(ws int, stage string, statefile string) (res []ReplicaStatus, err error) {
+	status, err := Get(fmt.Sprintf("workspaces/%d/pipeline/%s", ws, stage), statefile)
 	if err != nil {
 		err = fmt.Errorf("failed to get pipeline status: %w", err)
 		return
@@ -39,13 +38,13 @@ func GetPipelineStatus(ws int, stage string) (res []ReplicaStatus, err error) {
 	return
 }
 
-func Get(path string) (body []byte, err error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/%s", NewEnv().GetApiUrl(), strings.TrimPrefix(path, "/")), http.NoBody)
+func Get(path string, statefile string) (body []byte, err error) {
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/%s", NewEnv(statefile).GetApiUrl(), strings.TrimPrefix(path, "/")), http.NoBody)
 	if err != nil {
 		err = fmt.Errorf("failed to create request: %w", err)
 		return
 	}
-	err = SetAuthoriziationHeader(req)
+	err = SetAuthoriziationHeader(req, statefile)
 	if err != nil {
 		err = fmt.Errorf("failed to set header: %w", err)
 		return
@@ -61,8 +60,8 @@ func Get(path string) (body []byte, err error) {
 	return
 }
 
-func SetAuthoriziationHeader(req *http.Request) error {
-	token, err := NewEnv().GetApiToken()
+func SetAuthoriziationHeader(req *http.Request, statefile string) error {
+	token, err := NewEnv(statefile).GetApiToken()
 	if err != nil {
 		return fmt.Errorf("failed to get API token: %w", err)
 	}

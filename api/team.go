@@ -15,7 +15,7 @@ import (
 //
 // Returns [NotFound] if no plan with the given Id could be found
 // Returns [Duplicated] if no plan with the given Id could be found
-func (client *Client) TeamIdByName(name string) (Team, error) {
+func (client *RealClient) TeamIdByName(name string) (Team, error) {
 	teams, err := client.ListTeams()
 	if err != nil {
 		return Team{}, err
@@ -39,17 +39,17 @@ func (client *Client) TeamIdByName(name string) (Team, error) {
 	return matchingTeams[0], nil
 }
 
-func (c *Client) ListTeams() ([]Team, error) {
+func (c *RealClient) ListTeams() ([]Team, error) {
 	teams, r, err := c.api.TeamsAPI.TeamsListTeams(c.ctx).Execute()
 	return teams, cserrors.FormatAPIError(r, err)
 }
 
-func (c *Client) GetTeam(teamId int) (*Team, error) {
+func (c *RealClient) GetTeam(teamId int) (*Team, error) {
 	team, r, err := c.api.TeamsAPI.TeamsGetTeam(c.ctx, float32(teamId)).Execute()
 	return ConvertToTeam(team), cserrors.FormatAPIError(r, err)
 }
 
-func (c *Client) CreateTeam(name string, dc int) (*Team, error) {
+func (c *RealClient) CreateTeam(name string, dc int) (*Team, error) {
 	team, r, err := c.api.TeamsAPI.TeamsCreateTeam(c.ctx).
 		TeamsCreateTeamRequest(openapi_client.TeamsCreateTeamRequest{
 			Name: name,
@@ -59,7 +59,7 @@ func (c *Client) CreateTeam(name string, dc int) (*Team, error) {
 	return ConvertToTeam(team), cserrors.FormatAPIError(r, err)
 }
 
-func (c *Client) DeleteTeam(teamId int) error {
+func (c *RealClient) DeleteTeam(teamId int) error {
 	r, err := c.api.TeamsAPI.TeamsDeleteTeam(c.ctx, float32(teamId)).Execute()
 	return cserrors.FormatAPIError(r, err)
 }

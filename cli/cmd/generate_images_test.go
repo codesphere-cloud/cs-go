@@ -13,12 +13,13 @@ import (
 	"github.com/codesphere-cloud/cs-go/pkg/ci"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/exporter"
+	"github.com/codesphere-cloud/cs-go/pkg/util"
 )
 
 var _ = Describe("GenerateImages", func() {
 	var (
-		memoryFs     *cs.FileSystem
-		mockEnv      *cmd.MockEnv
+		memoryFs     *util.FileSystem
+		mockEnv      *cs.MockEnv
 		mockExporter *exporter.MockExporter
 		c            *cmd.GenerateImagesCmd
 		wsId         int
@@ -28,8 +29,8 @@ var _ = Describe("GenerateImages", func() {
 	BeforeEach(func() {
 		input := "ci.dev.yml"
 
-		memoryFs = cs.NewMemFileSystem()
-		mockEnv = cmd.NewMockEnv(GinkgoT())
+		memoryFs = util.NewMemFileSystem()
+		mockEnv = cs.NewMockEnv(GinkgoT())
 		mockExporter = exporter.NewMockExporter(GinkgoT())
 
 		repoRoot = "fake-root"
@@ -39,10 +40,9 @@ var _ = Describe("GenerateImages", func() {
 		c = &cmd.GenerateImagesCmd{
 			Opts: &cmd.GenerateImagesOpts{
 				GenerateOpts: &cmd.GenerateOpts{
-					GlobalOptions: &cmd.GlobalOptions{
-						Env:         mockEnv,
+					GlobalOptions: cmd.NewGlobalOptionsWithCustomEnv(cmd.GlobalOptions{
 						WorkspaceId: wsId,
-					},
+					}, mockEnv),
 					Input:  defaultInput,
 					Output: defaultOutput,
 				},

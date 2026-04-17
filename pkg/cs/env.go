@@ -8,13 +8,25 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+
+	"github.com/codesphere-cloud/cs-go/api"
+	"github.com/codesphere-cloud/cs-go/pkg/util"
 )
 
+type Env interface {
+	GetApiToken() (string, error)
+	GetTeamId() (int, error)
+	GetWorkspaceId() (int, error)
+	GetApiUrl() string
+}
 type Environment struct {
+	statefile string
 }
 
-func NewEnv() *Environment {
-	return &Environment{}
+func NewEnv(statefile string) *Environment {
+	return &Environment{
+		statefile: statefile,
+	}
 }
 
 func (e *Environment) GetApiToken() (string, error) {
@@ -31,10 +43,23 @@ func (e *Environment) GetWorkspaceId() (int, error) {
 		return prefixedId, nil
 	}
 
+	upState := &UpState{}
+	err = upState.Load(e.statefile, &api.RealTime{}, util.NewOSFileSystem("."))
+
+	if err == nil && upState.WorkspaceId > -1 {
+		return upState.WorkspaceId, nil
+	}
+
 	return e.ReadNumericEnv("WORKSPACE_ID")
 }
 
 func (e *Environment) GetTeamId() (int, error) {
+	upState := &UpState{}
+	err := upState.Load(e.statefile, &api.RealTime{}, util.NewOSFileSystem("."))
+
+	if err == nil && upState.TeamId > 0 {
+		return upState.TeamId, nil
+	}
 	return e.ReadNumericEnv("CS_TEAM_ID")
 }
 

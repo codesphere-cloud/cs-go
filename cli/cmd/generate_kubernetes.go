@@ -9,9 +9,9 @@ import (
 	"log"
 	"path"
 
-	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/exporter"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
+	"github.com/codesphere-cloud/cs-go/pkg/util"
 	"github.com/spf13/cobra"
 )
 
@@ -31,7 +31,7 @@ type GenerateKubernetesOpts struct {
 }
 
 func (c *GenerateKubernetesCmd) RunE(_ *cobra.Command, args []string) error {
-	fs := cs.NewOSFileSystem(c.Opts.RepoRoot)
+	fs := util.NewOSFileSystem(c.Opts.RepoRoot)
 
 	exporter := exporter.NewExporterService(fs, c.Opts.Output, "", []string{}, c.Opts.RepoRoot, c.Opts.Force)
 	if err := c.GenerateKubernetes(fs, exporter); err != nil {
@@ -87,7 +87,7 @@ func AddGenerateKubernetesCmd(generate *cobra.Command, opts *GenerateOpts) {
 	kubernetes.cmd.RunE = kubernetes.RunE
 }
 
-func (c *GenerateKubernetesCmd) GenerateKubernetes(fs *cs.FileSystem, exp exporter.Exporter) error {
+func (c *GenerateKubernetesCmd) GenerateKubernetes(fs *util.FileSystem, exp exporter.Exporter) error {
 	ciInput := c.Opts.Input
 	if c.Opts.Registry == "" {
 		return errors.New("registry is required")

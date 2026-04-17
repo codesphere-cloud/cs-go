@@ -1,0 +1,15 @@
+# Copyright (c) Codesphere Inc.
+# SPDX-License-Identifier: Apache-2.0
+
+profile: ""
+timeout: 0s
+branch: ""
+team: 30
+workspace: 42
+plan: 8
+workspace_name: ""
+base_image: ""
+env: []
+public_dev_domain: public
+repo_access: public
+remote: origin

@@ -1,7 +1,7 @@
 // Copyright (c) Codesphere Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-package cmd_test
+package pipeline_test
 
 import (
 	"time"
@@ -12,41 +12,32 @@ import (
 
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
+	"github.com/codesphere-cloud/cs-go/pkg/pipeline"
 )
 
 var _ = Describe("StartPipeline", func() {
 	var (
-		mockClient *cmd.MockClient
 		mockTime   *api.MockTime
-		c          *cmd.StartPipelineCmd
+		mockClient *cmd.MockClient
 		wsId       int
 		timeout    time.Duration
 		stages     []string
 		profile    string
 		verbose    bool
+		pr         *pipeline.PipelineRunner
 	)
 
 	BeforeEach(func() {
-		mockClient = cmd.NewMockClient(GinkgoT())
 		mockTime = api.NewMockTime(GinkgoT())
 		wsId = 21
 		profile = ""
 		timeout = 30 * time.Second
 		verbose = false
+		mockClient = cmd.NewMockClient(GinkgoT())
 	})
 
 	JustBeforeEach(func() {
-		c = &cmd.StartPipelineCmd{
-			Opts: cmd.StartPipelineOpts{
-				GlobalOptions: &cmd.GlobalOptions{
-					WorkspaceId: wsId,
-					Verbose:     verbose,
-				},
-				Profile: &profile,
-				Timeout: &timeout,
-			},
-			Time: mockTime,
-		}
+		pr = pipeline.NewPipelineRunnerWidthCustomDeps(mockClient, profile, mockTime, timeout, verbose)
 	})
 
 	Context("invalid pipeline stage specified", func() {
@@ -55,7 +46,7 @@ var _ = Describe("StartPipeline", func() {
 		})
 
 		It("fails before executing any stage", func() {
-			err := c.StartPipelineStages(mockClient, wsId, stages)
+			err := pr.StartPipelineStages(wsId, stages)
 			Expect(err).To(MatchError("invalid pipeline stage: " + stages[0]))
 		})
 	})
@@ -104,13 +95,13 @@ var _ = Describe("StartPipeline", func() {
 						profile = "prod"
 					})
 					It("starts all 3 stages sequentially", func() {
-						err := c.StartPipelineStages(mockClient, wsId, stages)
+						err := pr.StartPipelineStages(wsId, stages)
 						Expect(err).NotTo(HaveOccurred())
 					})
 				})
 
 				It("starts all 3 stages sequentially", func() {
-					err := c.StartPipelineStages(mockClient, wsId, stages)
+					err := pr.StartPipelineStages(wsId, stages)
 					Expect(err).NotTo(HaveOccurred())
 				})
 			})
@@ -129,7 +120,7 @@ var _ = Describe("StartPipeline", func() {
 					mockClient.EXPECT().GetPipelineState(wsId, stages[2]).Return(reportedStatusWaiting, nil).Times(2).NotBefore(runStartCall)
 					mockClient.EXPECT().GetPipelineState(wsId, stages[2]).Return(reportedStatusRunning, nil).NotBefore(runStartCall)
 
-					err := c.StartPipelineStages(mockClient, wsId, stages)
+					err := pr.StartPipelineStages(wsId, stages)
 					Expect(err).NotTo(HaveOccurred())
 				})
 			})
@@ -144,7 +135,7 @@ var _ = Describe("StartPipeline", func() {
 					//this should result in a timeout
 					mockClient.EXPECT().GetPipelineState(wsId, stages[1]).Return(reportedStatusRunning, nil).Times(8).NotBefore(testStartCall)
 
-					err := c.StartPipelineStages(mockClient, wsId, stages)
+					err := pr.StartPipelineStages(wsId, stages)
 					Expect(err).To(MatchError("failed waiting for stage test to finish: timed out waiting for pipeline stage test to be complete"))
 				})
 			})
@@ -154,7 +145,7 @@ var _ = Describe("StartPipeline", func() {
 					prepareStartCall := mockClient.EXPECT().StartPipelineStage(wsId, profile, stages[0]).Return(nil).Call
 					mockClient.EXPECT().GetPipelineState(wsId, stages[0]).Return(reportedStatusFailure, nil).NotBefore(prepareStartCall)
 
-					err := c.StartPipelineStages(mockClient, wsId, stages)
+					err := pr.StartPipelineStages(wsId, stages)
 					Expect(err).To(MatchError("failed waiting for stage prepare to finish: stage prepare failed: server A, replica 0 reached unexpected state failure"))
 				})
 			})

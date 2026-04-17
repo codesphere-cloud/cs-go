@@ -8,10 +8,10 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/exporter"
 	"github.com/codesphere-cloud/cs-go/pkg/git"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
+	"github.com/codesphere-cloud/cs-go/pkg/util"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +27,7 @@ type GenerateDockerOpts struct {
 }
 
 func (c *GenerateDockerCmd) RunE(cc *cobra.Command, args []string) error {
-	fs := cs.NewOSFileSystem(c.Opts.RepoRoot)
+	fs := util.NewOSFileSystem(c.Opts.RepoRoot)
 	gitSvc := git.NewGitService(fs)
 
 	exporter := exporter.NewExporterService(fs, c.Opts.Output, c.Opts.BaseImage, c.Opts.Envs, c.Opts.RepoRoot, c.Opts.Force)
@@ -93,7 +93,7 @@ func AddGenerateDockerCmd(generate *cobra.Command, opts *GenerateOpts) {
 	docker.cmd.RunE = docker.RunE
 }
 
-func (c *GenerateDockerCmd) GenerateDocker(fs *cs.FileSystem, exp exporter.Exporter, git git.Git, clientFactory func() (Client, error)) error {
+func (c *GenerateDockerCmd) GenerateDocker(fs *util.FileSystem, exp exporter.Exporter, git git.Git, clientFactory func() (Client, error)) error {
 	if c.Opts.BaseImage == "" {
 		return errors.New("baseimage is required")
 	}
@@ -128,7 +128,7 @@ func (c *GenerateDockerCmd) GenerateDocker(fs *cs.FileSystem, exp exporter.Expor
 	return nil
 }
 
-func (c *GenerateDockerCmd) CloneRepository(client Client, fs *cs.FileSystem, git git.Git, clonedir string) error {
+func (c *GenerateDockerCmd) CloneRepository(client Client, fs *util.FileSystem, git git.Git, clonedir string) error {
 	log.Printf("Cloning repository into %s...\n", clonedir)
 
 	wsId, err := c.Opts.GetWorkspaceId()
