@@ -277,9 +277,7 @@ func (p *Proxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func AddMonitorCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	monitor := MonitorCmd{
 		Cmd: &cobra.Command{
-			Use: "monitor",
-			// Args is set to ArbitraryArgs to allow any command with any number of arguments and flags to be passed to monitor without cobra trying to parse them.
-			Args:  cobra.ArbitraryArgs,
+			Use:   "monitor",
 			Short: "Monitor a command and report health information",
 			Long: csio.Long(`Loops over running a command and report information in a health endpoint.
 
@@ -299,6 +297,7 @@ func AddMonitorCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 				{Cmd: "--forward --insecure-skip-verify -- ./my-app --healthcheck https://localhost:8443", Desc: "forward health-check to application health endpoint, ignore invalid TLS certs"},
 				{Cmd: "--forward --ca-cert-file ca.crt -- ./my-app --healthcheck https://localhost:8443", Desc: "forward health-check to application health endpoint, using custom CA cert, e.g. for self-signed certs"},
 			}),
+			Args: cobra.ArbitraryArgs,
 		},
 		Time: &api.RealTime{},
 		Opts: MonitorOpts{GlobalOptions: opts},

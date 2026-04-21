@@ -75,8 +75,8 @@ func GetRootCmd() *cobra.Command {
 		Use:               "cs",
 		Short:             "The Codesphere CLI",
 		Long:              `Manage and debug resources deployed in Codesphere via command line.`,
-		DisableAutoGenTag: true,
 		Args:              cobra.NoArgs,
+		DisableAutoGenTag: true,
 	}
 
 	opts := GlobalOptions{Env: cs.NewEnv()}
