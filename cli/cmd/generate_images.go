@@ -63,7 +63,7 @@ func AddGenerateImagesCmd(generate *cobra.Command, opts *GenerateOpts) {
 	images.cmd.Flags().StringVarP(&images.Opts.Registry, "registry", "r", "", "Registry to push the resulting images to")
 	images.cmd.Flags().StringVarP(&images.Opts.ImagePrefix, "imagePrefix", "p", "", "Image prefix to use for the exported images")
 
-	generate.AddCommand(images.cmd)
+	AddCmd(generate, images.cmd)
 	images.cmd.RunE = images.RunE
 }
 

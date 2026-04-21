@@ -59,7 +59,7 @@ func AddGitPullCmd(git *cobra.Command, opts *GlobalOptions) {
 		Opts: GitPullOpts{GlobalOptions: opts},
 	}
 
-	git.AddCommand(pull.cmd)
+	AddCmd(git, pull.cmd)
 	pull.Opts.Branch = pull.cmd.Flags().String("branch", "", "Branch to pull")
 	pull.Opts.Remote = pull.cmd.Flags().String("remote", "", "Remote to pull from")
 	pull.cmd.RunE = pull.RunE

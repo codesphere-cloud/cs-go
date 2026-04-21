@@ -48,7 +48,7 @@ func AddOpenWorkspaceCmd(open *cobra.Command, opts *GlobalOptions) {
 		},
 		Opts: opts,
 	}
-	open.AddCommand(workspace.cmd)
+	AddCmd(open, workspace.cmd)
 	workspace.cmd.RunE = workspace.RunE
 }
 

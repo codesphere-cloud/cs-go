@@ -31,7 +31,7 @@ func addListTeamsCmd(p *cobra.Command, opts *ListOptions) {
 		opts: opts,
 	}
 	l.cmd.RunE = l.RunE
-	p.AddCommand(l.cmd)
+	AddCmd(p, l.cmd)
 }
 
 func (l *ListTeamsCmd) RunE(_ *cobra.Command, args []string) (err error) {

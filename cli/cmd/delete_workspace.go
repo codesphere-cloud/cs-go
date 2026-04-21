@@ -54,7 +54,7 @@ func AddDeleteWorkspaceCmd(delete *cobra.Command, opts *GlobalOptions) {
 		Prompt: &io.Prompt{},
 	}
 	workspace.Opts.Confirmed = workspace.cmd.Flags().Bool("yes", false, "Confirm deletion of workspace")
-	delete.AddCommand(workspace.cmd)
+	AddCmd(delete, workspace.cmd)
 	workspace.cmd.RunE = workspace.RunE
 }
 

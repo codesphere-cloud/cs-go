@@ -61,11 +61,21 @@ func (o GlobalOptions) GetWorkspaceId() (int, error) {
 	return wsId, nil
 }
 
+// AddCmd adds a command, inheriting the parent's Args validator if not explicitly set.
+// Individual commands that need different argument rules can override this by setting their own Args validator.
+func AddCmd(parent *cobra.Command, cmd *cobra.Command) {
+	if cmd.Args == nil {
+		cmd.Args = parent.Args
+	}
+	parent.AddCommand(cmd)
+}
+
 func GetRootCmd() *cobra.Command {
 	var rootCmd = &cobra.Command{
 		Use:               "cs",
 		Short:             "The Codesphere CLI",
 		Long:              `Manage and debug resources deployed in Codesphere via command line.`,
+		Args:              cobra.NoArgs,
 		DisableAutoGenTag: true,
 	}
 

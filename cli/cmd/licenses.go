@@ -35,6 +35,6 @@ func AddLicensesCmd(rootCmd *cobra.Command) {
 			Long:  `Print information about the Codesphere CLI license and open source licenses of dependencies.`,
 		},
 	}
-	rootCmd.AddCommand(licenses.cmd)
+	AddCmd(rootCmd, licenses.cmd)
 	licenses.cmd.RunE = licenses.RunE
 }

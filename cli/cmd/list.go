@@ -48,7 +48,7 @@ func AddListCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 		return nil
 	}
 
-	rootCmd.AddCommand(l.cmd)
+	AddCmd(rootCmd, l.cmd)
 	addListWorkspacesCmd(l.cmd, listOpts)
 	AddListBaseimagesCmd(l.cmd, listOpts)
 	addListTeamsCmd(l.cmd, listOpts)

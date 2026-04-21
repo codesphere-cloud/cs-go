@@ -83,7 +83,7 @@ func AddGenerateKubernetesCmd(generate *cobra.Command, opts *GenerateOpts) {
 	kubernetes.cmd.Flags().StringVar(&kubernetes.Opts.Hostname, "hostname", "localhost", "hostname for the ingress to match")
 	kubernetes.cmd.Flags().StringVar(&kubernetes.Opts.IngressClass, "ingressClass", "nginx", "ingress class for the ingress resource")
 
-	generate.AddCommand(kubernetes.cmd)
+	AddCmd(generate, kubernetes.cmd)
 	kubernetes.cmd.RunE = kubernetes.RunE
 }
 

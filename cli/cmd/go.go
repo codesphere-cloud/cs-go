@@ -31,6 +31,6 @@ func AddGoCmd(rootCmd *cobra.Command) {
 	goCmd := GoCmd{
 		cmd: &cobra.Command{Hidden: true, Use: "go"},
 	}
-	rootCmd.AddCommand(goCmd.cmd)
+	AddCmd(rootCmd, goCmd.cmd)
 	goCmd.cmd.RunE = goCmd.RunE
 }

@@ -19,7 +19,7 @@ func AddCreateCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 			Long:  `Create codesphere resources like workspaces.`,
 		},
 	}
-	rootCmd.AddCommand(create.cmd)
+	AddCmd(rootCmd, create.cmd)
 
 	// Add child commands here
 	AddCreateWorkspaceCmd(create.cmd, opts)

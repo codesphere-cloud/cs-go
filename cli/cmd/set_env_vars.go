@@ -37,7 +37,7 @@ func AddSetEnvVarCmd(p *cobra.Command, opts *GlobalOptions) {
 	}
 	l.cmd.RunE = l.RunE
 	l.parseFlags()
-	p.AddCommand(l.cmd)
+	AddCmd(p, l.cmd)
 }
 
 func (l *SetEnvVarCmd) parseFlags() {

@@ -51,7 +51,7 @@ func AddSyncLandscapeCmd(sync *cobra.Command, opts *GlobalOptions) {
 
 	workspace.cmd.RunE = workspace.RunE
 
-	sync.AddCommand(workspace.cmd)
+	AddCmd(sync, workspace.cmd)
 }
 
 func (c *SyncLandscapeCmd) SyncLandscape(client Client, wsId int) error {

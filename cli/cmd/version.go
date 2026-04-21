@@ -30,6 +30,6 @@ func AddVersionCmd(rootCmd *cobra.Command) {
 			Long:  `Print current version of Codesphere CLI.`,
 		},
 	}
-	rootCmd.AddCommand(version.cmd)
+	AddCmd(rootCmd, version.cmd)
 	version.cmd.RunE = version.RunE
 }

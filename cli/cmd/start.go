@@ -19,6 +19,6 @@ func AddStartCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 			Long:  `Start pipeline of a workspace using the pipeline subcommand`,
 		},
 	}
-	rootCmd.AddCommand(start.cmd)
+	AddCmd(rootCmd, start.cmd)
 	AddStartPipelineCmd(start.cmd, opts)
 }

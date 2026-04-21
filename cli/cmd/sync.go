@@ -21,7 +21,7 @@ func AddSyncCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 			Long:  io.Long(`Synchronize Codesphere resources, like infrastructure required to run services.`),
 		},
 	}
-	rootCmd.AddCommand(sync.cmd)
+	AddCmd(rootCmd, sync.cmd)
 
 	AddSyncLandscapeCmd(sync.cmd, opts)
 }

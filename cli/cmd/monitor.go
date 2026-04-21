@@ -297,6 +297,7 @@ func AddMonitorCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 				{Cmd: "--forward --insecure-skip-verify -- ./my-app --healthcheck https://localhost:8443", Desc: "forward health-check to application health endpoint, ignore invalid TLS certs"},
 				{Cmd: "--forward --ca-cert-file ca.crt -- ./my-app --healthcheck https://localhost:8443", Desc: "forward health-check to application health endpoint, using custom CA cert, e.g. for self-signed certs"},
 			}),
+			Args: cobra.ArbitraryArgs,
 		},
 		Time: &api.RealTime{},
 		Opts: MonitorOpts{GlobalOptions: opts},
@@ -308,6 +309,6 @@ func AddMonitorCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	monitor.Opts.Forward = monitor.Cmd.Flags().String("forward", "", "Forward healthcheck requests to application health endpoint")
 	monitor.Opts.InsecureSkipVerify = monitor.Cmd.Flags().Bool("insecure-skip-verify", false, "Skip TLS validation (only relevant for --forward option when healthcheck is exposed as HTTPS endpoint with custom certificate)")
 	monitor.Opts.CaCertFile = monitor.Cmd.Flags().String("ca-cert-file", "", "TLS CA certificate (only relevant for --forward option when healthcheck is exposed as HTTPS enpoint with custom certificate)")
-	rootCmd.AddCommand(monitor.Cmd)
+	AddCmd(rootCmd, monitor.Cmd)
 	monitor.Cmd.RunE = monitor.RunE
 }

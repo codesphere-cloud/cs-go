@@ -6,7 +6,6 @@ package int_test
 import (
 	"fmt"
 	"log"
-	"strings"
 
 	intutil "github.com/codesphere-cloud/cs-go/int/util"
 	. "github.com/onsi/ginkgo/v2"
@@ -61,29 +60,25 @@ var _ = Describe("Version and Help Tests", Label("local"), func() {
 	})
 
 	Context("Invalid Commands", func() {
-		It("should handle unknown commands gracefully", func() {
+		It("should show help for unknown commands", func() {
 			By("Running unknown command")
-			output, exitCode := intutil.RunCommandWithExitCode("unknowncommand")
-			log.Printf("Unknown command output: %s (exit code: %d)\n", output, exitCode)
-
-			Expect(exitCode).NotTo(Equal(0))
+			output := intutil.RunCommand("unknowncommand")
 			Expect(output).To(Or(
-				ContainSubstring("unknown command"),
-				ContainSubstring("Error:"),
+				ContainSubstring("Usage:"),
+				ContainSubstring("Run 'cs --help' for usage."),
 			))
 		})
 
-		It("should suggest similar commands for typos", func() {
+		It("should show help for misspelled commands", func() {
 			By("Running misspelled command")
-			output, exitCode := intutil.RunCommandWithExitCode("listt")
-			log.Printf("Typo command output: %s (exit code: %d)\n", output, exitCode)
-
-			Expect(exitCode).NotTo(Equal(0))
-			lowerOutput := strings.ToLower(output)
-			Expect(lowerOutput).To(Or(
-				ContainSubstring("unknown"),
-				ContainSubstring("error"),
-				ContainSubstring("did you mean"),
+			output := intutil.RunCommand("listt")
+			Expect(output).To(Or(
+				ContainSubstring("Usage:"),
+				ContainSubstring("Run 'cs --help' for usage."),
+			))
+			Expect(output).To(Or(
+				ContainSubstring("Did you mean this?"),
+				ContainSubstring("Available Commands:"),
 			))
 		})
 	})
