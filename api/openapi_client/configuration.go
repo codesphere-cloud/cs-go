@@ -94,7 +94,7 @@ func NewConfiguration() *Configuration {
 		Debug:         false,
 		Servers: ServerConfigurations{
 			{
-				URL:         "https://codesphere.com/api",
+				URL:         "https://cloud.codesphere.com/api",
 				Description: "No description provided",
 			},
 		},
