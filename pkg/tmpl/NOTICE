@@ -185,9 +185,9 @@ License URL: https://github.com/jbenet/go-context/blob/d14ea06fba99/LICENSE
  
 ----------
 Module: github.com/jedib0t/go-pretty/v6
-Version: v6.7.9
+Version: v6.7.10
 License: MIT
-License URL: https://github.com/jedib0t/go-pretty/blob/v6.7.9/LICENSE
+License URL: https://github.com/jedib0t/go-pretty/blob/v6.7.10/LICENSE
  
 ----------
 Module: github.com/json-iterator/go
@@ -215,9 +215,9 @@ License URL: https://github.com/liggitt/tabwriter/blob/89fcab3d43de/LICENSE
  
 ----------
 Module: github.com/mattn/go-runewidth
-Version: v0.0.19
+Version: v0.0.23
 License: MIT
-License URL: https://github.com/mattn/go-runewidth/blob/v0.0.19/LICENSE
+License URL: https://github.com/mattn/go-runewidth/blob/v0.0.23/LICENSE
  
 ----------
 Module: github.com/moby/term
@@ -245,15 +245,15 @@ License URL: https://github.com/munnerz/goautoneg/blob/a7dc8b61c822/LICENSE
  
 ----------
 Module: github.com/onsi/ginkgo/v2
-Version: v2.28.1
+Version: v2.28.3
 License: MIT
-License URL: https://github.com/onsi/ginkgo/blob/v2.28.1/LICENSE
+License URL: https://github.com/onsi/ginkgo/blob/v2.28.3/LICENSE
  
 ----------
 Module: github.com/onsi/gomega
-Version: v1.39.1
+Version: v1.40.0
 License: MIT
-License URL: https://github.com/onsi/gomega/blob/v1.39.1/LICENSE
+License URL: https://github.com/onsi/gomega/blob/v1.40.0/LICENSE
  
 ----------
 Module: github.com/pjbgf/sha1cd
@@ -431,9 +431,9 @@ License URL: https://cs.opensource.google/go/x/tools/+/v0.44.0:LICENSE
  
 ----------
 Module: google.golang.org/protobuf
-Version: v1.36.11
+Version: v1.36.12-0.20260120151049-f2248ac996af
 License: BSD-3-Clause
-License URL: https://github.com/protocolbuffers/protobuf-go/blob/v1.36.11/LICENSE
+License URL: https://github.com/protocolbuffers/protobuf-go/blob/f2248ac996af/LICENSE
  
 ----------
 Module: gopkg.in/inf.v0
@@ -461,39 +461,39 @@ License URL: https://github.com/go-yaml/yaml/blob/v3.0.1/LICENSE
  
 ----------
 Module: k8s.io/api
-Version: v0.35.4
+Version: v0.36.0
 License: Apache-2.0
-License URL: https://github.com/kubernetes/api/blob/v0.35.4/LICENSE
+License URL: https://github.com/kubernetes/api/blob/v0.36.0/LICENSE
  
 ----------
 Module: k8s.io/apimachinery/pkg
-Version: v0.35.4
+Version: v0.36.0
 License: Apache-2.0
-License URL: https://github.com/kubernetes/apimachinery/blob/v0.35.4/LICENSE
+License URL: https://github.com/kubernetes/apimachinery/blob/v0.36.0/LICENSE
  
 ----------
 Module: k8s.io/apimachinery/third_party/forked/golang/reflect
-Version: v0.35.4
+Version: v0.36.0
 License: BSD-3-Clause
-License URL: https://github.com/kubernetes/apimachinery/blob/v0.35.4/third_party/forked/golang/LICENSE
+License URL: https://github.com/kubernetes/apimachinery/blob/v0.36.0/third_party/forked/golang/LICENSE
  
 ----------
 Module: k8s.io/cli-runtime/pkg/printers
-Version: v0.35.4
+Version: v0.36.0
 License: Apache-2.0
-License URL: https://github.com/kubernetes/cli-runtime/blob/v0.35.4/LICENSE
+License URL: https://github.com/kubernetes/cli-runtime/blob/v0.36.0/LICENSE
  
 ----------
 Module: k8s.io/client-go/third_party/forked/golang/template
-Version: v0.35.4
+Version: v0.36.0
 License: BSD-3-Clause
-License URL: https://github.com/kubernetes/client-go/blob/v0.35.4/third_party/forked/golang/LICENSE
+License URL: https://github.com/kubernetes/client-go/blob/v0.36.0/third_party/forked/golang/LICENSE
  
 ----------
 Module: k8s.io/client-go/util/jsonpath
-Version: v0.35.4
+Version: v0.36.0
 License: Apache-2.0
-License URL: https://github.com/kubernetes/client-go/blob/v0.35.4/LICENSE
+License URL: https://github.com/kubernetes/client-go/blob/v0.36.0/LICENSE
  
 ----------
 Module: k8s.io/klog/v2
@@ -503,9 +503,9 @@ License URL: https://github.com/kubernetes/klog/blob/v2.140.0/LICENSE
  
 ----------
 Module: k8s.io/kube-openapi/pkg/util
-Version: v0.0.0-20251125145642-4e65d59e963e
+Version: v0.0.0-20260317180543-43fb72c5454a
 License: Apache-2.0
-License URL: https://github.com/kubernetes/kube-openapi/blob/4e65d59e963e/LICENSE
+License URL: https://github.com/kubernetes/kube-openapi/blob/43fb72c5454a/LICENSE
  
 ----------
 Module: k8s.io/utils
@@ -533,9 +533,9 @@ License URL: https://github.com/kubernetes-sigs/randfill/blob/v1.0.0/LICENSE
  
 ----------
 Module: sigs.k8s.io/structured-merge-diff/v6/value
-Version: v6.3.1
+Version: v6.3.2
 License: Apache-2.0
-License URL: https://github.com/kubernetes-sigs/structured-merge-diff/blob/v6.3.1/LICENSE
+License URL: https://github.com/kubernetes-sigs/structured-merge-diff/blob/v6.3.2/LICENSE
  
 ----------
 Module: sigs.k8s.io/yaml
