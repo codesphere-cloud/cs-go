@@ -24,6 +24,8 @@ var _ MappedNullable = &TeamsCreateTeamRequest{}
 type TeamsCreateTeamRequest struct {
 	Name string `json:"name"`
 	Dc   int    `json:"dc"`
+	// UUID
+	OrganizationId *string `json:"organizationId,omitempty"`
 }
 
 type _TeamsCreateTeamRequest TeamsCreateTeamRequest
@@ -95,6 +97,38 @@ func (o *TeamsCreateTeamRequest) SetDc(v int) {
 	o.Dc = v
 }
 
+// GetOrganizationId returns the OrganizationId field value if set, zero value otherwise.
+func (o *TeamsCreateTeamRequest) GetOrganizationId() string {
+	if o == nil || IsNil(o.OrganizationId) {
+		var ret string
+		return ret
+	}
+	return *o.OrganizationId
+}
+
+// GetOrganizationIdOk returns a tuple with the OrganizationId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *TeamsCreateTeamRequest) GetOrganizationIdOk() (*string, bool) {
+	if o == nil || IsNil(o.OrganizationId) {
+		return nil, false
+	}
+	return o.OrganizationId, true
+}
+
+// HasOrganizationId returns a boolean if a field has been set.
+func (o *TeamsCreateTeamRequest) HasOrganizationId() bool {
+	if o != nil && !IsNil(o.OrganizationId) {
+		return true
+	}
+
+	return false
+}
+
+// SetOrganizationId gets a reference to the given string and assigns it to the OrganizationId field.
+func (o *TeamsCreateTeamRequest) SetOrganizationId(v string) {
+	o.OrganizationId = &v
+}
+
 func (o TeamsCreateTeamRequest) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -107,6 +141,9 @@ func (o TeamsCreateTeamRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
 	toSerialize["dc"] = o.Dc
+	if !IsNil(o.OrganizationId) {
+		toSerialize["organizationId"] = o.OrganizationId
+	}
 	return toSerialize, nil
 }
 

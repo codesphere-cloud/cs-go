@@ -51,11 +51,17 @@ type APIClient struct {
 
 	DomainsAPI DomainsAPI
 
+	ManagedServicesAPI ManagedServicesAPI
+
 	MetadataAPI MetadataAPI
+
+	OrganizationsAPI OrganizationsAPI
 
 	TeamsAPI TeamsAPI
 
 	UsageAPI UsageAPI
+
+	VaultAPI VaultAPI
 
 	WorkspacesAPI WorkspacesAPI
 }
@@ -77,9 +83,12 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 
 	// API Services
 	c.DomainsAPI = (*DomainsAPIService)(&c.common)
+	c.ManagedServicesAPI = (*ManagedServicesAPIService)(&c.common)
 	c.MetadataAPI = (*MetadataAPIService)(&c.common)
+	c.OrganizationsAPI = (*OrganizationsAPIService)(&c.common)
 	c.TeamsAPI = (*TeamsAPIService)(&c.common)
 	c.UsageAPI = (*UsageAPIService)(&c.common)
+	c.VaultAPI = (*VaultAPIService)(&c.common)
 	c.WorkspacesAPI = (*WorkspacesAPIService)(&c.common)
 
 	return c
@@ -140,10 +149,10 @@ func typeCheckParameter(obj interface{}, expected string, name string) error {
 func parameterValueToString(obj interface{}, key string) string {
 	if reflect.TypeOf(obj).Kind() != reflect.Ptr {
 		if actualObj, ok := obj.(interface{ GetActualInstanceValue() interface{} }); ok {
-			return formatValue(actualObj.GetActualInstanceValue())
+			return fmt.Sprintf("%v", actualObj.GetActualInstanceValue())
 		}
 
-		return formatValue(obj)
+		return fmt.Sprintf("%v", obj)
 	}
 	var param, ok = obj.(MappedNullable)
 	if !ok {
@@ -153,19 +162,7 @@ func parameterValueToString(obj interface{}, key string) string {
 	if err != nil {
 		return ""
 	}
-	return formatValue(dataMap[key])
-}
-
-// formatValue converts a value to string, avoiding scientific notation for floats
-func formatValue(obj interface{}) string {
-	switch v := obj.(type) {
-	case float32:
-		return fmt.Sprintf("%.0f", v)
-	case float64:
-		return fmt.Sprintf("%.0f", v)
-	default:
-		return fmt.Sprintf("%v", obj)
-	}
+	return fmt.Sprintf("%v", dataMap[key])
 }
 
 // parameterAddToHeaderOrQuery adds the provided object to the request header or url query
@@ -516,10 +513,7 @@ func addFile(w *multipart.Writer, fieldName, path string) error {
 	if err != nil {
 		return err
 	}
-	err = file.Close()
-	if err != nil {
-		return err
-	}
+	defer file.Close()
 
 	part, err := w.CreateFormFile(fieldName, filepath.Base(path))
 	if err != nil {

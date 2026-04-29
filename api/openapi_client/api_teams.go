@@ -23,6 +23,21 @@ import (
 type TeamsAPI interface {
 
 	/*
+		TeamsChangeRole changeRole
+
+		Change the role of a team member
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param teamId
+		@param userId
+		@return ApiTeamsChangeRoleRequest
+	*/
+	TeamsChangeRole(ctx context.Context, teamId float32, userId float32) ApiTeamsChangeRoleRequest
+
+	// TeamsChangeRoleExecute executes the request
+	TeamsChangeRoleExecute(r ApiTeamsChangeRoleRequest) (*http.Response, error)
+
+	/*
 		TeamsCreateTeam createTeam
 
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -60,6 +75,35 @@ type TeamsAPI interface {
 	TeamsGetTeamExecute(r ApiTeamsGetTeamRequest) (*TeamsGetTeam200Response, *http.Response, error)
 
 	/*
+		TeamsInviteMember inviteMember
+
+		Invite a user to a team by email
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param teamId
+		@return ApiTeamsInviteMemberRequest
+	*/
+	TeamsInviteMember(ctx context.Context, teamId float32) ApiTeamsInviteMemberRequest
+
+	// TeamsInviteMemberExecute executes the request
+	TeamsInviteMemberExecute(r ApiTeamsInviteMemberRequest) (*http.Response, error)
+
+	/*
+		TeamsListMembers listMembers
+
+		List all members associated with a team
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param teamId
+		@return ApiTeamsListMembersRequest
+	*/
+	TeamsListMembers(ctx context.Context, teamId float32) ApiTeamsListMembersRequest
+
+	// TeamsListMembersExecute executes the request
+	//  @return []TeamsListMembers200ResponseInner
+	TeamsListMembersExecute(r ApiTeamsListMembersRequest) ([]TeamsListMembers200ResponseInner, *http.Response, error)
+
+	/*
 		TeamsListTeams listTeams
 
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -70,10 +114,184 @@ type TeamsAPI interface {
 	// TeamsListTeamsExecute executes the request
 	//  @return []TeamsListTeams200ResponseInner
 	TeamsListTeamsExecute(r ApiTeamsListTeamsRequest) ([]TeamsListTeams200ResponseInner, *http.Response, error)
+
+	/*
+		TeamsMigrateTeamToOrg migrateTeamToOrg
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param teamId
+		@return ApiTeamsMigrateTeamToOrgRequest
+	*/
+	TeamsMigrateTeamToOrg(ctx context.Context, teamId float32) ApiTeamsMigrateTeamToOrgRequest
+
+	// TeamsMigrateTeamToOrgExecute executes the request
+	TeamsMigrateTeamToOrgExecute(r ApiTeamsMigrateTeamToOrgRequest) (*http.Response, error)
+
+	/*
+		TeamsRemoveMember removeMember
+
+		Remove a member from a team
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param teamId
+		@param userId
+		@return ApiTeamsRemoveMemberRequest
+	*/
+	TeamsRemoveMember(ctx context.Context, teamId float32, userId float32) ApiTeamsRemoveMemberRequest
+
+	// TeamsRemoveMemberExecute executes the request
+	TeamsRemoveMemberExecute(r ApiTeamsRemoveMemberRequest) (*http.Response, error)
 }
 
 // TeamsAPIService TeamsAPI service
 type TeamsAPIService service
+
+type ApiTeamsChangeRoleRequest struct {
+	ctx                    context.Context
+	ApiService             TeamsAPI
+	teamId                 float32
+	userId                 float32
+	teamsChangeRoleRequest *TeamsChangeRoleRequest
+}
+
+func (r ApiTeamsChangeRoleRequest) TeamsChangeRoleRequest(teamsChangeRoleRequest TeamsChangeRoleRequest) ApiTeamsChangeRoleRequest {
+	r.teamsChangeRoleRequest = &teamsChangeRoleRequest
+	return r
+}
+
+func (r ApiTeamsChangeRoleRequest) Execute() (*http.Response, error) {
+	return r.ApiService.TeamsChangeRoleExecute(r)
+}
+
+/*
+TeamsChangeRole changeRole
+
+Change the role of a team member
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param teamId
+	@param userId
+	@return ApiTeamsChangeRoleRequest
+*/
+func (a *TeamsAPIService) TeamsChangeRole(ctx context.Context, teamId float32, userId float32) ApiTeamsChangeRoleRequest {
+	return ApiTeamsChangeRoleRequest{
+		ApiService: a,
+		ctx:        ctx,
+		teamId:     teamId,
+		userId:     userId,
+	}
+}
+
+// Execute executes the request
+func (a *TeamsAPIService) TeamsChangeRoleExecute(r ApiTeamsChangeRoleRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TeamsAPIService.TeamsChangeRole")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/teams/{teamId}/members/{userId}/role"
+	localVarPath = strings.Replace(localVarPath, "{"+"teamId"+"}", url.PathEscape(parameterValueToString(r.teamId, "teamId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"userId"+"}", url.PathEscape(parameterValueToString(r.userId, "userId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.teamsChangeRoleRequest
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v DomainsGetDomain400Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v DomainsGetDomain401Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v DomainsGetDomain404Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 409 {
+			var v DomainsUpdateDomain409Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
 
 type ApiTeamsCreateTeamRequest struct {
 	ctx                    context.Context
@@ -458,6 +676,296 @@ func (a *TeamsAPIService) TeamsGetTeamExecute(r ApiTeamsGetTeamRequest) (*TeamsG
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiTeamsInviteMemberRequest struct {
+	ctx                      context.Context
+	ApiService               TeamsAPI
+	teamId                   float32
+	teamsInviteMemberRequest *TeamsInviteMemberRequest
+}
+
+func (r ApiTeamsInviteMemberRequest) TeamsInviteMemberRequest(teamsInviteMemberRequest TeamsInviteMemberRequest) ApiTeamsInviteMemberRequest {
+	r.teamsInviteMemberRequest = &teamsInviteMemberRequest
+	return r
+}
+
+func (r ApiTeamsInviteMemberRequest) Execute() (*http.Response, error) {
+	return r.ApiService.TeamsInviteMemberExecute(r)
+}
+
+/*
+TeamsInviteMember inviteMember
+
+Invite a user to a team by email
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param teamId
+	@return ApiTeamsInviteMemberRequest
+*/
+func (a *TeamsAPIService) TeamsInviteMember(ctx context.Context, teamId float32) ApiTeamsInviteMemberRequest {
+	return ApiTeamsInviteMemberRequest{
+		ApiService: a,
+		ctx:        ctx,
+		teamId:     teamId,
+	}
+}
+
+// Execute executes the request
+func (a *TeamsAPIService) TeamsInviteMemberExecute(r ApiTeamsInviteMemberRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TeamsAPIService.TeamsInviteMember")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/teams/{teamId}/members"
+	localVarPath = strings.Replace(localVarPath, "{"+"teamId"+"}", url.PathEscape(parameterValueToString(r.teamId, "teamId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.teamsInviteMemberRequest
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v DomainsGetDomain400Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v DomainsGetDomain401Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 402 {
+			var v TeamsInviteMember402Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v DomainsGetDomain404Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type ApiTeamsListMembersRequest struct {
+	ctx        context.Context
+	ApiService TeamsAPI
+	teamId     float32
+}
+
+func (r ApiTeamsListMembersRequest) Execute() ([]TeamsListMembers200ResponseInner, *http.Response, error) {
+	return r.ApiService.TeamsListMembersExecute(r)
+}
+
+/*
+TeamsListMembers listMembers
+
+List all members associated with a team
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param teamId
+	@return ApiTeamsListMembersRequest
+*/
+func (a *TeamsAPIService) TeamsListMembers(ctx context.Context, teamId float32) ApiTeamsListMembersRequest {
+	return ApiTeamsListMembersRequest{
+		ApiService: a,
+		ctx:        ctx,
+		teamId:     teamId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return []TeamsListMembers200ResponseInner
+func (a *TeamsAPIService) TeamsListMembersExecute(r ApiTeamsListMembersRequest) ([]TeamsListMembers200ResponseInner, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []TeamsListMembers200ResponseInner
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TeamsAPIService.TeamsListMembers")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/teams/{teamId}/members"
+	localVarPath = strings.Replace(localVarPath, "{"+"teamId"+"}", url.PathEscape(parameterValueToString(r.teamId, "teamId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v DomainsGetDomain400Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v DomainsGetDomain401Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v DomainsGetDomain404Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v TeamsListMembers500Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiTeamsListTeamsRequest struct {
 	ctx        context.Context
 	ApiService TeamsAPI
@@ -564,4 +1072,240 @@ func (a *TeamsAPIService) TeamsListTeamsExecute(r ApiTeamsListTeamsRequest) ([]T
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiTeamsMigrateTeamToOrgRequest struct {
+	ctx                          context.Context
+	ApiService                   TeamsAPI
+	teamId                       float32
+	teamsMigrateTeamToOrgRequest *TeamsMigrateTeamToOrgRequest
+}
+
+func (r ApiTeamsMigrateTeamToOrgRequest) TeamsMigrateTeamToOrgRequest(teamsMigrateTeamToOrgRequest TeamsMigrateTeamToOrgRequest) ApiTeamsMigrateTeamToOrgRequest {
+	r.teamsMigrateTeamToOrgRequest = &teamsMigrateTeamToOrgRequest
+	return r
+}
+
+func (r ApiTeamsMigrateTeamToOrgRequest) Execute() (*http.Response, error) {
+	return r.ApiService.TeamsMigrateTeamToOrgExecute(r)
+}
+
+/*
+TeamsMigrateTeamToOrg migrateTeamToOrg
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param teamId
+	@return ApiTeamsMigrateTeamToOrgRequest
+*/
+func (a *TeamsAPIService) TeamsMigrateTeamToOrg(ctx context.Context, teamId float32) ApiTeamsMigrateTeamToOrgRequest {
+	return ApiTeamsMigrateTeamToOrgRequest{
+		ApiService: a,
+		ctx:        ctx,
+		teamId:     teamId,
+	}
+}
+
+// Execute executes the request
+func (a *TeamsAPIService) TeamsMigrateTeamToOrgExecute(r ApiTeamsMigrateTeamToOrgRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TeamsAPIService.TeamsMigrateTeamToOrg")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/teams/{teamId}/migrate"
+	localVarPath = strings.Replace(localVarPath, "{"+"teamId"+"}", url.PathEscape(parameterValueToString(r.teamId, "teamId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.teamsMigrateTeamToOrgRequest
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v DomainsGetDomain400Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v DomainsGetDomain401Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type ApiTeamsRemoveMemberRequest struct {
+	ctx        context.Context
+	ApiService TeamsAPI
+	teamId     float32
+	userId     float32
+}
+
+func (r ApiTeamsRemoveMemberRequest) Execute() (*http.Response, error) {
+	return r.ApiService.TeamsRemoveMemberExecute(r)
+}
+
+/*
+TeamsRemoveMember removeMember
+
+Remove a member from a team
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param teamId
+	@param userId
+	@return ApiTeamsRemoveMemberRequest
+*/
+func (a *TeamsAPIService) TeamsRemoveMember(ctx context.Context, teamId float32, userId float32) ApiTeamsRemoveMemberRequest {
+	return ApiTeamsRemoveMemberRequest{
+		ApiService: a,
+		ctx:        ctx,
+		teamId:     teamId,
+		userId:     userId,
+	}
+}
+
+// Execute executes the request
+func (a *TeamsAPIService) TeamsRemoveMemberExecute(r ApiTeamsRemoveMemberRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TeamsAPIService.TeamsRemoveMember")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/teams/{teamId}/members/{userId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"teamId"+"}", url.PathEscape(parameterValueToString(r.teamId, "teamId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"userId"+"}", url.PathEscape(parameterValueToString(r.userId, "userId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v DomainsGetDomain400Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v DomainsGetDomain401Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
 }
