@@ -8,7 +8,7 @@ require (
 	github.com/go-git/go-git/v5 v5.18.0
 	github.com/jedib0t/go-pretty/v6 v6.7.10
 	github.com/onsi/ginkgo/v2 v2.28.2
-	github.com/onsi/gomega v1.39.1
+	github.com/onsi/gomega v1.40.0
 	github.com/prometheus/client_golang v1.23.2
 	github.com/spf13/cobra v1.10.2
 	github.com/stretchr/testify v1.11.1
