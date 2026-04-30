@@ -83,12 +83,12 @@ The Codesphere CLI (`cs`) allows you to manage and debug resources deployed in C
 
 #### Global Options & Environment Variables
 
-The `cs` CLI supports several global options that you can set via command-line flags or environment variables. Using environment variables is handy for setting persistent configurations.
+The `cs` CLI supports several global options that you can set via command-line flags or environment variables. Using environment variables is handy for setting persistent configurations.≥
 
 | Required      | Command Line Flag                   | Environment Variable | Description |
 | ----- | ----- | ----- | ----- |
-| Yes           |                        | `CS_TOKEN`           | Codesphere API token. Generate one in your user settings at https://codesphere.com/. |
-|               | `--api`<br/>`-a`       | `CS_API`             | URL of the Codesphere API. Default: `https://codesphere.com/api` |
+| Yes           |                        | `CS_TOKEN`           | Codesphere API token. Generate one in your user settings at https://cloud.codesphere.com/. |
+|               | `--api`<br/>`-a`       | `CS_API`             | URL of the Codesphere API. Default: `https://cloud.codesphere.com/api` |
 | Some commands | `--team`<br/>`-t`      | `CS_TEAM_ID`         | Your Codesphere Team ID. This is relevant for commands operating on a specific team. |
 | Some commands | `--workspace`<br/>`-w` | `CS_WORKSPACE_ID`    | Your Codesphere Workspace ID. Relevant for commands targeting a specific workspace. |
 

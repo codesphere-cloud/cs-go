@@ -55,5 +55,5 @@ func (e *Environment) GetApiUrl() string {
 	if url != "" {
 		return url
 	}
-	return "https://codesphere.com/api"
+	return "https://cloud.codesphere.com/api"
 }
