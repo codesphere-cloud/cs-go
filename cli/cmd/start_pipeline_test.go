@@ -95,7 +95,8 @@ var _ = Describe("StartPipeline", func() {
 					testStartCall := mockClient.EXPECT().StartPipelineStage(wsId, profile, stages[1]).Return(nil).NotBefore(prepareStatusCall)
 					testStatusCall := mockClient.EXPECT().GetPipelineState(wsId, stages[1]).Return(reportedStatusSuccess, nil).NotBefore(testStartCall)
 
-					runStartCall := mockClient.EXPECT().StartPipelineStage(wsId, profile, stages[2]).Return(nil).NotBefore(testStatusCall)
+					syncCall := mockClient.EXPECT().DeployLandscape(wsId, profile).Return(nil).NotBefore(testStatusCall)
+					runStartCall := mockClient.EXPECT().StartPipelineStage(wsId, profile, stages[2]).Return(nil).NotBefore(syncCall)
 					mockClient.EXPECT().GetPipelineState(wsId, stages[2]).Return(reportedStatusRunning, nil).NotBefore(runStartCall)
 				})
 
@@ -125,7 +126,8 @@ var _ = Describe("StartPipeline", func() {
 					testStatusCall := mockClient.EXPECT().GetPipelineState(wsId, stages[1]).Return(reportedStatusRunning, nil).Times(2).NotBefore(testStartCall)
 					testStatusCallSuccess := mockClient.EXPECT().GetPipelineState(wsId, stages[1]).Return(reportedStatusSuccess, nil).NotBefore(testStatusCall)
 
-					runStartCall := mockClient.EXPECT().StartPipelineStage(wsId, profile, stages[2]).Return(nil).NotBefore(testStatusCallSuccess)
+					syncCall := mockClient.EXPECT().DeployLandscape(wsId, profile).Return(nil).NotBefore(testStatusCallSuccess)
+					runStartCall := mockClient.EXPECT().StartPipelineStage(wsId, profile, stages[2]).Return(nil).NotBefore(syncCall)
 					mockClient.EXPECT().GetPipelineState(wsId, stages[2]).Return(reportedStatusWaiting, nil).Times(2).NotBefore(runStartCall)
 					mockClient.EXPECT().GetPipelineState(wsId, stages[2]).Return(reportedStatusRunning, nil).NotBefore(runStartCall)
 
@@ -145,7 +147,7 @@ var _ = Describe("StartPipeline", func() {
 					mockClient.EXPECT().GetPipelineState(wsId, stages[1]).Return(reportedStatusRunning, nil).Times(8).NotBefore(testStartCall)
 
 					err := c.StartPipelineStages(mockClient, wsId, stages)
-					Expect(err).To(MatchError("failed waiting for stage test to finish: timed out waiting for pipeline stage test to be complete"))
+					Expect(err).To(MatchError("timed out waiting for pipeline stage test to be complete"))
 				})
 			})
 
@@ -155,7 +157,7 @@ var _ = Describe("StartPipeline", func() {
 					mockClient.EXPECT().GetPipelineState(wsId, stages[0]).Return(reportedStatusFailure, nil).NotBefore(prepareStartCall)
 
 					err := c.StartPipelineStages(mockClient, wsId, stages)
-					Expect(err).To(MatchError("failed waiting for stage prepare to finish: stage prepare failed: server A, replica 0 reached unexpected state failure"))
+					Expect(err).To(MatchError("stage prepare failed: server A, replica 0 reached unexpected state failure"))
 				})
 			})
 		})
