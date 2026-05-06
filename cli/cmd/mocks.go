@@ -539,6 +539,61 @@ func (_c *MockClient_ListBaseimages_Call) RunAndReturn(run func() ([]api.Baseima
 	return _c
 }
 
+// ListOrganizations provides a mock function for the type MockClient
+func (_mock *MockClient) ListOrganizations() ([]api.Organization, error) {
+	ret := _mock.Called()
+
+	if len(ret) == 0 {
+		panic("no return value specified for ListOrganizations")
+	}
+
+	var r0 []api.Organization
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func() ([]api.Organization, error)); ok {
+		return returnFunc()
+	}
+	if returnFunc, ok := ret.Get(0).(func() []api.Organization); ok {
+		r0 = returnFunc()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]api.Organization)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func() error); ok {
+		r1 = returnFunc()
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockClient_ListOrganizations_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListOrganizations'
+type MockClient_ListOrganizations_Call struct {
+	*mock.Call
+}
+
+// ListOrganizations is a helper method to define mock.On call
+func (_e *MockClient_Expecter) ListOrganizations() *MockClient_ListOrganizations_Call {
+	return &MockClient_ListOrganizations_Call{Call: _e.mock.On("ListOrganizations")}
+}
+
+func (_c *MockClient_ListOrganizations_Call) Run(run func()) *MockClient_ListOrganizations_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run()
+	})
+	return _c
+}
+
+func (_c *MockClient_ListOrganizations_Call) Return(vs []api.Organization, err error) *MockClient_ListOrganizations_Call {
+	_c.Call.Return(vs, err)
+	return _c
+}
+
+func (_c *MockClient_ListOrganizations_Call) RunAndReturn(run func() ([]api.Organization, error)) *MockClient_ListOrganizations_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // ListTeams provides a mock function for the type MockClient
 func (_mock *MockClient) ListTeams() ([]api.Team, error) {
 	ret := _mock.Called()
@@ -1442,6 +1497,59 @@ func (_c *MockEnv_GetApiUrl_Call) Return(s string) *MockEnv_GetApiUrl_Call {
 }
 
 func (_c *MockEnv_GetApiUrl_Call) RunAndReturn(run func() string) *MockEnv_GetApiUrl_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetOrgId provides a mock function for the type MockEnv
+func (_mock *MockEnv) GetOrgId() (int, error) {
+	ret := _mock.Called()
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetOrgId")
+	}
+
+	var r0 int
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func() (int, error)); ok {
+		return returnFunc()
+	}
+	if returnFunc, ok := ret.Get(0).(func() int); ok {
+		r0 = returnFunc()
+	} else {
+		r0 = ret.Get(0).(int)
+	}
+	if returnFunc, ok := ret.Get(1).(func() error); ok {
+		r1 = returnFunc()
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockEnv_GetOrgId_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetOrgId'
+type MockEnv_GetOrgId_Call struct {
+	*mock.Call
+}
+
+// GetOrgId is a helper method to define mock.On call
+func (_e *MockEnv_Expecter) GetOrgId() *MockEnv_GetOrgId_Call {
+	return &MockEnv_GetOrgId_Call{Call: _e.mock.On("GetOrgId")}
+}
+
+func (_c *MockEnv_GetOrgId_Call) Run(run func()) *MockEnv_GetOrgId_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run()
+	})
+	return _c
+}
+
+func (_c *MockEnv_GetOrgId_Call) Return(n int, err error) *MockEnv_GetOrgId_Call {
+	_c.Call.Return(n, err)
+	return _c
+}
+
+func (_c *MockEnv_GetOrgId_Call) RunAndReturn(run func() (int, error)) *MockEnv_GetOrgId_Call {
 	_c.Call.Return(run)
 	return _c
 }

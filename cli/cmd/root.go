@@ -15,6 +15,7 @@ type GlobalOptions struct {
 	ApiUrl      string
 	TeamId      int
 	WorkspaceId int
+	OrgId       int
 	Env         Env
 	Verbose     bool
 }
@@ -23,6 +24,7 @@ type Env interface {
 	GetApiToken() (string, error)
 	GetTeamId() (int, error)
 	GetWorkspaceId() (int, error)
+	GetOrgId() (int, error)
 	GetApiUrl() string
 }
 
@@ -59,6 +61,21 @@ func (o GlobalOptions) GetWorkspaceId() (int, error) {
 		return -1, errors.New("workspace ID not set, use -w or CS_WORKSPACE_ID to set it")
 	}
 	return wsId, nil
+}
+
+func (o GlobalOptions) GetOrgId() (int, error) {
+	if o.OrgId != -1 {
+		return o.OrgId, nil
+	}
+	orgId, err := o.Env.GetOrgId()
+	if err != nil {
+		return -1, err
+	}
+	if orgId < 0 {
+		// Note: No global flag for org-id currently exists in GetRootCmd
+		return -1, errors.New("organization ID not set, use CS_ORG_ID to set it")
+	}
+	return orgId, nil
 }
 
 // AddCmd adds a command, inheriting the parent's Args validator if not explicitly set.
