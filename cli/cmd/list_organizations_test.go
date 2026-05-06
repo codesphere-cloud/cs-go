@@ -16,7 +16,6 @@ import (
 	"go.yaml.in/yaml/v2"
 
 	"github.com/codesphere-cloud/cs-go/api"
-	//"github.com/codesphere-cloud/cs-go/api/openapi_client"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
 )
 
@@ -25,7 +24,6 @@ var _ = Describe("Organization", func() {
 		mockEnv    *cmd.MockEnv
 		mockClient *cmd.MockClient
 		l          cmd.ListOrgCmd
-		//organizationApiMock *openapi_client.MockOrganizationsAPI
 	)
 
 	BeforeEach(func() {
@@ -40,8 +38,6 @@ var _ = Describe("Organization", func() {
 			},
 			ClientFactory: cmd.NewClient, // Default to real client, will be overridden in specific tests
 		}
-		//organizationApiMock = openapi_client.NewMockOrganizationsAPI(GinkgoT())
-
 	})
 
 	AfterEach(func() {
