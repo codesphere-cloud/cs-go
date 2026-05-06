@@ -29,6 +29,8 @@ type TeamsGetTeam200Response struct {
 	AvatarId            NullableString `json:"avatarId,omitempty"`
 	AvatarUrl           NullableString `json:"avatarUrl,omitempty"`
 	IsFirst             *bool          `json:"isFirst,omitempty"`
+	// UUID
+	OrganizationId *string `json:"organizationId,omitempty"`
 }
 
 type _TeamsGetTeam200Response TeamsGetTeam200Response
@@ -286,6 +288,38 @@ func (o *TeamsGetTeam200Response) SetIsFirst(v bool) {
 	o.IsFirst = &v
 }
 
+// GetOrganizationId returns the OrganizationId field value if set, zero value otherwise.
+func (o *TeamsGetTeam200Response) GetOrganizationId() string {
+	if o == nil || IsNil(o.OrganizationId) {
+		var ret string
+		return ret
+	}
+	return *o.OrganizationId
+}
+
+// GetOrganizationIdOk returns a tuple with the OrganizationId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *TeamsGetTeam200Response) GetOrganizationIdOk() (*string, bool) {
+	if o == nil || IsNil(o.OrganizationId) {
+		return nil, false
+	}
+	return o.OrganizationId, true
+}
+
+// HasOrganizationId returns a boolean if a field has been set.
+func (o *TeamsGetTeam200Response) HasOrganizationId() bool {
+	if o != nil && !IsNil(o.OrganizationId) {
+		return true
+	}
+
+	return false
+}
+
+// SetOrganizationId gets a reference to the given string and assigns it to the OrganizationId field.
+func (o *TeamsGetTeam200Response) SetOrganizationId(v string) {
+	o.OrganizationId = &v
+}
+
 func (o TeamsGetTeam200Response) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -310,6 +344,9 @@ func (o TeamsGetTeam200Response) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.IsFirst) {
 		toSerialize["isFirst"] = o.IsFirst
+	}
+	if !IsNil(o.OrganizationId) {
+		toSerialize["organizationId"] = o.OrganizationId
 	}
 	return toSerialize, nil
 }

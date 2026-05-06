@@ -27,11 +27,11 @@ install: build
 	mv cs ${GOBIN}/
 
 generate-client:
-ifeq (, $(shell which openapi-generator-cli))
-	$(error "openapi-generator-cli not found, please install, e.g. using brew. See https://openapi-generator.tech/docs/installation")
+ifeq (, $(shell which openapi-generator))
+	$(error "openapi-generator not found, please install, e.g. using brew. See https://openapi-generator.tech/docs/installation")
 endif
 	rm -rf ${OPENAPI_DIR}
-	openapi-generator-cli generate -g go -o ${OPENAPI_DIR} -i https://codesphere.com/api/docs \
+	openapi-generator generate -g go -o ${OPENAPI_DIR} -i https://cloud.codesphere.com/api/docs \
 	    --additional-properties=generateInterfaces=true,isGoSubmodule=true,withGoMod=false,packageName=openapi_client,disallowAdditionalPropertiesIfNotSet=false \
 	    --type-mappings=integer=int \
 	    --template-dir openapi-template \
