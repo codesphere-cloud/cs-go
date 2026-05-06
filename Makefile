@@ -13,6 +13,13 @@ test:
 	# -count=1 to disable caching test results
 	go test ./api/... ./cli/... ./pkg/... -count=1
 
+coverage:
+	go test ./api/... ./cli/... ./pkg/... -count=1 -coverprofile=coverage.out
+	go tool cover -func=coverage.out
+
+coverage-html: coverage
+	go tool cover -html=coverage.out
+
 test-int: build
 	go test ./int/... -count=1 -v
 
