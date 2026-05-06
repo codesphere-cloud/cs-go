@@ -128,8 +128,11 @@ var _ = Describe("Organization", func() {
 
 			orgs, err := l.ListOrganizations(mockClient)
 
+			Expect(err).NotTo(HaveOccurred())
+			Expect(orgs).To(Equal(expectedOrgs))
+
 			// Restore Stdout
-			w.Close()
+			err = w.Close()
 			var buf bytes.Buffer
 			_, _ = io.Copy(&buf, r)
 			os.Stdout = oldStdout
@@ -158,9 +161,13 @@ var _ = Describe("Organization", func() {
 			os.Stdout = w
 
 			orgs, err := l.ListOrganizations(mockClient)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(orgs).To(Equal(expectedOrgs))
+
+
 
 			// Restore Stdout
-			w.Close()
+			err = w.Close()
 			var buf bytes.Buffer
 			_, _ = io.Copy(&buf, r)
 			os.Stdout = oldStdout
