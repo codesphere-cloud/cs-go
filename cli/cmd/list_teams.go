@@ -40,11 +40,10 @@ func (l *ListTeamsCmd) RunE(_ *cobra.Command, args []string) (err error) {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
-	teams, err := client.ListTeams()
+	teams, err := client.ListTeams(l.opts.OrgId)
 	if err != nil {
 		return fmt.Errorf("failed to list teams: %w", err)
 	}
-
 	switch l.opts.OutputFormat {
 	case OutputFormatJSON:
 		return io.PrintJSON(teams)

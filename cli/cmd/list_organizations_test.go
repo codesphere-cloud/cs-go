@@ -33,7 +33,7 @@ var _ = Describe("Organization", func() {
 			Opts: &cmd.ListOptions{
 				GlobalOptions: &cmd.GlobalOptions{
 					Env:   mockEnv,
-					OrgId: -1, // force using the env mock to get a org ID
+					OrgId: "", // force using the env mock to get a org ID
 				},
 			},
 			ClientFactory: cmd.NewClient, // Default to real client, will be overridden in specific tests
@@ -163,8 +163,6 @@ var _ = Describe("Organization", func() {
 			orgs, err := l.ListOrganizations(mockClient)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(orgs).To(Equal(expectedOrgs))
-
-
 
 			// Restore Stdout
 			err = w.Close()

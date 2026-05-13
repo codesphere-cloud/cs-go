@@ -39,6 +39,20 @@ func ConvertToTeam(t *openapi.TeamsGetTeam200Response) *Team {
 	}
 }
 
+func ConvertOrgTeamToTeam(t openapi.OrganizationsListOrgTeams200ResponseInner, orgId string) Team {
+	return Team{
+		Id:                  t.Id,
+		DefaultDataCenterId: t.DefaultDataCenterId,
+		Name:                t.Name,
+		Description:         *openapi.NewNullableString(t.Description),
+		AvatarId:            *openapi.NewNullableString(t.AvatarId),
+		AvatarUrl:           *openapi.NewNullableString(t.AvatarUrl),
+		IsFirst:             t.IsFirst,
+		OrganizationId:      &orgId,
+		Role:                0, // Default to admin role if not specified by org API
+	}
+}
+
 type Time interface {
 	Sleep(time.Duration)
 	Now() time.Time
