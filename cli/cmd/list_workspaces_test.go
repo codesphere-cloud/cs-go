@@ -53,7 +53,7 @@ var _ = Describe("Workspace", func() {
 
 	Context("when team ID is not set", func() {
 		It("lists workspaces of all teams when no team ID is set", func() {
-			mockClient.EXPECT().ListTeams().Return([]api.Team{{Id: 0}, {Id: 1}}, nil)
+			mockClient.EXPECT().ListTeams("").Return([]api.Team{{Id: 0}, {Id: 1}}, nil)
 
 			expectedWorkspaces := []api.Workspace{
 				{Id: 0, Name: "fakeForTeam0"},

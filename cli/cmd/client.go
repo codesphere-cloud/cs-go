@@ -16,7 +16,7 @@ import (
 )
 
 type Client interface {
-	ListTeams() ([]api.Team, error)
+	ListTeams(orgId string) ([]api.Team, error)
 	ListWorkspaces(teamId int) ([]api.Workspace, error)
 	ListBaseimages() ([]api.Baseimage, error)
 	ListOrganizations() ([]api.Organization, error)
