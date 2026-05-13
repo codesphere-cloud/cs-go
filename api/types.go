@@ -39,8 +39,8 @@ func ConvertToTeam(t *openapi.TeamsGetTeam200Response) *Team {
 	}
 }
 
-func ConvertOrgTeamToTeam(t openapi.OrganizationsListOrgTeams200ResponseInner, orgId string) Team {
-	return Team{
+func ConvertOrgTeamToTeam(t openapi.OrganizationsListOrgTeams200ResponseInner, orgId string) *Team {
+	return &Team{
 		Id:                  t.Id,
 		DefaultDataCenterId: t.DefaultDataCenterId,
 		Name:                t.Name,

@@ -48,7 +48,7 @@ func (c *Client) ListTeams(orgId string) ([]Team, error) {
 
 		res := make([]Team, len(teams))
 		for i, t := range teams {
-			res[i] = ConvertOrgTeamToTeam(t, orgId)
+			res[i] = *ConvertOrgTeamToTeam(t, orgId)
 		}
 		return res, nil
 	}
@@ -62,17 +62,18 @@ func (c *Client) GetTeam(teamId int) (*Team, error) {
 	return ConvertToTeam(team), cserrors.FormatAPIError(r, err)
 }
 
-func (c *Client) CreateTeam(name string, dc int) (*Team, error) {
+func (c *Client) CreateTeam(orgId string, name string, dc int) (*Team, error) {
 	team, r, err := c.api.TeamsAPI.TeamsCreateTeam(c.ctx).
 		TeamsCreateTeamRequest(openapi_client.TeamsCreateTeamRequest{
-			Name: name,
-			Dc:   dc,
+			Name:           name,
+			Dc:             dc,
+			OrganizationId: &orgId,
 		}).
 		Execute()
 	return ConvertToTeam(team), cserrors.FormatAPIError(r, err)
 }
 
-func (c *Client) DeleteTeam(teamId int) error {
+func (c *Client) DeleteTeam(orgId string, teamId int) error {
 	r, err := c.api.TeamsAPI.TeamsDeleteTeam(c.ctx, float32(teamId)).Execute()
 	return cserrors.FormatAPIError(r, err)
 }
