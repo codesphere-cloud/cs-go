@@ -57,6 +57,7 @@ $ cs generate kubernetes -w 1234 -i ci.prod.yml
       --branch string     Branch of the repository to clone if the input file is not found (default "main")
   -f, --force             Overwrite any files if existing
   -i, --input string      CI profile to use as input for generation, relative to repository root (default "ci.yml")
+  -O, --org string        Organization ID (relevant for some commands)
   -o, --output string     Output path of the folder including generated artifacts, relative to repository root (default "export")
       --reporoot string   root directory of the workspace repository to export. Will be used to clone the repository if it doesn't exist. (default "./workspace-repo")
   -t, --team int          Team ID (relevant for some commands, can also be CS_TEAM_ID) (default -1)

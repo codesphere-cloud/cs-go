@@ -164,6 +164,10 @@ Module: github.com/google/jsonschema-go/jsonschema
 Version: v0.4.3
 License: MIT
 License URL: https://github.com/google/jsonschema-go/blob/v0.4.3/LICENSE
+Module: github.com/google/uuid
+Version: v1.6.0
+License: BSD-3-Clause
+License URL: https://github.com/google/uuid/blob/v1.6.0/LICENSE
  
 ----------
 Module: github.com/hashicorp/go-cleanhttp
