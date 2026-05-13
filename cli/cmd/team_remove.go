@@ -54,7 +54,10 @@ func (c *RemoveTeamCmd) RunE(_ *cobra.Command, args []string) error {
 
 	//
 
-	client.DeleteTeam(orgId, teamId)
+	err = client.DeleteTeam(orgId, teamId)
+	if err != nil {
+		return err
+	}
 	return nil
 
 }

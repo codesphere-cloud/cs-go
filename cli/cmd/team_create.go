@@ -16,9 +16,8 @@ type CreateTeamCmd struct {
 
 type CreateTeamOpts struct {
 	*GlobalOptions
-	name  string
-	dcId  int
-	orgId string
+	name string
+	dcId int
 }
 
 func AddCreateTeamCmd(team *cobra.Command, opts *GlobalOptions) {
