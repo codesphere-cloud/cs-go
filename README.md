@@ -91,8 +91,10 @@ The `cs` CLI supports several global options that you can set via command-line f
 |               | `--api`<br/>`-a`       | `CS_API`             | URL of the Codesphere API. Default: `https://cloud.codesphere.com/api` |
 | Some commands | `--team`<br/>`-t`      | `CS_TEAM_ID`         | Your Codesphere Team ID. This is relevant for commands operating on a specific team. |
 | Some commands | `--workspace`<br/>`-w` | `CS_WORKSPACE_ID`    | Your Codesphere Workspace ID. Relevant for commands targeting a specific workspace. |
+| Some commands | `--org`<br/>`-o`       | `CS_ORG_ID`          | Your Codesphere Organization ID. Relevant for commands operating on a specific organization. |
 
-**Note on Team ID and Workspace ID:** If you don't provide these via a flag, the CLI will try to get them from the corresponding environment variables (`CS_TEAM_ID`, `CS_WORKSPACE_ID`). If they're still not found and a command requires them, the CLI will return an error.
+
+**Note on Team ID, Workspace ID and Organization ID:** If you don't provide these via a flag, the CLI will try to get them from the corresponding environment variables (`CS_TEAM_ID`, `CS_WORKSPACE_ID`, `CS_ORG_ID`). If they're still not found and a command requires them, the CLI will return an error.
 
 #### Available Commands
 
@@ -121,6 +123,7 @@ Integration tests verify the CLI works correctly against live Codesphere environ
 **Prerequisites:**
 - `CS_TOKEN` - Your Codesphere API token
 - `CS_TEAM_ID` - Your team ID
+- `CS_ORG_ID` - Your Organization ID
 
 Run integration tests:
 
