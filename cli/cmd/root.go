@@ -70,8 +70,8 @@ func (o GlobalOptions) GetOrgId() (string, error) {
 		return o.OrgId, nil
 	}
 	orgId := o.Env.GetOrgId()
-	if orgId == "" {
-		return "", errors.New("organization ID not set, use -O or CS_ORG_ID to set it")
+	if o.OrgId == "" {
+		return o.OrgId, nil
 	}
 
 	_, err := uuid.Parse(orgId)
@@ -127,7 +127,7 @@ func GetRootCmd() *cobra.Command {
 	AddWakeUpCmd(rootCmd, &opts)
 	AddCurlCmd(rootCmd, &opts)
 	AddScaleCmd(rootCmd, &opts)
-
+	AddTeamManageCmd(rootCmd, &opts)
 	return rootCmd
 }
 
