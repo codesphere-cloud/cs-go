@@ -56,6 +56,6 @@ var _ = Describe("FormatAPIError", func() {
 		apiErr := makeGenericOpenAPIError([]byte(`{"status":400,"title":"Workspace is not running","detail":"Workspace '796636' is not in a running state.","traceId":"svJDMa5"}`), "400 Bad Request")
 		res := errors.FormatAPIError(r, apiErr)
 		Expect(res).ToNot(BeNil())
-		Expect(res.Error()).To(Equal("API error 400 Workspace is not running: Workspace '796636' is not in a running state."))
+		Expect(res.Error()).To(Equal("codesphere API returned error 400 (Workspace is not running) (trace ID: svJDMa5): Workspace '796636' is not in a running state."))
 	})
 })

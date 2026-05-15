@@ -92,7 +92,15 @@ func FormatAPIError(r *http.Response, err error) error {
 		return fmt.Errorf("unexpected error %d at URL %s: %w", r.StatusCode, r.Request.URL, err)
 	}
 
-	return fmt.Errorf("codesphere API returned error %d (%s): %s", apiErr.Status, apiErr.Title, apiErr.Detail)
+	traceId := ""
+	if apiErr.TraceId != "" {
+		traceId = fmt.Sprintf(" (trace ID: %s)", apiErr.TraceId)
+	}
+	details := ""
+	if apiErr.Detail != "" {
+		details = fmt.Sprintf(": %s", apiErr.Detail)
+	}
+	return fmt.Errorf("codesphere API returned error %d (%s)%s%s", apiErr.Status, apiErr.Title, traceId, details)
 }
 
 // IsRetryable returns true if the error is a server error (HTTP 500, 502, 503, 504).
