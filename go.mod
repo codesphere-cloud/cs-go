@@ -5,7 +5,7 @@ go 1.26.3
 require (
 	github.com/creativeprojects/go-selfupdate v1.5.2
 	github.com/go-git/go-billy/v5 v5.9.0
-	github.com/go-git/go-git/v5 v5.19.0
+	github.com/go-git/go-git/v5 v5.19.1
 	github.com/jedib0t/go-pretty/v6 v6.7.10
 	github.com/onsi/ginkgo/v2 v2.29.0
 	github.com/onsi/gomega v1.41.0
