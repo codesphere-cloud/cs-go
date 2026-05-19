@@ -39,3 +39,11 @@ packages:
     config:
       all: true
     interfaces:
+  github.com/codesphere-cloud/cs-go/pkg/deploy:
+    config:
+      all: true
+    interfaces:
+  github.com/codesphere-cloud/cs-go/pkg/pipeline:
+    config:
+      all: true
+    interfaces:
