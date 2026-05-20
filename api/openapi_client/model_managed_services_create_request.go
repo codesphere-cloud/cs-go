@@ -22,14 +22,14 @@ var _ MappedNullable = &ManagedServicesCreateRequest{}
 
 // ManagedServicesCreateRequest struct for ManagedServicesCreateRequest
 type ManagedServicesCreateRequest struct {
-	Backups     *ManagedServicesCreateRequestBackups        `json:"backups,omitempty"`
-	Config      map[string]interface{}                      `json:"config"`
-	Provider    ManagedServicesList200ResponseInnerProvider `json:"provider"`
-	Name        string                                      `json:"name"`
-	Plan        ManagedServicesList200ResponseInnerPlan     `json:"plan"`
-	RecoverFrom *ManagedServicesCreateRequestRecoverFrom    `json:"recoverFrom,omitempty"`
-	Secrets     map[string]interface{}                      `json:"secrets"`
-	TeamId      int                                         `json:"teamId"`
+	Backups     *ManagedServicesCreateRequestBackups     `json:"backups,omitempty"`
+	Config      map[string]interface{}                   `json:"config"`
+	Provider    ManagedServicesCreateRequestProvider     `json:"provider"`
+	Name        string                                   `json:"name"`
+	Plan        ManagedServicesList200ResponseInnerPlan  `json:"plan"`
+	RecoverFrom *ManagedServicesCreateRequestRecoverFrom `json:"recoverFrom,omitempty"`
+	Secrets     map[string]interface{}                   `json:"secrets"`
+	TeamId      int                                      `json:"teamId"`
 }
 
 type _ManagedServicesCreateRequest ManagedServicesCreateRequest
@@ -38,7 +38,7 @@ type _ManagedServicesCreateRequest ManagedServicesCreateRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewManagedServicesCreateRequest(config map[string]interface{}, provider ManagedServicesList200ResponseInnerProvider, name string, plan ManagedServicesList200ResponseInnerPlan, secrets map[string]interface{}, teamId int) *ManagedServicesCreateRequest {
+func NewManagedServicesCreateRequest(config map[string]interface{}, provider ManagedServicesCreateRequestProvider, name string, plan ManagedServicesList200ResponseInnerPlan, secrets map[string]interface{}, teamId int) *ManagedServicesCreateRequest {
 	this := ManagedServicesCreateRequest{}
 	this.Config = config
 	this.Provider = provider
@@ -114,9 +114,9 @@ func (o *ManagedServicesCreateRequest) SetConfig(v map[string]interface{}) {
 }
 
 // GetProvider returns the Provider field value
-func (o *ManagedServicesCreateRequest) GetProvider() ManagedServicesList200ResponseInnerProvider {
+func (o *ManagedServicesCreateRequest) GetProvider() ManagedServicesCreateRequestProvider {
 	if o == nil {
-		var ret ManagedServicesList200ResponseInnerProvider
+		var ret ManagedServicesCreateRequestProvider
 		return ret
 	}
 
@@ -125,7 +125,7 @@ func (o *ManagedServicesCreateRequest) GetProvider() ManagedServicesList200Respo
 
 // GetProviderOk returns a tuple with the Provider field value
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateRequest) GetProviderOk() (*ManagedServicesList200ResponseInnerProvider, bool) {
+func (o *ManagedServicesCreateRequest) GetProviderOk() (*ManagedServicesCreateRequestProvider, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -133,7 +133,7 @@ func (o *ManagedServicesCreateRequest) GetProviderOk() (*ManagedServicesList200R
 }
 
 // SetProvider sets field value
-func (o *ManagedServicesCreateRequest) SetProvider(v ManagedServicesList200ResponseInnerProvider) {
+func (o *ManagedServicesCreateRequest) SetProvider(v ManagedServicesCreateRequestProvider) {
 	o.Provider = v
 }
 

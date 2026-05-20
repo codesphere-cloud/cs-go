@@ -38,6 +38,22 @@ type VaultAPI interface {
 	VaultDeleteWorkspaceSecretsExecute(r ApiVaultDeleteWorkspaceSecretsRequest) (*http.Response, error)
 
 	/*
+		VaultGenerateSecrets generateSecrets
+
+		Generate secrets in the vault for a given workspace based on the provided password policies
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param teamId
+		@param workspaceId
+		@return ApiVaultGenerateSecretsRequest
+	*/
+	VaultGenerateSecrets(ctx context.Context, teamId float32, workspaceId float32) ApiVaultGenerateSecretsRequest
+
+	// VaultGenerateSecretsExecute executes the request
+	//  @return map[string]interface{}
+	VaultGenerateSecretsExecute(r ApiVaultGenerateSecretsRequest) (map[string]interface{}, *http.Response, error)
+
+	/*
 		VaultListWorkspaceSecrets listWorkspaceSecrets
 
 		List secrets in the vault for a given workspace
@@ -196,6 +212,143 @@ func (a *VaultAPIService) VaultDeleteWorkspaceSecretsExecute(r ApiVaultDeleteWor
 	}
 
 	return localVarHTTPResponse, nil
+}
+
+type ApiVaultGenerateSecretsRequest struct {
+	ctx         context.Context
+	ApiService  VaultAPI
+	teamId      float32
+	workspaceId float32
+	body        *map[string]interface{}
+}
+
+func (r ApiVaultGenerateSecretsRequest) Body(body map[string]interface{}) ApiVaultGenerateSecretsRequest {
+	r.body = &body
+	return r
+}
+
+func (r ApiVaultGenerateSecretsRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.VaultGenerateSecretsExecute(r)
+}
+
+/*
+VaultGenerateSecrets generateSecrets
+
+Generate secrets in the vault for a given workspace based on the provided password policies
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param teamId
+	@param workspaceId
+	@return ApiVaultGenerateSecretsRequest
+*/
+func (a *VaultAPIService) VaultGenerateSecrets(ctx context.Context, teamId float32, workspaceId float32) ApiVaultGenerateSecretsRequest {
+	return ApiVaultGenerateSecretsRequest{
+		ApiService:  a,
+		ctx:         ctx,
+		teamId:      teamId,
+		workspaceId: workspaceId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return map[string]interface{}
+func (a *VaultAPIService) VaultGenerateSecretsExecute(r ApiVaultGenerateSecretsRequest) (map[string]interface{}, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue map[string]interface{}
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultAPIService.VaultGenerateSecrets")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/vault/teams/{teamId}/workspaces/{workspaceId}/generate"
+	localVarPath = strings.Replace(localVarPath, "{"+"teamId"+"}", url.PathEscape(parameterValueToString(r.teamId, "teamId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"workspaceId"+"}", url.PathEscape(parameterValueToString(r.workspaceId, "workspaceId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.body
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v DomainsGetDomain400Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v DomainsGetDomain401Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiVaultListWorkspaceSecretsRequest struct {
