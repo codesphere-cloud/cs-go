@@ -63,10 +63,10 @@ type ManagedServicesAPI interface {
 
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 		@param name
-		@param version
+		@param schemaVersion
 		@return ApiManagedServicesDeleteProviderRequest
 	*/
-	ManagedServicesDeleteProvider(ctx context.Context, name string, version string) ApiManagedServicesDeleteProviderRequest
+	ManagedServicesDeleteProvider(ctx context.Context, name string, schemaVersion string) ApiManagedServicesDeleteProviderRequest
 
 	// ManagedServicesDeleteProviderExecute executes the request
 	ManagedServicesDeleteProviderExecute(r ApiManagedServicesDeleteProviderRequest) (*http.Response, error)
@@ -139,10 +139,10 @@ type ManagedServicesAPI interface {
 
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 		@param name
-		@param version
+		@param schemaVersion
 		@return ApiManagedServicesUpdateProviderRequest
 	*/
-	ManagedServicesUpdateProvider(ctx context.Context, name string, version string) ApiManagedServicesUpdateProviderRequest
+	ManagedServicesUpdateProvider(ctx context.Context, name string, schemaVersion string) ApiManagedServicesUpdateProviderRequest
 
 	// ManagedServicesUpdateProviderExecute executes the request
 	//  @return ManagedServicesListProviders200ResponseInnerAnyOf
@@ -529,10 +529,10 @@ func (a *ManagedServicesAPIService) ManagedServicesDeleteExecute(r ApiManagedSer
 }
 
 type ApiManagedServicesDeleteProviderRequest struct {
-	ctx        context.Context
-	ApiService ManagedServicesAPI
-	name       string
-	version    string
+	ctx           context.Context
+	ApiService    ManagedServicesAPI
+	name          string
+	schemaVersion string
 }
 
 func (r ApiManagedServicesDeleteProviderRequest) Execute() (*http.Response, error) {
@@ -544,15 +544,15 @@ ManagedServicesDeleteProvider deleteProvider
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param name
-	@param version
+	@param schemaVersion
 	@return ApiManagedServicesDeleteProviderRequest
 */
-func (a *ManagedServicesAPIService) ManagedServicesDeleteProvider(ctx context.Context, name string, version string) ApiManagedServicesDeleteProviderRequest {
+func (a *ManagedServicesAPIService) ManagedServicesDeleteProvider(ctx context.Context, name string, schemaVersion string) ApiManagedServicesDeleteProviderRequest {
 	return ApiManagedServicesDeleteProviderRequest{
-		ApiService: a,
-		ctx:        ctx,
-		name:       name,
-		version:    version,
+		ApiService:    a,
+		ctx:           ctx,
+		name:          name,
+		schemaVersion: schemaVersion,
 	}
 }
 
@@ -569,9 +569,9 @@ func (a *ManagedServicesAPIService) ManagedServicesDeleteProviderExecute(r ApiMa
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/managed-services/providers/{name}/{version}"
+	localVarPath := localBasePath + "/managed-services/providers/{name}/{schemaVersion}"
 	localVarPath = strings.Replace(localVarPath, "{"+"name"+"}", url.PathEscape(parameterValueToString(r.name, "name")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"version"+"}", url.PathEscape(parameterValueToString(r.version, "version")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"schemaVersion"+"}", url.PathEscape(parameterValueToString(r.schemaVersion, "schemaVersion")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1302,7 +1302,7 @@ type ApiManagedServicesUpdateProviderRequest struct {
 	ctx                                  context.Context
 	ApiService                           ManagedServicesAPI
 	name                                 string
-	version                              string
+	schemaVersion                        string
 	managedServicesUpdateProviderRequest *ManagedServicesUpdateProviderRequest
 }
 
@@ -1320,15 +1320,15 @@ ManagedServicesUpdateProvider updateProvider
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param name
-	@param version
+	@param schemaVersion
 	@return ApiManagedServicesUpdateProviderRequest
 */
-func (a *ManagedServicesAPIService) ManagedServicesUpdateProvider(ctx context.Context, name string, version string) ApiManagedServicesUpdateProviderRequest {
+func (a *ManagedServicesAPIService) ManagedServicesUpdateProvider(ctx context.Context, name string, schemaVersion string) ApiManagedServicesUpdateProviderRequest {
 	return ApiManagedServicesUpdateProviderRequest{
-		ApiService: a,
-		ctx:        ctx,
-		name:       name,
-		version:    version,
+		ApiService:    a,
+		ctx:           ctx,
+		name:          name,
+		schemaVersion: schemaVersion,
 	}
 }
 
@@ -1348,9 +1348,9 @@ func (a *ManagedServicesAPIService) ManagedServicesUpdateProviderExecute(r ApiMa
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/managed-services/providers/{name}/{version}"
+	localVarPath := localBasePath + "/managed-services/providers/{name}/{schemaVersion}"
 	localVarPath = strings.Replace(localVarPath, "{"+"name"+"}", url.PathEscape(parameterValueToString(r.name, "name")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"version"+"}", url.PathEscape(parameterValueToString(r.version, "version")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"schemaVersion"+"}", url.PathEscape(parameterValueToString(r.schemaVersion, "schemaVersion")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}

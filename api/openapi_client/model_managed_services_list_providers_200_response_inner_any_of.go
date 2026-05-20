@@ -22,15 +22,17 @@ var _ MappedNullable = &ManagedServicesListProviders200ResponseInnerAnyOf{}
 
 // ManagedServicesListProviders200ResponseInnerAnyOf struct for ManagedServicesListProviders200ResponseInnerAnyOf
 type ManagedServicesListProviders200ResponseInnerAnyOf struct {
-	Name         string                                                         `json:"name" validate:"regexp=^[a-z0-9-_]+$"`
-	Version      string                                                         `json:"version" validate:"regexp=^v[0-9][0-9a-z]*$"`
-	Author       string                                                         `json:"author"`
-	Backups      *ManagedServicesListProviders200ResponseInnerAnyOfBackups      `json:"backups,omitempty"`
-	Capabilities *ManagedServicesListProviders200ResponseInnerAnyOfCapabilities `json:"capabilities,omitempty"`
-	Category     string                                                         `json:"category"`
-	Description  string                                                         `json:"description"`
-	DisplayName  string                                                         `json:"displayName"`
-	IconUrl      string                                                         `json:"iconUrl"`
+	Name          string                                                         `json:"name" validate:"regexp=^[a-z0-9-_]+$"`
+	Version       string                                                         `json:"version" validate:"regexp=^v[0-9][0-9a-z]*$"`
+	SchemaVersion string                                                         `json:"schemaVersion" validate:"regexp=^v[0-9][0-9a-z]*$"`
+	Scope         *string                                                        `json:"scope,omitempty"`
+	Author        string                                                         `json:"author"`
+	Backups       *ManagedServicesListProviders200ResponseInnerAnyOfBackups      `json:"backups,omitempty"`
+	Capabilities  *ManagedServicesListProviders200ResponseInnerAnyOfCapabilities `json:"capabilities,omitempty"`
+	Category      string                                                         `json:"category"`
+	Description   string                                                         `json:"description"`
+	DisplayName   string                                                         `json:"displayName"`
+	IconUrl       string                                                         `json:"iconUrl"`
 	// JSON Schema
 	ConfigSchema map[string]interface{} `json:"configSchema"`
 	// JSON Schema
@@ -47,10 +49,11 @@ type _ManagedServicesListProviders200ResponseInnerAnyOf ManagedServicesListProvi
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewManagedServicesListProviders200ResponseInnerAnyOf(name string, version string, author string, category string, description string, displayName string, iconUrl string, configSchema map[string]interface{}, detailsSchema map[string]interface{}, secretsSchema map[string]interface{}, plans []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner, backend ManagedServicesListProviders200ResponseInnerAnyOfBackend) *ManagedServicesListProviders200ResponseInnerAnyOf {
+func NewManagedServicesListProviders200ResponseInnerAnyOf(name string, version string, schemaVersion string, author string, category string, description string, displayName string, iconUrl string, configSchema map[string]interface{}, detailsSchema map[string]interface{}, secretsSchema map[string]interface{}, plans []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner, backend ManagedServicesListProviders200ResponseInnerAnyOfBackend) *ManagedServicesListProviders200ResponseInnerAnyOf {
 	this := ManagedServicesListProviders200ResponseInnerAnyOf{}
 	this.Name = name
 	this.Version = version
+	this.SchemaVersion = schemaVersion
 	this.Author = author
 	this.Category = category
 	this.Description = description
@@ -118,6 +121,62 @@ func (o *ManagedServicesListProviders200ResponseInnerAnyOf) GetVersionOk() (*str
 // SetVersion sets field value
 func (o *ManagedServicesListProviders200ResponseInnerAnyOf) SetVersion(v string) {
 	o.Version = v
+}
+
+// GetSchemaVersion returns the SchemaVersion field value
+func (o *ManagedServicesListProviders200ResponseInnerAnyOf) GetSchemaVersion() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.SchemaVersion
+}
+
+// GetSchemaVersionOk returns a tuple with the SchemaVersion field value
+// and a boolean to check if the value has been set.
+func (o *ManagedServicesListProviders200ResponseInnerAnyOf) GetSchemaVersionOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.SchemaVersion, true
+}
+
+// SetSchemaVersion sets field value
+func (o *ManagedServicesListProviders200ResponseInnerAnyOf) SetSchemaVersion(v string) {
+	o.SchemaVersion = v
+}
+
+// GetScope returns the Scope field value if set, zero value otherwise.
+func (o *ManagedServicesListProviders200ResponseInnerAnyOf) GetScope() string {
+	if o == nil || IsNil(o.Scope) {
+		var ret string
+		return ret
+	}
+	return *o.Scope
+}
+
+// GetScopeOk returns a tuple with the Scope field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ManagedServicesListProviders200ResponseInnerAnyOf) GetScopeOk() (*string, bool) {
+	if o == nil || IsNil(o.Scope) {
+		return nil, false
+	}
+	return o.Scope, true
+}
+
+// HasScope returns a boolean if a field has been set.
+func (o *ManagedServicesListProviders200ResponseInnerAnyOf) HasScope() bool {
+	if o != nil && !IsNil(o.Scope) {
+		return true
+	}
+
+	return false
+}
+
+// SetScope gets a reference to the given string and assigns it to the Scope field.
+func (o *ManagedServicesListProviders200ResponseInnerAnyOf) SetScope(v string) {
+	o.Scope = &v
 }
 
 // GetAuthor returns the Author field value
@@ -436,6 +495,10 @@ func (o ManagedServicesListProviders200ResponseInnerAnyOf) ToMap() (map[string]i
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
 	toSerialize["version"] = o.Version
+	toSerialize["schemaVersion"] = o.SchemaVersion
+	if !IsNil(o.Scope) {
+		toSerialize["scope"] = o.Scope
+	}
 	toSerialize["author"] = o.Author
 	if !IsNil(o.Backups) {
 		toSerialize["backups"] = o.Backups
@@ -462,6 +525,7 @@ func (o *ManagedServicesListProviders200ResponseInnerAnyOf) UnmarshalJSON(data [
 	requiredProperties := []string{
 		"name",
 		"version",
+		"schemaVersion",
 		"author",
 		"category",
 		"description",

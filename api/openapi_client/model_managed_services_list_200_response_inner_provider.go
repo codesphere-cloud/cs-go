@@ -22,8 +22,9 @@ var _ MappedNullable = &ManagedServicesList200ResponseInnerProvider{}
 
 // ManagedServicesList200ResponseInnerProvider struct for ManagedServicesList200ResponseInnerProvider
 type ManagedServicesList200ResponseInnerProvider struct {
-	Name    string `json:"name" validate:"regexp=^[a-z0-9-_]+$"`
-	Version string `json:"version" validate:"regexp=^v[0-9][0-9a-z]*$"`
+	Name          string `json:"name" validate:"regexp=^[a-z0-9-_]+$"`
+	Version       string `json:"version" validate:"regexp=^v[0-9][0-9a-z]*$"`
+	SchemaVersion string `json:"schemaVersion" validate:"regexp=^v[0-9][0-9a-z]*$"`
 }
 
 type _ManagedServicesList200ResponseInnerProvider ManagedServicesList200ResponseInnerProvider
@@ -32,10 +33,11 @@ type _ManagedServicesList200ResponseInnerProvider ManagedServicesList200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewManagedServicesList200ResponseInnerProvider(name string, version string) *ManagedServicesList200ResponseInnerProvider {
+func NewManagedServicesList200ResponseInnerProvider(name string, version string, schemaVersion string) *ManagedServicesList200ResponseInnerProvider {
 	this := ManagedServicesList200ResponseInnerProvider{}
 	this.Name = name
 	this.Version = version
+	this.SchemaVersion = schemaVersion
 	return &this
 }
 
@@ -95,6 +97,30 @@ func (o *ManagedServicesList200ResponseInnerProvider) SetVersion(v string) {
 	o.Version = v
 }
 
+// GetSchemaVersion returns the SchemaVersion field value
+func (o *ManagedServicesList200ResponseInnerProvider) GetSchemaVersion() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.SchemaVersion
+}
+
+// GetSchemaVersionOk returns a tuple with the SchemaVersion field value
+// and a boolean to check if the value has been set.
+func (o *ManagedServicesList200ResponseInnerProvider) GetSchemaVersionOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.SchemaVersion, true
+}
+
+// SetSchemaVersion sets field value
+func (o *ManagedServicesList200ResponseInnerProvider) SetSchemaVersion(v string) {
+	o.SchemaVersion = v
+}
+
 func (o ManagedServicesList200ResponseInnerProvider) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -107,6 +133,7 @@ func (o ManagedServicesList200ResponseInnerProvider) ToMap() (map[string]interfa
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
 	toSerialize["version"] = o.Version
+	toSerialize["schemaVersion"] = o.SchemaVersion
 	return toSerialize, nil
 }
 
@@ -117,6 +144,7 @@ func (o *ManagedServicesList200ResponseInnerProvider) UnmarshalJSON(data []byte)
 	requiredProperties := []string{
 		"name",
 		"version",
+		"schemaVersion",
 	}
 
 	allProperties := make(map[string]interface{})
