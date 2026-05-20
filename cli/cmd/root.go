@@ -66,17 +66,18 @@ func (o GlobalOptions) GetWorkspaceId() (int, error) {
 }
 
 func (o GlobalOptions) GetOrgId() (string, error) {
-	if o.OrgId != "" {
-		return o.OrgId, nil
+	orgId := o.OrgId
+	if orgId == "" {
+		orgId = o.Env.GetOrgId()
 	}
-	orgId := o.Env.GetOrgId()
-	if o.OrgId == "" {
-		return o.OrgId, nil
+
+	if orgId == "" {
+		return "", nil
 	}
 
 	_, err := uuid.Parse(orgId)
 	if err != nil {
-		return "", fmt.Errorf("invalid organization UUID format: %w", err)
+		return "", fmt.Errorf("invalid organization ID format: %w", err)
 	}
 
 	return orgId, nil

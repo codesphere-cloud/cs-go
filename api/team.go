@@ -59,10 +59,34 @@ func (c *Client) ListTeams(orgId string) ([]Team, error) {
 
 func (c *Client) GetTeam(teamId int) (*Team, error) {
 	team, r, err := c.api.TeamsAPI.TeamsGetTeam(c.ctx, float32(teamId)).Execute()
-	return ConvertToTeam(team), cserrors.FormatAPIError(r, err)
+	if err != nil {
+		return nil, cserrors.FormatAPIError(r, err)
+	}
+	return ConvertToTeam(team), nil
 }
 
 func (c *Client) CreateTeam(orgId string, name string, dc int) (*Team, error) {
+	if orgId == "" {
+		return c.createTeam(name, dc)
+	}
+	return c.createOrgTeam(orgId, name, dc)
+
+}
+
+func (c *Client) createTeam(name string, dc int) (*Team, error) {
+	team, r, err := c.api.TeamsAPI.TeamsCreateTeam(c.ctx).
+		TeamsCreateTeamRequest(openapi_client.TeamsCreateTeamRequest{
+			Name: name,
+			Dc:   dc,
+		}).
+		Execute()
+	if err != nil {
+		return nil, cserrors.FormatAPIError(r, err)
+	}
+	return ConvertToTeam(team), nil
+}
+
+func (c *Client) createOrgTeam(orgId string, name string, dc int) (*Team, error) {
 	team, r, err := c.api.TeamsAPI.TeamsCreateTeam(c.ctx).
 		TeamsCreateTeamRequest(openapi_client.TeamsCreateTeamRequest{
 			Name:           name,
@@ -70,7 +94,10 @@ func (c *Client) CreateTeam(orgId string, name string, dc int) (*Team, error) {
 			OrganizationId: &orgId,
 		}).
 		Execute()
-	return ConvertToTeam(team), cserrors.FormatAPIError(r, err)
+	if err != nil {
+		return nil, cserrors.FormatAPIError(r, err)
+	}
+	return ConvertToTeam(team), nil
 }
 
 func (c *Client) DeleteTeam(orgId string, teamId int) error {
