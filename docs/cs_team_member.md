@@ -1,21 +1,11 @@
-## cs list plans
+## cs team member
 
-List available plans
-
-### Synopsis
-
-List available workpace plans.
-
-When creating new workspaces you need to select a specific plan.
-
-```
-cs list plans [flags]
-```
+Manage team members
 
 ### Options
 
 ```
-  -h, --help   help for plans
+  -h, --help   help for member
 ```
 
 ### Options inherited from parent commands
@@ -23,7 +13,6 @@ cs list plans [flags]
 ```
   -a, --api string      URL of Codesphere API (can also be CS_API)
   -O, --org string      Organization ID (relevant for some commands)
-  -o, --output string   Output format (table, json, yaml) (default "table")
   -t, --team int        Team ID (relevant for some commands, can also be CS_TEAM_ID) (default -1)
   -v, --verbose         Verbose output
   -w, --workspace int   Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)
@@ -31,5 +20,7 @@ cs list plans [flags]
 
 ### SEE ALSO
 
-* [cs list](cs_list.md)	 - List resources
+* [cs team](cs_team.md)	 - Manage Team
+* [cs team member add](cs_team_member_add.md)	 - Add team member
+* [cs team member remove](cs_team_member_remove.md)	 - Remove team member
 

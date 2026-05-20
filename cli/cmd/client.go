@@ -16,7 +16,7 @@ import (
 )
 
 type Client interface {
-	ListTeams() ([]api.Team, error)
+	ListTeams(orgId string) ([]api.Team, error)
 	ListWorkspaces(teamId int) ([]api.Workspace, error)
 	ListBaseimages() ([]api.Baseimage, error)
 	ListOrganizations() ([]api.Organization, error)
@@ -34,6 +34,8 @@ type Client interface {
 	GetPipelineState(wsId int, stage string) ([]api.PipelineStatus, error)
 	GitPull(wsId int, remote string, branch string) error
 	DeployLandscape(wsId int, profile string) error
+	CreateTeam(orgId string, name string, dcId int) (*api.Team, error)
+	DeleteTeam(orgId string, teamId int) error
 }
 
 // CommandExecutor abstracts command execution for testing

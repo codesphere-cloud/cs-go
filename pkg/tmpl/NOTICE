@@ -160,6 +160,12 @@ License: BSD-3-Clause
 License URL: https://github.com/google/go-querystring/blob/v1.2.0/LICENSE
  
 ----------
+Module: github.com/google/uuid
+Version: v1.6.0
+License: BSD-3-Clause
+License URL: https://github.com/google/uuid/blob/v1.6.0/LICENSE
+ 
+----------
 Module: github.com/hashicorp/go-cleanhttp
 Version: v0.5.2
 License: MPL-2.0

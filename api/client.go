@@ -145,8 +145,3 @@ func (c *Client) ListBaseimages() ([]Baseimage, error) {
 	baseimages, r, err := c.api.MetadataAPI.MetadataGetWorkspaceBaseImages(c.ctx).Execute()
 	return baseimages, errors.FormatAPIError(r, err)
 }
-
-func (c *Client) ListOrganizations() ([]Organization, error) {
-	organizations, r, err := c.api.OrganizationsAPI.OrganizationsListOrganizations(c.ctx).Execute()
-	return organizations, errors.FormatAPIError(r, err)
-}

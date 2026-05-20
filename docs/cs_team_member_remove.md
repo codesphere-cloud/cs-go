@@ -1,21 +1,19 @@
-## cs list plans
+## cs team member remove
 
-List available plans
+Remove team member
 
 ### Synopsis
 
-List available workpace plans.
-
-When creating new workspaces you need to select a specific plan.
+Remove team member from a team
 
 ```
-cs list plans [flags]
+cs team member remove [flags]
 ```
 
 ### Options
 
 ```
-  -h, --help   help for plans
+  -h, --help   help for remove
 ```
 
 ### Options inherited from parent commands
@@ -23,7 +21,6 @@ cs list plans [flags]
 ```
   -a, --api string      URL of Codesphere API (can also be CS_API)
   -O, --org string      Organization ID (relevant for some commands)
-  -o, --output string   Output format (table, json, yaml) (default "table")
   -t, --team int        Team ID (relevant for some commands, can also be CS_TEAM_ID) (default -1)
   -v, --verbose         Verbose output
   -w, --workspace int   Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)
@@ -31,5 +28,5 @@ cs list plans [flags]
 
 ### SEE ALSO
 
-* [cs list](cs_list.md)	 - List resources
+* [cs team member](cs_team_member.md)	 - Manage team members
 
