@@ -29,6 +29,9 @@ generate: install-build-deps
 build:
 	go build -C cli -o ../cs
 
+build-mcp:
+	go build -o cs-mcp ./mcp-server
+
 GOBIN ?= $(shell go env GOPATH)/bin
 install: build
 	mv cs ${GOBIN}/
