@@ -16,8 +16,8 @@ If you're using VS Code extensions like Cline or Roo Code, open your MCP setting
     "codesphere": {
       "command": "/path/to/cs-mcp",
       "env": {
-        "CS_API_TOKEN": "your-api-token-here",
-        "CS_API_URL": "https://codesphere.com/api"
+        "CS_TOKEN": "your-api-token-here",
+        "CS_API": "https://codesphere.com/api"
       }
     }
   }
@@ -34,8 +34,8 @@ For Claude Desktop, add the same configuration to your `claude_desktop_config.js
     "codesphere": {
       "command": "/path/to/cs-mcp",
       "env": {
-        "CS_API_TOKEN": "your-api-token-here",
-        "CS_API_URL": "https://codesphere.com/api"
+        "CS_TOKEN": "your-api-token-here",
+        "CS_API": "https://codesphere.com/api"
       }
     }
   }
@@ -47,5 +47,5 @@ For Claude Desktop, add the same configuration to your `claude_desktop_config.js
 ## Getting Started
 
 1. **Build or Download**: Obtain the `cs-mcp` binary (for example, by building it using `go build` inside this project).
-2. **API Token**: Get your `CS_API_TOKEN` from your Codesphere account under your workspace settings.
+2. **API Token**: Get your `CS_TOKEN` from your Codesphere account under your workspace settings.
 3. **Configure**: Add the JSON snippet above to your client's MCP configuration file and restart the client.
