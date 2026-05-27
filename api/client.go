@@ -13,9 +13,10 @@ import (
 )
 
 type Client struct {
-	ctx  context.Context
-	api  *openapi_client.APIClient
-	time Time
+	ctx     context.Context
+	api     *openapi_client.APIClient
+	time    Time
+	baseUrl *url.URL
 }
 
 type Configuration struct {
@@ -43,9 +44,10 @@ func (c Configuration) GetApiUrl() *url.URL {
 // For use in tests
 func NewClientWithCustomDeps(ctx context.Context, opts Configuration, api *openapi_client.APIClient, time Time) *Client {
 	return &Client{
-		ctx:  context.WithValue(ctx, openapi_client.ContextAccessToken, opts.Token),
-		api:  api,
-		time: time,
+		ctx:     context.WithValue(ctx, openapi_client.ContextAccessToken, opts.Token),
+		api:     api,
+		time:    time,
+		baseUrl: opts.GetApiUrl(),
 	}
 }
 
