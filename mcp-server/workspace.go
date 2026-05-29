@@ -72,6 +72,24 @@ type ScaleLandscapeServicesArgs struct {
 	Services    map[string]int `json:"services" jsonschema:"Map of service name to replica count"`
 }
 
+type GetLogsOfStageArgs struct {
+	WorkspaceId int    `json:"workspaceId" jsonschema:"ID of the workspace"`
+	Stage       string `json:"stage" jsonschema:"Stage name, like 'run'"`
+	Step        int    `json:"step" jsonschema:"Index of execution step (default 0)"`
+}
+
+type GetLogsOfReplicaArgs struct {
+	WorkspaceId int    `json:"workspaceId" jsonschema:"ID of the workspace"`
+	Step        int    `json:"step" jsonschema:"Index of execution step (default 0)"`
+	Replica     string `json:"replica" jsonschema:"ID of server replica"`
+}
+
+type GetLogsOfServerArgs struct {
+	WorkspaceId int    `json:"workspaceId" jsonschema:"ID of the workspace"`
+	Step        int    `json:"step" jsonschema:"Index of execution step (default 0)"`
+	Server      string `json:"server" jsonschema:"Name of the landscape server"`
+}
+
 func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 	mcp.AddTool(server, &mcp.Tool{
 		Name:        "list_workspaces",
@@ -247,22 +265,4 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		}
 		return nil, logs, nil
 	})
-}
-
-type GetLogsOfStageArgs struct {
-	WorkspaceId int    `json:"workspaceId" jsonschema:"ID of the workspace"`
-	Stage       string `json:"stage" jsonschema:"Stage name, like 'run'"`
-	Step        int    `json:"step" jsonschema:"Index of execution step (default 0)"`
-}
-
-type GetLogsOfReplicaArgs struct {
-	WorkspaceId int    `json:"workspaceId" jsonschema:"ID of the workspace"`
-	Step        int    `json:"step" jsonschema:"Index of execution step (default 0)"`
-	Replica     string `json:"replica" jsonschema:"ID of server replica"`
-}
-
-type GetLogsOfServerArgs struct {
-	WorkspaceId int    `json:"workspaceId" jsonschema:"ID of the workspace"`
-	Step        int    `json:"step" jsonschema:"Index of execution step (default 0)"`
-	Server      string `json:"server" jsonschema:"Name of the landscape server"`
 }
