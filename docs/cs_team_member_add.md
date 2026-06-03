@@ -13,7 +13,9 @@ cs team member add [flags]
 ### Options
 
 ```
-  -h, --help   help for add
+  -e, --email string   Team member email
+  -h, --help           help for add
+  -r, --role int       Team member role 0=admin, 1=member
 ```
 
 ### Options inherited from parent commands
