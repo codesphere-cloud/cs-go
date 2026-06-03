@@ -101,5 +101,5 @@ var _ = Describe("AddTeamMember", func() {
 			Expect(err.Error()).To(Equal("email cannot be empty"))
 		})
 	})
-	
+
 })
