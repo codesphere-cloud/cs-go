@@ -13,7 +13,8 @@ cs team member remove [flags]
 ### Options
 
 ```
-  -h, --help   help for remove
+  -h, --help       help for remove
+  -u, --user int   Team member user ID
 ```
 
 ### Options inherited from parent commands
