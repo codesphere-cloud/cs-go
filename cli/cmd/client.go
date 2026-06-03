@@ -36,6 +36,8 @@ type Client interface {
 	DeployLandscape(wsId int, profile string) error
 	CreateTeam(orgId string, name string, dcId int) (*api.Team, error)
 	DeleteTeam(orgId string, teamId int) error
+	AddTeamMember(teamId int, email string, role int) error
+	RemoveTeamMember(teamId int, userId int) error
 }
 
 // CommandExecutor abstracts command execution for testing

@@ -104,3 +104,23 @@ func (c *Client) DeleteTeam(orgId string, teamId int) error {
 	r, err := c.api.TeamsAPI.TeamsDeleteTeam(c.ctx, float32(teamId)).Execute()
 	return cserrors.FormatAPIError(r, err)
 }
+
+func (c *Client) AddTeamMember(teamId int, email string, role int) error {
+	r, err := c.api.TeamsAPI.TeamsInviteMember(c.ctx, float32(teamId)).
+		TeamsInviteMemberRequest(openapi_client.TeamsInviteMemberRequest{
+			UserEmail: email,
+			Role:      role,
+		}).Execute()
+	if err != nil {
+		return cserrors.FormatAPIError(r, err)
+	}
+	return nil
+}
+
+func (c *Client) RemoveTeamMember(teamId int, userId int) error {
+	r, err := c.api.TeamsAPI.TeamsRemoveMember(c.ctx, float32(teamId), float32(userId)).Execute()
+	if err != nil {
+		return cserrors.FormatAPIError(r, err)
+	}
+	return nil
+}

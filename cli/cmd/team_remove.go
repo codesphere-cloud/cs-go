@@ -5,12 +5,15 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
+
 	"github.com/spf13/cobra"
 )
 
 type RemoveTeamCmd struct {
-	cmd  *cobra.Command
-	Opts RemoveTeamOpts
+	cmd           *cobra.Command
+	Opts          RemoveTeamOpts
+	ClientFactory func(GlobalOptions) (Client, error)
 }
 
 type RemoveTeamOpts struct {
@@ -28,6 +31,7 @@ func AddRemoveTeamCmd(team *cobra.Command, opts *GlobalOptions) {
 		Opts: RemoveTeamOpts{
 			GlobalOptions: opts,
 		},
+		ClientFactory: NewClient,
 	}
 	t.cmd.RunE = t.RunE
 	t.cmd.Flags().StringVarP(&t.Opts.name, "name", "n", "", "Team name")
@@ -36,10 +40,9 @@ func AddRemoveTeamCmd(team *cobra.Command, opts *GlobalOptions) {
 }
 
 func (c *RemoveTeamCmd) RunE(_ *cobra.Command, args []string) error {
-	// TODO: Implement team removal logic
-	client, err := NewClient(*c.Opts.GlobalOptions)
+	client, err := c.ClientFactory(*c.Opts.GlobalOptions)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to create Codespehre client: %w", err)
 	}
 
 	orgId, err := c.Opts.GetOrgId()
@@ -52,12 +55,9 @@ func (c *RemoveTeamCmd) RunE(_ *cobra.Command, args []string) error {
 		return errors.New("team ID not set, use -T or CS_TEAM_ID to set it")
 	}
 
-	//
-
 	err = client.DeleteTeam(orgId, teamId)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to delete team: %w", err)
 	}
 	return nil
-
 }
