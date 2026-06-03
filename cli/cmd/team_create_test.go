@@ -63,7 +63,7 @@ var _ = Describe("CreateTeam", func() {
 
 	Context("RunE execution flow", func() {
 		It("should successfully create a team when organization ID is provided via environment", func() {
-			c.Opts.GlobalOptions.OrgId = "" // Ensure flag is empty
+			c.Opts.OrgId = "" // Ensure flag is empty
 			mockEnv.EXPECT().GetOrgId().Return(orgId).Once()
 
 			expectedTeam := api.Team{
@@ -81,7 +81,7 @@ var _ = Describe("CreateTeam", func() {
 
 	Context("when creating a team with an organization ID", func() {
 		BeforeEach(func() {
-			c.Opts.GlobalOptions.OrgId = orgId // Set OrgId via GlobalOptions (flag equivalent)
+			c.Opts.OrgId = orgId // Set OrgId via GlobalOptions (flag equivalent)
 		})
 
 		It("should successfully create the team and return the correct object", func() {
@@ -112,7 +112,7 @@ var _ = Describe("CreateTeam", func() {
 
 	Context("when creating a team without an organization ID", func() {
 		BeforeEach(func() {
-			c.Opts.GlobalOptions.OrgId = "" // Ensure OrgId is empty from flag
+			c.Opts.OrgId = "" // Ensure OrgId is empty from flag
 		})
 
 		It("should create the team without orgID ", func() {
@@ -132,7 +132,7 @@ var _ = Describe("CreateTeam", func() {
 
 	Context("when an invalid organization ID format is provided via flag", func() {
 		BeforeEach(func() {
-			c.Opts.GlobalOptions.OrgId = "invalid-uuid-format" // Set an invalid UUID in GlobalOptions
+			c.Opts.OrgId = "invalid-uuid-format" // Set an invalid UUID in GlobalOptions
 		})
 
 		It("should return an error due to invalid organization ID format", func() {

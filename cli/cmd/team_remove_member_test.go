@@ -80,7 +80,7 @@ var _ = Describe("RemoveTeamMember", func() {
 		})
 
 		It("should fail when team ID is unavailable", func() {
-			c.Opts.GlobalOptions.TeamId = -1
+			c.Opts.TeamId = -1
 			mockEnv.EXPECT().GetTeamId().Return(-1, errors.New("CS_TEAM_ID env var required, but not set")).Once()
 
 			err := c.RunE(nil, []string{})
