@@ -122,6 +122,7 @@ func GetRootCmd() *cobra.Command {
 	AddWakeUpCmd(rootCmd, &opts)
 	AddCurlCmd(rootCmd, &opts)
 	AddScaleCmd(rootCmd, &opts)
+	AddMcpCmd(rootCmd)
 
 	return rootCmd
 }

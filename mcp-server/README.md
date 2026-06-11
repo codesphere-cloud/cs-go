@@ -14,7 +14,10 @@ If you're using VS Code extensions like Cline or Roo Code, open your MCP setting
 {
   "mcpServers": {
     "codesphere": {
-      "command": "/path/to/cs-mcp",
+      "command": "cs",
+      "args": [
+        "mcp"
+      ],
       "env": {
         "CS_TOKEN": "your-api-token-here",
         "CS_API": "https://codesphere.com/api"
@@ -32,7 +35,10 @@ For Claude Desktop, add the same configuration to your `claude_desktop_config.js
 {
   "mcpServers": {
     "codesphere": {
-      "command": "/path/to/cs-mcp",
+      "command": "cs",
+      "args": [
+        "mcp"
+      ],
       "env": {
         "CS_TOKEN": "your-api-token-here",
         "CS_API": "https://codesphere.com/api"
@@ -42,10 +48,11 @@ For Claude Desktop, add the same configuration to your `claude_desktop_config.js
 }
 ```
 
-> **Note:** Replace `/path/to/cs-mcp` with the actual, absolute path to the compiled `cs-mcp` executable on your system.
+> **Note:** If the `cs` CLI is not in your system's `PATH`, replace `"command": "cs"` with the absolute path to the compiled `cs` executable on your system (e.g. `"/Users/youruser/bin/cs"`).
 
 ## Getting Started
 
-1. **Build or Download**: Obtain the `cs-mcp` binary (for example, by building it using `go build` inside this project).
+1. **Build or Download**: Obtain the `cs` binary (for example, by building it using `go build -o cs ./cli` in the root of the project).
 2. **API Token**: Get your `CS_TOKEN` from your Codesphere account under your workspace settings.
-3. **Configure**: Add the JSON snippet above to your client's MCP configuration file and restart the client.
+3. **API URL**: Get the correct `CS_API` for the codesphere instance you want to reach.
+4. **Configure**: Add the JSON snippet above to your client's MCP configuration file and restart the client.

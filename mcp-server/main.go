@@ -1,4 +1,4 @@
-package main
+package mcpserver
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
-func main() {
+func Run() error {
 	opts := cs.NewEnv()
 
 	token, err := opts.GetApiToken()
@@ -38,8 +38,9 @@ func main() {
 	RegisterUsageTools(server, client)
 
 	if err := server.Run(context.Background(), &mcp.StdioTransport{}); err != nil {
-		log.Fatal(err)
+		return err
 	}
+	return nil
 }
 
 // adding usage tools to main
