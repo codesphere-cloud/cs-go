@@ -232,3 +232,18 @@ func (c Client) GitPull(workspaceId int, remote string, branch string) error {
 	r, err := req.Execute()
 	return errors.FormatAPIError(r, err)
 }
+
+func (c *Client) GetLogsOfStage(workspaceId int, stage string, step int) (*openapi_client.WorkspacesLogs200Response, error) {
+	resp, r, err := c.api.WorkspacesAPI.WorkspacesLogs(c.ctx, float32(workspaceId), stage, float32(step)).Execute()
+	return resp, errors.FormatAPIError(r, err)
+}
+
+func (c *Client) GetLogsOfReplica(workspaceId int, step int, replica string) (*openapi_client.WorkspacesReplicaLogs200Response, error) {
+	resp, r, err := c.api.WorkspacesAPI.WorkspacesReplicaLogs(c.ctx, float32(workspaceId), float32(step), replica).Execute()
+	return resp, errors.FormatAPIError(r, err)
+}
+
+func (c *Client) GetLogsOfServer(workspaceId int, step int, server string) (*openapi_client.WorkspacesServerLogs200Response, error) {
+	resp, r, err := c.api.WorkspacesAPI.WorkspacesServerLogs(c.ctx, float32(workspaceId), float32(step), server).Execute()
+	return resp, errors.FormatAPIError(r, err)
+}

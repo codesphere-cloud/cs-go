@@ -75,7 +75,7 @@ type MockGit_CloneRepository_Call struct {
 //   - url string
 //   - branch string
 //   - path string
-func (_e *MockGit_Expecter) CloneRepository(fs interface{}, url interface{}, branch interface{}, path interface{}) *MockGit_CloneRepository_Call {
+func (_e *MockGit_Expecter) CloneRepository(fs any, url any, branch any, path any) *MockGit_CloneRepository_Call {
 	return &MockGit_CloneRepository_Call{Call: _e.mock.On("CloneRepository", fs, url, branch, path)}
 }
 
