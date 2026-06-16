@@ -63,7 +63,7 @@ type MockClient_DeleteWorkspace_Call struct {
 
 // DeleteWorkspace is a helper method to define mock.On call
 //   - wsId int
-func (_e *MockClient_Expecter) DeleteWorkspace(wsId interface{}) *MockClient_DeleteWorkspace_Call {
+func (_e *MockClient_Expecter) DeleteWorkspace(wsId any) *MockClient_DeleteWorkspace_Call {
 	return &MockClient_DeleteWorkspace_Call{Call: _e.mock.On("DeleteWorkspace", wsId)}
 }
 
@@ -115,7 +115,7 @@ type MockClient_DeployLandscape_Call struct {
 // DeployLandscape is a helper method to define mock.On call
 //   - wsId int
 //   - profile string
-func (_e *MockClient_Expecter) DeployLandscape(wsId interface{}, profile interface{}) *MockClient_DeployLandscape_Call {
+func (_e *MockClient_Expecter) DeployLandscape(wsId any, profile any) *MockClient_DeployLandscape_Call {
 	return &MockClient_DeployLandscape_Call{Call: _e.mock.On("DeployLandscape", wsId, profile)}
 }
 
@@ -182,7 +182,7 @@ type MockClient_DeployWorkspace_Call struct {
 
 // DeployWorkspace is a helper method to define mock.On call
 //   - args api.DeployWorkspaceArgs
-func (_e *MockClient_Expecter) DeployWorkspace(args interface{}) *MockClient_DeployWorkspace_Call {
+func (_e *MockClient_Expecter) DeployWorkspace(args any) *MockClient_DeployWorkspace_Call {
 	return &MockClient_DeployWorkspace_Call{Call: _e.mock.On("DeployWorkspace", args)}
 }
 
@@ -251,7 +251,7 @@ type MockClient_ExecCommand_Call struct {
 //   - command string
 //   - workdir string
 //   - env map[string]string
-func (_e *MockClient_Expecter) ExecCommand(workspaceId interface{}, command interface{}, workdir interface{}, env interface{}) *MockClient_ExecCommand_Call {
+func (_e *MockClient_Expecter) ExecCommand(workspaceId any, command any, workdir any, env any) *MockClient_ExecCommand_Call {
 	return &MockClient_ExecCommand_Call{Call: _e.mock.On("ExecCommand", workspaceId, command, workdir, env)}
 }
 
@@ -329,7 +329,7 @@ type MockClient_GetPipelineState_Call struct {
 // GetPipelineState is a helper method to define mock.On call
 //   - wsId int
 //   - stage string
-func (_e *MockClient_Expecter) GetPipelineState(wsId interface{}, stage interface{}) *MockClient_GetPipelineState_Call {
+func (_e *MockClient_Expecter) GetPipelineState(wsId any, stage any) *MockClient_GetPipelineState_Call {
 	return &MockClient_GetPipelineState_Call{Call: _e.mock.On("GetPipelineState", wsId, stage)}
 }
 
@@ -394,7 +394,7 @@ type MockClient_GetWorkspace_Call struct {
 
 // GetWorkspace is a helper method to define mock.On call
 //   - workspaceId int
-func (_e *MockClient_Expecter) GetWorkspace(workspaceId interface{}) *MockClient_GetWorkspace_Call {
+func (_e *MockClient_Expecter) GetWorkspace(workspaceId any) *MockClient_GetWorkspace_Call {
 	return &MockClient_GetWorkspace_Call{Call: _e.mock.On("GetWorkspace", workspaceId)}
 }
 
@@ -447,7 +447,7 @@ type MockClient_GitPull_Call struct {
 //   - wsId int
 //   - remote string
 //   - branch string
-func (_e *MockClient_Expecter) GitPull(wsId interface{}, remote interface{}, branch interface{}) *MockClient_GitPull_Call {
+func (_e *MockClient_Expecter) GitPull(wsId any, remote any, branch any) *MockClient_GitPull_Call {
 	return &MockClient_GitPull_Call{Call: _e.mock.On("GitPull", wsId, remote, branch)}
 }
 
@@ -739,7 +739,7 @@ type MockClient_ListWorkspaces_Call struct {
 
 // ListWorkspaces is a helper method to define mock.On call
 //   - teamId int
-func (_e *MockClient_Expecter) ListWorkspaces(teamId interface{}) *MockClient_ListWorkspaces_Call {
+func (_e *MockClient_Expecter) ListWorkspaces(teamId any) *MockClient_ListWorkspaces_Call {
 	return &MockClient_ListWorkspaces_Call{Call: _e.mock.On("ListWorkspaces", teamId)}
 }
 
@@ -791,7 +791,7 @@ type MockClient_ScaleLandscapeServices_Call struct {
 // ScaleLandscapeServices is a helper method to define mock.On call
 //   - wsId int
 //   - services map[string]int
-func (_e *MockClient_Expecter) ScaleLandscapeServices(wsId interface{}, services interface{}) *MockClient_ScaleLandscapeServices_Call {
+func (_e *MockClient_Expecter) ScaleLandscapeServices(wsId any, services any) *MockClient_ScaleLandscapeServices_Call {
 	return &MockClient_ScaleLandscapeServices_Call{Call: _e.mock.On("ScaleLandscapeServices", wsId, services)}
 }
 
@@ -848,7 +848,7 @@ type MockClient_ScaleWorkspace_Call struct {
 // ScaleWorkspace is a helper method to define mock.On call
 //   - wsId int
 //   - replicas int
-func (_e *MockClient_Expecter) ScaleWorkspace(wsId interface{}, replicas interface{}) *MockClient_ScaleWorkspace_Call {
+func (_e *MockClient_Expecter) ScaleWorkspace(wsId any, replicas any) *MockClient_ScaleWorkspace_Call {
 	return &MockClient_ScaleWorkspace_Call{Call: _e.mock.On("ScaleWorkspace", wsId, replicas)}
 }
 
@@ -905,7 +905,7 @@ type MockClient_SetEnvVarOnWorkspace_Call struct {
 // SetEnvVarOnWorkspace is a helper method to define mock.On call
 //   - workspaceId int
 //   - vars map[string]string
-func (_e *MockClient_Expecter) SetEnvVarOnWorkspace(workspaceId interface{}, vars interface{}) *MockClient_SetEnvVarOnWorkspace_Call {
+func (_e *MockClient_Expecter) SetEnvVarOnWorkspace(workspaceId any, vars any) *MockClient_SetEnvVarOnWorkspace_Call {
 	return &MockClient_SetEnvVarOnWorkspace_Call{Call: _e.mock.On("SetEnvVarOnWorkspace", workspaceId, vars)}
 }
 
@@ -963,7 +963,7 @@ type MockClient_StartPipelineStage_Call struct {
 //   - wsId int
 //   - profile string
 //   - stage string
-func (_e *MockClient_Expecter) StartPipelineStage(wsId interface{}, profile interface{}, stage interface{}) *MockClient_StartPipelineStage_Call {
+func (_e *MockClient_Expecter) StartPipelineStage(wsId any, profile any, stage any) *MockClient_StartPipelineStage_Call {
 	return &MockClient_StartPipelineStage_Call{Call: _e.mock.On("StartPipelineStage", wsId, profile, stage)}
 }
 
@@ -1025,7 +1025,7 @@ type MockClient_WaitForWorkspaceRunning_Call struct {
 // WaitForWorkspaceRunning is a helper method to define mock.On call
 //   - workspace *api.Workspace
 //   - timeout time.Duration
-func (_e *MockClient_Expecter) WaitForWorkspaceRunning(workspace interface{}, timeout interface{}) *MockClient_WaitForWorkspaceRunning_Call {
+func (_e *MockClient_Expecter) WaitForWorkspaceRunning(workspace any, timeout any) *MockClient_WaitForWorkspaceRunning_Call {
 	return &MockClient_WaitForWorkspaceRunning_Call{Call: _e.mock.On("WaitForWorkspaceRunning", workspace, timeout)}
 }
 
@@ -1092,7 +1092,7 @@ type MockClient_WorkspaceStatus_Call struct {
 
 // WorkspaceStatus is a helper method to define mock.On call
 //   - workspaceId int
-func (_e *MockClient_Expecter) WorkspaceStatus(workspaceId interface{}) *MockClient_WorkspaceStatus_Call {
+func (_e *MockClient_Expecter) WorkspaceStatus(workspaceId any) *MockClient_WorkspaceStatus_Call {
 	return &MockClient_WorkspaceStatus_Call{Call: _e.mock.On("WorkspaceStatus", workspaceId)}
 }
 
@@ -1174,7 +1174,7 @@ type MockCommandExecutor_Execute_Call struct {
 //   - args []string
 //   - stdout io.Writer
 //   - stderr io.Writer
-func (_e *MockCommandExecutor_Expecter) Execute(ctx interface{}, name interface{}, args interface{}, stdout interface{}, stderr interface{}) *MockCommandExecutor_Execute_Call {
+func (_e *MockCommandExecutor_Expecter) Execute(ctx any, name any, args any, stdout any, stderr any) *MockCommandExecutor_Execute_Call {
 	return &MockCommandExecutor_Execute_Call{Call: _e.mock.On("Execute", ctx, name, args, stdout, stderr)}
 }
 
@@ -1272,7 +1272,7 @@ type MockPrompt_InputPrompt_Call struct {
 
 // InputPrompt is a helper method to define mock.On call
 //   - prompt string
-func (_e *MockPrompt_Expecter) InputPrompt(prompt interface{}) *MockPrompt_InputPrompt_Call {
+func (_e *MockPrompt_Expecter) InputPrompt(prompt any) *MockPrompt_InputPrompt_Call {
 	return &MockPrompt_InputPrompt_Call{Call: _e.mock.On("InputPrompt", prompt)}
 }
 
@@ -1350,7 +1350,7 @@ type MockBrowser_OpenIde_Call struct {
 
 // OpenIde is a helper method to define mock.On call
 //   - path string
-func (_e *MockBrowser_Expecter) OpenIde(path interface{}) *MockBrowser_OpenIde_Call {
+func (_e *MockBrowser_Expecter) OpenIde(path any) *MockBrowser_OpenIde_Call {
 	return &MockBrowser_OpenIde_Call{Call: _e.mock.On("OpenIde", path)}
 }
 

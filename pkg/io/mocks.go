@@ -71,7 +71,7 @@ type MockExec_ExecuteCommand_Call struct {
 // ExecuteCommand is a helper method to define mock.On call
 //   - ctx context.Context
 //   - cmdArgs []string
-func (_e *MockExec_Expecter) ExecuteCommand(ctx interface{}, cmdArgs interface{}) *MockExec_ExecuteCommand_Call {
+func (_e *MockExec_Expecter) ExecuteCommand(ctx any, cmdArgs any) *MockExec_ExecuteCommand_Call {
 	return &MockExec_ExecuteCommand_Call{Call: _e.mock.On("ExecuteCommand", ctx, cmdArgs)}
 }
 
@@ -144,7 +144,7 @@ type MockHttpServer_Handle_Call struct {
 // Handle is a helper method to define mock.On call
 //   - pattern string
 //   - handler http.Handler
-func (_e *MockHttpServer_Expecter) Handle(pattern interface{}, handler interface{}) *MockHttpServer_Handle_Call {
+func (_e *MockHttpServer_Expecter) Handle(pattern any, handler any) *MockHttpServer_Handle_Call {
 	return &MockHttpServer_Handle_Call{Call: _e.mock.On("Handle", pattern, handler)}
 }
 
@@ -190,7 +190,7 @@ type MockHttpServer_HandleFunc_Call struct {
 // HandleFunc is a helper method to define mock.On call
 //   - pattern string
 //   - handler func(http.ResponseWriter, *http.Request)
-func (_e *MockHttpServer_Expecter) HandleFunc(pattern interface{}, handler interface{}) *MockHttpServer_HandleFunc_Call {
+func (_e *MockHttpServer_Expecter) HandleFunc(pattern any, handler any) *MockHttpServer_HandleFunc_Call {
 	return &MockHttpServer_HandleFunc_Call{Call: _e.mock.On("HandleFunc", pattern, handler)}
 }
 
@@ -247,7 +247,7 @@ type MockHttpServer_ListenAndServe_Call struct {
 // ListenAndServe is a helper method to define mock.On call
 //   - addr string
 //   - handler http.Handler
-func (_e *MockHttpServer_Expecter) ListenAndServe(addr interface{}, handler interface{}) *MockHttpServer_ListenAndServe_Call {
+func (_e *MockHttpServer_Expecter) ListenAndServe(addr any, handler any) *MockHttpServer_ListenAndServe_Call {
 	return &MockHttpServer_ListenAndServe_Call{Call: _e.mock.On("ListenAndServe", addr, handler)}
 }
 
@@ -295,7 +295,7 @@ type MockHttpServer_Redirect_Call struct {
 //   - r *http.Request
 //   - url string
 //   - code int
-func (_e *MockHttpServer_Expecter) Redirect(w interface{}, r interface{}, url interface{}, code interface{}) *MockHttpServer_Redirect_Call {
+func (_e *MockHttpServer_Expecter) Redirect(w any, r any, url any, code any) *MockHttpServer_Redirect_Call {
 	return &MockHttpServer_Redirect_Call{Call: _e.mock.On("Redirect", w, r, url, code)}
 }
 
