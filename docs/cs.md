@@ -27,6 +27,7 @@ Manage and debug resources deployed in Codesphere via command line.
 * [cs licenses](cs_licenses.md)	 - Print license information
 * [cs list](cs_list.md)	 - List resources
 * [cs log](cs_log.md)	 - Retrieve run logs from services
+* [cs mcp](cs_mcp.md)	 - Runs the MCP server for Codesphere
 * [cs monitor](cs_monitor.md)	 - Monitor a command and report health information
 * [cs open](cs_open.md)	 - Open the Codesphere IDE
 * [cs scale](cs_scale.md)	 - Scale Codesphere resources
