@@ -107,7 +107,7 @@ type MockExporter_ExportImages_Call struct {
 //   - ctx context.Context
 //   - registry string
 //   - imagePrefix string
-func (_e *MockExporter_Expecter) ExportImages(ctx interface{}, registry interface{}, imagePrefix interface{}) *MockExporter_ExportImages_Call {
+func (_e *MockExporter_Expecter) ExportImages(ctx any, registry any, imagePrefix any) *MockExporter_ExportImages_Call {
 	return &MockExporter_ExportImages_Call{Call: _e.mock.On("ExportImages", ctx, registry, imagePrefix)}
 }
 
@@ -173,7 +173,7 @@ type MockExporter_ExportKubernetesArtifacts_Call struct {
 //   - pullSecret string
 //   - hostname string
 //   - ingressClass string
-func (_e *MockExporter_Expecter) ExportKubernetesArtifacts(registry interface{}, image interface{}, namespace interface{}, pullSecret interface{}, hostname interface{}, ingressClass interface{}) *MockExporter_ExportKubernetesArtifacts_Call {
+func (_e *MockExporter_Expecter) ExportKubernetesArtifacts(registry any, image any, namespace any, pullSecret any, hostname any, ingressClass any) *MockExporter_ExportKubernetesArtifacts_Call {
 	return &MockExporter_ExportKubernetesArtifacts_Call{Call: _e.mock.On("ExportKubernetesArtifacts", registry, image, namespace, pullSecret, hostname, ingressClass)}
 }
 
@@ -260,7 +260,7 @@ type MockExporter_ReadYmlFile_Call struct {
 
 // ReadYmlFile is a helper method to define mock.On call
 //   - path string
-func (_e *MockExporter_Expecter) ReadYmlFile(path interface{}) *MockExporter_ReadYmlFile_Call {
+func (_e *MockExporter_Expecter) ReadYmlFile(path any) *MockExporter_ReadYmlFile_Call {
 	return &MockExporter_ReadYmlFile_Call{Call: _e.mock.On("ReadYmlFile", path)}
 }
 
