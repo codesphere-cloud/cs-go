@@ -452,8 +452,8 @@ type MockDomainsAPI_DomainsListDomains_Call struct {
 
 // DomainsListDomains is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId int
-func (_e *MockDomainsAPI_Expecter) DomainsListDomains(ctx any, teamId any) *MockDomainsAPI_DomainsListDomains_Call {
+//   - teamId float32
+func (_e *MockDomainsAPI_Expecter) DomainsListDomains(ctx interface{}, teamId interface{}) *MockDomainsAPI_DomainsListDomains_Call {
 	return &MockDomainsAPI_DomainsListDomains_Call{Call: _e.mock.On("DomainsListDomains", ctx, teamId)}
 }
 
@@ -1367,9 +1367,9 @@ type MockManagedServicesAPI_ManagedServicesDeleteProvider_Call struct {
 // ManagedServicesDeleteProvider is a helper method to define mock.On call
 //   - ctx context.Context
 //   - name string
-//   - schemaVersion string
-func (_e *MockManagedServicesAPI_Expecter) ManagedServicesDeleteProvider(ctx any, name any, schemaVersion any) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
-	return &MockManagedServicesAPI_ManagedServicesDeleteProvider_Call{Call: _e.mock.On("ManagedServicesDeleteProvider", ctx, name, schemaVersion)}
+//   - version string
+func (_e *MockManagedServicesAPI_Expecter) ManagedServicesDeleteProvider(ctx interface{}, name interface{}, version interface{}) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
+	return &MockManagedServicesAPI_ManagedServicesDeleteProvider_Call{Call: _e.mock.On("ManagedServicesDeleteProvider", ctx, name, version)}
 }
 
 func (_c *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call) Run(run func(ctx context.Context, name string, schemaVersion string)) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
@@ -2115,9 +2115,9 @@ type MockManagedServicesAPI_ManagedServicesUpdateProvider_Call struct {
 // ManagedServicesUpdateProvider is a helper method to define mock.On call
 //   - ctx context.Context
 //   - name string
-//   - schemaVersion string
-func (_e *MockManagedServicesAPI_Expecter) ManagedServicesUpdateProvider(ctx any, name any, schemaVersion any) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
-	return &MockManagedServicesAPI_ManagedServicesUpdateProvider_Call{Call: _e.mock.On("ManagedServicesUpdateProvider", ctx, name, schemaVersion)}
+//   - version string
+func (_e *MockManagedServicesAPI_Expecter) ManagedServicesUpdateProvider(ctx interface{}, name interface{}, version interface{}) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
+	return &MockManagedServicesAPI_ManagedServicesUpdateProvider_Call{Call: _e.mock.On("ManagedServicesUpdateProvider", ctx, name, version)}
 }
 
 func (_c *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call) Run(run func(ctx context.Context, name string, schemaVersion string)) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
@@ -2784,8 +2784,8 @@ type MockOrganizationsAPI_OrganizationsChangeOrgRole_Call struct {
 // OrganizationsChangeOrgRole is a helper method to define mock.On call
 //   - ctx context.Context
 //   - organizationId string
-//   - userId int
-func (_e *MockOrganizationsAPI_Expecter) OrganizationsChangeOrgRole(ctx any, organizationId any, userId any) *MockOrganizationsAPI_OrganizationsChangeOrgRole_Call {
+//   - userId float32
+func (_e *MockOrganizationsAPI_Expecter) OrganizationsChangeOrgRole(ctx interface{}, organizationId interface{}, userId interface{}) *MockOrganizationsAPI_OrganizationsChangeOrgRole_Call {
 	return &MockOrganizationsAPI_OrganizationsChangeOrgRole_Call{Call: _e.mock.On("OrganizationsChangeOrgRole", ctx, organizationId, userId)}
 }
 
@@ -3284,8 +3284,8 @@ type MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call struct {
 // OrganizationsRemoveOrgMember is a helper method to define mock.On call
 //   - ctx context.Context
 //   - organizationId string
-//   - userId int
-func (_e *MockOrganizationsAPI_Expecter) OrganizationsRemoveOrgMember(ctx any, organizationId any, userId any) *MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call {
+//   - userId float32
+func (_e *MockOrganizationsAPI_Expecter) OrganizationsRemoveOrgMember(ctx interface{}, organizationId interface{}, userId interface{}) *MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call {
 	return &MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call{Call: _e.mock.On("OrganizationsRemoveOrgMember", ctx, organizationId, userId)}
 }
 
@@ -3435,9 +3435,9 @@ type MockTeamsAPI_TeamsChangeRole_Call struct {
 
 // TeamsChangeRole is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId int
-//   - userId int
-func (_e *MockTeamsAPI_Expecter) TeamsChangeRole(ctx any, teamId any, userId any) *MockTeamsAPI_TeamsChangeRole_Call {
+//   - teamId float32
+//   - userId float32
+func (_e *MockTeamsAPI_Expecter) TeamsChangeRole(ctx interface{}, teamId interface{}, userId interface{}) *MockTeamsAPI_TeamsChangeRole_Call {
 	return &MockTeamsAPI_TeamsChangeRole_Call{Call: _e.mock.On("TeamsChangeRole", ctx, teamId, userId)}
 }
 
@@ -3681,8 +3681,8 @@ type MockTeamsAPI_TeamsDeleteTeam_Call struct {
 
 // TeamsDeleteTeam is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId int
-func (_e *MockTeamsAPI_Expecter) TeamsDeleteTeam(ctx any, teamId any) *MockTeamsAPI_TeamsDeleteTeam_Call {
+//   - teamId float32
+func (_e *MockTeamsAPI_Expecter) TeamsDeleteTeam(ctx interface{}, teamId interface{}) *MockTeamsAPI_TeamsDeleteTeam_Call {
 	return &MockTeamsAPI_TeamsDeleteTeam_Call{Call: _e.mock.On("TeamsDeleteTeam", ctx, teamId)}
 }
 
@@ -3800,8 +3800,8 @@ type MockTeamsAPI_TeamsGetTeam_Call struct {
 
 // TeamsGetTeam is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId int
-func (_e *MockTeamsAPI_Expecter) TeamsGetTeam(ctx any, teamId any) *MockTeamsAPI_TeamsGetTeam_Call {
+//   - teamId float32
+func (_e *MockTeamsAPI_Expecter) TeamsGetTeam(ctx interface{}, teamId interface{}) *MockTeamsAPI_TeamsGetTeam_Call {
 	return &MockTeamsAPI_TeamsGetTeam_Call{Call: _e.mock.On("TeamsGetTeam", ctx, teamId)}
 }
 
@@ -3927,8 +3927,8 @@ type MockTeamsAPI_TeamsInviteMember_Call struct {
 
 // TeamsInviteMember is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId int
-func (_e *MockTeamsAPI_Expecter) TeamsInviteMember(ctx any, teamId any) *MockTeamsAPI_TeamsInviteMember_Call {
+//   - teamId float32
+func (_e *MockTeamsAPI_Expecter) TeamsInviteMember(ctx interface{}, teamId interface{}) *MockTeamsAPI_TeamsInviteMember_Call {
 	return &MockTeamsAPI_TeamsInviteMember_Call{Call: _e.mock.On("TeamsInviteMember", ctx, teamId)}
 }
 
@@ -4046,8 +4046,8 @@ type MockTeamsAPI_TeamsListMembers_Call struct {
 
 // TeamsListMembers is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId int
-func (_e *MockTeamsAPI_Expecter) TeamsListMembers(ctx any, teamId any) *MockTeamsAPI_TeamsListMembers_Call {
+//   - teamId float32
+func (_e *MockTeamsAPI_Expecter) TeamsListMembers(ctx interface{}, teamId interface{}) *MockTeamsAPI_TeamsListMembers_Call {
 	return &MockTeamsAPI_TeamsListMembers_Call{Call: _e.mock.On("TeamsListMembers", ctx, teamId)}
 }
 
@@ -4294,8 +4294,8 @@ type MockTeamsAPI_TeamsMigrateTeamToOrg_Call struct {
 
 // TeamsMigrateTeamToOrg is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId int
-func (_e *MockTeamsAPI_Expecter) TeamsMigrateTeamToOrg(ctx any, teamId any) *MockTeamsAPI_TeamsMigrateTeamToOrg_Call {
+//   - teamId float32
+func (_e *MockTeamsAPI_Expecter) TeamsMigrateTeamToOrg(ctx interface{}, teamId interface{}) *MockTeamsAPI_TeamsMigrateTeamToOrg_Call {
 	return &MockTeamsAPI_TeamsMigrateTeamToOrg_Call{Call: _e.mock.On("TeamsMigrateTeamToOrg", ctx, teamId)}
 }
 
@@ -4413,9 +4413,9 @@ type MockTeamsAPI_TeamsRemoveMember_Call struct {
 
 // TeamsRemoveMember is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId int
-//   - userId int
-func (_e *MockTeamsAPI_Expecter) TeamsRemoveMember(ctx any, teamId any, userId any) *MockTeamsAPI_TeamsRemoveMember_Call {
+//   - teamId float32
+//   - userId float32
+func (_e *MockTeamsAPI_Expecter) TeamsRemoveMember(ctx interface{}, teamId interface{}, userId interface{}) *MockTeamsAPI_TeamsRemoveMember_Call {
 	return &MockTeamsAPI_TeamsRemoveMember_Call{Call: _e.mock.On("TeamsRemoveMember", ctx, teamId, userId)}
 }
 
@@ -4698,8 +4698,8 @@ type MockUsageAPI_UsageGetUsageSummaryLandscape_Call struct {
 
 // UsageGetUsageSummaryLandscape is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId int
-func (_e *MockUsageAPI_Expecter) UsageGetUsageSummaryLandscape(ctx any, teamId any) *MockUsageAPI_UsageGetUsageSummaryLandscape_Call {
+//   - teamId float32
+func (_e *MockUsageAPI_Expecter) UsageGetUsageSummaryLandscape(ctx interface{}, teamId interface{}) *MockUsageAPI_UsageGetUsageSummaryLandscape_Call {
 	return &MockUsageAPI_UsageGetUsageSummaryLandscape_Call{Call: _e.mock.On("UsageGetUsageSummaryLandscape", ctx, teamId)}
 }
 
@@ -5221,9 +5221,9 @@ type MockVaultAPI_VaultDeleteWorkspaceSecrets_Call struct {
 
 // VaultDeleteWorkspaceSecrets is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId int
-//   - workspaceId int
-func (_e *MockVaultAPI_Expecter) VaultDeleteWorkspaceSecrets(ctx any, teamId any, workspaceId any) *MockVaultAPI_VaultDeleteWorkspaceSecrets_Call {
+//   - teamId float32
+//   - workspaceId float32
+func (_e *MockVaultAPI_Expecter) VaultDeleteWorkspaceSecrets(ctx interface{}, teamId interface{}, workspaceId interface{}) *MockVaultAPI_VaultDeleteWorkspaceSecrets_Call {
 	return &MockVaultAPI_VaultDeleteWorkspaceSecrets_Call{Call: _e.mock.On("VaultDeleteWorkspaceSecrets", ctx, teamId, workspaceId)}
 }
 
@@ -5872,9 +5872,9 @@ type MockVaultAPI_VaultListWorkspaceSecrets_Call struct {
 
 // VaultListWorkspaceSecrets is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId int
-//   - workspaceId int
-func (_e *MockVaultAPI_Expecter) VaultListWorkspaceSecrets(ctx any, teamId any, workspaceId any) *MockVaultAPI_VaultListWorkspaceSecrets_Call {
+//   - teamId float32
+//   - workspaceId float32
+func (_e *MockVaultAPI_Expecter) VaultListWorkspaceSecrets(ctx interface{}, teamId interface{}, workspaceId interface{}) *MockVaultAPI_VaultListWorkspaceSecrets_Call {
 	return &MockVaultAPI_VaultListWorkspaceSecrets_Call{Call: _e.mock.On("VaultListWorkspaceSecrets", ctx, teamId, workspaceId)}
 }
 
@@ -6138,9 +6138,9 @@ type MockVaultAPI_VaultStoreWorkspaceSecrets_Call struct {
 
 // VaultStoreWorkspaceSecrets is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId int
-//   - workspaceId int
-func (_e *MockVaultAPI_Expecter) VaultStoreWorkspaceSecrets(ctx any, teamId any, workspaceId any) *MockVaultAPI_VaultStoreWorkspaceSecrets_Call {
+//   - teamId float32
+//   - workspaceId float32
+func (_e *MockVaultAPI_Expecter) VaultStoreWorkspaceSecrets(ctx interface{}, teamId interface{}, workspaceId interface{}) *MockVaultAPI_VaultStoreWorkspaceSecrets_Call {
 	return &MockVaultAPI_VaultStoreWorkspaceSecrets_Call{Call: _e.mock.On("VaultStoreWorkspaceSecrets", ctx, teamId, workspaceId)}
 }
 
@@ -6419,8 +6419,8 @@ type MockWorkspacesAPI_WorkspacesDeleteEnvVar_Call struct {
 
 // WorkspacesDeleteEnvVar is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId int
-func (_e *MockWorkspacesAPI_Expecter) WorkspacesDeleteEnvVar(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesDeleteEnvVar_Call {
+//   - workspaceId float32
+func (_e *MockWorkspacesAPI_Expecter) WorkspacesDeleteEnvVar(ctx interface{}, workspaceId interface{}) *MockWorkspacesAPI_WorkspacesDeleteEnvVar_Call {
 	return &MockWorkspacesAPI_WorkspacesDeleteEnvVar_Call{Call: _e.mock.On("WorkspacesDeleteEnvVar", ctx, workspaceId)}
 }
 
@@ -6538,8 +6538,8 @@ type MockWorkspacesAPI_WorkspacesDeleteWorkspace_Call struct {
 
 // WorkspacesDeleteWorkspace is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId int
-func (_e *MockWorkspacesAPI_Expecter) WorkspacesDeleteWorkspace(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesDeleteWorkspace_Call {
+//   - workspaceId float32
+func (_e *MockWorkspacesAPI_Expecter) WorkspacesDeleteWorkspace(ctx interface{}, workspaceId interface{}) *MockWorkspacesAPI_WorkspacesDeleteWorkspace_Call {
 	return &MockWorkspacesAPI_WorkspacesDeleteWorkspace_Call{Call: _e.mock.On("WorkspacesDeleteWorkspace", ctx, workspaceId)}
 }
 
@@ -6657,8 +6657,8 @@ type MockWorkspacesAPI_WorkspacesDeployLandscape_Call struct {
 
 // WorkspacesDeployLandscape is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId int
-func (_e *MockWorkspacesAPI_Expecter) WorkspacesDeployLandscape(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesDeployLandscape_Call {
+//   - workspaceId float32
+func (_e *MockWorkspacesAPI_Expecter) WorkspacesDeployLandscape(ctx interface{}, workspaceId interface{}) *MockWorkspacesAPI_WorkspacesDeployLandscape_Call {
 	return &MockWorkspacesAPI_WorkspacesDeployLandscape_Call{Call: _e.mock.On("WorkspacesDeployLandscape", ctx, workspaceId)}
 }
 
@@ -6901,8 +6901,8 @@ type MockWorkspacesAPI_WorkspacesExecuteCommand_Call struct {
 
 // WorkspacesExecuteCommand is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId int
-func (_e *MockWorkspacesAPI_Expecter) WorkspacesExecuteCommand(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesExecuteCommand_Call {
+//   - workspaceId float32
+func (_e *MockWorkspacesAPI_Expecter) WorkspacesExecuteCommand(ctx interface{}, workspaceId interface{}) *MockWorkspacesAPI_WorkspacesExecuteCommand_Call {
 	return &MockWorkspacesAPI_WorkspacesExecuteCommand_Call{Call: _e.mock.On("WorkspacesExecuteCommand", ctx, workspaceId)}
 }
 
@@ -7028,8 +7028,8 @@ type MockWorkspacesAPI_WorkspacesGetWorkspace_Call struct {
 
 // WorkspacesGetWorkspace is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId int
-func (_e *MockWorkspacesAPI_Expecter) WorkspacesGetWorkspace(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesGetWorkspace_Call {
+//   - workspaceId float32
+func (_e *MockWorkspacesAPI_Expecter) WorkspacesGetWorkspace(ctx interface{}, workspaceId interface{}) *MockWorkspacesAPI_WorkspacesGetWorkspace_Call {
 	return &MockWorkspacesAPI_WorkspacesGetWorkspace_Call{Call: _e.mock.On("WorkspacesGetWorkspace", ctx, workspaceId)}
 }
 
@@ -7155,8 +7155,8 @@ type MockWorkspacesAPI_WorkspacesGetWorkspaceStatus_Call struct {
 
 // WorkspacesGetWorkspaceStatus is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId int
-func (_e *MockWorkspacesAPI_Expecter) WorkspacesGetWorkspaceStatus(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesGetWorkspaceStatus_Call {
+//   - workspaceId float32
+func (_e *MockWorkspacesAPI_Expecter) WorkspacesGetWorkspaceStatus(ctx interface{}, workspaceId interface{}) *MockWorkspacesAPI_WorkspacesGetWorkspaceStatus_Call {
 	return &MockWorkspacesAPI_WorkspacesGetWorkspaceStatus_Call{Call: _e.mock.On("WorkspacesGetWorkspaceStatus", ctx, workspaceId)}
 }
 
@@ -7282,8 +7282,8 @@ type MockWorkspacesAPI_WorkspacesGitHead_Call struct {
 
 // WorkspacesGitHead is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId int
-func (_e *MockWorkspacesAPI_Expecter) WorkspacesGitHead(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesGitHead_Call {
+//   - workspaceId float32
+func (_e *MockWorkspacesAPI_Expecter) WorkspacesGitHead(ctx interface{}, workspaceId interface{}) *MockWorkspacesAPI_WorkspacesGitHead_Call {
 	return &MockWorkspacesAPI_WorkspacesGitHead_Call{Call: _e.mock.On("WorkspacesGitHead", ctx, workspaceId)}
 }
 
@@ -7409,8 +7409,8 @@ type MockWorkspacesAPI_WorkspacesGitPull_Call struct {
 
 // WorkspacesGitPull is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId int
-func (_e *MockWorkspacesAPI_Expecter) WorkspacesGitPull(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesGitPull_Call {
+//   - workspaceId float32
+func (_e *MockWorkspacesAPI_Expecter) WorkspacesGitPull(ctx interface{}, workspaceId interface{}) *MockWorkspacesAPI_WorkspacesGitPull_Call {
 	return &MockWorkspacesAPI_WorkspacesGitPull_Call{Call: _e.mock.On("WorkspacesGitPull", ctx, workspaceId)}
 }
 
@@ -7784,8 +7784,8 @@ type MockWorkspacesAPI_WorkspacesListEnvVars_Call struct {
 
 // WorkspacesListEnvVars is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId int
-func (_e *MockWorkspacesAPI_Expecter) WorkspacesListEnvVars(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesListEnvVars_Call {
+//   - workspaceId float32
+func (_e *MockWorkspacesAPI_Expecter) WorkspacesListEnvVars(ctx interface{}, workspaceId interface{}) *MockWorkspacesAPI_WorkspacesListEnvVars_Call {
 	return &MockWorkspacesAPI_WorkspacesListEnvVars_Call{Call: _e.mock.On("WorkspacesListEnvVars", ctx, workspaceId)}
 }
 
@@ -7911,8 +7911,8 @@ type MockWorkspacesAPI_WorkspacesListWorkspaces_Call struct {
 
 // WorkspacesListWorkspaces is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId int
-func (_e *MockWorkspacesAPI_Expecter) WorkspacesListWorkspaces(ctx any, teamId any) *MockWorkspacesAPI_WorkspacesListWorkspaces_Call {
+//   - teamId float32
+func (_e *MockWorkspacesAPI_Expecter) WorkspacesListWorkspaces(ctx interface{}, teamId interface{}) *MockWorkspacesAPI_WorkspacesListWorkspaces_Call {
 	return &MockWorkspacesAPI_WorkspacesListWorkspaces_Call{Call: _e.mock.On("WorkspacesListWorkspaces", ctx, teamId)}
 }
 
@@ -8040,8 +8040,8 @@ type MockWorkspacesAPI_WorkspacesLogs_Call struct {
 //   - ctx context.Context
 //   - workspaceId int
 //   - stage string
-//   - step int
-func (_e *MockWorkspacesAPI_Expecter) WorkspacesLogs(ctx any, workspaceId any, stage any, step any) *MockWorkspacesAPI_WorkspacesLogs_Call {
+//   - step float32
+func (_e *MockWorkspacesAPI_Expecter) WorkspacesLogs(ctx interface{}, workspaceId interface{}, stage interface{}, step interface{}) *MockWorkspacesAPI_WorkspacesLogs_Call {
 	return &MockWorkspacesAPI_WorkspacesLogs_Call{Call: _e.mock.On("WorkspacesLogs", ctx, workspaceId, stage, step)}
 }
 
@@ -8449,8 +8449,8 @@ type MockWorkspacesAPI_WorkspacesScaleLandscapeServices_Call struct {
 
 // WorkspacesScaleLandscapeServices is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId int
-func (_e *MockWorkspacesAPI_Expecter) WorkspacesScaleLandscapeServices(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesScaleLandscapeServices_Call {
+//   - workspaceId float32
+func (_e *MockWorkspacesAPI_Expecter) WorkspacesScaleLandscapeServices(ctx interface{}, workspaceId interface{}) *MockWorkspacesAPI_WorkspacesScaleLandscapeServices_Call {
 	return &MockWorkspacesAPI_WorkspacesScaleLandscapeServices_Call{Call: _e.mock.On("WorkspacesScaleLandscapeServices", ctx, workspaceId)}
 }
 
@@ -8707,8 +8707,8 @@ type MockWorkspacesAPI_WorkspacesSetEnvVar_Call struct {
 
 // WorkspacesSetEnvVar is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId int
-func (_e *MockWorkspacesAPI_Expecter) WorkspacesSetEnvVar(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesSetEnvVar_Call {
+//   - workspaceId float32
+func (_e *MockWorkspacesAPI_Expecter) WorkspacesSetEnvVar(ctx interface{}, workspaceId interface{}) *MockWorkspacesAPI_WorkspacesSetEnvVar_Call {
 	return &MockWorkspacesAPI_WorkspacesSetEnvVar_Call{Call: _e.mock.On("WorkspacesSetEnvVar", ctx, workspaceId)}
 }
 
@@ -9207,8 +9207,8 @@ type MockWorkspacesAPI_WorkspacesTeardownLandscape_Call struct {
 
 // WorkspacesTeardownLandscape is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId int
-func (_e *MockWorkspacesAPI_Expecter) WorkspacesTeardownLandscape(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesTeardownLandscape_Call {
+//   - workspaceId float32
+func (_e *MockWorkspacesAPI_Expecter) WorkspacesTeardownLandscape(ctx interface{}, workspaceId interface{}) *MockWorkspacesAPI_WorkspacesTeardownLandscape_Call {
 	return &MockWorkspacesAPI_WorkspacesTeardownLandscape_Call{Call: _e.mock.On("WorkspacesTeardownLandscape", ctx, workspaceId)}
 }
 
@@ -9326,8 +9326,8 @@ type MockWorkspacesAPI_WorkspacesUpdateWorkspace_Call struct {
 
 // WorkspacesUpdateWorkspace is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId int
-func (_e *MockWorkspacesAPI_Expecter) WorkspacesUpdateWorkspace(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesUpdateWorkspace_Call {
+//   - workspaceId float32
+func (_e *MockWorkspacesAPI_Expecter) WorkspacesUpdateWorkspace(ctx interface{}, workspaceId interface{}) *MockWorkspacesAPI_WorkspacesUpdateWorkspace_Call {
 	return &MockWorkspacesAPI_WorkspacesUpdateWorkspace_Call{Call: _e.mock.On("WorkspacesUpdateWorkspace", ctx, workspaceId)}
 }
 
