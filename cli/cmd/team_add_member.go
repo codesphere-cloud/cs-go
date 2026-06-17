@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
 )
 
@@ -28,7 +29,14 @@ func AddAddTeamMemberCmd(team *cobra.Command, opts *GlobalOptions) {
 		cmd: &cobra.Command{
 			Use:   "add",
 			Short: "Add team member",
-			Long:  `Add team member to a team`,
+			Long: io.Long(`Add team member to a team.
+			
+				To add a member to a team within an organization, the CS_ORG_ID environment variable or the -O/--org flag must be set.`),
+			Example: io.FormatExampleCommands("team member add", []io.Example{
+				{Cmd: "-t 1234 -e user@example.com -r 1", Desc: "Add a user to a team as a member"},
+				{Cmd: "-t 1234 -e admin@example.com -r 0", Desc: "Add a user to a team as an admin"},
+				{Cmd: "-O <org-id> -t 1234 -e user@example.com -r 1", Desc: "Add a user to a team within an organization"},
+			}),
 		},
 		Opts: AddTeamMemberOpts{
 			GlobalOptions: opts,
