@@ -57,6 +57,14 @@ var _ = Describe("AddTeamMember", func() {
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal("email cannot be empty"))
 		})
+
+		It("should fail if the email is invalid", func() {
+
+			err := c.AddTeamMember(mockClient, teamId, "invalid-email", dcId)
+
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(ContainSubstring("invalid email address"))
+		})
 	})
 
 	Context("RunE execution flow", func() {
@@ -99,6 +107,13 @@ var _ = Describe("AddTeamMember", func() {
 			err := c.RunE(nil, []string{})
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal("email cannot be empty"))
+		})
+
+		It("should fail when email is invalid", func() {
+			c.Opts.Email = "invalid-email"
+			err := c.RunE(nil, []string{})
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(ContainSubstring("invalid email address"))
 		})
 	})
 
