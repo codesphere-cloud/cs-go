@@ -23,8 +23,7 @@ $ cs team remove -O <orgId> -t <teamId>
 ### Options
 
 ```
-  -h, --help          help for remove
-  -n, --name string   Team name
+  -h, --help   help for remove
 ```
 
 ### Options inherited from parent commands
