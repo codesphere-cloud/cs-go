@@ -47,7 +47,7 @@ func AddAddTeamMemberCmd(team *cobra.Command, opts *GlobalOptions) {
 	}
 	t.cmd.RunE = t.RunE
 	t.cmd.Flags().StringVarP(&t.Opts.Email, "email", "e", "", "Team member email")
-	t.cmd.MarkFlagRequired("email")
+	_ = t.cmd.MarkFlagRequired("email")
 	t.cmd.Flags().IntVarP(&t.Opts.Role, "role", "r", int(cs.RoleAdmin), "Team member role 0=admin, 1=member")
 	AddCmd(team, t.cmd)
 }
