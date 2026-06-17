@@ -65,6 +65,13 @@ var _ = Describe("AddTeamMember", func() {
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("invalid email address"))
 		})
+
+		It("should fail if the role is invalid", func() {
+			err := c.AddTeamMember(mockClient, teamId, "user@example.com", 2)
+
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(Equal("invalid role: must be 0 for admin or 1 for member"))
+		})
 	})
 
 	Context("RunE execution flow", func() {
@@ -114,6 +121,13 @@ var _ = Describe("AddTeamMember", func() {
 			err := c.RunE(nil, []string{})
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("invalid email address"))
+		})
+
+		It("should fail when role is invalid", func() {
+			c.Opts.Role = 2
+			err := c.RunE(nil, []string{})
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(Equal("invalid role: must be 0 for admin or 1 for member"))
 		})
 	})
 
