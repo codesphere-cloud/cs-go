@@ -4,10 +4,22 @@ Remove team member
 
 ### Synopsis
 
-Remove team member from a team
+Remove team member from a team.
+
+To add a member to a team within an organization, the CS_ORG_ID environment variable or the -O/--org flag must be set.
 
 ```
 cs team member remove [flags]
+```
+
+### Examples
+
+```
+# Remove a user from a team
+$ cs team member remove -t <teamId> -u <userId>
+
+# Remove a user from a team within an organization
+$ cs team member remove -O <org-id> -t <teamId> -u <userId>
 ```
 
 ### Options

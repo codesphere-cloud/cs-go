@@ -10,6 +10,16 @@ Create a team in Codesphere or an Organization
 cs team create [flags]
 ```
 
+### Examples
+
+```
+# Create a team in a specific datacenter
+$ cs team member add -d <datacenterId> -n <teamName>
+
+# Create a team in a specific datacenter within an organization
+$ cs team member add -d <datacenterId> -n <teamName> -O <orgId>
+```
+
 ### Options
 
 ```
