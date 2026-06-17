@@ -38,9 +38,10 @@ type ManagedServicesListProviders200ResponseInnerAnyOf struct {
 	// JSON Schema
 	DetailsSchema map[string]interface{} `json:"detailsSchema"`
 	// JSON Schema
-	SecretsSchema map[string]interface{}                                        `json:"secretsSchema"`
-	Plans         []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner `json:"plans"`
-	Backend       ManagedServicesListProviders200ResponseInnerAnyOfBackend      `json:"backend"`
+	SecretsSchema map[string]interface{}                                                     `json:"secretsSchema"`
+	Plans         []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner              `json:"plans"`
+	Versions      *map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue `json:"versions,omitempty"`
+	Backend       ManagedServicesListProviders200ResponseInnerAnyOfBackend                   `json:"backend"`
 }
 
 type _ManagedServicesListProviders200ResponseInnerAnyOf ManagedServicesListProviders200ResponseInnerAnyOf
@@ -459,6 +460,38 @@ func (o *ManagedServicesListProviders200ResponseInnerAnyOf) SetPlans(v []Managed
 	o.Plans = v
 }
 
+// GetVersions returns the Versions field value if set, zero value otherwise.
+func (o *ManagedServicesListProviders200ResponseInnerAnyOf) GetVersions() map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue {
+	if o == nil || IsNil(o.Versions) {
+		var ret map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue
+		return ret
+	}
+	return *o.Versions
+}
+
+// GetVersionsOk returns a tuple with the Versions field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ManagedServicesListProviders200ResponseInnerAnyOf) GetVersionsOk() (*map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue, bool) {
+	if o == nil || IsNil(o.Versions) {
+		return nil, false
+	}
+	return o.Versions, true
+}
+
+// HasVersions returns a boolean if a field has been set.
+func (o *ManagedServicesListProviders200ResponseInnerAnyOf) HasVersions() bool {
+	if o != nil && !IsNil(o.Versions) {
+		return true
+	}
+
+	return false
+}
+
+// SetVersions gets a reference to the given map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue and assigns it to the Versions field.
+func (o *ManagedServicesListProviders200ResponseInnerAnyOf) SetVersions(v map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue) {
+	o.Versions = &v
+}
+
 // GetBackend returns the Backend field value
 func (o *ManagedServicesListProviders200ResponseInnerAnyOf) GetBackend() ManagedServicesListProviders200ResponseInnerAnyOfBackend {
 	if o == nil {
@@ -514,6 +547,9 @@ func (o ManagedServicesListProviders200ResponseInnerAnyOf) ToMap() (map[string]i
 	toSerialize["detailsSchema"] = o.DetailsSchema
 	toSerialize["secretsSchema"] = o.SecretsSchema
 	toSerialize["plans"] = o.Plans
+	if !IsNil(o.Versions) {
+		toSerialize["versions"] = o.Versions
+	}
 	toSerialize["backend"] = o.Backend
 	return toSerialize, nil
 }
