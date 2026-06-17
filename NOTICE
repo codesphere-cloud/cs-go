@@ -13,7 +13,7 @@ License URL: https://gitea.com/gitea/go-sdk/src/tag/gitea/v0.25.1/gitea/LICENSE
 Module: dario.cat/mergo
 Version: v1.0.2
 License: BSD-3-Clause
-License URL: Unknown
+License URL: https://github.com/imdario/mergo/blob/v1.0.2/LICENSE
  
 ----------
 Module: github.com/42wim/httpsig
@@ -164,6 +164,8 @@ Module: github.com/google/jsonschema-go/jsonschema
 Version: v0.4.3
 License: MIT
 License URL: https://github.com/google/jsonschema-go/blob/v0.4.3/LICENSE
+ 
+----------
 Module: github.com/google/uuid
 Version: v1.6.0
 License: BSD-3-Clause
@@ -459,21 +461,21 @@ License URL: https://github.com/yaml/go-yaml/blob/v3.0.4/LICENSE
  
 ----------
 Module: golang.org/x/crypto
-Version: v0.52.0
+Version: v0.53.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/crypto/+/v0.52.0:LICENSE
+License URL: https://cs.opensource.google/go/x/crypto/+/v0.53.0:LICENSE
  
 ----------
 Module: golang.org/x/mod/semver
-Version: v0.36.0
+Version: v0.37.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/mod/+/v0.36.0:LICENSE
+License URL: https://cs.opensource.google/go/x/mod/+/v0.37.0:LICENSE
  
 ----------
 Module: golang.org/x/net
-Version: v0.54.0
+Version: v0.56.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/net/+/v0.54.0:LICENSE
+License URL: https://cs.opensource.google/go/x/net/+/v0.56.0:LICENSE
  
 ----------
 Module: golang.org/x/oauth2
@@ -489,15 +491,15 @@ License URL: https://cs.opensource.google/go/x/sync/+/v0.21.0:LICENSE
  
 ----------
 Module: golang.org/x/sys
-Version: v0.45.0
+Version: v0.46.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/sys/+/v0.45.0:LICENSE
+License URL: https://cs.opensource.google/go/x/sys/+/v0.46.0:LICENSE
  
 ----------
 Module: golang.org/x/text
-Version: v0.37.0
+Version: v0.38.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/text/+/v0.37.0:LICENSE
+License URL: https://cs.opensource.google/go/x/text/+/v0.38.0:LICENSE
  
 ----------
 Module: golang.org/x/time/rate
@@ -507,9 +509,9 @@ License URL: https://cs.opensource.google/go/x/time/+/v0.15.0:LICENSE
  
 ----------
 Module: golang.org/x/tools
-Version: v0.45.0
+Version: v0.46.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/tools/+/v0.45.0:LICENSE
+License URL: https://cs.opensource.google/go/x/tools/+/v0.46.0:LICENSE
  
 ----------
 Module: google.golang.org/protobuf
@@ -543,39 +545,39 @@ License URL: https://github.com/go-yaml/yaml/blob/v3.0.1/LICENSE
  
 ----------
 Module: k8s.io/api
-Version: v0.36.1
+Version: v0.36.2
 License: Apache-2.0
-License URL: https://github.com/kubernetes/api/blob/v0.36.1/LICENSE
+License URL: https://github.com/kubernetes/api/blob/v0.36.2/LICENSE
  
 ----------
 Module: k8s.io/apimachinery/pkg
-Version: v0.36.1
+Version: v0.36.2
 License: Apache-2.0
-License URL: https://github.com/kubernetes/apimachinery/blob/v0.36.1/LICENSE
+License URL: https://github.com/kubernetes/apimachinery/blob/v0.36.2/LICENSE
  
 ----------
 Module: k8s.io/apimachinery/third_party/forked/golang/reflect
-Version: v0.36.1
+Version: v0.36.2
 License: BSD-3-Clause
-License URL: https://github.com/kubernetes/apimachinery/blob/v0.36.1/third_party/forked/golang/LICENSE
+License URL: https://github.com/kubernetes/apimachinery/blob/v0.36.2/third_party/forked/golang/LICENSE
  
 ----------
 Module: k8s.io/cli-runtime/pkg/printers
-Version: v0.36.1
+Version: v0.36.2
 License: Apache-2.0
-License URL: https://github.com/kubernetes/cli-runtime/blob/v0.36.1/LICENSE
+License URL: https://github.com/kubernetes/cli-runtime/blob/v0.36.2/LICENSE
  
 ----------
 Module: k8s.io/client-go/third_party/forked/golang/template
-Version: v0.36.1
+Version: v0.36.2
 License: BSD-3-Clause
-License URL: https://github.com/kubernetes/client-go/blob/v0.36.1/third_party/forked/golang/LICENSE
+License URL: https://github.com/kubernetes/client-go/blob/v0.36.2/third_party/forked/golang/LICENSE
  
 ----------
 Module: k8s.io/client-go/util/jsonpath
-Version: v0.36.1
+Version: v0.36.2
 License: Apache-2.0
-License URL: https://github.com/kubernetes/client-go/blob/v0.36.1/LICENSE
+License URL: https://github.com/kubernetes/client-go/blob/v0.36.2/LICENSE
  
 ----------
 Module: k8s.io/klog/v2
