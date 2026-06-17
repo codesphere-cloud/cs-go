@@ -6,6 +6,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"net/mail"
 
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
@@ -45,6 +46,7 @@ func AddAddTeamMemberCmd(team *cobra.Command, opts *GlobalOptions) {
 	}
 	t.cmd.RunE = t.RunE
 	t.cmd.Flags().StringVarP(&t.Opts.Email, "email", "e", "", "Team member email")
+	t.cmd.MarkFlagRequired("email")
 	t.cmd.Flags().IntVarP(&t.Opts.Role, "role", "r", 0, "Team member role 0=admin, 1=member")
 	AddCmd(team, t.cmd)
 }
@@ -68,6 +70,10 @@ func (c *AddTeamMemberCmd) RunE(_ *cobra.Command, args []string) error {
 func (c *AddTeamMemberCmd) AddTeamMember(client Client, teamId int, email string, role int) error {
 	if email == "" {
 		return errors.New("email cannot be empty")
+	}
+
+	if _, err := mail.ParseAddress(email); err != nil {
+		return fmt.Errorf("invalid email address: %w", err)
 	}
 
 	fmt.Printf("add member: %s to team %d with role: %d", email, teamId, role)
