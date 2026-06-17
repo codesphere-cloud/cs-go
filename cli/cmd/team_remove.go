@@ -39,8 +39,6 @@ func AddRemoveTeamCmd(team *cobra.Command, opts *GlobalOptions) {
 		ClientFactory: NewClient,
 	}
 	t.cmd.RunE = t.RunE
-	t.cmd.Flags().StringVarP(&t.Opts.name, "name", "n", "", "Team name")
-
 	AddCmd(team, t.cmd)
 }
 
