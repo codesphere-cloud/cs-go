@@ -75,7 +75,6 @@ var _ = Describe("RemoveTeam", func() {
 			mockEnv.EXPECT().GetTeamId().Return(-1, errors.New("CS_TEAM_ID env var required, but not set")).Once()
 
 			err := c.RunE(nil, []string{})
-			Expect(err).To(MatchError("team ID not set, use -T or CS_TEAM_ID to set it"))
 			Expect(err).To(MatchError("team ID not set, use -t or CS_TEAM_ID to set it"))
 		})
 	})
