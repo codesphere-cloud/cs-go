@@ -39,11 +39,7 @@ func (e *Environment) GetTeamId() (int, error) {
 }
 
 func (e *Environment) GetOrgId() string {
-	orgId := os.Getenv("CS_ORG_ID")
-	if orgId != "" {
-		return orgId
-	}
-	return ""
+	return os.Getenv("CS_ORG_ID")
 }
 
 func (e *Environment) ReadNumericEnv(env string) (int, error) {
