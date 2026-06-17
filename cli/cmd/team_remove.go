@@ -55,7 +55,7 @@ func (c *RemoveTeamCmd) RunE(_ *cobra.Command, args []string) error {
 
 	teamId, err := c.Opts.GetTeamId()
 	if err != nil {
-		return errors.New("team ID not set, use -T or CS_TEAM_ID to set it")
+		return errors.New("team ID not set, use -t or CS_TEAM_ID to set it")
 	}
 
 	err = client.DeleteTeam(orgId, teamId)
