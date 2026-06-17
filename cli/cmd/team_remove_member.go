@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
 )
 
@@ -26,7 +27,13 @@ func AddRemoveTeamMemberCmd(team *cobra.Command, opts *GlobalOptions) {
 		cmd: &cobra.Command{
 			Use:   "remove",
 			Short: "Remove team member",
-			Long:  `Remove team member from a team`,
+			Long: io.Long(`Remove team member from a team.
+
+				To add a member to a team within an organization, the CS_ORG_ID environment variable or the -O/--org flag must be set.`),
+			Example: io.FormatExampleCommands("team member remove", []io.Example{
+				{Cmd: "-t <teamId> -u <userId>", Desc: "Remove a user from a team"},
+				{Cmd: "-O <org-id> -t <teamId> -u <userId>", Desc: "Remove a user from a team within an organization"},
+			}),
 		},
 		Opts: RemoveTeamMemberOpts{
 			GlobalOptions: opts,

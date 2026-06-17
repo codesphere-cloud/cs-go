@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
 )
 
@@ -27,6 +28,10 @@ func AddRemoveTeamCmd(team *cobra.Command, opts *GlobalOptions) {
 			Use:   "remove",
 			Short: "Remove team",
 			Long:  `Remove a team from Codesphere or an Organization`,
+			Example: io.FormatExampleCommands("team remove", []io.Example{
+				{Cmd: "-t <teamId>", Desc: "Remove a team that does not belong to an Organization"},
+				{Cmd: "-O <orgId> -t <teamId>", Desc: "Remove a team that does belong to an Organization"},
+			}),
 		},
 		Opts: RemoveTeamOpts{
 			GlobalOptions: opts,

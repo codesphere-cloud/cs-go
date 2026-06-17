@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/codesphere-cloud/cs-go/api"
+	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
 )
 
@@ -28,6 +29,10 @@ func AddCreateTeamCmd(team *cobra.Command, opts *GlobalOptions) {
 			Use:   "create",
 			Short: "Create team",
 			Long:  `Create a team in Codesphere or an Organization`,
+			Example: io.FormatExampleCommands("team member add", []io.Example{
+				{Cmd: "-d <datacenterId> -n <teamName>", Desc: "Create a team in a specific datacenter"},
+				{Cmd: "-d <datacenterId> -n <teamName> -O <orgId>", Desc: "Create a team in a specific datacenter within an organization"},
+			}),
 		},
 		Opts: CreateTeamOpts{
 			GlobalOptions: opts,
