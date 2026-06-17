@@ -49,7 +49,7 @@ var _ = Describe("RemoveTeamMember", func() {
 			err := c.RemoveTeamMember(mockClient, teamId, 0)
 
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(Equal("user ID cannot be empty"))
+			Expect(err.Error()).To(Equal("user ID has to be set"))
 		})
 	})
 
@@ -93,7 +93,7 @@ var _ = Describe("RemoveTeamMember", func() {
 			err := c.RunE(nil, []string{})
 
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(Equal("user ID cannot be empty"))
+			Expect(err.Error()).To(Equal("user ID has to be set"))
 		})
 	})
 })

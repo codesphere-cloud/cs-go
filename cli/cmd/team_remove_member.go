@@ -61,8 +61,8 @@ func (c *RemoveTeamMemberCmd) RunE(_ *cobra.Command, args []string) error {
 }
 
 func (c *RemoveTeamMemberCmd) RemoveTeamMember(client Client, teamId int, userId int) error {
-	if userId == 0 {
-		return errors.New("user ID cannot be empty")
+	if userId <= 0 {
+		return errors.New("user ID has to be set")
 	}
 
 	err := client.RemoveTeamMember(teamId, userId)
