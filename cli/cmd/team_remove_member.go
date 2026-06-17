@@ -41,7 +41,7 @@ func AddRemoveTeamMemberCmd(team *cobra.Command, opts *GlobalOptions) {
 		ClientFactory: NewClient,
 	}
 	res.cmd.Flags().IntVarP(&res.Opts.UserId, "user", "u", 0, "Team member user ID")
-	res.cmd.MarkFlagRequired("user")
+	_ = res.cmd.MarkFlagRequired("user")
 	res.cmd.RunE = res.RunE
 	AddCmd(team, res.cmd)
 }

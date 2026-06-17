@@ -14,8 +14,6 @@ func (c *Client) ListOrganizations() ([]Organization, error) {
 	}
 
 	res := make([]Organization, len(orgs))
-	for i, o := range orgs {
-		res[i] = o
-	}
+	copy(res, orgs)
 	return res, nil
 }

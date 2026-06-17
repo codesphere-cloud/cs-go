@@ -19,7 +19,6 @@ type RemoveTeamCmd struct {
 
 type RemoveTeamOpts struct {
 	*GlobalOptions
-	name string
 }
 
 func AddRemoveTeamCmd(team *cobra.Command, opts *GlobalOptions) {
