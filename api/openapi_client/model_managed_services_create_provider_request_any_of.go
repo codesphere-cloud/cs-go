@@ -34,13 +34,14 @@ type ManagedServicesCreateProviderRequestAnyOf struct {
 	// JSON Schema
 	DetailsSchema map[string]interface{} `json:"detailsSchema"`
 	// JSON Schema
-	SecretsSchema map[string]interface{}                                        `json:"secretsSchema"`
-	Plans         []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner `json:"plans"`
-	Name          string                                                        `json:"name" validate:"regexp=^[a-z0-9-_]+$"`
-	Version       *string                                                       `json:"version,omitempty" validate:"regexp=^v[0-9][0-9a-z]*$"`
-	SchemaVersion *string                                                       `json:"schemaVersion,omitempty" validate:"regexp=^v[0-9][0-9a-z]*$"`
-	Backend       ManagedServicesListProviders200ResponseInnerAnyOfBackend      `json:"backend"`
-	Scope         *ManagedServicesCreateProviderRequestAnyOfScope               `json:"scope,omitempty"`
+	SecretsSchema map[string]interface{}                                                     `json:"secretsSchema"`
+	Plans         []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner              `json:"plans"`
+	Versions      *map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue `json:"versions,omitempty"`
+	Name          string                                                                     `json:"name" validate:"regexp=^[a-z0-9-_]+$"`
+	Version       *string                                                                    `json:"version,omitempty" validate:"regexp=^v[0-9][0-9a-z]*$"`
+	SchemaVersion *string                                                                    `json:"schemaVersion,omitempty" validate:"regexp=^v[0-9][0-9a-z]*$"`
+	Backend       ManagedServicesListProviders200ResponseInnerAnyOfBackend                   `json:"backend"`
+	Scope         *ManagedServicesCreateProviderRequestAnyOfScope                            `json:"scope,omitempty"`
 }
 
 type _ManagedServicesCreateProviderRequestAnyOf ManagedServicesCreateProviderRequestAnyOf
@@ -353,6 +354,38 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) SetPlans(v []ManagedServices
 	o.Plans = v
 }
 
+// GetVersions returns the Versions field value if set, zero value otherwise.
+func (o *ManagedServicesCreateProviderRequestAnyOf) GetVersions() map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue {
+	if o == nil || IsNil(o.Versions) {
+		var ret map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue
+		return ret
+	}
+	return *o.Versions
+}
+
+// GetVersionsOk returns a tuple with the Versions field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ManagedServicesCreateProviderRequestAnyOf) GetVersionsOk() (*map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue, bool) {
+	if o == nil || IsNil(o.Versions) {
+		return nil, false
+	}
+	return o.Versions, true
+}
+
+// HasVersions returns a boolean if a field has been set.
+func (o *ManagedServicesCreateProviderRequestAnyOf) HasVersions() bool {
+	if o != nil && !IsNil(o.Versions) {
+		return true
+	}
+
+	return false
+}
+
+// SetVersions gets a reference to the given map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue and assigns it to the Versions field.
+func (o *ManagedServicesCreateProviderRequestAnyOf) SetVersions(v map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue) {
+	o.Versions = &v
+}
+
 // GetName returns the Name field value
 func (o *ManagedServicesCreateProviderRequestAnyOf) GetName() string {
 	if o == nil {
@@ -522,6 +555,9 @@ func (o ManagedServicesCreateProviderRequestAnyOf) ToMap() (map[string]interface
 	toSerialize["detailsSchema"] = o.DetailsSchema
 	toSerialize["secretsSchema"] = o.SecretsSchema
 	toSerialize["plans"] = o.Plans
+	if !IsNil(o.Versions) {
+		toSerialize["versions"] = o.Versions
+	}
 	toSerialize["name"] = o.Name
 	if !IsNil(o.Version) {
 		toSerialize["version"] = o.Version

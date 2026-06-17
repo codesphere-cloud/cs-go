@@ -65,7 +65,7 @@ type MockClient_AddTeamMember_Call struct {
 //   - teamId int
 //   - email string
 //   - role int
-func (_e *MockClient_Expecter) AddTeamMember(teamId interface{}, email interface{}, role interface{}) *MockClient_AddTeamMember_Call {
+func (_e *MockClient_Expecter) AddTeamMember(teamId any, email any, role any) *MockClient_AddTeamMember_Call {
 	return &MockClient_AddTeamMember_Call{Call: _e.mock.On("AddTeamMember", teamId, email, role)}
 }
 
@@ -139,7 +139,7 @@ type MockClient_CreateTeam_Call struct {
 //   - orgId string
 //   - name string
 //   - dcId int
-func (_e *MockClient_Expecter) CreateTeam(orgId interface{}, name interface{}, dcId interface{}) *MockClient_CreateTeam_Call {
+func (_e *MockClient_Expecter) CreateTeam(orgId any, name any, dcId any) *MockClient_CreateTeam_Call {
 	return &MockClient_CreateTeam_Call{Call: _e.mock.On("CreateTeam", orgId, name, dcId)}
 }
 
@@ -201,7 +201,7 @@ type MockClient_DeleteTeam_Call struct {
 // DeleteTeam is a helper method to define mock.On call
 //   - orgId string
 //   - teamId int
-func (_e *MockClient_Expecter) DeleteTeam(orgId interface{}, teamId interface{}) *MockClient_DeleteTeam_Call {
+func (_e *MockClient_Expecter) DeleteTeam(orgId any, teamId any) *MockClient_DeleteTeam_Call {
 	return &MockClient_DeleteTeam_Call{Call: _e.mock.On("DeleteTeam", orgId, teamId)}
 }
 
@@ -823,7 +823,7 @@ type MockClient_ListTeams_Call struct {
 
 // ListTeams is a helper method to define mock.On call
 //   - orgId string
-func (_e *MockClient_Expecter) ListTeams(orgId interface{}) *MockClient_ListTeams_Call {
+func (_e *MockClient_Expecter) ListTeams(orgId any) *MockClient_ListTeams_Call {
 	return &MockClient_ListTeams_Call{Call: _e.mock.On("ListTeams", orgId)}
 }
 
@@ -992,7 +992,7 @@ type MockClient_RemoveTeamMember_Call struct {
 // RemoveTeamMember is a helper method to define mock.On call
 //   - teamId int
 //   - userId int
-func (_e *MockClient_Expecter) RemoveTeamMember(teamId interface{}, userId interface{}) *MockClient_RemoveTeamMember_Call {
+func (_e *MockClient_Expecter) RemoveTeamMember(teamId any, userId any) *MockClient_RemoveTeamMember_Call {
 	return &MockClient_RemoveTeamMember_Call{Call: _e.mock.On("RemoveTeamMember", teamId, userId)}
 }
 

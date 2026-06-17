@@ -1367,9 +1367,9 @@ type MockManagedServicesAPI_ManagedServicesDeleteProvider_Call struct {
 // ManagedServicesDeleteProvider is a helper method to define mock.On call
 //   - ctx context.Context
 //   - name string
-//   - version string
-func (_e *MockManagedServicesAPI_Expecter) ManagedServicesDeleteProvider(ctx interface{}, name interface{}, version interface{}) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
-	return &MockManagedServicesAPI_ManagedServicesDeleteProvider_Call{Call: _e.mock.On("ManagedServicesDeleteProvider", ctx, name, version)}
+//   - schemaVersion string
+func (_e *MockManagedServicesAPI_Expecter) ManagedServicesDeleteProvider(ctx any, name any, schemaVersion any) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
+	return &MockManagedServicesAPI_ManagedServicesDeleteProvider_Call{Call: _e.mock.On("ManagedServicesDeleteProvider", ctx, name, schemaVersion)}
 }
 
 func (_c *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call) Run(run func(ctx context.Context, name string, schemaVersion string)) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
@@ -2115,9 +2115,9 @@ type MockManagedServicesAPI_ManagedServicesUpdateProvider_Call struct {
 // ManagedServicesUpdateProvider is a helper method to define mock.On call
 //   - ctx context.Context
 //   - name string
-//   - version string
-func (_e *MockManagedServicesAPI_Expecter) ManagedServicesUpdateProvider(ctx interface{}, name interface{}, version interface{}) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
-	return &MockManagedServicesAPI_ManagedServicesUpdateProvider_Call{Call: _e.mock.On("ManagedServicesUpdateProvider", ctx, name, version)}
+//   - schemaVersion string
+func (_e *MockManagedServicesAPI_Expecter) ManagedServicesUpdateProvider(ctx any, name any, schemaVersion any) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
+	return &MockManagedServicesAPI_ManagedServicesUpdateProvider_Call{Call: _e.mock.On("ManagedServicesUpdateProvider", ctx, name, schemaVersion)}
 }
 
 func (_c *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call) Run(run func(ctx context.Context, name string, schemaVersion string)) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
@@ -4979,7 +4979,7 @@ type MockVaultAPI_VaultGenerateSecrets_Call struct {
 //   - ctx context.Context
 //   - teamId float32
 //   - workspaceId float32
-func (_e *MockVaultAPI_Expecter) VaultGenerateSecrets(ctx interface{}, teamId interface{}, workspaceId interface{}) *MockVaultAPI_VaultGenerateSecrets_Call {
+func (_e *MockVaultAPI_Expecter) VaultGenerateSecrets(ctx any, teamId any, workspaceId any) *MockVaultAPI_VaultGenerateSecrets_Call {
 	return &MockVaultAPI_VaultGenerateSecrets_Call{Call: _e.mock.On("VaultGenerateSecrets", ctx, teamId, workspaceId)}
 }
 
@@ -5059,7 +5059,7 @@ type MockVaultAPI_VaultGenerateSecretsExecute_Call struct {
 
 // VaultGenerateSecretsExecute is a helper method to define mock.On call
 //   - r ApiVaultGenerateSecretsRequest
-func (_e *MockVaultAPI_Expecter) VaultGenerateSecretsExecute(r interface{}) *MockVaultAPI_VaultGenerateSecretsExecute_Call {
+func (_e *MockVaultAPI_Expecter) VaultGenerateSecretsExecute(r any) *MockVaultAPI_VaultGenerateSecretsExecute_Call {
 	return &MockVaultAPI_VaultGenerateSecretsExecute_Call{Call: _e.mock.On("VaultGenerateSecretsExecute", r)}
 }
 
