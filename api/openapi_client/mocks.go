@@ -1343,8 +1343,8 @@ func (_c *MockManagedServicesAPI_ManagedServicesDeleteExecute_Call) RunAndReturn
 }
 
 // ManagedServicesDeleteProvider provides a mock function for the type MockManagedServicesAPI
-func (_mock *MockManagedServicesAPI) ManagedServicesDeleteProvider(ctx context.Context, name string, version string) ApiManagedServicesDeleteProviderRequest {
-	ret := _mock.Called(ctx, name, version)
+func (_mock *MockManagedServicesAPI) ManagedServicesDeleteProvider(ctx context.Context, name string, schemaVersion string) ApiManagedServicesDeleteProviderRequest {
+	ret := _mock.Called(ctx, name, schemaVersion)
 
 	if len(ret) == 0 {
 		panic("no return value specified for ManagedServicesDeleteProvider")
@@ -1352,7 +1352,7 @@ func (_mock *MockManagedServicesAPI) ManagedServicesDeleteProvider(ctx context.C
 
 	var r0 ApiManagedServicesDeleteProviderRequest
 	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string) ApiManagedServicesDeleteProviderRequest); ok {
-		r0 = returnFunc(ctx, name, version)
+		r0 = returnFunc(ctx, name, schemaVersion)
 	} else {
 		r0 = ret.Get(0).(ApiManagedServicesDeleteProviderRequest)
 	}
@@ -1367,12 +1367,12 @@ type MockManagedServicesAPI_ManagedServicesDeleteProvider_Call struct {
 // ManagedServicesDeleteProvider is a helper method to define mock.On call
 //   - ctx context.Context
 //   - name string
-//   - version string
-func (_e *MockManagedServicesAPI_Expecter) ManagedServicesDeleteProvider(ctx any, name any, version any) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
-	return &MockManagedServicesAPI_ManagedServicesDeleteProvider_Call{Call: _e.mock.On("ManagedServicesDeleteProvider", ctx, name, version)}
+//   - schemaVersion string
+func (_e *MockManagedServicesAPI_Expecter) ManagedServicesDeleteProvider(ctx any, name any, schemaVersion any) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
+	return &MockManagedServicesAPI_ManagedServicesDeleteProvider_Call{Call: _e.mock.On("ManagedServicesDeleteProvider", ctx, name, schemaVersion)}
 }
 
-func (_c *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call) Run(run func(ctx context.Context, name string, version string)) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
+func (_c *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call) Run(run func(ctx context.Context, name string, schemaVersion string)) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -1400,7 +1400,7 @@ func (_c *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call) Return(apiM
 	return _c
 }
 
-func (_c *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call) RunAndReturn(run func(ctx context.Context, name string, version string) ApiManagedServicesDeleteProviderRequest) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
+func (_c *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call) RunAndReturn(run func(ctx context.Context, name string, schemaVersion string) ApiManagedServicesDeleteProviderRequest) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -2091,8 +2091,8 @@ func (_c *MockManagedServicesAPI_ManagedServicesUpdateExecute_Call) RunAndReturn
 }
 
 // ManagedServicesUpdateProvider provides a mock function for the type MockManagedServicesAPI
-func (_mock *MockManagedServicesAPI) ManagedServicesUpdateProvider(ctx context.Context, name string, version string) ApiManagedServicesUpdateProviderRequest {
-	ret := _mock.Called(ctx, name, version)
+func (_mock *MockManagedServicesAPI) ManagedServicesUpdateProvider(ctx context.Context, name string, schemaVersion string) ApiManagedServicesUpdateProviderRequest {
+	ret := _mock.Called(ctx, name, schemaVersion)
 
 	if len(ret) == 0 {
 		panic("no return value specified for ManagedServicesUpdateProvider")
@@ -2100,7 +2100,7 @@ func (_mock *MockManagedServicesAPI) ManagedServicesUpdateProvider(ctx context.C
 
 	var r0 ApiManagedServicesUpdateProviderRequest
 	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string) ApiManagedServicesUpdateProviderRequest); ok {
-		r0 = returnFunc(ctx, name, version)
+		r0 = returnFunc(ctx, name, schemaVersion)
 	} else {
 		r0 = ret.Get(0).(ApiManagedServicesUpdateProviderRequest)
 	}
@@ -2115,12 +2115,12 @@ type MockManagedServicesAPI_ManagedServicesUpdateProvider_Call struct {
 // ManagedServicesUpdateProvider is a helper method to define mock.On call
 //   - ctx context.Context
 //   - name string
-//   - version string
-func (_e *MockManagedServicesAPI_Expecter) ManagedServicesUpdateProvider(ctx any, name any, version any) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
-	return &MockManagedServicesAPI_ManagedServicesUpdateProvider_Call{Call: _e.mock.On("ManagedServicesUpdateProvider", ctx, name, version)}
+//   - schemaVersion string
+func (_e *MockManagedServicesAPI_Expecter) ManagedServicesUpdateProvider(ctx any, name any, schemaVersion any) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
+	return &MockManagedServicesAPI_ManagedServicesUpdateProvider_Call{Call: _e.mock.On("ManagedServicesUpdateProvider", ctx, name, schemaVersion)}
 }
 
-func (_c *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call) Run(run func(ctx context.Context, name string, version string)) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
+func (_c *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call) Run(run func(ctx context.Context, name string, schemaVersion string)) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -2148,7 +2148,7 @@ func (_c *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call) Return(apiM
 	return _c
 }
 
-func (_c *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call) RunAndReturn(run func(ctx context.Context, name string, version string) ApiManagedServicesUpdateProviderRequest) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
+func (_c *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call) RunAndReturn(run func(ctx context.Context, name string, schemaVersion string) ApiManagedServicesUpdateProviderRequest) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -4949,6 +4949,139 @@ func (_c *MockVaultAPI_VaultDeleteWorkspaceSecretsExecute_Call) Return(response 
 }
 
 func (_c *MockVaultAPI_VaultDeleteWorkspaceSecretsExecute_Call) RunAndReturn(run func(r ApiVaultDeleteWorkspaceSecretsRequest) (*http.Response, error)) *MockVaultAPI_VaultDeleteWorkspaceSecretsExecute_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// VaultGenerateSecrets provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultGenerateSecrets(ctx context.Context, teamId float32, workspaceId float32) ApiVaultGenerateSecretsRequest {
+	ret := _mock.Called(ctx, teamId, workspaceId)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultGenerateSecrets")
+	}
+
+	var r0 ApiVaultGenerateSecretsRequest
+	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, float32) ApiVaultGenerateSecretsRequest); ok {
+		r0 = returnFunc(ctx, teamId, workspaceId)
+	} else {
+		r0 = ret.Get(0).(ApiVaultGenerateSecretsRequest)
+	}
+	return r0
+}
+
+// MockVaultAPI_VaultGenerateSecrets_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultGenerateSecrets'
+type MockVaultAPI_VaultGenerateSecrets_Call struct {
+	*mock.Call
+}
+
+// VaultGenerateSecrets is a helper method to define mock.On call
+//   - ctx context.Context
+//   - teamId float32
+//   - workspaceId float32
+func (_e *MockVaultAPI_Expecter) VaultGenerateSecrets(ctx any, teamId any, workspaceId any) *MockVaultAPI_VaultGenerateSecrets_Call {
+	return &MockVaultAPI_VaultGenerateSecrets_Call{Call: _e.mock.On("VaultGenerateSecrets", ctx, teamId, workspaceId)}
+}
+
+func (_c *MockVaultAPI_VaultGenerateSecrets_Call) Run(run func(ctx context.Context, teamId float32, workspaceId float32)) *MockVaultAPI_VaultGenerateSecrets_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 float32
+		if args[1] != nil {
+			arg1 = args[1].(float32)
+		}
+		var arg2 float32
+		if args[2] != nil {
+			arg2 = args[2].(float32)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultGenerateSecrets_Call) Return(apiVaultGenerateSecretsRequest ApiVaultGenerateSecretsRequest) *MockVaultAPI_VaultGenerateSecrets_Call {
+	_c.Call.Return(apiVaultGenerateSecretsRequest)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultGenerateSecrets_Call) RunAndReturn(run func(ctx context.Context, teamId float32, workspaceId float32) ApiVaultGenerateSecretsRequest) *MockVaultAPI_VaultGenerateSecrets_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// VaultGenerateSecretsExecute provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultGenerateSecretsExecute(r ApiVaultGenerateSecretsRequest) (map[string]interface{}, *http.Response, error) {
+	ret := _mock.Called(r)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultGenerateSecretsExecute")
+	}
+
+	var r0 map[string]interface{}
+	var r1 *http.Response
+	var r2 error
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultGenerateSecretsRequest) (map[string]interface{}, *http.Response, error)); ok {
+		return returnFunc(r)
+	}
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultGenerateSecretsRequest) map[string]interface{}); ok {
+		r0 = returnFunc(r)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(map[string]interface{})
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(ApiVaultGenerateSecretsRequest) *http.Response); ok {
+		r1 = returnFunc(r)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*http.Response)
+		}
+	}
+	if returnFunc, ok := ret.Get(2).(func(ApiVaultGenerateSecretsRequest) error); ok {
+		r2 = returnFunc(r)
+	} else {
+		r2 = ret.Error(2)
+	}
+	return r0, r1, r2
+}
+
+// MockVaultAPI_VaultGenerateSecretsExecute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultGenerateSecretsExecute'
+type MockVaultAPI_VaultGenerateSecretsExecute_Call struct {
+	*mock.Call
+}
+
+// VaultGenerateSecretsExecute is a helper method to define mock.On call
+//   - r ApiVaultGenerateSecretsRequest
+func (_e *MockVaultAPI_Expecter) VaultGenerateSecretsExecute(r any) *MockVaultAPI_VaultGenerateSecretsExecute_Call {
+	return &MockVaultAPI_VaultGenerateSecretsExecute_Call{Call: _e.mock.On("VaultGenerateSecretsExecute", r)}
+}
+
+func (_c *MockVaultAPI_VaultGenerateSecretsExecute_Call) Run(run func(r ApiVaultGenerateSecretsRequest)) *MockVaultAPI_VaultGenerateSecretsExecute_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 ApiVaultGenerateSecretsRequest
+		if args[0] != nil {
+			arg0 = args[0].(ApiVaultGenerateSecretsRequest)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultGenerateSecretsExecute_Call) Return(stringToIfaceVal map[string]interface{}, response *http.Response, err error) *MockVaultAPI_VaultGenerateSecretsExecute_Call {
+	_c.Call.Return(stringToIfaceVal, response, err)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultGenerateSecretsExecute_Call) RunAndReturn(run func(r ApiVaultGenerateSecretsRequest) (map[string]interface{}, *http.Response, error)) *MockVaultAPI_VaultGenerateSecretsExecute_Call {
 	_c.Call.Return(run)
 	return _c
 }
