@@ -12,7 +12,7 @@ fi
 TAG=$(git tag | sort -uV | tail -n 1)
 LOG=$(git log "$TAG..HEAD"  --pretty=format:%s)
 BREAK=$(grep -e '!' >/dev/null <<< "$LOG"; echo $?)
-FEAT=$(grep -e '^feat' >/dev/null <<< "$LOG"; echo $?)
+FEAT=$(grep -E '^(feat|update)' >/dev/null <<< "$LOG"; echo $?)
 FIX=$(grep -e '^fix' >/dev/null <<< "$LOG"; echo $?)
 
 echo "Latest tag: $TAG"
