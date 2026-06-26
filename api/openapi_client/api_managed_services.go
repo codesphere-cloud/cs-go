@@ -790,11 +790,11 @@ func (a *ManagedServicesAPIService) ManagedServicesGetDetailsExecute(r ApiManage
 type ApiManagedServicesListRequest struct {
 	ctx context.Context
 	ApiService ManagedServicesAPI
-	team *float32
+	team *int
 	includeDeleted *bool
 }
 
-func (r ApiManagedServicesListRequest) Team(team float32) ApiManagedServicesListRequest {
+func (r ApiManagedServicesListRequest) Team(team int) ApiManagedServicesListRequest {
 	r.team = &team
 	return r
 }
@@ -843,6 +843,9 @@ func (a *ManagedServicesAPIService) ManagedServicesListExecute(r ApiManagedServi
 	localVarFormParams := url.Values{}
 	if r.team == nil {
 		return localVarReturnValue, nil, reportError("team is required and must be specified")
+	}
+	if *r.team < 0 {
+		return localVarReturnValue, nil, reportError("team must be greater than 0")
 	}
 	if r.includeDeleted == nil {
 		return localVarReturnValue, nil, reportError("includeDeleted is required and must be specified")
@@ -917,10 +920,10 @@ func (a *ManagedServicesAPIService) ManagedServicesListExecute(r ApiManagedServi
 type ApiManagedServicesListProvidersRequest struct {
 	ctx context.Context
 	ApiService ManagedServicesAPI
-	teamId *float32
+	teamId *int
 }
 
-func (r ApiManagedServicesListProvidersRequest) TeamId(teamId float32) ApiManagedServicesListProvidersRequest {
+func (r ApiManagedServicesListProvidersRequest) TeamId(teamId int) ApiManagedServicesListProvidersRequest {
 	r.teamId = &teamId
 	return r
 }

@@ -35,7 +35,7 @@ type UsageAPI interface {
 	@param resourceId
 	@return ApiUsageGetLandscapeServiceEventsRequest
 	*/
-	UsageGetLandscapeServiceEvents(ctx context.Context, teamId float32, resourceId string) ApiUsageGetLandscapeServiceEventsRequest
+	UsageGetLandscapeServiceEvents(ctx context.Context, teamId int, resourceId string) ApiUsageGetLandscapeServiceEventsRequest
 
 	// UsageGetLandscapeServiceEventsExecute executes the request
 	//  @return UsageGetLandscapeServiceEvents200Response
@@ -50,7 +50,7 @@ type UsageAPI interface {
 	@param teamId
 	@return ApiUsageGetUsageSummaryLandscapeRequest
 	*/
-	UsageGetUsageSummaryLandscape(ctx context.Context, teamId float32) ApiUsageGetUsageSummaryLandscapeRequest
+	UsageGetUsageSummaryLandscape(ctx context.Context, teamId int) ApiUsageGetUsageSummaryLandscapeRequest
 
 	// UsageGetUsageSummaryLandscapeExecute executes the request
 	//  @return UsageGetUsageSummaryLandscape200Response
@@ -63,7 +63,7 @@ type UsageAPIService service
 type ApiUsageGetLandscapeServiceEventsRequest struct {
 	ctx context.Context
 	ApiService UsageAPI
-	teamId float32
+	teamId int
 	resourceId string
 	beginDate *time.Time
 	endDate *time.Time
@@ -105,7 +105,7 @@ Returns Audit-Events for a specific Landscape Service.
  @param resourceId
  @return ApiUsageGetLandscapeServiceEventsRequest
 */
-func (a *UsageAPIService) UsageGetLandscapeServiceEvents(ctx context.Context, teamId float32, resourceId string) ApiUsageGetLandscapeServiceEventsRequest {
+func (a *UsageAPIService) UsageGetLandscapeServiceEvents(ctx context.Context, teamId int, resourceId string) ApiUsageGetLandscapeServiceEventsRequest {
 	return ApiUsageGetLandscapeServiceEventsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -136,6 +136,9 @@ func (a *UsageAPIService) UsageGetLandscapeServiceEventsExecute(r ApiUsageGetLan
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
 	if r.beginDate == nil {
 		return localVarReturnValue, nil, reportError("beginDate is required and must be specified")
 	}
@@ -148,16 +151,16 @@ func (a *UsageAPIService) UsageGetLandscapeServiceEventsExecute(r ApiUsageGetLan
 	if r.limit != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	} else {
-        var defaultValue int = 25
-        parameterAddToHeaderOrQuery(localVarQueryParams, "limit", defaultValue, "form", "")
-        r.limit = &defaultValue
+		var defaultValue int = 25
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", defaultValue, "form", "")
+		r.limit = &defaultValue
 	}
 	if r.offset != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "offset", r.offset, "form", "")
 	} else {
-        var defaultValue int = 0
-        parameterAddToHeaderOrQuery(localVarQueryParams, "offset", defaultValue, "form", "")
-        r.offset = &defaultValue
+		var defaultValue int = 0
+		parameterAddToHeaderOrQuery(localVarQueryParams, "offset", defaultValue, "form", "")
+		r.offset = &defaultValue
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -237,7 +240,7 @@ func (a *UsageAPIService) UsageGetLandscapeServiceEventsExecute(r ApiUsageGetLan
 type ApiUsageGetUsageSummaryLandscapeRequest struct {
 	ctx context.Context
 	ApiService UsageAPI
-	teamId float32
+	teamId int
 	beginDate *time.Time
 	endDate *time.Time
 	limit *int
@@ -277,7 +280,7 @@ Get the usage summary of all Landscape Services for a team over the specified ti
  @param teamId
  @return ApiUsageGetUsageSummaryLandscapeRequest
 */
-func (a *UsageAPIService) UsageGetUsageSummaryLandscape(ctx context.Context, teamId float32) ApiUsageGetUsageSummaryLandscapeRequest {
+func (a *UsageAPIService) UsageGetUsageSummaryLandscape(ctx context.Context, teamId int) ApiUsageGetUsageSummaryLandscapeRequest {
 	return ApiUsageGetUsageSummaryLandscapeRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -306,6 +309,9 @@ func (a *UsageAPIService) UsageGetUsageSummaryLandscapeExecute(r ApiUsageGetUsag
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
 	if r.beginDate == nil {
 		return localVarReturnValue, nil, reportError("beginDate is required and must be specified")
 	}
@@ -318,16 +324,16 @@ func (a *UsageAPIService) UsageGetUsageSummaryLandscapeExecute(r ApiUsageGetUsag
 	if r.limit != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	} else {
-        var defaultValue int = 25
-        parameterAddToHeaderOrQuery(localVarQueryParams, "limit", defaultValue, "form", "")
-        r.limit = &defaultValue
+		var defaultValue int = 25
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", defaultValue, "form", "")
+		r.limit = &defaultValue
 	}
 	if r.offset != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "offset", r.offset, "form", "")
 	} else {
-        var defaultValue int = 0
-        parameterAddToHeaderOrQuery(localVarQueryParams, "offset", defaultValue, "form", "")
-        r.offset = &defaultValue
+		var defaultValue int = 0
+		parameterAddToHeaderOrQuery(localVarQueryParams, "offset", defaultValue, "form", "")
+		r.offset = &defaultValue
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

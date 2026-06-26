@@ -45,7 +45,7 @@ func (c *Client) ListTeams() ([]Team, error) {
 }
 
 func (c *Client) GetTeam(teamId int) (*Team, error) {
-	team, r, err := c.api.TeamsAPI.TeamsGetTeam(c.ctx, float32(teamId)).Execute()
+	team, r, err := c.api.TeamsAPI.TeamsGetTeam(c.ctx, teamId).Execute()
 	return ConvertToTeam(team), cserrors.FormatAPIError(r, err)
 }
 
@@ -60,6 +60,6 @@ func (c *Client) CreateTeam(name string, dc int) (*Team, error) {
 }
 
 func (c *Client) DeleteTeam(teamId int) error {
-	r, err := c.api.TeamsAPI.TeamsDeleteTeam(c.ctx, float32(teamId)).Execute()
+	r, err := c.api.TeamsAPI.TeamsDeleteTeam(c.ctx, teamId).Execute()
 	return cserrors.FormatAPIError(r, err)
 }

@@ -32,7 +32,7 @@ type DomainsAPI interface {
 	@param domainName
 	@return ApiDomainsCreateDomainRequest
 	*/
-	DomainsCreateDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsCreateDomainRequest
+	DomainsCreateDomain(ctx context.Context, teamId int, domainName string) ApiDomainsCreateDomainRequest
 
 	// DomainsCreateDomainExecute executes the request
 	//  @return DomainsGetDomain200Response
@@ -46,7 +46,7 @@ type DomainsAPI interface {
 	@param domainName
 	@return ApiDomainsDeleteDomainRequest
 	*/
-	DomainsDeleteDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsDeleteDomainRequest
+	DomainsDeleteDomain(ctx context.Context, teamId int, domainName string) ApiDomainsDeleteDomainRequest
 
 	// DomainsDeleteDomainExecute executes the request
 	DomainsDeleteDomainExecute(r ApiDomainsDeleteDomainRequest) (*http.Response, error)
@@ -59,7 +59,7 @@ type DomainsAPI interface {
 	@param domainName
 	@return ApiDomainsGetDomainRequest
 	*/
-	DomainsGetDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsGetDomainRequest
+	DomainsGetDomain(ctx context.Context, teamId int, domainName string) ApiDomainsGetDomainRequest
 
 	// DomainsGetDomainExecute executes the request
 	//  @return DomainsGetDomain200Response
@@ -72,7 +72,7 @@ type DomainsAPI interface {
 	@param teamId
 	@return ApiDomainsListDomainsRequest
 	*/
-	DomainsListDomains(ctx context.Context, teamId float32) ApiDomainsListDomainsRequest
+	DomainsListDomains(ctx context.Context, teamId int) ApiDomainsListDomainsRequest
 
 	// DomainsListDomainsExecute executes the request
 	//  @return []DomainsGetDomain200Response
@@ -86,7 +86,7 @@ type DomainsAPI interface {
 	@param domainName
 	@return ApiDomainsUpdateDomainRequest
 	*/
-	DomainsUpdateDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsUpdateDomainRequest
+	DomainsUpdateDomain(ctx context.Context, teamId int, domainName string) ApiDomainsUpdateDomainRequest
 
 	// DomainsUpdateDomainExecute executes the request
 	//  @return DomainsGetDomain200Response
@@ -100,7 +100,7 @@ type DomainsAPI interface {
 	@param domainName
 	@return ApiDomainsUpdateWorkspaceConnectionsRequest
 	*/
-	DomainsUpdateWorkspaceConnections(ctx context.Context, teamId float32, domainName string) ApiDomainsUpdateWorkspaceConnectionsRequest
+	DomainsUpdateWorkspaceConnections(ctx context.Context, teamId int, domainName string) ApiDomainsUpdateWorkspaceConnectionsRequest
 
 	// DomainsUpdateWorkspaceConnectionsExecute executes the request
 	//  @return DomainsGetDomain200Response
@@ -114,7 +114,7 @@ type DomainsAPI interface {
 	@param domainName
 	@return ApiDomainsVerifyDomainRequest
 	*/
-	DomainsVerifyDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsVerifyDomainRequest
+	DomainsVerifyDomain(ctx context.Context, teamId int, domainName string) ApiDomainsVerifyDomainRequest
 
 	// DomainsVerifyDomainExecute executes the request
 	//  @return DomainsGetDomain200ResponseDomainVerificationStatus
@@ -127,7 +127,7 @@ type DomainsAPIService service
 type ApiDomainsCreateDomainRequest struct {
 	ctx context.Context
 	ApiService DomainsAPI
-	teamId float32
+	teamId int
 	domainName string
 }
 
@@ -143,7 +143,7 @@ DomainsCreateDomain createDomain
  @param domainName
  @return ApiDomainsCreateDomainRequest
 */
-func (a *DomainsAPIService) DomainsCreateDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsCreateDomainRequest {
+func (a *DomainsAPIService) DomainsCreateDomain(ctx context.Context, teamId int, domainName string) ApiDomainsCreateDomainRequest {
 	return ApiDomainsCreateDomainRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -174,6 +174,9 @@ func (a *DomainsAPIService) DomainsCreateDomainExecute(r ApiDomainsCreateDomainR
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -253,7 +256,7 @@ func (a *DomainsAPIService) DomainsCreateDomainExecute(r ApiDomainsCreateDomainR
 type ApiDomainsDeleteDomainRequest struct {
 	ctx context.Context
 	ApiService DomainsAPI
-	teamId float32
+	teamId int
 	domainName string
 }
 
@@ -269,7 +272,7 @@ DomainsDeleteDomain deleteDomain
  @param domainName
  @return ApiDomainsDeleteDomainRequest
 */
-func (a *DomainsAPIService) DomainsDeleteDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsDeleteDomainRequest {
+func (a *DomainsAPIService) DomainsDeleteDomain(ctx context.Context, teamId int, domainName string) ApiDomainsDeleteDomainRequest {
 	return ApiDomainsDeleteDomainRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -298,6 +301,9 @@ func (a *DomainsAPIService) DomainsDeleteDomainExecute(r ApiDomainsDeleteDomainR
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return nil, reportError("teamId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -379,7 +385,7 @@ func (a *DomainsAPIService) DomainsDeleteDomainExecute(r ApiDomainsDeleteDomainR
 type ApiDomainsGetDomainRequest struct {
 	ctx context.Context
 	ApiService DomainsAPI
-	teamId float32
+	teamId int
 	domainName string
 }
 
@@ -395,7 +401,7 @@ DomainsGetDomain getDomain
  @param domainName
  @return ApiDomainsGetDomainRequest
 */
-func (a *DomainsAPIService) DomainsGetDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsGetDomainRequest {
+func (a *DomainsAPIService) DomainsGetDomain(ctx context.Context, teamId int, domainName string) ApiDomainsGetDomainRequest {
 	return ApiDomainsGetDomainRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -426,6 +432,9 @@ func (a *DomainsAPIService) DomainsGetDomainExecute(r ApiDomainsGetDomainRequest
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -516,7 +525,7 @@ func (a *DomainsAPIService) DomainsGetDomainExecute(r ApiDomainsGetDomainRequest
 type ApiDomainsListDomainsRequest struct {
 	ctx context.Context
 	ApiService DomainsAPI
-	teamId float32
+	teamId int
 }
 
 func (r ApiDomainsListDomainsRequest) Execute() ([]DomainsGetDomain200Response, *http.Response, error) {
@@ -530,7 +539,7 @@ DomainsListDomains listDomains
  @param teamId
  @return ApiDomainsListDomainsRequest
 */
-func (a *DomainsAPIService) DomainsListDomains(ctx context.Context, teamId float32) ApiDomainsListDomainsRequest {
+func (a *DomainsAPIService) DomainsListDomains(ctx context.Context, teamId int) ApiDomainsListDomainsRequest {
 	return ApiDomainsListDomainsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -559,6 +568,9 @@ func (a *DomainsAPIService) DomainsListDomainsExecute(r ApiDomainsListDomainsReq
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -638,7 +650,7 @@ func (a *DomainsAPIService) DomainsListDomainsExecute(r ApiDomainsListDomainsReq
 type ApiDomainsUpdateDomainRequest struct {
 	ctx context.Context
 	ApiService DomainsAPI
-	teamId float32
+	teamId int
 	domainName string
 	domainsUpdateDomainRequest *DomainsUpdateDomainRequest
 }
@@ -660,7 +672,7 @@ DomainsUpdateDomain updateDomain
  @param domainName
  @return ApiDomainsUpdateDomainRequest
 */
-func (a *DomainsAPIService) DomainsUpdateDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsUpdateDomainRequest {
+func (a *DomainsAPIService) DomainsUpdateDomain(ctx context.Context, teamId int, domainName string) ApiDomainsUpdateDomainRequest {
 	return ApiDomainsUpdateDomainRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -691,6 +703,9 @@ func (a *DomainsAPIService) DomainsUpdateDomainExecute(r ApiDomainsUpdateDomainR
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -794,7 +809,7 @@ func (a *DomainsAPIService) DomainsUpdateDomainExecute(r ApiDomainsUpdateDomainR
 type ApiDomainsUpdateWorkspaceConnectionsRequest struct {
 	ctx context.Context
 	ApiService DomainsAPI
-	teamId float32
+	teamId int
 	domainName string
 	requestBody *map[string][]int
 }
@@ -816,7 +831,7 @@ DomainsUpdateWorkspaceConnections updateWorkspaceConnections
  @param domainName
  @return ApiDomainsUpdateWorkspaceConnectionsRequest
 */
-func (a *DomainsAPIService) DomainsUpdateWorkspaceConnections(ctx context.Context, teamId float32, domainName string) ApiDomainsUpdateWorkspaceConnectionsRequest {
+func (a *DomainsAPIService) DomainsUpdateWorkspaceConnections(ctx context.Context, teamId int, domainName string) ApiDomainsUpdateWorkspaceConnectionsRequest {
 	return ApiDomainsUpdateWorkspaceConnectionsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -847,6 +862,9 @@ func (a *DomainsAPIService) DomainsUpdateWorkspaceConnectionsExecute(r ApiDomain
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -939,7 +957,7 @@ func (a *DomainsAPIService) DomainsUpdateWorkspaceConnectionsExecute(r ApiDomain
 type ApiDomainsVerifyDomainRequest struct {
 	ctx context.Context
 	ApiService DomainsAPI
-	teamId float32
+	teamId int
 	domainName string
 }
 
@@ -955,7 +973,7 @@ DomainsVerifyDomain verifyDomain
  @param domainName
  @return ApiDomainsVerifyDomainRequest
 */
-func (a *DomainsAPIService) DomainsVerifyDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsVerifyDomainRequest {
+func (a *DomainsAPIService) DomainsVerifyDomain(ctx context.Context, teamId int, domainName string) ApiDomainsVerifyDomainRequest {
 	return ApiDomainsVerifyDomainRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -986,6 +1004,9 @@ func (a *DomainsAPIService) DomainsVerifyDomainExecute(r ApiDomainsVerifyDomainR
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

@@ -34,7 +34,7 @@ type TeamsAPI interface {
 	@param userId
 	@return ApiTeamsChangeRoleRequest
 	*/
-	TeamsChangeRole(ctx context.Context, teamId float32, userId float32) ApiTeamsChangeRoleRequest
+	TeamsChangeRole(ctx context.Context, teamId int, userId int) ApiTeamsChangeRoleRequest
 
 	// TeamsChangeRoleExecute executes the request
 	TeamsChangeRoleExecute(r ApiTeamsChangeRoleRequest) (*http.Response, error)
@@ -58,7 +58,7 @@ type TeamsAPI interface {
 	@param teamId
 	@return ApiTeamsDeleteTeamRequest
 	*/
-	TeamsDeleteTeam(ctx context.Context, teamId float32) ApiTeamsDeleteTeamRequest
+	TeamsDeleteTeam(ctx context.Context, teamId int) ApiTeamsDeleteTeamRequest
 
 	// TeamsDeleteTeamExecute executes the request
 	TeamsDeleteTeamExecute(r ApiTeamsDeleteTeamRequest) (*http.Response, error)
@@ -70,7 +70,7 @@ type TeamsAPI interface {
 	@param teamId
 	@return ApiTeamsGetTeamRequest
 	*/
-	TeamsGetTeam(ctx context.Context, teamId float32) ApiTeamsGetTeamRequest
+	TeamsGetTeam(ctx context.Context, teamId int) ApiTeamsGetTeamRequest
 
 	// TeamsGetTeamExecute executes the request
 	//  @return TeamsGetTeam200Response
@@ -85,7 +85,7 @@ type TeamsAPI interface {
 	@param teamId
 	@return ApiTeamsInviteMemberRequest
 	*/
-	TeamsInviteMember(ctx context.Context, teamId float32) ApiTeamsInviteMemberRequest
+	TeamsInviteMember(ctx context.Context, teamId int) ApiTeamsInviteMemberRequest
 
 	// TeamsInviteMemberExecute executes the request
 	TeamsInviteMemberExecute(r ApiTeamsInviteMemberRequest) (*http.Response, error)
@@ -99,7 +99,7 @@ type TeamsAPI interface {
 	@param teamId
 	@return ApiTeamsListMembersRequest
 	*/
-	TeamsListMembers(ctx context.Context, teamId float32) ApiTeamsListMembersRequest
+	TeamsListMembers(ctx context.Context, teamId int) ApiTeamsListMembersRequest
 
 	// TeamsListMembersExecute executes the request
 	//  @return []TeamsListMembers200ResponseInner
@@ -124,7 +124,7 @@ type TeamsAPI interface {
 	@param teamId
 	@return ApiTeamsMigrateTeamToOrgRequest
 	*/
-	TeamsMigrateTeamToOrg(ctx context.Context, teamId float32) ApiTeamsMigrateTeamToOrgRequest
+	TeamsMigrateTeamToOrg(ctx context.Context, teamId int) ApiTeamsMigrateTeamToOrgRequest
 
 	// TeamsMigrateTeamToOrgExecute executes the request
 	TeamsMigrateTeamToOrgExecute(r ApiTeamsMigrateTeamToOrgRequest) (*http.Response, error)
@@ -139,7 +139,7 @@ type TeamsAPI interface {
 	@param userId
 	@return ApiTeamsRemoveMemberRequest
 	*/
-	TeamsRemoveMember(ctx context.Context, teamId float32, userId float32) ApiTeamsRemoveMemberRequest
+	TeamsRemoveMember(ctx context.Context, teamId int, userId int) ApiTeamsRemoveMemberRequest
 
 	// TeamsRemoveMemberExecute executes the request
 	TeamsRemoveMemberExecute(r ApiTeamsRemoveMemberRequest) (*http.Response, error)
@@ -151,8 +151,8 @@ type TeamsAPIService service
 type ApiTeamsChangeRoleRequest struct {
 	ctx context.Context
 	ApiService TeamsAPI
-	teamId float32
-	userId float32
+	teamId int
+	userId int
 	teamsChangeRoleRequest *TeamsChangeRoleRequest
 }
 
@@ -175,7 +175,7 @@ Change the role of a team member
  @param userId
  @return ApiTeamsChangeRoleRequest
 */
-func (a *TeamsAPIService) TeamsChangeRole(ctx context.Context, teamId float32, userId float32) ApiTeamsChangeRoleRequest {
+func (a *TeamsAPIService) TeamsChangeRole(ctx context.Context, teamId int, userId int) ApiTeamsChangeRoleRequest {
 	return ApiTeamsChangeRoleRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -204,6 +204,12 @@ func (a *TeamsAPIService) TeamsChangeRoleExecute(r ApiTeamsChangeRoleRequest) (*
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return nil, reportError("teamId must be greater than 0")
+	}
+	if r.userId < 0 {
+		return nil, reportError("userId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -424,7 +430,7 @@ func (a *TeamsAPIService) TeamsCreateTeamExecute(r ApiTeamsCreateTeamRequest) (*
 type ApiTeamsDeleteTeamRequest struct {
 	ctx context.Context
 	ApiService TeamsAPI
-	teamId float32
+	teamId int
 }
 
 func (r ApiTeamsDeleteTeamRequest) Execute() (*http.Response, error) {
@@ -438,7 +444,7 @@ TeamsDeleteTeam deleteTeam
  @param teamId
  @return ApiTeamsDeleteTeamRequest
 */
-func (a *TeamsAPIService) TeamsDeleteTeam(ctx context.Context, teamId float32) ApiTeamsDeleteTeamRequest {
+func (a *TeamsAPIService) TeamsDeleteTeam(ctx context.Context, teamId int) ApiTeamsDeleteTeamRequest {
 	return ApiTeamsDeleteTeamRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -465,6 +471,9 @@ func (a *TeamsAPIService) TeamsDeleteTeamExecute(r ApiTeamsDeleteTeamRequest) (*
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return nil, reportError("teamId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -546,7 +555,7 @@ func (a *TeamsAPIService) TeamsDeleteTeamExecute(r ApiTeamsDeleteTeamRequest) (*
 type ApiTeamsGetTeamRequest struct {
 	ctx context.Context
 	ApiService TeamsAPI
-	teamId float32
+	teamId int
 }
 
 func (r ApiTeamsGetTeamRequest) Execute() (*TeamsGetTeam200Response, *http.Response, error) {
@@ -560,7 +569,7 @@ TeamsGetTeam getTeam
  @param teamId
  @return ApiTeamsGetTeamRequest
 */
-func (a *TeamsAPIService) TeamsGetTeam(ctx context.Context, teamId float32) ApiTeamsGetTeamRequest {
+func (a *TeamsAPIService) TeamsGetTeam(ctx context.Context, teamId int) ApiTeamsGetTeamRequest {
 	return ApiTeamsGetTeamRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -589,6 +598,9 @@ func (a *TeamsAPIService) TeamsGetTeamExecute(r ApiTeamsGetTeamRequest) (*TeamsG
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -679,7 +691,7 @@ func (a *TeamsAPIService) TeamsGetTeamExecute(r ApiTeamsGetTeamRequest) (*TeamsG
 type ApiTeamsInviteMemberRequest struct {
 	ctx context.Context
 	ApiService TeamsAPI
-	teamId float32
+	teamId int
 	teamsInviteMemberRequest *TeamsInviteMemberRequest
 }
 
@@ -701,7 +713,7 @@ Invite a user to a team by email
  @param teamId
  @return ApiTeamsInviteMemberRequest
 */
-func (a *TeamsAPIService) TeamsInviteMember(ctx context.Context, teamId float32) ApiTeamsInviteMemberRequest {
+func (a *TeamsAPIService) TeamsInviteMember(ctx context.Context, teamId int) ApiTeamsInviteMemberRequest {
 	return ApiTeamsInviteMemberRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -728,6 +740,9 @@ func (a *TeamsAPIService) TeamsInviteMemberExecute(r ApiTeamsInviteMemberRequest
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return nil, reportError("teamId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -822,7 +837,7 @@ func (a *TeamsAPIService) TeamsInviteMemberExecute(r ApiTeamsInviteMemberRequest
 type ApiTeamsListMembersRequest struct {
 	ctx context.Context
 	ApiService TeamsAPI
-	teamId float32
+	teamId int
 }
 
 func (r ApiTeamsListMembersRequest) Execute() ([]TeamsListMembers200ResponseInner, *http.Response, error) {
@@ -838,7 +853,7 @@ List all members associated with a team
  @param teamId
  @return ApiTeamsListMembersRequest
 */
-func (a *TeamsAPIService) TeamsListMembers(ctx context.Context, teamId float32) ApiTeamsListMembersRequest {
+func (a *TeamsAPIService) TeamsListMembers(ctx context.Context, teamId int) ApiTeamsListMembersRequest {
 	return ApiTeamsListMembersRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -867,6 +882,9 @@ func (a *TeamsAPIService) TeamsListMembersExecute(r ApiTeamsListMembersRequest) 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1075,7 +1093,7 @@ func (a *TeamsAPIService) TeamsListTeamsExecute(r ApiTeamsListTeamsRequest) ([]T
 type ApiTeamsMigrateTeamToOrgRequest struct {
 	ctx context.Context
 	ApiService TeamsAPI
-	teamId float32
+	teamId int
 	teamsMigrateTeamToOrgRequest *TeamsMigrateTeamToOrgRequest
 }
 
@@ -1095,7 +1113,7 @@ TeamsMigrateTeamToOrg migrateTeamToOrg
  @param teamId
  @return ApiTeamsMigrateTeamToOrgRequest
 */
-func (a *TeamsAPIService) TeamsMigrateTeamToOrg(ctx context.Context, teamId float32) ApiTeamsMigrateTeamToOrgRequest {
+func (a *TeamsAPIService) TeamsMigrateTeamToOrg(ctx context.Context, teamId int) ApiTeamsMigrateTeamToOrgRequest {
 	return ApiTeamsMigrateTeamToOrgRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1122,6 +1140,9 @@ func (a *TeamsAPIService) TeamsMigrateTeamToOrgExecute(r ApiTeamsMigrateTeamToOr
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return nil, reportError("teamId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -1194,8 +1215,8 @@ func (a *TeamsAPIService) TeamsMigrateTeamToOrgExecute(r ApiTeamsMigrateTeamToOr
 type ApiTeamsRemoveMemberRequest struct {
 	ctx context.Context
 	ApiService TeamsAPI
-	teamId float32
-	userId float32
+	teamId int
+	userId int
 }
 
 func (r ApiTeamsRemoveMemberRequest) Execute() (*http.Response, error) {
@@ -1212,7 +1233,7 @@ Remove a member from a team
  @param userId
  @return ApiTeamsRemoveMemberRequest
 */
-func (a *TeamsAPIService) TeamsRemoveMember(ctx context.Context, teamId float32, userId float32) ApiTeamsRemoveMemberRequest {
+func (a *TeamsAPIService) TeamsRemoveMember(ctx context.Context, teamId int, userId int) ApiTeamsRemoveMemberRequest {
 	return ApiTeamsRemoveMemberRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1241,6 +1262,12 @@ func (a *TeamsAPIService) TeamsRemoveMemberExecute(r ApiTeamsRemoveMemberRequest
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return nil, reportError("teamId must be greater than 0")
+	}
+	if r.userId < 0 {
+		return nil, reportError("userId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

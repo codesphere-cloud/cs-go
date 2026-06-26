@@ -35,6 +35,8 @@ type ManagedServicesList200ResponseInner struct {
 	Config map[string]interface{} `json:"config"`
 	RecentEvents []ManagedServicesList200ResponseInnerRecentEventsInner `json:"recentEvents,omitempty"`
 	Status ManagedServicesList200ResponseInnerStatus `json:"status"`
+	// A semantic version number
+	Version *string `json:"version,omitempty"`
 }
 
 type _ManagedServicesList200ResponseInner ManagedServicesList200ResponseInner
@@ -313,6 +315,38 @@ func (o *ManagedServicesList200ResponseInner) SetStatus(v ManagedServicesList200
 	o.Status = v
 }
 
+// GetVersion returns the Version field value if set, zero value otherwise.
+func (o *ManagedServicesList200ResponseInner) GetVersion() string {
+	if o == nil || IsNil(o.Version) {
+		var ret string
+		return ret
+	}
+	return *o.Version
+}
+
+// GetVersionOk returns a tuple with the Version field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ManagedServicesList200ResponseInner) GetVersionOk() (*string, bool) {
+	if o == nil || IsNil(o.Version) {
+		return nil, false
+	}
+	return o.Version, true
+}
+
+// HasVersion returns a boolean if a field has been set.
+func (o *ManagedServicesList200ResponseInner) HasVersion() bool {
+	if o != nil && !IsNil(o.Version) {
+		return true
+	}
+
+	return false
+}
+
+// SetVersion gets a reference to the given string and assigns it to the Version field.
+func (o *ManagedServicesList200ResponseInner) SetVersion(v string) {
+	o.Version = &v
+}
+
 func (o ManagedServicesList200ResponseInner) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -335,6 +369,9 @@ func (o ManagedServicesList200ResponseInner) ToMap() (map[string]interface{}, er
 		toSerialize["recentEvents"] = o.RecentEvents
 	}
 	toSerialize["status"] = o.Status
+	if !IsNil(o.Version) {
+		toSerialize["version"] = o.Version
+	}
 	return toSerialize, nil
 }
 

@@ -25,6 +25,50 @@ import (
 type VaultAPI interface {
 
 	/*
+	VaultCreateSharedVault createSharedVault
+
+	Create an empty shared vault for a team
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param teamId
+	@return ApiVaultCreateSharedVaultRequest
+	*/
+	VaultCreateSharedVault(ctx context.Context, teamId int) ApiVaultCreateSharedVaultRequest
+
+	// VaultCreateSharedVaultExecute executes the request
+	VaultCreateSharedVaultExecute(r ApiVaultCreateSharedVaultRequest) (*http.Response, error)
+
+	/*
+	VaultDeleteSharedSecrets deleteSharedSecrets
+
+	Delete one or more named secrets from a shared vault. Deleting all keys does not remove the vault itself.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param teamId
+	@param vaultName
+	@return ApiVaultDeleteSharedSecretsRequest
+	*/
+	VaultDeleteSharedSecrets(ctx context.Context, teamId int, vaultName string) ApiVaultDeleteSharedSecretsRequest
+
+	// VaultDeleteSharedSecretsExecute executes the request
+	VaultDeleteSharedSecretsExecute(r ApiVaultDeleteSharedSecretsRequest) (*http.Response, error)
+
+	/*
+	VaultDeleteSharedVault deleteSharedVault
+
+	Delete a shared vault and all its secrets for a team
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param teamId
+	@param vaultName
+	@return ApiVaultDeleteSharedVaultRequest
+	*/
+	VaultDeleteSharedVault(ctx context.Context, teamId int, vaultName string) ApiVaultDeleteSharedVaultRequest
+
+	// VaultDeleteSharedVaultExecute executes the request
+	VaultDeleteSharedVaultExecute(r ApiVaultDeleteSharedVaultRequest) (*http.Response, error)
+
+	/*
 	VaultDeleteWorkspaceSecrets deleteWorkspaceSecrets
 
 	Delete secrets in the vault for a given workspace
@@ -34,7 +78,7 @@ type VaultAPI interface {
 	@param workspaceId
 	@return ApiVaultDeleteWorkspaceSecretsRequest
 	*/
-	VaultDeleteWorkspaceSecrets(ctx context.Context, teamId float32, workspaceId float32) ApiVaultDeleteWorkspaceSecretsRequest
+	VaultDeleteWorkspaceSecrets(ctx context.Context, teamId int, workspaceId int) ApiVaultDeleteWorkspaceSecretsRequest
 
 	// VaultDeleteWorkspaceSecretsExecute executes the request
 	VaultDeleteWorkspaceSecretsExecute(r ApiVaultDeleteWorkspaceSecretsRequest) (*http.Response, error)
@@ -49,11 +93,58 @@ type VaultAPI interface {
 	@param workspaceId
 	@return ApiVaultGenerateSecretsRequest
 	*/
-	VaultGenerateSecrets(ctx context.Context, teamId float32, workspaceId float32) ApiVaultGenerateSecretsRequest
+	VaultGenerateSecrets(ctx context.Context, teamId int, workspaceId int) ApiVaultGenerateSecretsRequest
 
 	// VaultGenerateSecretsExecute executes the request
 	//  @return map[string]interface{}
 	VaultGenerateSecretsExecute(r ApiVaultGenerateSecretsRequest) (map[string]interface{}, *http.Response, error)
+
+	/*
+	VaultGenerateSharedSecrets generateSharedSecrets
+
+	Generate and store secrets in a named shared vault using OpenBao password policies. If the vault does not exist it is created implicitly.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param teamId
+	@param vaultName
+	@return ApiVaultGenerateSharedSecretsRequest
+	*/
+	VaultGenerateSharedSecrets(ctx context.Context, teamId int, vaultName string) ApiVaultGenerateSharedSecretsRequest
+
+	// VaultGenerateSharedSecretsExecute executes the request
+	//  @return map[string]interface{}
+	VaultGenerateSharedSecretsExecute(r ApiVaultGenerateSharedSecretsRequest) (map[string]interface{}, *http.Response, error)
+
+	/*
+	VaultListSharedSecretKeys listSharedSecretKeys
+
+	List secret key names stored in a named shared vault. Values are never returned.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param teamId
+	@param vaultName
+	@return ApiVaultListSharedSecretKeysRequest
+	*/
+	VaultListSharedSecretKeys(ctx context.Context, teamId int, vaultName string) ApiVaultListSharedSecretKeysRequest
+
+	// VaultListSharedSecretKeysExecute executes the request
+	//  @return []string
+	VaultListSharedSecretKeysExecute(r ApiVaultListSharedSecretKeysRequest) ([]string, *http.Response, error)
+
+	/*
+	VaultListSharedVaults listSharedVaults
+
+	List all shared vault names for a team
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param teamId
+	@return ApiVaultListSharedVaultsRequest
+	*/
+	VaultListSharedVaults(ctx context.Context, teamId int) ApiVaultListSharedVaultsRequest
+
+	// VaultListSharedVaultsExecute executes the request
+	//  @return []string
+	VaultListSharedVaultsExecute(r ApiVaultListSharedVaultsRequest) ([]string, *http.Response, error)
 
 	/*
 	VaultListWorkspaceSecrets listWorkspaceSecrets
@@ -65,11 +156,27 @@ type VaultAPI interface {
 	@param workspaceId
 	@return ApiVaultListWorkspaceSecretsRequest
 	*/
-	VaultListWorkspaceSecrets(ctx context.Context, teamId float32, workspaceId float32) ApiVaultListWorkspaceSecretsRequest
+	VaultListWorkspaceSecrets(ctx context.Context, teamId int, workspaceId int) ApiVaultListWorkspaceSecretsRequest
 
 	// VaultListWorkspaceSecretsExecute executes the request
 	//  @return []string
 	VaultListWorkspaceSecretsExecute(r ApiVaultListWorkspaceSecretsRequest) ([]string, *http.Response, error)
+
+	/*
+	VaultStoreSharedSecrets storeSharedSecrets
+
+	Store secrets in a named shared vault
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param teamId
+	@param vaultName
+	@return ApiVaultStoreSharedSecretsRequest
+	*/
+	VaultStoreSharedSecrets(ctx context.Context, teamId int, vaultName string) ApiVaultStoreSharedSecretsRequest
+
+	// VaultStoreSharedSecretsExecute executes the request
+	//  @return map[string]interface{}
+	VaultStoreSharedSecretsExecute(r ApiVaultStoreSharedSecretsRequest) (map[string]interface{}, *http.Response, error)
 
 	/*
 	VaultStoreWorkspaceSecrets storeWorkspaceSecrets
@@ -81,7 +188,7 @@ type VaultAPI interface {
 	@param workspaceId
 	@return ApiVaultStoreWorkspaceSecretsRequest
 	*/
-	VaultStoreWorkspaceSecrets(ctx context.Context, teamId float32, workspaceId float32) ApiVaultStoreWorkspaceSecretsRequest
+	VaultStoreWorkspaceSecrets(ctx context.Context, teamId int, workspaceId int) ApiVaultStoreWorkspaceSecretsRequest
 
 	// VaultStoreWorkspaceSecretsExecute executes the request
 	//  @return map[string]interface{}
@@ -91,11 +198,383 @@ type VaultAPI interface {
 // VaultAPIService VaultAPI service
 type VaultAPIService service
 
+type ApiVaultCreateSharedVaultRequest struct {
+	ctx context.Context
+	ApiService VaultAPI
+	teamId int
+	vaultCreateSharedVaultRequest *VaultCreateSharedVaultRequest
+}
+
+func (r ApiVaultCreateSharedVaultRequest) VaultCreateSharedVaultRequest(vaultCreateSharedVaultRequest VaultCreateSharedVaultRequest) ApiVaultCreateSharedVaultRequest {
+	r.vaultCreateSharedVaultRequest = &vaultCreateSharedVaultRequest
+	return r
+}
+
+func (r ApiVaultCreateSharedVaultRequest) Execute() (*http.Response, error) {
+	return r.ApiService.VaultCreateSharedVaultExecute(r)
+}
+
+/*
+VaultCreateSharedVault createSharedVault
+
+Create an empty shared vault for a team
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param teamId
+ @return ApiVaultCreateSharedVaultRequest
+*/
+func (a *VaultAPIService) VaultCreateSharedVault(ctx context.Context, teamId int) ApiVaultCreateSharedVaultRequest {
+	return ApiVaultCreateSharedVaultRequest{
+		ApiService: a,
+		ctx: ctx,
+		teamId: teamId,
+	}
+}
+
+// Execute executes the request
+func (a *VaultAPIService) VaultCreateSharedVaultExecute(r ApiVaultCreateSharedVaultRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultAPIService.VaultCreateSharedVault")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/vault/teams/{teamId}/shared"
+	localVarPath = strings.Replace(localVarPath, "{"+"teamId"+"}", url.PathEscape(parameterValueToString(r.teamId, "teamId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return nil, reportError("teamId must be greater than 0")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.vaultCreateSharedVaultRequest
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v DomainsGetDomain400Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v DomainsGetDomain401Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type ApiVaultDeleteSharedSecretsRequest struct {
+	ctx context.Context
+	ApiService VaultAPI
+	teamId int
+	vaultName string
+	requestBody *[]string
+}
+
+func (r ApiVaultDeleteSharedSecretsRequest) RequestBody(requestBody []string) ApiVaultDeleteSharedSecretsRequest {
+	r.requestBody = &requestBody
+	return r
+}
+
+func (r ApiVaultDeleteSharedSecretsRequest) Execute() (*http.Response, error) {
+	return r.ApiService.VaultDeleteSharedSecretsExecute(r)
+}
+
+/*
+VaultDeleteSharedSecrets deleteSharedSecrets
+
+Delete one or more named secrets from a shared vault. Deleting all keys does not remove the vault itself.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param teamId
+ @param vaultName
+ @return ApiVaultDeleteSharedSecretsRequest
+*/
+func (a *VaultAPIService) VaultDeleteSharedSecrets(ctx context.Context, teamId int, vaultName string) ApiVaultDeleteSharedSecretsRequest {
+	return ApiVaultDeleteSharedSecretsRequest{
+		ApiService: a,
+		ctx: ctx,
+		teamId: teamId,
+		vaultName: vaultName,
+	}
+}
+
+// Execute executes the request
+func (a *VaultAPIService) VaultDeleteSharedSecretsExecute(r ApiVaultDeleteSharedSecretsRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodDelete
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultAPIService.VaultDeleteSharedSecrets")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/vault/teams/{teamId}/shared/{vaultName}/secrets"
+	localVarPath = strings.Replace(localVarPath, "{"+"teamId"+"}", url.PathEscape(parameterValueToString(r.teamId, "teamId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"vaultName"+"}", url.PathEscape(parameterValueToString(r.vaultName, "vaultName")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return nil, reportError("teamId must be greater than 0")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.requestBody
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v DomainsGetDomain400Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v DomainsGetDomain401Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type ApiVaultDeleteSharedVaultRequest struct {
+	ctx context.Context
+	ApiService VaultAPI
+	teamId int
+	vaultName string
+}
+
+func (r ApiVaultDeleteSharedVaultRequest) Execute() (*http.Response, error) {
+	return r.ApiService.VaultDeleteSharedVaultExecute(r)
+}
+
+/*
+VaultDeleteSharedVault deleteSharedVault
+
+Delete a shared vault and all its secrets for a team
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param teamId
+ @param vaultName
+ @return ApiVaultDeleteSharedVaultRequest
+*/
+func (a *VaultAPIService) VaultDeleteSharedVault(ctx context.Context, teamId int, vaultName string) ApiVaultDeleteSharedVaultRequest {
+	return ApiVaultDeleteSharedVaultRequest{
+		ApiService: a,
+		ctx: ctx,
+		teamId: teamId,
+		vaultName: vaultName,
+	}
+}
+
+// Execute executes the request
+func (a *VaultAPIService) VaultDeleteSharedVaultExecute(r ApiVaultDeleteSharedVaultRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodDelete
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultAPIService.VaultDeleteSharedVault")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/vault/teams/{teamId}/shared/{vaultName}"
+	localVarPath = strings.Replace(localVarPath, "{"+"teamId"+"}", url.PathEscape(parameterValueToString(r.teamId, "teamId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"vaultName"+"}", url.PathEscape(parameterValueToString(r.vaultName, "vaultName")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return nil, reportError("teamId must be greater than 0")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v DomainsGetDomain400Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v DomainsGetDomain401Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
 type ApiVaultDeleteWorkspaceSecretsRequest struct {
 	ctx context.Context
 	ApiService VaultAPI
-	teamId float32
-	workspaceId float32
+	teamId int
+	workspaceId int
 	requestBody *[]string
 }
 
@@ -118,7 +597,7 @@ Delete secrets in the vault for a given workspace
  @param workspaceId
  @return ApiVaultDeleteWorkspaceSecretsRequest
 */
-func (a *VaultAPIService) VaultDeleteWorkspaceSecrets(ctx context.Context, teamId float32, workspaceId float32) ApiVaultDeleteWorkspaceSecretsRequest {
+func (a *VaultAPIService) VaultDeleteWorkspaceSecrets(ctx context.Context, teamId int, workspaceId int) ApiVaultDeleteWorkspaceSecretsRequest {
 	return ApiVaultDeleteWorkspaceSecretsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -147,6 +626,12 @@ func (a *VaultAPIService) VaultDeleteWorkspaceSecretsExecute(r ApiVaultDeleteWor
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return nil, reportError("teamId must be greater than 0")
+	}
+	if r.workspaceId < 0 {
+		return nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -219,8 +704,8 @@ func (a *VaultAPIService) VaultDeleteWorkspaceSecretsExecute(r ApiVaultDeleteWor
 type ApiVaultGenerateSecretsRequest struct {
 	ctx context.Context
 	ApiService VaultAPI
-	teamId float32
-	workspaceId float32
+	teamId int
+	workspaceId int
 	body *map[string]interface{}
 }
 
@@ -243,7 +728,7 @@ Generate secrets in the vault for a given workspace based on the provided passwo
  @param workspaceId
  @return ApiVaultGenerateSecretsRequest
 */
-func (a *VaultAPIService) VaultGenerateSecrets(ctx context.Context, teamId float32, workspaceId float32) ApiVaultGenerateSecretsRequest {
+func (a *VaultAPIService) VaultGenerateSecrets(ctx context.Context, teamId int, workspaceId int) ApiVaultGenerateSecretsRequest {
 	return ApiVaultGenerateSecretsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -274,6 +759,12 @@ func (a *VaultAPIService) VaultGenerateSecretsExecute(r ApiVaultGenerateSecretsR
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
+	if r.workspaceId < 0 {
+		return localVarReturnValue, nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -352,39 +843,178 @@ func (a *VaultAPIService) VaultGenerateSecretsExecute(r ApiVaultGenerateSecretsR
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiVaultListWorkspaceSecretsRequest struct {
+type ApiVaultGenerateSharedSecretsRequest struct {
 	ctx context.Context
 	ApiService VaultAPI
-	teamId float32
-	workspaceId float32
+	teamId int
+	vaultName string
+	body *map[string]interface{}
 }
 
-func (r ApiVaultListWorkspaceSecretsRequest) Execute() ([]string, *http.Response, error) {
-	return r.ApiService.VaultListWorkspaceSecretsExecute(r)
+func (r ApiVaultGenerateSharedSecretsRequest) Body(body map[string]interface{}) ApiVaultGenerateSharedSecretsRequest {
+	r.body = &body
+	return r
+}
+
+func (r ApiVaultGenerateSharedSecretsRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.VaultGenerateSharedSecretsExecute(r)
 }
 
 /*
-VaultListWorkspaceSecrets listWorkspaceSecrets
+VaultGenerateSharedSecrets generateSharedSecrets
 
-List secrets in the vault for a given workspace
+Generate and store secrets in a named shared vault using OpenBao password policies. If the vault does not exist it is created implicitly.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param teamId
- @param workspaceId
- @return ApiVaultListWorkspaceSecretsRequest
+ @param vaultName
+ @return ApiVaultGenerateSharedSecretsRequest
 */
-func (a *VaultAPIService) VaultListWorkspaceSecrets(ctx context.Context, teamId float32, workspaceId float32) ApiVaultListWorkspaceSecretsRequest {
-	return ApiVaultListWorkspaceSecretsRequest{
+func (a *VaultAPIService) VaultGenerateSharedSecrets(ctx context.Context, teamId int, vaultName string) ApiVaultGenerateSharedSecretsRequest {
+	return ApiVaultGenerateSharedSecretsRequest{
 		ApiService: a,
 		ctx: ctx,
 		teamId: teamId,
-		workspaceId: workspaceId,
+		vaultName: vaultName,
+	}
+}
+
+// Execute executes the request
+//  @return map[string]interface{}
+func (a *VaultAPIService) VaultGenerateSharedSecretsExecute(r ApiVaultGenerateSharedSecretsRequest) (map[string]interface{}, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  map[string]interface{}
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultAPIService.VaultGenerateSharedSecrets")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/vault/teams/{teamId}/shared/{vaultName}/generate"
+	localVarPath = strings.Replace(localVarPath, "{"+"teamId"+"}", url.PathEscape(parameterValueToString(r.teamId, "teamId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"vaultName"+"}", url.PathEscape(parameterValueToString(r.vaultName, "vaultName")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.body
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v DomainsGetDomain400Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v DomainsGetDomain401Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiVaultListSharedSecretKeysRequest struct {
+	ctx context.Context
+	ApiService VaultAPI
+	teamId int
+	vaultName string
+}
+
+func (r ApiVaultListSharedSecretKeysRequest) Execute() ([]string, *http.Response, error) {
+	return r.ApiService.VaultListSharedSecretKeysExecute(r)
+}
+
+/*
+VaultListSharedSecretKeys listSharedSecretKeys
+
+List secret key names stored in a named shared vault. Values are never returned.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param teamId
+ @param vaultName
+ @return ApiVaultListSharedSecretKeysRequest
+*/
+func (a *VaultAPIService) VaultListSharedSecretKeys(ctx context.Context, teamId int, vaultName string) ApiVaultListSharedSecretKeysRequest {
+	return ApiVaultListSharedSecretKeysRequest{
+		ApiService: a,
+		ctx: ctx,
+		teamId: teamId,
+		vaultName: vaultName,
 	}
 }
 
 // Execute executes the request
 //  @return []string
-func (a *VaultAPIService) VaultListWorkspaceSecretsExecute(r ApiVaultListWorkspaceSecretsRequest) ([]string, *http.Response, error) {
+func (a *VaultAPIService) VaultListSharedSecretKeysExecute(r ApiVaultListSharedSecretKeysRequest) ([]string, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
@@ -392,18 +1022,21 @@ func (a *VaultAPIService) VaultListWorkspaceSecretsExecute(r ApiVaultListWorkspa
 		localVarReturnValue  []string
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultAPIService.VaultListWorkspaceSecrets")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultAPIService.VaultListSharedSecretKeys")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/vault/teams/{teamId}/workspaces/{workspaceId}/keys"
+	localVarPath := localBasePath + "/vault/teams/{teamId}/shared/{vaultName}/keys"
 	localVarPath = strings.Replace(localVarPath, "{"+"teamId"+"}", url.PathEscape(parameterValueToString(r.teamId, "teamId")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"workspaceId"+"}", url.PathEscape(parameterValueToString(r.workspaceId, "workspaceId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"vaultName"+"}", url.PathEscape(parameterValueToString(r.vaultName, "vaultName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -480,11 +1113,411 @@ func (a *VaultAPIService) VaultListWorkspaceSecretsExecute(r ApiVaultListWorkspa
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiVaultListSharedVaultsRequest struct {
+	ctx context.Context
+	ApiService VaultAPI
+	teamId int
+}
+
+func (r ApiVaultListSharedVaultsRequest) Execute() ([]string, *http.Response, error) {
+	return r.ApiService.VaultListSharedVaultsExecute(r)
+}
+
+/*
+VaultListSharedVaults listSharedVaults
+
+List all shared vault names for a team
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param teamId
+ @return ApiVaultListSharedVaultsRequest
+*/
+func (a *VaultAPIService) VaultListSharedVaults(ctx context.Context, teamId int) ApiVaultListSharedVaultsRequest {
+	return ApiVaultListSharedVaultsRequest{
+		ApiService: a,
+		ctx: ctx,
+		teamId: teamId,
+	}
+}
+
+// Execute executes the request
+//  @return []string
+func (a *VaultAPIService) VaultListSharedVaultsExecute(r ApiVaultListSharedVaultsRequest) ([]string, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  []string
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultAPIService.VaultListSharedVaults")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/vault/teams/{teamId}/shared"
+	localVarPath = strings.Replace(localVarPath, "{"+"teamId"+"}", url.PathEscape(parameterValueToString(r.teamId, "teamId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v DomainsGetDomain400Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v DomainsGetDomain401Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiVaultListWorkspaceSecretsRequest struct {
+	ctx context.Context
+	ApiService VaultAPI
+	teamId int
+	workspaceId int
+}
+
+func (r ApiVaultListWorkspaceSecretsRequest) Execute() ([]string, *http.Response, error) {
+	return r.ApiService.VaultListWorkspaceSecretsExecute(r)
+}
+
+/*
+VaultListWorkspaceSecrets listWorkspaceSecrets
+
+List secrets in the vault for a given workspace
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param teamId
+ @param workspaceId
+ @return ApiVaultListWorkspaceSecretsRequest
+*/
+func (a *VaultAPIService) VaultListWorkspaceSecrets(ctx context.Context, teamId int, workspaceId int) ApiVaultListWorkspaceSecretsRequest {
+	return ApiVaultListWorkspaceSecretsRequest{
+		ApiService: a,
+		ctx: ctx,
+		teamId: teamId,
+		workspaceId: workspaceId,
+	}
+}
+
+// Execute executes the request
+//  @return []string
+func (a *VaultAPIService) VaultListWorkspaceSecretsExecute(r ApiVaultListWorkspaceSecretsRequest) ([]string, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  []string
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultAPIService.VaultListWorkspaceSecrets")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/vault/teams/{teamId}/workspaces/{workspaceId}/keys"
+	localVarPath = strings.Replace(localVarPath, "{"+"teamId"+"}", url.PathEscape(parameterValueToString(r.teamId, "teamId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"workspaceId"+"}", url.PathEscape(parameterValueToString(r.workspaceId, "workspaceId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
+	if r.workspaceId < 0 {
+		return localVarReturnValue, nil, reportError("workspaceId must be greater than 0")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v DomainsGetDomain400Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v DomainsGetDomain401Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiVaultStoreSharedSecretsRequest struct {
+	ctx context.Context
+	ApiService VaultAPI
+	teamId int
+	vaultName string
+	body *map[string]interface{}
+}
+
+func (r ApiVaultStoreSharedSecretsRequest) Body(body map[string]interface{}) ApiVaultStoreSharedSecretsRequest {
+	r.body = &body
+	return r
+}
+
+func (r ApiVaultStoreSharedSecretsRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.VaultStoreSharedSecretsExecute(r)
+}
+
+/*
+VaultStoreSharedSecrets storeSharedSecrets
+
+Store secrets in a named shared vault
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param teamId
+ @param vaultName
+ @return ApiVaultStoreSharedSecretsRequest
+*/
+func (a *VaultAPIService) VaultStoreSharedSecrets(ctx context.Context, teamId int, vaultName string) ApiVaultStoreSharedSecretsRequest {
+	return ApiVaultStoreSharedSecretsRequest{
+		ApiService: a,
+		ctx: ctx,
+		teamId: teamId,
+		vaultName: vaultName,
+	}
+}
+
+// Execute executes the request
+//  @return map[string]interface{}
+func (a *VaultAPIService) VaultStoreSharedSecretsExecute(r ApiVaultStoreSharedSecretsRequest) (map[string]interface{}, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  map[string]interface{}
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultAPIService.VaultStoreSharedSecrets")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/vault/teams/{teamId}/shared/{vaultName}/secrets"
+	localVarPath = strings.Replace(localVarPath, "{"+"teamId"+"}", url.PathEscape(parameterValueToString(r.teamId, "teamId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"vaultName"+"}", url.PathEscape(parameterValueToString(r.vaultName, "vaultName")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.body
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v DomainsGetDomain400Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v DomainsGetDomain401Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiVaultStoreWorkspaceSecretsRequest struct {
 	ctx context.Context
 	ApiService VaultAPI
-	teamId float32
-	workspaceId float32
+	teamId int
+	workspaceId int
 	body *map[string]interface{}
 }
 
@@ -507,7 +1540,7 @@ Store secrets in the vault for a given workspace
  @param workspaceId
  @return ApiVaultStoreWorkspaceSecretsRequest
 */
-func (a *VaultAPIService) VaultStoreWorkspaceSecrets(ctx context.Context, teamId float32, workspaceId float32) ApiVaultStoreWorkspaceSecretsRequest {
+func (a *VaultAPIService) VaultStoreWorkspaceSecrets(ctx context.Context, teamId int, workspaceId int) ApiVaultStoreWorkspaceSecretsRequest {
 	return ApiVaultStoreWorkspaceSecretsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -538,6 +1571,12 @@ func (a *VaultAPIService) VaultStoreWorkspaceSecretsExecute(r ApiVaultStoreWorks
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
+	if r.workspaceId < 0 {
+		return localVarReturnValue, nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
