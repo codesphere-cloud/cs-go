@@ -102,7 +102,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
-		return nil, workspaces, nil
+		return nil, map[string]any{"items": workspaces}, nil
 	})
 
 	mcp.AddTool(server, &mcp.Tool{
@@ -211,7 +211,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
-		return nil, states, nil
+		return nil, map[string]any{"items": states}, nil
 	})
 
 	mcp.AddTool(server, &mcp.Tool{
