@@ -11,6 +11,7 @@ Manage and debug resources deployed in Codesphere via command line.
 ```
   -a, --api string      URL of Codesphere API (can also be CS_API)
   -h, --help            help for cs
+  -O, --org string      Organization ID (relevant for some commands)
   -t, --team int        Team ID (relevant for some commands, can also be CS_TEAM_ID) (default -1)
   -v, --verbose         Verbose output
   -w, --workspace int   Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)
@@ -34,6 +35,7 @@ Manage and debug resources deployed in Codesphere via command line.
 * [cs set-env](cs_set-env.md)	 - Set environment variables
 * [cs start](cs_start.md)	 - Start workspace pipeline
 * [cs sync](cs_sync.md)	 - Sync Codesphere resources
+* [cs team](cs_team.md)	 - Manage Team
 * [cs update](cs_update.md)	 - Update Codesphere CLI
 * [cs version](cs_version.md)	 - Print version
 * [cs wake-up](cs_wake-up.md)	 - Wake up an on-demand workspace

@@ -11,7 +11,7 @@ import (
 )
 
 func (c *Client) GetLandscapeServiceEvents(teamId int, resourceId string, beginDate, endDate time.Time, limit, offset int) (*openapi_client.UsageGetLandscapeServiceEvents200Response, error) {
-	req := c.api.UsageAPI.UsageGetLandscapeServiceEvents(c.ctx, float32(teamId), resourceId).
+	req := c.api.UsageAPI.UsageGetLandscapeServiceEvents(c.ctx, teamId, resourceId).
 		BeginDate(beginDate).
 		EndDate(endDate)
 	if limit > 0 {
@@ -25,7 +25,7 @@ func (c *Client) GetLandscapeServiceEvents(teamId int, resourceId string, beginD
 }
 
 func (c *Client) GetUsageSummaryLandscape(teamId int, beginDate, endDate time.Time, limit, offset int) (*openapi_client.UsageGetUsageSummaryLandscape200Response, error) {
-	req := c.api.UsageAPI.UsageGetUsageSummaryLandscape(c.ctx, float32(teamId)).
+	req := c.api.UsageAPI.UsageGetUsageSummaryLandscape(c.ctx, teamId).
 		BeginDate(beginDate).
 		EndDate(endDate)
 	if limit > 0 {

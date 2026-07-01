@@ -22,14 +22,16 @@ var _ MappedNullable = &ManagedServicesCreateRequest{}
 
 // ManagedServicesCreateRequest struct for ManagedServicesCreateRequest
 type ManagedServicesCreateRequest struct {
-	Backups     *ManagedServicesCreateRequestBackups        `json:"backups,omitempty"`
-	Config      map[string]interface{}                      `json:"config"`
-	Provider    ManagedServicesList200ResponseInnerProvider `json:"provider"`
-	Name        string                                      `json:"name"`
-	Plan        ManagedServicesList200ResponseInnerPlan     `json:"plan"`
-	RecoverFrom *ManagedServicesCreateRequestRecoverFrom    `json:"recoverFrom,omitempty"`
-	Secrets     map[string]interface{}                      `json:"secrets"`
-	TeamId      int                                         `json:"teamId"`
+	Backups     *ManagedServicesCreateRequestBackups     `json:"backups,omitempty"`
+	Config      map[string]interface{}                   `json:"config"`
+	Provider    ManagedServicesCreateRequestProvider     `json:"provider"`
+	Name        string                                   `json:"name"`
+	Plan        ManagedServicesList200ResponseInnerPlan  `json:"plan"`
+	RecoverFrom *ManagedServicesCreateRequestRecoverFrom `json:"recoverFrom,omitempty"`
+	Secrets     map[string]interface{}                   `json:"secrets"`
+	TeamId      int                                      `json:"teamId"`
+	// A semantic version number
+	Version *string `json:"version,omitempty"`
 }
 
 type _ManagedServicesCreateRequest ManagedServicesCreateRequest
@@ -38,7 +40,7 @@ type _ManagedServicesCreateRequest ManagedServicesCreateRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewManagedServicesCreateRequest(config map[string]interface{}, provider ManagedServicesList200ResponseInnerProvider, name string, plan ManagedServicesList200ResponseInnerPlan, secrets map[string]interface{}, teamId int) *ManagedServicesCreateRequest {
+func NewManagedServicesCreateRequest(config map[string]interface{}, provider ManagedServicesCreateRequestProvider, name string, plan ManagedServicesList200ResponseInnerPlan, secrets map[string]interface{}, teamId int) *ManagedServicesCreateRequest {
 	this := ManagedServicesCreateRequest{}
 	this.Config = config
 	this.Provider = provider
@@ -114,9 +116,9 @@ func (o *ManagedServicesCreateRequest) SetConfig(v map[string]interface{}) {
 }
 
 // GetProvider returns the Provider field value
-func (o *ManagedServicesCreateRequest) GetProvider() ManagedServicesList200ResponseInnerProvider {
+func (o *ManagedServicesCreateRequest) GetProvider() ManagedServicesCreateRequestProvider {
 	if o == nil {
-		var ret ManagedServicesList200ResponseInnerProvider
+		var ret ManagedServicesCreateRequestProvider
 		return ret
 	}
 
@@ -125,7 +127,7 @@ func (o *ManagedServicesCreateRequest) GetProvider() ManagedServicesList200Respo
 
 // GetProviderOk returns a tuple with the Provider field value
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateRequest) GetProviderOk() (*ManagedServicesList200ResponseInnerProvider, bool) {
+func (o *ManagedServicesCreateRequest) GetProviderOk() (*ManagedServicesCreateRequestProvider, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -133,7 +135,7 @@ func (o *ManagedServicesCreateRequest) GetProviderOk() (*ManagedServicesList200R
 }
 
 // SetProvider sets field value
-func (o *ManagedServicesCreateRequest) SetProvider(v ManagedServicesList200ResponseInnerProvider) {
+func (o *ManagedServicesCreateRequest) SetProvider(v ManagedServicesCreateRequestProvider) {
 	o.Provider = v
 }
 
@@ -265,6 +267,38 @@ func (o *ManagedServicesCreateRequest) SetTeamId(v int) {
 	o.TeamId = v
 }
 
+// GetVersion returns the Version field value if set, zero value otherwise.
+func (o *ManagedServicesCreateRequest) GetVersion() string {
+	if o == nil || IsNil(o.Version) {
+		var ret string
+		return ret
+	}
+	return *o.Version
+}
+
+// GetVersionOk returns a tuple with the Version field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ManagedServicesCreateRequest) GetVersionOk() (*string, bool) {
+	if o == nil || IsNil(o.Version) {
+		return nil, false
+	}
+	return o.Version, true
+}
+
+// HasVersion returns a boolean if a field has been set.
+func (o *ManagedServicesCreateRequest) HasVersion() bool {
+	if o != nil && !IsNil(o.Version) {
+		return true
+	}
+
+	return false
+}
+
+// SetVersion gets a reference to the given string and assigns it to the Version field.
+func (o *ManagedServicesCreateRequest) SetVersion(v string) {
+	o.Version = &v
+}
+
 func (o ManagedServicesCreateRequest) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -287,6 +321,9 @@ func (o ManagedServicesCreateRequest) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["secrets"] = o.Secrets
 	toSerialize["teamId"] = o.TeamId
+	if !IsNil(o.Version) {
+		toSerialize["version"] = o.Version
+	}
 	return toSerialize, nil
 }
 

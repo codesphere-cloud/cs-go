@@ -40,11 +40,10 @@ func (l *ListTeamsCmd) RunE(_ *cobra.Command, args []string) (err error) {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
-	teams, err := client.ListTeams()
+	teams, err := client.ListTeams(l.opts.OrgId)
 	if err != nil {
 		return fmt.Errorf("failed to list teams: %w", err)
 	}
-
 	switch l.opts.OutputFormat {
 	case OutputFormatJSON:
 		return io.PrintJSON(teams)
@@ -59,7 +58,11 @@ func (l *ListTeamsCmd) RunE(_ *cobra.Command, args []string) (err error) {
 		if team.IsFirst != nil && *team.IsFirst {
 			first = "*"
 		}
-		t.AppendRow(table.Row{first, team.Id, team.Name, cs.GetRoleName(int(team.Role)), team.DefaultDataCenterId})
+		roleName := "N/A"
+		if team.Role != nil {
+			roleName = cs.GetRoleName(*team.Role)
+		}
+		t.AppendRow(table.Row{first, team.Id, team.Name, roleName, team.DefaultDataCenterId})
 	}
 	t.Render()
 

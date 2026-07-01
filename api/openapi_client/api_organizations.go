@@ -42,7 +42,7 @@ type OrganizationsAPI interface {
 		@param userId
 		@return ApiOrganizationsChangeOrgRoleRequest
 	*/
-	OrganizationsChangeOrgRole(ctx context.Context, organizationId string, userId float32) ApiOrganizationsChangeOrgRoleRequest
+	OrganizationsChangeOrgRole(ctx context.Context, organizationId string, userId int) ApiOrganizationsChangeOrgRoleRequest
 
 	// OrganizationsChangeOrgRoleExecute executes the request
 	OrganizationsChangeOrgRoleExecute(r ApiOrganizationsChangeOrgRoleRequest) (*http.Response, error)
@@ -93,7 +93,7 @@ type OrganizationsAPI interface {
 		@param userId
 		@return ApiOrganizationsRemoveOrgMemberRequest
 	*/
-	OrganizationsRemoveOrgMember(ctx context.Context, organizationId string, userId float32) ApiOrganizationsRemoveOrgMemberRequest
+	OrganizationsRemoveOrgMember(ctx context.Context, organizationId string, userId int) ApiOrganizationsRemoveOrgMemberRequest
 
 	// OrganizationsRemoveOrgMemberExecute executes the request
 	OrganizationsRemoveOrgMemberExecute(r ApiOrganizationsRemoveOrgMemberRequest) (*http.Response, error)
@@ -214,6 +214,17 @@ func (a *OrganizationsAPIService) OrganizationsAddOrgMemberExecute(r ApiOrganiza
 			}
 			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 409 {
+			var v DomainsUpdateDomain409Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -225,7 +236,7 @@ type ApiOrganizationsChangeOrgRoleRequest struct {
 	ctx                               context.Context
 	ApiService                        OrganizationsAPI
 	organizationId                    string
-	userId                            float32
+	userId                            int
 	organizationsChangeOrgRoleRequest *OrganizationsChangeOrgRoleRequest
 }
 
@@ -246,7 +257,7 @@ OrganizationsChangeOrgRole changeOrgRole
 	@param userId
 	@return ApiOrganizationsChangeOrgRoleRequest
 */
-func (a *OrganizationsAPIService) OrganizationsChangeOrgRole(ctx context.Context, organizationId string, userId float32) ApiOrganizationsChangeOrgRoleRequest {
+func (a *OrganizationsAPIService) OrganizationsChangeOrgRole(ctx context.Context, organizationId string, userId int) ApiOrganizationsChangeOrgRoleRequest {
 	return ApiOrganizationsChangeOrgRoleRequest{
 		ApiService:     a,
 		ctx:            ctx,
@@ -275,6 +286,9 @@ func (a *OrganizationsAPIService) OrganizationsChangeOrgRoleExecute(r ApiOrganiz
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.userId < 0 {
+		return nil, reportError("userId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -713,7 +727,7 @@ type ApiOrganizationsRemoveOrgMemberRequest struct {
 	ctx            context.Context
 	ApiService     OrganizationsAPI
 	organizationId string
-	userId         float32
+	userId         int
 }
 
 func (r ApiOrganizationsRemoveOrgMemberRequest) Execute() (*http.Response, error) {
@@ -728,7 +742,7 @@ OrganizationsRemoveOrgMember removeOrgMember
 	@param userId
 	@return ApiOrganizationsRemoveOrgMemberRequest
 */
-func (a *OrganizationsAPIService) OrganizationsRemoveOrgMember(ctx context.Context, organizationId string, userId float32) ApiOrganizationsRemoveOrgMemberRequest {
+func (a *OrganizationsAPIService) OrganizationsRemoveOrgMember(ctx context.Context, organizationId string, userId int) ApiOrganizationsRemoveOrgMemberRequest {
 	return ApiOrganizationsRemoveOrgMemberRequest{
 		ApiService:     a,
 		ctx:            ctx,
@@ -757,6 +771,9 @@ func (a *OrganizationsAPIService) OrganizationsRemoveOrgMemberExecute(r ApiOrgan
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.userId < 0 {
+		return nil, reportError("userId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

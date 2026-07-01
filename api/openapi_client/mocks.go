@@ -38,7 +38,7 @@ func (_m *MockDomainsAPI) EXPECT() *MockDomainsAPI_Expecter {
 }
 
 // DomainsCreateDomain provides a mock function for the type MockDomainsAPI
-func (_mock *MockDomainsAPI) DomainsCreateDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsCreateDomainRequest {
+func (_mock *MockDomainsAPI) DomainsCreateDomain(ctx context.Context, teamId int, domainName string) ApiDomainsCreateDomainRequest {
 	ret := _mock.Called(ctx, teamId, domainName)
 
 	if len(ret) == 0 {
@@ -46,7 +46,7 @@ func (_mock *MockDomainsAPI) DomainsCreateDomain(ctx context.Context, teamId flo
 	}
 
 	var r0 ApiDomainsCreateDomainRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, string) ApiDomainsCreateDomainRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiDomainsCreateDomainRequest); ok {
 		r0 = returnFunc(ctx, teamId, domainName)
 	} else {
 		r0 = ret.Get(0).(ApiDomainsCreateDomainRequest)
@@ -61,21 +61,21 @@ type MockDomainsAPI_DomainsCreateDomain_Call struct {
 
 // DomainsCreateDomain is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
+//   - teamId int
 //   - domainName string
 func (_e *MockDomainsAPI_Expecter) DomainsCreateDomain(ctx any, teamId any, domainName any) *MockDomainsAPI_DomainsCreateDomain_Call {
 	return &MockDomainsAPI_DomainsCreateDomain_Call{Call: _e.mock.On("DomainsCreateDomain", ctx, teamId, domainName)}
 }
 
-func (_c *MockDomainsAPI_DomainsCreateDomain_Call) Run(run func(ctx context.Context, teamId float32, domainName string)) *MockDomainsAPI_DomainsCreateDomain_Call {
+func (_c *MockDomainsAPI_DomainsCreateDomain_Call) Run(run func(ctx context.Context, teamId int, domainName string)) *MockDomainsAPI_DomainsCreateDomain_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		var arg2 string
 		if args[2] != nil {
@@ -95,7 +95,7 @@ func (_c *MockDomainsAPI_DomainsCreateDomain_Call) Return(apiDomainsCreateDomain
 	return _c
 }
 
-func (_c *MockDomainsAPI_DomainsCreateDomain_Call) RunAndReturn(run func(ctx context.Context, teamId float32, domainName string) ApiDomainsCreateDomainRequest) *MockDomainsAPI_DomainsCreateDomain_Call {
+func (_c *MockDomainsAPI_DomainsCreateDomain_Call) RunAndReturn(run func(ctx context.Context, teamId int, domainName string) ApiDomainsCreateDomainRequest) *MockDomainsAPI_DomainsCreateDomain_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -171,7 +171,7 @@ func (_c *MockDomainsAPI_DomainsCreateDomainExecute_Call) RunAndReturn(run func(
 }
 
 // DomainsDeleteDomain provides a mock function for the type MockDomainsAPI
-func (_mock *MockDomainsAPI) DomainsDeleteDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsDeleteDomainRequest {
+func (_mock *MockDomainsAPI) DomainsDeleteDomain(ctx context.Context, teamId int, domainName string) ApiDomainsDeleteDomainRequest {
 	ret := _mock.Called(ctx, teamId, domainName)
 
 	if len(ret) == 0 {
@@ -179,7 +179,7 @@ func (_mock *MockDomainsAPI) DomainsDeleteDomain(ctx context.Context, teamId flo
 	}
 
 	var r0 ApiDomainsDeleteDomainRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, string) ApiDomainsDeleteDomainRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiDomainsDeleteDomainRequest); ok {
 		r0 = returnFunc(ctx, teamId, domainName)
 	} else {
 		r0 = ret.Get(0).(ApiDomainsDeleteDomainRequest)
@@ -194,21 +194,21 @@ type MockDomainsAPI_DomainsDeleteDomain_Call struct {
 
 // DomainsDeleteDomain is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
+//   - teamId int
 //   - domainName string
 func (_e *MockDomainsAPI_Expecter) DomainsDeleteDomain(ctx any, teamId any, domainName any) *MockDomainsAPI_DomainsDeleteDomain_Call {
 	return &MockDomainsAPI_DomainsDeleteDomain_Call{Call: _e.mock.On("DomainsDeleteDomain", ctx, teamId, domainName)}
 }
 
-func (_c *MockDomainsAPI_DomainsDeleteDomain_Call) Run(run func(ctx context.Context, teamId float32, domainName string)) *MockDomainsAPI_DomainsDeleteDomain_Call {
+func (_c *MockDomainsAPI_DomainsDeleteDomain_Call) Run(run func(ctx context.Context, teamId int, domainName string)) *MockDomainsAPI_DomainsDeleteDomain_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		var arg2 string
 		if args[2] != nil {
@@ -228,7 +228,7 @@ func (_c *MockDomainsAPI_DomainsDeleteDomain_Call) Return(apiDomainsDeleteDomain
 	return _c
 }
 
-func (_c *MockDomainsAPI_DomainsDeleteDomain_Call) RunAndReturn(run func(ctx context.Context, teamId float32, domainName string) ApiDomainsDeleteDomainRequest) *MockDomainsAPI_DomainsDeleteDomain_Call {
+func (_c *MockDomainsAPI_DomainsDeleteDomain_Call) RunAndReturn(run func(ctx context.Context, teamId int, domainName string) ApiDomainsDeleteDomainRequest) *MockDomainsAPI_DomainsDeleteDomain_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -296,7 +296,7 @@ func (_c *MockDomainsAPI_DomainsDeleteDomainExecute_Call) RunAndReturn(run func(
 }
 
 // DomainsGetDomain provides a mock function for the type MockDomainsAPI
-func (_mock *MockDomainsAPI) DomainsGetDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsGetDomainRequest {
+func (_mock *MockDomainsAPI) DomainsGetDomain(ctx context.Context, teamId int, domainName string) ApiDomainsGetDomainRequest {
 	ret := _mock.Called(ctx, teamId, domainName)
 
 	if len(ret) == 0 {
@@ -304,7 +304,7 @@ func (_mock *MockDomainsAPI) DomainsGetDomain(ctx context.Context, teamId float3
 	}
 
 	var r0 ApiDomainsGetDomainRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, string) ApiDomainsGetDomainRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiDomainsGetDomainRequest); ok {
 		r0 = returnFunc(ctx, teamId, domainName)
 	} else {
 		r0 = ret.Get(0).(ApiDomainsGetDomainRequest)
@@ -319,21 +319,21 @@ type MockDomainsAPI_DomainsGetDomain_Call struct {
 
 // DomainsGetDomain is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
+//   - teamId int
 //   - domainName string
 func (_e *MockDomainsAPI_Expecter) DomainsGetDomain(ctx any, teamId any, domainName any) *MockDomainsAPI_DomainsGetDomain_Call {
 	return &MockDomainsAPI_DomainsGetDomain_Call{Call: _e.mock.On("DomainsGetDomain", ctx, teamId, domainName)}
 }
 
-func (_c *MockDomainsAPI_DomainsGetDomain_Call) Run(run func(ctx context.Context, teamId float32, domainName string)) *MockDomainsAPI_DomainsGetDomain_Call {
+func (_c *MockDomainsAPI_DomainsGetDomain_Call) Run(run func(ctx context.Context, teamId int, domainName string)) *MockDomainsAPI_DomainsGetDomain_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		var arg2 string
 		if args[2] != nil {
@@ -353,7 +353,7 @@ func (_c *MockDomainsAPI_DomainsGetDomain_Call) Return(apiDomainsGetDomainReques
 	return _c
 }
 
-func (_c *MockDomainsAPI_DomainsGetDomain_Call) RunAndReturn(run func(ctx context.Context, teamId float32, domainName string) ApiDomainsGetDomainRequest) *MockDomainsAPI_DomainsGetDomain_Call {
+func (_c *MockDomainsAPI_DomainsGetDomain_Call) RunAndReturn(run func(ctx context.Context, teamId int, domainName string) ApiDomainsGetDomainRequest) *MockDomainsAPI_DomainsGetDomain_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -429,7 +429,7 @@ func (_c *MockDomainsAPI_DomainsGetDomainExecute_Call) RunAndReturn(run func(r A
 }
 
 // DomainsListDomains provides a mock function for the type MockDomainsAPI
-func (_mock *MockDomainsAPI) DomainsListDomains(ctx context.Context, teamId float32) ApiDomainsListDomainsRequest {
+func (_mock *MockDomainsAPI) DomainsListDomains(ctx context.Context, teamId int) ApiDomainsListDomainsRequest {
 	ret := _mock.Called(ctx, teamId)
 
 	if len(ret) == 0 {
@@ -437,7 +437,7 @@ func (_mock *MockDomainsAPI) DomainsListDomains(ctx context.Context, teamId floa
 	}
 
 	var r0 ApiDomainsListDomainsRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiDomainsListDomainsRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiDomainsListDomainsRequest); ok {
 		r0 = returnFunc(ctx, teamId)
 	} else {
 		r0 = ret.Get(0).(ApiDomainsListDomainsRequest)
@@ -452,20 +452,20 @@ type MockDomainsAPI_DomainsListDomains_Call struct {
 
 // DomainsListDomains is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
+//   - teamId int
 func (_e *MockDomainsAPI_Expecter) DomainsListDomains(ctx any, teamId any) *MockDomainsAPI_DomainsListDomains_Call {
 	return &MockDomainsAPI_DomainsListDomains_Call{Call: _e.mock.On("DomainsListDomains", ctx, teamId)}
 }
 
-func (_c *MockDomainsAPI_DomainsListDomains_Call) Run(run func(ctx context.Context, teamId float32)) *MockDomainsAPI_DomainsListDomains_Call {
+func (_c *MockDomainsAPI_DomainsListDomains_Call) Run(run func(ctx context.Context, teamId int)) *MockDomainsAPI_DomainsListDomains_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -480,7 +480,7 @@ func (_c *MockDomainsAPI_DomainsListDomains_Call) Return(apiDomainsListDomainsRe
 	return _c
 }
 
-func (_c *MockDomainsAPI_DomainsListDomains_Call) RunAndReturn(run func(ctx context.Context, teamId float32) ApiDomainsListDomainsRequest) *MockDomainsAPI_DomainsListDomains_Call {
+func (_c *MockDomainsAPI_DomainsListDomains_Call) RunAndReturn(run func(ctx context.Context, teamId int) ApiDomainsListDomainsRequest) *MockDomainsAPI_DomainsListDomains_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -556,7 +556,7 @@ func (_c *MockDomainsAPI_DomainsListDomainsExecute_Call) RunAndReturn(run func(r
 }
 
 // DomainsUpdateDomain provides a mock function for the type MockDomainsAPI
-func (_mock *MockDomainsAPI) DomainsUpdateDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsUpdateDomainRequest {
+func (_mock *MockDomainsAPI) DomainsUpdateDomain(ctx context.Context, teamId int, domainName string) ApiDomainsUpdateDomainRequest {
 	ret := _mock.Called(ctx, teamId, domainName)
 
 	if len(ret) == 0 {
@@ -564,7 +564,7 @@ func (_mock *MockDomainsAPI) DomainsUpdateDomain(ctx context.Context, teamId flo
 	}
 
 	var r0 ApiDomainsUpdateDomainRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, string) ApiDomainsUpdateDomainRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiDomainsUpdateDomainRequest); ok {
 		r0 = returnFunc(ctx, teamId, domainName)
 	} else {
 		r0 = ret.Get(0).(ApiDomainsUpdateDomainRequest)
@@ -579,21 +579,21 @@ type MockDomainsAPI_DomainsUpdateDomain_Call struct {
 
 // DomainsUpdateDomain is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
+//   - teamId int
 //   - domainName string
 func (_e *MockDomainsAPI_Expecter) DomainsUpdateDomain(ctx any, teamId any, domainName any) *MockDomainsAPI_DomainsUpdateDomain_Call {
 	return &MockDomainsAPI_DomainsUpdateDomain_Call{Call: _e.mock.On("DomainsUpdateDomain", ctx, teamId, domainName)}
 }
 
-func (_c *MockDomainsAPI_DomainsUpdateDomain_Call) Run(run func(ctx context.Context, teamId float32, domainName string)) *MockDomainsAPI_DomainsUpdateDomain_Call {
+func (_c *MockDomainsAPI_DomainsUpdateDomain_Call) Run(run func(ctx context.Context, teamId int, domainName string)) *MockDomainsAPI_DomainsUpdateDomain_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		var arg2 string
 		if args[2] != nil {
@@ -613,7 +613,7 @@ func (_c *MockDomainsAPI_DomainsUpdateDomain_Call) Return(apiDomainsUpdateDomain
 	return _c
 }
 
-func (_c *MockDomainsAPI_DomainsUpdateDomain_Call) RunAndReturn(run func(ctx context.Context, teamId float32, domainName string) ApiDomainsUpdateDomainRequest) *MockDomainsAPI_DomainsUpdateDomain_Call {
+func (_c *MockDomainsAPI_DomainsUpdateDomain_Call) RunAndReturn(run func(ctx context.Context, teamId int, domainName string) ApiDomainsUpdateDomainRequest) *MockDomainsAPI_DomainsUpdateDomain_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -689,7 +689,7 @@ func (_c *MockDomainsAPI_DomainsUpdateDomainExecute_Call) RunAndReturn(run func(
 }
 
 // DomainsUpdateWorkspaceConnections provides a mock function for the type MockDomainsAPI
-func (_mock *MockDomainsAPI) DomainsUpdateWorkspaceConnections(ctx context.Context, teamId float32, domainName string) ApiDomainsUpdateWorkspaceConnectionsRequest {
+func (_mock *MockDomainsAPI) DomainsUpdateWorkspaceConnections(ctx context.Context, teamId int, domainName string) ApiDomainsUpdateWorkspaceConnectionsRequest {
 	ret := _mock.Called(ctx, teamId, domainName)
 
 	if len(ret) == 0 {
@@ -697,7 +697,7 @@ func (_mock *MockDomainsAPI) DomainsUpdateWorkspaceConnections(ctx context.Conte
 	}
 
 	var r0 ApiDomainsUpdateWorkspaceConnectionsRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, string) ApiDomainsUpdateWorkspaceConnectionsRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiDomainsUpdateWorkspaceConnectionsRequest); ok {
 		r0 = returnFunc(ctx, teamId, domainName)
 	} else {
 		r0 = ret.Get(0).(ApiDomainsUpdateWorkspaceConnectionsRequest)
@@ -712,21 +712,21 @@ type MockDomainsAPI_DomainsUpdateWorkspaceConnections_Call struct {
 
 // DomainsUpdateWorkspaceConnections is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
+//   - teamId int
 //   - domainName string
 func (_e *MockDomainsAPI_Expecter) DomainsUpdateWorkspaceConnections(ctx any, teamId any, domainName any) *MockDomainsAPI_DomainsUpdateWorkspaceConnections_Call {
 	return &MockDomainsAPI_DomainsUpdateWorkspaceConnections_Call{Call: _e.mock.On("DomainsUpdateWorkspaceConnections", ctx, teamId, domainName)}
 }
 
-func (_c *MockDomainsAPI_DomainsUpdateWorkspaceConnections_Call) Run(run func(ctx context.Context, teamId float32, domainName string)) *MockDomainsAPI_DomainsUpdateWorkspaceConnections_Call {
+func (_c *MockDomainsAPI_DomainsUpdateWorkspaceConnections_Call) Run(run func(ctx context.Context, teamId int, domainName string)) *MockDomainsAPI_DomainsUpdateWorkspaceConnections_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		var arg2 string
 		if args[2] != nil {
@@ -746,7 +746,7 @@ func (_c *MockDomainsAPI_DomainsUpdateWorkspaceConnections_Call) Return(apiDomai
 	return _c
 }
 
-func (_c *MockDomainsAPI_DomainsUpdateWorkspaceConnections_Call) RunAndReturn(run func(ctx context.Context, teamId float32, domainName string) ApiDomainsUpdateWorkspaceConnectionsRequest) *MockDomainsAPI_DomainsUpdateWorkspaceConnections_Call {
+func (_c *MockDomainsAPI_DomainsUpdateWorkspaceConnections_Call) RunAndReturn(run func(ctx context.Context, teamId int, domainName string) ApiDomainsUpdateWorkspaceConnectionsRequest) *MockDomainsAPI_DomainsUpdateWorkspaceConnections_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -822,7 +822,7 @@ func (_c *MockDomainsAPI_DomainsUpdateWorkspaceConnectionsExecute_Call) RunAndRe
 }
 
 // DomainsVerifyDomain provides a mock function for the type MockDomainsAPI
-func (_mock *MockDomainsAPI) DomainsVerifyDomain(ctx context.Context, teamId float32, domainName string) ApiDomainsVerifyDomainRequest {
+func (_mock *MockDomainsAPI) DomainsVerifyDomain(ctx context.Context, teamId int, domainName string) ApiDomainsVerifyDomainRequest {
 	ret := _mock.Called(ctx, teamId, domainName)
 
 	if len(ret) == 0 {
@@ -830,7 +830,7 @@ func (_mock *MockDomainsAPI) DomainsVerifyDomain(ctx context.Context, teamId flo
 	}
 
 	var r0 ApiDomainsVerifyDomainRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, string) ApiDomainsVerifyDomainRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiDomainsVerifyDomainRequest); ok {
 		r0 = returnFunc(ctx, teamId, domainName)
 	} else {
 		r0 = ret.Get(0).(ApiDomainsVerifyDomainRequest)
@@ -845,21 +845,21 @@ type MockDomainsAPI_DomainsVerifyDomain_Call struct {
 
 // DomainsVerifyDomain is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
+//   - teamId int
 //   - domainName string
 func (_e *MockDomainsAPI_Expecter) DomainsVerifyDomain(ctx any, teamId any, domainName any) *MockDomainsAPI_DomainsVerifyDomain_Call {
 	return &MockDomainsAPI_DomainsVerifyDomain_Call{Call: _e.mock.On("DomainsVerifyDomain", ctx, teamId, domainName)}
 }
 
-func (_c *MockDomainsAPI_DomainsVerifyDomain_Call) Run(run func(ctx context.Context, teamId float32, domainName string)) *MockDomainsAPI_DomainsVerifyDomain_Call {
+func (_c *MockDomainsAPI_DomainsVerifyDomain_Call) Run(run func(ctx context.Context, teamId int, domainName string)) *MockDomainsAPI_DomainsVerifyDomain_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		var arg2 string
 		if args[2] != nil {
@@ -879,7 +879,7 @@ func (_c *MockDomainsAPI_DomainsVerifyDomain_Call) Return(apiDomainsVerifyDomain
 	return _c
 }
 
-func (_c *MockDomainsAPI_DomainsVerifyDomain_Call) RunAndReturn(run func(ctx context.Context, teamId float32, domainName string) ApiDomainsVerifyDomainRequest) *MockDomainsAPI_DomainsVerifyDomain_Call {
+func (_c *MockDomainsAPI_DomainsVerifyDomain_Call) RunAndReturn(run func(ctx context.Context, teamId int, domainName string) ApiDomainsVerifyDomainRequest) *MockDomainsAPI_DomainsVerifyDomain_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1343,8 +1343,8 @@ func (_c *MockManagedServicesAPI_ManagedServicesDeleteExecute_Call) RunAndReturn
 }
 
 // ManagedServicesDeleteProvider provides a mock function for the type MockManagedServicesAPI
-func (_mock *MockManagedServicesAPI) ManagedServicesDeleteProvider(ctx context.Context, name string, version string) ApiManagedServicesDeleteProviderRequest {
-	ret := _mock.Called(ctx, name, version)
+func (_mock *MockManagedServicesAPI) ManagedServicesDeleteProvider(ctx context.Context, name string, schemaVersion string) ApiManagedServicesDeleteProviderRequest {
+	ret := _mock.Called(ctx, name, schemaVersion)
 
 	if len(ret) == 0 {
 		panic("no return value specified for ManagedServicesDeleteProvider")
@@ -1352,7 +1352,7 @@ func (_mock *MockManagedServicesAPI) ManagedServicesDeleteProvider(ctx context.C
 
 	var r0 ApiManagedServicesDeleteProviderRequest
 	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string) ApiManagedServicesDeleteProviderRequest); ok {
-		r0 = returnFunc(ctx, name, version)
+		r0 = returnFunc(ctx, name, schemaVersion)
 	} else {
 		r0 = ret.Get(0).(ApiManagedServicesDeleteProviderRequest)
 	}
@@ -1367,12 +1367,12 @@ type MockManagedServicesAPI_ManagedServicesDeleteProvider_Call struct {
 // ManagedServicesDeleteProvider is a helper method to define mock.On call
 //   - ctx context.Context
 //   - name string
-//   - version string
-func (_e *MockManagedServicesAPI_Expecter) ManagedServicesDeleteProvider(ctx any, name any, version any) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
-	return &MockManagedServicesAPI_ManagedServicesDeleteProvider_Call{Call: _e.mock.On("ManagedServicesDeleteProvider", ctx, name, version)}
+//   - schemaVersion string
+func (_e *MockManagedServicesAPI_Expecter) ManagedServicesDeleteProvider(ctx any, name any, schemaVersion any) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
+	return &MockManagedServicesAPI_ManagedServicesDeleteProvider_Call{Call: _e.mock.On("ManagedServicesDeleteProvider", ctx, name, schemaVersion)}
 }
 
-func (_c *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call) Run(run func(ctx context.Context, name string, version string)) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
+func (_c *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call) Run(run func(ctx context.Context, name string, schemaVersion string)) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -1400,7 +1400,7 @@ func (_c *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call) Return(apiM
 	return _c
 }
 
-func (_c *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call) RunAndReturn(run func(ctx context.Context, name string, version string) ApiManagedServicesDeleteProviderRequest) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
+func (_c *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call) RunAndReturn(run func(ctx context.Context, name string, schemaVersion string) ApiManagedServicesDeleteProviderRequest) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -2091,8 +2091,8 @@ func (_c *MockManagedServicesAPI_ManagedServicesUpdateExecute_Call) RunAndReturn
 }
 
 // ManagedServicesUpdateProvider provides a mock function for the type MockManagedServicesAPI
-func (_mock *MockManagedServicesAPI) ManagedServicesUpdateProvider(ctx context.Context, name string, version string) ApiManagedServicesUpdateProviderRequest {
-	ret := _mock.Called(ctx, name, version)
+func (_mock *MockManagedServicesAPI) ManagedServicesUpdateProvider(ctx context.Context, name string, schemaVersion string) ApiManagedServicesUpdateProviderRequest {
+	ret := _mock.Called(ctx, name, schemaVersion)
 
 	if len(ret) == 0 {
 		panic("no return value specified for ManagedServicesUpdateProvider")
@@ -2100,7 +2100,7 @@ func (_mock *MockManagedServicesAPI) ManagedServicesUpdateProvider(ctx context.C
 
 	var r0 ApiManagedServicesUpdateProviderRequest
 	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string) ApiManagedServicesUpdateProviderRequest); ok {
-		r0 = returnFunc(ctx, name, version)
+		r0 = returnFunc(ctx, name, schemaVersion)
 	} else {
 		r0 = ret.Get(0).(ApiManagedServicesUpdateProviderRequest)
 	}
@@ -2115,12 +2115,12 @@ type MockManagedServicesAPI_ManagedServicesUpdateProvider_Call struct {
 // ManagedServicesUpdateProvider is a helper method to define mock.On call
 //   - ctx context.Context
 //   - name string
-//   - version string
-func (_e *MockManagedServicesAPI_Expecter) ManagedServicesUpdateProvider(ctx any, name any, version any) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
-	return &MockManagedServicesAPI_ManagedServicesUpdateProvider_Call{Call: _e.mock.On("ManagedServicesUpdateProvider", ctx, name, version)}
+//   - schemaVersion string
+func (_e *MockManagedServicesAPI_Expecter) ManagedServicesUpdateProvider(ctx any, name any, schemaVersion any) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
+	return &MockManagedServicesAPI_ManagedServicesUpdateProvider_Call{Call: _e.mock.On("ManagedServicesUpdateProvider", ctx, name, schemaVersion)}
 }
 
-func (_c *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call) Run(run func(ctx context.Context, name string, version string)) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
+func (_c *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call) Run(run func(ctx context.Context, name string, schemaVersion string)) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -2148,7 +2148,7 @@ func (_c *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call) Return(apiM
 	return _c
 }
 
-func (_c *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call) RunAndReturn(run func(ctx context.Context, name string, version string) ApiManagedServicesUpdateProviderRequest) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
+func (_c *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call) RunAndReturn(run func(ctx context.Context, name string, schemaVersion string) ApiManagedServicesUpdateProviderRequest) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -2760,7 +2760,7 @@ func (_c *MockOrganizationsAPI_OrganizationsAddOrgMemberExecute_Call) RunAndRetu
 }
 
 // OrganizationsChangeOrgRole provides a mock function for the type MockOrganizationsAPI
-func (_mock *MockOrganizationsAPI) OrganizationsChangeOrgRole(ctx context.Context, organizationId string, userId float32) ApiOrganizationsChangeOrgRoleRequest {
+func (_mock *MockOrganizationsAPI) OrganizationsChangeOrgRole(ctx context.Context, organizationId string, userId int) ApiOrganizationsChangeOrgRoleRequest {
 	ret := _mock.Called(ctx, organizationId, userId)
 
 	if len(ret) == 0 {
@@ -2768,7 +2768,7 @@ func (_mock *MockOrganizationsAPI) OrganizationsChangeOrgRole(ctx context.Contex
 	}
 
 	var r0 ApiOrganizationsChangeOrgRoleRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, string, float32) ApiOrganizationsChangeOrgRoleRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, int) ApiOrganizationsChangeOrgRoleRequest); ok {
 		r0 = returnFunc(ctx, organizationId, userId)
 	} else {
 		r0 = ret.Get(0).(ApiOrganizationsChangeOrgRoleRequest)
@@ -2784,12 +2784,12 @@ type MockOrganizationsAPI_OrganizationsChangeOrgRole_Call struct {
 // OrganizationsChangeOrgRole is a helper method to define mock.On call
 //   - ctx context.Context
 //   - organizationId string
-//   - userId float32
+//   - userId int
 func (_e *MockOrganizationsAPI_Expecter) OrganizationsChangeOrgRole(ctx any, organizationId any, userId any) *MockOrganizationsAPI_OrganizationsChangeOrgRole_Call {
 	return &MockOrganizationsAPI_OrganizationsChangeOrgRole_Call{Call: _e.mock.On("OrganizationsChangeOrgRole", ctx, organizationId, userId)}
 }
 
-func (_c *MockOrganizationsAPI_OrganizationsChangeOrgRole_Call) Run(run func(ctx context.Context, organizationId string, userId float32)) *MockOrganizationsAPI_OrganizationsChangeOrgRole_Call {
+func (_c *MockOrganizationsAPI_OrganizationsChangeOrgRole_Call) Run(run func(ctx context.Context, organizationId string, userId int)) *MockOrganizationsAPI_OrganizationsChangeOrgRole_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -2799,9 +2799,9 @@ func (_c *MockOrganizationsAPI_OrganizationsChangeOrgRole_Call) Run(run func(ctx
 		if args[1] != nil {
 			arg1 = args[1].(string)
 		}
-		var arg2 float32
+		var arg2 int
 		if args[2] != nil {
-			arg2 = args[2].(float32)
+			arg2 = args[2].(int)
 		}
 		run(
 			arg0,
@@ -2817,7 +2817,7 @@ func (_c *MockOrganizationsAPI_OrganizationsChangeOrgRole_Call) Return(apiOrgani
 	return _c
 }
 
-func (_c *MockOrganizationsAPI_OrganizationsChangeOrgRole_Call) RunAndReturn(run func(ctx context.Context, organizationId string, userId float32) ApiOrganizationsChangeOrgRoleRequest) *MockOrganizationsAPI_OrganizationsChangeOrgRole_Call {
+func (_c *MockOrganizationsAPI_OrganizationsChangeOrgRole_Call) RunAndReturn(run func(ctx context.Context, organizationId string, userId int) ApiOrganizationsChangeOrgRoleRequest) *MockOrganizationsAPI_OrganizationsChangeOrgRole_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -3260,7 +3260,7 @@ func (_c *MockOrganizationsAPI_OrganizationsListOrganizationsExecute_Call) RunAn
 }
 
 // OrganizationsRemoveOrgMember provides a mock function for the type MockOrganizationsAPI
-func (_mock *MockOrganizationsAPI) OrganizationsRemoveOrgMember(ctx context.Context, organizationId string, userId float32) ApiOrganizationsRemoveOrgMemberRequest {
+func (_mock *MockOrganizationsAPI) OrganizationsRemoveOrgMember(ctx context.Context, organizationId string, userId int) ApiOrganizationsRemoveOrgMemberRequest {
 	ret := _mock.Called(ctx, organizationId, userId)
 
 	if len(ret) == 0 {
@@ -3268,7 +3268,7 @@ func (_mock *MockOrganizationsAPI) OrganizationsRemoveOrgMember(ctx context.Cont
 	}
 
 	var r0 ApiOrganizationsRemoveOrgMemberRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, string, float32) ApiOrganizationsRemoveOrgMemberRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, int) ApiOrganizationsRemoveOrgMemberRequest); ok {
 		r0 = returnFunc(ctx, organizationId, userId)
 	} else {
 		r0 = ret.Get(0).(ApiOrganizationsRemoveOrgMemberRequest)
@@ -3284,12 +3284,12 @@ type MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call struct {
 // OrganizationsRemoveOrgMember is a helper method to define mock.On call
 //   - ctx context.Context
 //   - organizationId string
-//   - userId float32
+//   - userId int
 func (_e *MockOrganizationsAPI_Expecter) OrganizationsRemoveOrgMember(ctx any, organizationId any, userId any) *MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call {
 	return &MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call{Call: _e.mock.On("OrganizationsRemoveOrgMember", ctx, organizationId, userId)}
 }
 
-func (_c *MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call) Run(run func(ctx context.Context, organizationId string, userId float32)) *MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call {
+func (_c *MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call) Run(run func(ctx context.Context, organizationId string, userId int)) *MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -3299,9 +3299,9 @@ func (_c *MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call) Run(run func(c
 		if args[1] != nil {
 			arg1 = args[1].(string)
 		}
-		var arg2 float32
+		var arg2 int
 		if args[2] != nil {
-			arg2 = args[2].(float32)
+			arg2 = args[2].(int)
 		}
 		run(
 			arg0,
@@ -3317,7 +3317,7 @@ func (_c *MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call) Return(apiOrga
 	return _c
 }
 
-func (_c *MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call) RunAndReturn(run func(ctx context.Context, organizationId string, userId float32) ApiOrganizationsRemoveOrgMemberRequest) *MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call {
+func (_c *MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call) RunAndReturn(run func(ctx context.Context, organizationId string, userId int) ApiOrganizationsRemoveOrgMemberRequest) *MockOrganizationsAPI_OrganizationsRemoveOrgMember_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -3412,7 +3412,7 @@ func (_m *MockTeamsAPI) EXPECT() *MockTeamsAPI_Expecter {
 }
 
 // TeamsChangeRole provides a mock function for the type MockTeamsAPI
-func (_mock *MockTeamsAPI) TeamsChangeRole(ctx context.Context, teamId float32, userId float32) ApiTeamsChangeRoleRequest {
+func (_mock *MockTeamsAPI) TeamsChangeRole(ctx context.Context, teamId int, userId int) ApiTeamsChangeRoleRequest {
 	ret := _mock.Called(ctx, teamId, userId)
 
 	if len(ret) == 0 {
@@ -3420,7 +3420,7 @@ func (_mock *MockTeamsAPI) TeamsChangeRole(ctx context.Context, teamId float32, 
 	}
 
 	var r0 ApiTeamsChangeRoleRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, float32) ApiTeamsChangeRoleRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, int) ApiTeamsChangeRoleRequest); ok {
 		r0 = returnFunc(ctx, teamId, userId)
 	} else {
 		r0 = ret.Get(0).(ApiTeamsChangeRoleRequest)
@@ -3435,25 +3435,25 @@ type MockTeamsAPI_TeamsChangeRole_Call struct {
 
 // TeamsChangeRole is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
-//   - userId float32
+//   - teamId int
+//   - userId int
 func (_e *MockTeamsAPI_Expecter) TeamsChangeRole(ctx any, teamId any, userId any) *MockTeamsAPI_TeamsChangeRole_Call {
 	return &MockTeamsAPI_TeamsChangeRole_Call{Call: _e.mock.On("TeamsChangeRole", ctx, teamId, userId)}
 }
 
-func (_c *MockTeamsAPI_TeamsChangeRole_Call) Run(run func(ctx context.Context, teamId float32, userId float32)) *MockTeamsAPI_TeamsChangeRole_Call {
+func (_c *MockTeamsAPI_TeamsChangeRole_Call) Run(run func(ctx context.Context, teamId int, userId int)) *MockTeamsAPI_TeamsChangeRole_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
-		var arg2 float32
+		var arg2 int
 		if args[2] != nil {
-			arg2 = args[2].(float32)
+			arg2 = args[2].(int)
 		}
 		run(
 			arg0,
@@ -3469,7 +3469,7 @@ func (_c *MockTeamsAPI_TeamsChangeRole_Call) Return(apiTeamsChangeRoleRequest Ap
 	return _c
 }
 
-func (_c *MockTeamsAPI_TeamsChangeRole_Call) RunAndReturn(run func(ctx context.Context, teamId float32, userId float32) ApiTeamsChangeRoleRequest) *MockTeamsAPI_TeamsChangeRole_Call {
+func (_c *MockTeamsAPI_TeamsChangeRole_Call) RunAndReturn(run func(ctx context.Context, teamId int, userId int) ApiTeamsChangeRoleRequest) *MockTeamsAPI_TeamsChangeRole_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -3658,7 +3658,7 @@ func (_c *MockTeamsAPI_TeamsCreateTeamExecute_Call) RunAndReturn(run func(r ApiT
 }
 
 // TeamsDeleteTeam provides a mock function for the type MockTeamsAPI
-func (_mock *MockTeamsAPI) TeamsDeleteTeam(ctx context.Context, teamId float32) ApiTeamsDeleteTeamRequest {
+func (_mock *MockTeamsAPI) TeamsDeleteTeam(ctx context.Context, teamId int) ApiTeamsDeleteTeamRequest {
 	ret := _mock.Called(ctx, teamId)
 
 	if len(ret) == 0 {
@@ -3666,7 +3666,7 @@ func (_mock *MockTeamsAPI) TeamsDeleteTeam(ctx context.Context, teamId float32) 
 	}
 
 	var r0 ApiTeamsDeleteTeamRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiTeamsDeleteTeamRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiTeamsDeleteTeamRequest); ok {
 		r0 = returnFunc(ctx, teamId)
 	} else {
 		r0 = ret.Get(0).(ApiTeamsDeleteTeamRequest)
@@ -3681,20 +3681,20 @@ type MockTeamsAPI_TeamsDeleteTeam_Call struct {
 
 // TeamsDeleteTeam is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
+//   - teamId int
 func (_e *MockTeamsAPI_Expecter) TeamsDeleteTeam(ctx any, teamId any) *MockTeamsAPI_TeamsDeleteTeam_Call {
 	return &MockTeamsAPI_TeamsDeleteTeam_Call{Call: _e.mock.On("TeamsDeleteTeam", ctx, teamId)}
 }
 
-func (_c *MockTeamsAPI_TeamsDeleteTeam_Call) Run(run func(ctx context.Context, teamId float32)) *MockTeamsAPI_TeamsDeleteTeam_Call {
+func (_c *MockTeamsAPI_TeamsDeleteTeam_Call) Run(run func(ctx context.Context, teamId int)) *MockTeamsAPI_TeamsDeleteTeam_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -3709,7 +3709,7 @@ func (_c *MockTeamsAPI_TeamsDeleteTeam_Call) Return(apiTeamsDeleteTeamRequest Ap
 	return _c
 }
 
-func (_c *MockTeamsAPI_TeamsDeleteTeam_Call) RunAndReturn(run func(ctx context.Context, teamId float32) ApiTeamsDeleteTeamRequest) *MockTeamsAPI_TeamsDeleteTeam_Call {
+func (_c *MockTeamsAPI_TeamsDeleteTeam_Call) RunAndReturn(run func(ctx context.Context, teamId int) ApiTeamsDeleteTeamRequest) *MockTeamsAPI_TeamsDeleteTeam_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -3777,7 +3777,7 @@ func (_c *MockTeamsAPI_TeamsDeleteTeamExecute_Call) RunAndReturn(run func(r ApiT
 }
 
 // TeamsGetTeam provides a mock function for the type MockTeamsAPI
-func (_mock *MockTeamsAPI) TeamsGetTeam(ctx context.Context, teamId float32) ApiTeamsGetTeamRequest {
+func (_mock *MockTeamsAPI) TeamsGetTeam(ctx context.Context, teamId int) ApiTeamsGetTeamRequest {
 	ret := _mock.Called(ctx, teamId)
 
 	if len(ret) == 0 {
@@ -3785,7 +3785,7 @@ func (_mock *MockTeamsAPI) TeamsGetTeam(ctx context.Context, teamId float32) Api
 	}
 
 	var r0 ApiTeamsGetTeamRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiTeamsGetTeamRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiTeamsGetTeamRequest); ok {
 		r0 = returnFunc(ctx, teamId)
 	} else {
 		r0 = ret.Get(0).(ApiTeamsGetTeamRequest)
@@ -3800,20 +3800,20 @@ type MockTeamsAPI_TeamsGetTeam_Call struct {
 
 // TeamsGetTeam is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
+//   - teamId int
 func (_e *MockTeamsAPI_Expecter) TeamsGetTeam(ctx any, teamId any) *MockTeamsAPI_TeamsGetTeam_Call {
 	return &MockTeamsAPI_TeamsGetTeam_Call{Call: _e.mock.On("TeamsGetTeam", ctx, teamId)}
 }
 
-func (_c *MockTeamsAPI_TeamsGetTeam_Call) Run(run func(ctx context.Context, teamId float32)) *MockTeamsAPI_TeamsGetTeam_Call {
+func (_c *MockTeamsAPI_TeamsGetTeam_Call) Run(run func(ctx context.Context, teamId int)) *MockTeamsAPI_TeamsGetTeam_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -3828,7 +3828,7 @@ func (_c *MockTeamsAPI_TeamsGetTeam_Call) Return(apiTeamsGetTeamRequest ApiTeams
 	return _c
 }
 
-func (_c *MockTeamsAPI_TeamsGetTeam_Call) RunAndReturn(run func(ctx context.Context, teamId float32) ApiTeamsGetTeamRequest) *MockTeamsAPI_TeamsGetTeam_Call {
+func (_c *MockTeamsAPI_TeamsGetTeam_Call) RunAndReturn(run func(ctx context.Context, teamId int) ApiTeamsGetTeamRequest) *MockTeamsAPI_TeamsGetTeam_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -3904,7 +3904,7 @@ func (_c *MockTeamsAPI_TeamsGetTeamExecute_Call) RunAndReturn(run func(r ApiTeam
 }
 
 // TeamsInviteMember provides a mock function for the type MockTeamsAPI
-func (_mock *MockTeamsAPI) TeamsInviteMember(ctx context.Context, teamId float32) ApiTeamsInviteMemberRequest {
+func (_mock *MockTeamsAPI) TeamsInviteMember(ctx context.Context, teamId int) ApiTeamsInviteMemberRequest {
 	ret := _mock.Called(ctx, teamId)
 
 	if len(ret) == 0 {
@@ -3912,7 +3912,7 @@ func (_mock *MockTeamsAPI) TeamsInviteMember(ctx context.Context, teamId float32
 	}
 
 	var r0 ApiTeamsInviteMemberRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiTeamsInviteMemberRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiTeamsInviteMemberRequest); ok {
 		r0 = returnFunc(ctx, teamId)
 	} else {
 		r0 = ret.Get(0).(ApiTeamsInviteMemberRequest)
@@ -3927,20 +3927,20 @@ type MockTeamsAPI_TeamsInviteMember_Call struct {
 
 // TeamsInviteMember is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
+//   - teamId int
 func (_e *MockTeamsAPI_Expecter) TeamsInviteMember(ctx any, teamId any) *MockTeamsAPI_TeamsInviteMember_Call {
 	return &MockTeamsAPI_TeamsInviteMember_Call{Call: _e.mock.On("TeamsInviteMember", ctx, teamId)}
 }
 
-func (_c *MockTeamsAPI_TeamsInviteMember_Call) Run(run func(ctx context.Context, teamId float32)) *MockTeamsAPI_TeamsInviteMember_Call {
+func (_c *MockTeamsAPI_TeamsInviteMember_Call) Run(run func(ctx context.Context, teamId int)) *MockTeamsAPI_TeamsInviteMember_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -3955,7 +3955,7 @@ func (_c *MockTeamsAPI_TeamsInviteMember_Call) Return(apiTeamsInviteMemberReques
 	return _c
 }
 
-func (_c *MockTeamsAPI_TeamsInviteMember_Call) RunAndReturn(run func(ctx context.Context, teamId float32) ApiTeamsInviteMemberRequest) *MockTeamsAPI_TeamsInviteMember_Call {
+func (_c *MockTeamsAPI_TeamsInviteMember_Call) RunAndReturn(run func(ctx context.Context, teamId int) ApiTeamsInviteMemberRequest) *MockTeamsAPI_TeamsInviteMember_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -4023,7 +4023,7 @@ func (_c *MockTeamsAPI_TeamsInviteMemberExecute_Call) RunAndReturn(run func(r Ap
 }
 
 // TeamsListMembers provides a mock function for the type MockTeamsAPI
-func (_mock *MockTeamsAPI) TeamsListMembers(ctx context.Context, teamId float32) ApiTeamsListMembersRequest {
+func (_mock *MockTeamsAPI) TeamsListMembers(ctx context.Context, teamId int) ApiTeamsListMembersRequest {
 	ret := _mock.Called(ctx, teamId)
 
 	if len(ret) == 0 {
@@ -4031,7 +4031,7 @@ func (_mock *MockTeamsAPI) TeamsListMembers(ctx context.Context, teamId float32)
 	}
 
 	var r0 ApiTeamsListMembersRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiTeamsListMembersRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiTeamsListMembersRequest); ok {
 		r0 = returnFunc(ctx, teamId)
 	} else {
 		r0 = ret.Get(0).(ApiTeamsListMembersRequest)
@@ -4046,20 +4046,20 @@ type MockTeamsAPI_TeamsListMembers_Call struct {
 
 // TeamsListMembers is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
+//   - teamId int
 func (_e *MockTeamsAPI_Expecter) TeamsListMembers(ctx any, teamId any) *MockTeamsAPI_TeamsListMembers_Call {
 	return &MockTeamsAPI_TeamsListMembers_Call{Call: _e.mock.On("TeamsListMembers", ctx, teamId)}
 }
 
-func (_c *MockTeamsAPI_TeamsListMembers_Call) Run(run func(ctx context.Context, teamId float32)) *MockTeamsAPI_TeamsListMembers_Call {
+func (_c *MockTeamsAPI_TeamsListMembers_Call) Run(run func(ctx context.Context, teamId int)) *MockTeamsAPI_TeamsListMembers_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -4074,7 +4074,7 @@ func (_c *MockTeamsAPI_TeamsListMembers_Call) Return(apiTeamsListMembersRequest 
 	return _c
 }
 
-func (_c *MockTeamsAPI_TeamsListMembers_Call) RunAndReturn(run func(ctx context.Context, teamId float32) ApiTeamsListMembersRequest) *MockTeamsAPI_TeamsListMembers_Call {
+func (_c *MockTeamsAPI_TeamsListMembers_Call) RunAndReturn(run func(ctx context.Context, teamId int) ApiTeamsListMembersRequest) *MockTeamsAPI_TeamsListMembers_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -4271,7 +4271,7 @@ func (_c *MockTeamsAPI_TeamsListTeamsExecute_Call) RunAndReturn(run func(r ApiTe
 }
 
 // TeamsMigrateTeamToOrg provides a mock function for the type MockTeamsAPI
-func (_mock *MockTeamsAPI) TeamsMigrateTeamToOrg(ctx context.Context, teamId float32) ApiTeamsMigrateTeamToOrgRequest {
+func (_mock *MockTeamsAPI) TeamsMigrateTeamToOrg(ctx context.Context, teamId int) ApiTeamsMigrateTeamToOrgRequest {
 	ret := _mock.Called(ctx, teamId)
 
 	if len(ret) == 0 {
@@ -4279,7 +4279,7 @@ func (_mock *MockTeamsAPI) TeamsMigrateTeamToOrg(ctx context.Context, teamId flo
 	}
 
 	var r0 ApiTeamsMigrateTeamToOrgRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiTeamsMigrateTeamToOrgRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiTeamsMigrateTeamToOrgRequest); ok {
 		r0 = returnFunc(ctx, teamId)
 	} else {
 		r0 = ret.Get(0).(ApiTeamsMigrateTeamToOrgRequest)
@@ -4294,20 +4294,20 @@ type MockTeamsAPI_TeamsMigrateTeamToOrg_Call struct {
 
 // TeamsMigrateTeamToOrg is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
+//   - teamId int
 func (_e *MockTeamsAPI_Expecter) TeamsMigrateTeamToOrg(ctx any, teamId any) *MockTeamsAPI_TeamsMigrateTeamToOrg_Call {
 	return &MockTeamsAPI_TeamsMigrateTeamToOrg_Call{Call: _e.mock.On("TeamsMigrateTeamToOrg", ctx, teamId)}
 }
 
-func (_c *MockTeamsAPI_TeamsMigrateTeamToOrg_Call) Run(run func(ctx context.Context, teamId float32)) *MockTeamsAPI_TeamsMigrateTeamToOrg_Call {
+func (_c *MockTeamsAPI_TeamsMigrateTeamToOrg_Call) Run(run func(ctx context.Context, teamId int)) *MockTeamsAPI_TeamsMigrateTeamToOrg_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -4322,7 +4322,7 @@ func (_c *MockTeamsAPI_TeamsMigrateTeamToOrg_Call) Return(apiTeamsMigrateTeamToO
 	return _c
 }
 
-func (_c *MockTeamsAPI_TeamsMigrateTeamToOrg_Call) RunAndReturn(run func(ctx context.Context, teamId float32) ApiTeamsMigrateTeamToOrgRequest) *MockTeamsAPI_TeamsMigrateTeamToOrg_Call {
+func (_c *MockTeamsAPI_TeamsMigrateTeamToOrg_Call) RunAndReturn(run func(ctx context.Context, teamId int) ApiTeamsMigrateTeamToOrgRequest) *MockTeamsAPI_TeamsMigrateTeamToOrg_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -4390,7 +4390,7 @@ func (_c *MockTeamsAPI_TeamsMigrateTeamToOrgExecute_Call) RunAndReturn(run func(
 }
 
 // TeamsRemoveMember provides a mock function for the type MockTeamsAPI
-func (_mock *MockTeamsAPI) TeamsRemoveMember(ctx context.Context, teamId float32, userId float32) ApiTeamsRemoveMemberRequest {
+func (_mock *MockTeamsAPI) TeamsRemoveMember(ctx context.Context, teamId int, userId int) ApiTeamsRemoveMemberRequest {
 	ret := _mock.Called(ctx, teamId, userId)
 
 	if len(ret) == 0 {
@@ -4398,7 +4398,7 @@ func (_mock *MockTeamsAPI) TeamsRemoveMember(ctx context.Context, teamId float32
 	}
 
 	var r0 ApiTeamsRemoveMemberRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, float32) ApiTeamsRemoveMemberRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, int) ApiTeamsRemoveMemberRequest); ok {
 		r0 = returnFunc(ctx, teamId, userId)
 	} else {
 		r0 = ret.Get(0).(ApiTeamsRemoveMemberRequest)
@@ -4413,25 +4413,25 @@ type MockTeamsAPI_TeamsRemoveMember_Call struct {
 
 // TeamsRemoveMember is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
-//   - userId float32
+//   - teamId int
+//   - userId int
 func (_e *MockTeamsAPI_Expecter) TeamsRemoveMember(ctx any, teamId any, userId any) *MockTeamsAPI_TeamsRemoveMember_Call {
 	return &MockTeamsAPI_TeamsRemoveMember_Call{Call: _e.mock.On("TeamsRemoveMember", ctx, teamId, userId)}
 }
 
-func (_c *MockTeamsAPI_TeamsRemoveMember_Call) Run(run func(ctx context.Context, teamId float32, userId float32)) *MockTeamsAPI_TeamsRemoveMember_Call {
+func (_c *MockTeamsAPI_TeamsRemoveMember_Call) Run(run func(ctx context.Context, teamId int, userId int)) *MockTeamsAPI_TeamsRemoveMember_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
-		var arg2 float32
+		var arg2 int
 		if args[2] != nil {
-			arg2 = args[2].(float32)
+			arg2 = args[2].(int)
 		}
 		run(
 			arg0,
@@ -4447,7 +4447,7 @@ func (_c *MockTeamsAPI_TeamsRemoveMember_Call) Return(apiTeamsRemoveMemberReques
 	return _c
 }
 
-func (_c *MockTeamsAPI_TeamsRemoveMember_Call) RunAndReturn(run func(ctx context.Context, teamId float32, userId float32) ApiTeamsRemoveMemberRequest) *MockTeamsAPI_TeamsRemoveMember_Call {
+func (_c *MockTeamsAPI_TeamsRemoveMember_Call) RunAndReturn(run func(ctx context.Context, teamId int, userId int) ApiTeamsRemoveMemberRequest) *MockTeamsAPI_TeamsRemoveMember_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -4542,7 +4542,7 @@ func (_m *MockUsageAPI) EXPECT() *MockUsageAPI_Expecter {
 }
 
 // UsageGetLandscapeServiceEvents provides a mock function for the type MockUsageAPI
-func (_mock *MockUsageAPI) UsageGetLandscapeServiceEvents(ctx context.Context, teamId float32, resourceId string) ApiUsageGetLandscapeServiceEventsRequest {
+func (_mock *MockUsageAPI) UsageGetLandscapeServiceEvents(ctx context.Context, teamId int, resourceId string) ApiUsageGetLandscapeServiceEventsRequest {
 	ret := _mock.Called(ctx, teamId, resourceId)
 
 	if len(ret) == 0 {
@@ -4550,7 +4550,7 @@ func (_mock *MockUsageAPI) UsageGetLandscapeServiceEvents(ctx context.Context, t
 	}
 
 	var r0 ApiUsageGetLandscapeServiceEventsRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, string) ApiUsageGetLandscapeServiceEventsRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiUsageGetLandscapeServiceEventsRequest); ok {
 		r0 = returnFunc(ctx, teamId, resourceId)
 	} else {
 		r0 = ret.Get(0).(ApiUsageGetLandscapeServiceEventsRequest)
@@ -4565,21 +4565,21 @@ type MockUsageAPI_UsageGetLandscapeServiceEvents_Call struct {
 
 // UsageGetLandscapeServiceEvents is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
+//   - teamId int
 //   - resourceId string
 func (_e *MockUsageAPI_Expecter) UsageGetLandscapeServiceEvents(ctx any, teamId any, resourceId any) *MockUsageAPI_UsageGetLandscapeServiceEvents_Call {
 	return &MockUsageAPI_UsageGetLandscapeServiceEvents_Call{Call: _e.mock.On("UsageGetLandscapeServiceEvents", ctx, teamId, resourceId)}
 }
 
-func (_c *MockUsageAPI_UsageGetLandscapeServiceEvents_Call) Run(run func(ctx context.Context, teamId float32, resourceId string)) *MockUsageAPI_UsageGetLandscapeServiceEvents_Call {
+func (_c *MockUsageAPI_UsageGetLandscapeServiceEvents_Call) Run(run func(ctx context.Context, teamId int, resourceId string)) *MockUsageAPI_UsageGetLandscapeServiceEvents_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		var arg2 string
 		if args[2] != nil {
@@ -4599,7 +4599,7 @@ func (_c *MockUsageAPI_UsageGetLandscapeServiceEvents_Call) Return(apiUsageGetLa
 	return _c
 }
 
-func (_c *MockUsageAPI_UsageGetLandscapeServiceEvents_Call) RunAndReturn(run func(ctx context.Context, teamId float32, resourceId string) ApiUsageGetLandscapeServiceEventsRequest) *MockUsageAPI_UsageGetLandscapeServiceEvents_Call {
+func (_c *MockUsageAPI_UsageGetLandscapeServiceEvents_Call) RunAndReturn(run func(ctx context.Context, teamId int, resourceId string) ApiUsageGetLandscapeServiceEventsRequest) *MockUsageAPI_UsageGetLandscapeServiceEvents_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -4675,7 +4675,7 @@ func (_c *MockUsageAPI_UsageGetLandscapeServiceEventsExecute_Call) RunAndReturn(
 }
 
 // UsageGetUsageSummaryLandscape provides a mock function for the type MockUsageAPI
-func (_mock *MockUsageAPI) UsageGetUsageSummaryLandscape(ctx context.Context, teamId float32) ApiUsageGetUsageSummaryLandscapeRequest {
+func (_mock *MockUsageAPI) UsageGetUsageSummaryLandscape(ctx context.Context, teamId int) ApiUsageGetUsageSummaryLandscapeRequest {
 	ret := _mock.Called(ctx, teamId)
 
 	if len(ret) == 0 {
@@ -4683,7 +4683,7 @@ func (_mock *MockUsageAPI) UsageGetUsageSummaryLandscape(ctx context.Context, te
 	}
 
 	var r0 ApiUsageGetUsageSummaryLandscapeRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiUsageGetUsageSummaryLandscapeRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiUsageGetUsageSummaryLandscapeRequest); ok {
 		r0 = returnFunc(ctx, teamId)
 	} else {
 		r0 = ret.Get(0).(ApiUsageGetUsageSummaryLandscapeRequest)
@@ -4698,20 +4698,20 @@ type MockUsageAPI_UsageGetUsageSummaryLandscape_Call struct {
 
 // UsageGetUsageSummaryLandscape is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
+//   - teamId int
 func (_e *MockUsageAPI_Expecter) UsageGetUsageSummaryLandscape(ctx any, teamId any) *MockUsageAPI_UsageGetUsageSummaryLandscape_Call {
 	return &MockUsageAPI_UsageGetUsageSummaryLandscape_Call{Call: _e.mock.On("UsageGetUsageSummaryLandscape", ctx, teamId)}
 }
 
-func (_c *MockUsageAPI_UsageGetUsageSummaryLandscape_Call) Run(run func(ctx context.Context, teamId float32)) *MockUsageAPI_UsageGetUsageSummaryLandscape_Call {
+func (_c *MockUsageAPI_UsageGetUsageSummaryLandscape_Call) Run(run func(ctx context.Context, teamId int)) *MockUsageAPI_UsageGetUsageSummaryLandscape_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -4726,7 +4726,7 @@ func (_c *MockUsageAPI_UsageGetUsageSummaryLandscape_Call) Return(apiUsageGetUsa
 	return _c
 }
 
-func (_c *MockUsageAPI_UsageGetUsageSummaryLandscape_Call) RunAndReturn(run func(ctx context.Context, teamId float32) ApiUsageGetUsageSummaryLandscapeRequest) *MockUsageAPI_UsageGetUsageSummaryLandscape_Call {
+func (_c *MockUsageAPI_UsageGetUsageSummaryLandscape_Call) RunAndReturn(run func(ctx context.Context, teamId int) ApiUsageGetUsageSummaryLandscapeRequest) *MockUsageAPI_UsageGetUsageSummaryLandscape_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -4828,8 +4828,377 @@ func (_m *MockVaultAPI) EXPECT() *MockVaultAPI_Expecter {
 	return &MockVaultAPI_Expecter{mock: &_m.Mock}
 }
 
+// VaultCreateSharedVault provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultCreateSharedVault(ctx context.Context, teamId int) ApiVaultCreateSharedVaultRequest {
+	ret := _mock.Called(ctx, teamId)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultCreateSharedVault")
+	}
+
+	var r0 ApiVaultCreateSharedVaultRequest
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiVaultCreateSharedVaultRequest); ok {
+		r0 = returnFunc(ctx, teamId)
+	} else {
+		r0 = ret.Get(0).(ApiVaultCreateSharedVaultRequest)
+	}
+	return r0
+}
+
+// MockVaultAPI_VaultCreateSharedVault_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultCreateSharedVault'
+type MockVaultAPI_VaultCreateSharedVault_Call struct {
+	*mock.Call
+}
+
+// VaultCreateSharedVault is a helper method to define mock.On call
+//   - ctx context.Context
+//   - teamId int
+func (_e *MockVaultAPI_Expecter) VaultCreateSharedVault(ctx any, teamId any) *MockVaultAPI_VaultCreateSharedVault_Call {
+	return &MockVaultAPI_VaultCreateSharedVault_Call{Call: _e.mock.On("VaultCreateSharedVault", ctx, teamId)}
+}
+
+func (_c *MockVaultAPI_VaultCreateSharedVault_Call) Run(run func(ctx context.Context, teamId int)) *MockVaultAPI_VaultCreateSharedVault_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 int
+		if args[1] != nil {
+			arg1 = args[1].(int)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultCreateSharedVault_Call) Return(apiVaultCreateSharedVaultRequest ApiVaultCreateSharedVaultRequest) *MockVaultAPI_VaultCreateSharedVault_Call {
+	_c.Call.Return(apiVaultCreateSharedVaultRequest)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultCreateSharedVault_Call) RunAndReturn(run func(ctx context.Context, teamId int) ApiVaultCreateSharedVaultRequest) *MockVaultAPI_VaultCreateSharedVault_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// VaultCreateSharedVaultExecute provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultCreateSharedVaultExecute(r ApiVaultCreateSharedVaultRequest) (*http.Response, error) {
+	ret := _mock.Called(r)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultCreateSharedVaultExecute")
+	}
+
+	var r0 *http.Response
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultCreateSharedVaultRequest) (*http.Response, error)); ok {
+		return returnFunc(r)
+	}
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultCreateSharedVaultRequest) *http.Response); ok {
+		r0 = returnFunc(r)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*http.Response)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(ApiVaultCreateSharedVaultRequest) error); ok {
+		r1 = returnFunc(r)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockVaultAPI_VaultCreateSharedVaultExecute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultCreateSharedVaultExecute'
+type MockVaultAPI_VaultCreateSharedVaultExecute_Call struct {
+	*mock.Call
+}
+
+// VaultCreateSharedVaultExecute is a helper method to define mock.On call
+//   - r ApiVaultCreateSharedVaultRequest
+func (_e *MockVaultAPI_Expecter) VaultCreateSharedVaultExecute(r any) *MockVaultAPI_VaultCreateSharedVaultExecute_Call {
+	return &MockVaultAPI_VaultCreateSharedVaultExecute_Call{Call: _e.mock.On("VaultCreateSharedVaultExecute", r)}
+}
+
+func (_c *MockVaultAPI_VaultCreateSharedVaultExecute_Call) Run(run func(r ApiVaultCreateSharedVaultRequest)) *MockVaultAPI_VaultCreateSharedVaultExecute_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 ApiVaultCreateSharedVaultRequest
+		if args[0] != nil {
+			arg0 = args[0].(ApiVaultCreateSharedVaultRequest)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultCreateSharedVaultExecute_Call) Return(response *http.Response, err error) *MockVaultAPI_VaultCreateSharedVaultExecute_Call {
+	_c.Call.Return(response, err)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultCreateSharedVaultExecute_Call) RunAndReturn(run func(r ApiVaultCreateSharedVaultRequest) (*http.Response, error)) *MockVaultAPI_VaultCreateSharedVaultExecute_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// VaultDeleteSharedSecrets provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultDeleteSharedSecrets(ctx context.Context, teamId int, vaultName string) ApiVaultDeleteSharedSecretsRequest {
+	ret := _mock.Called(ctx, teamId, vaultName)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultDeleteSharedSecrets")
+	}
+
+	var r0 ApiVaultDeleteSharedSecretsRequest
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiVaultDeleteSharedSecretsRequest); ok {
+		r0 = returnFunc(ctx, teamId, vaultName)
+	} else {
+		r0 = ret.Get(0).(ApiVaultDeleteSharedSecretsRequest)
+	}
+	return r0
+}
+
+// MockVaultAPI_VaultDeleteSharedSecrets_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultDeleteSharedSecrets'
+type MockVaultAPI_VaultDeleteSharedSecrets_Call struct {
+	*mock.Call
+}
+
+// VaultDeleteSharedSecrets is a helper method to define mock.On call
+//   - ctx context.Context
+//   - teamId int
+//   - vaultName string
+func (_e *MockVaultAPI_Expecter) VaultDeleteSharedSecrets(ctx any, teamId any, vaultName any) *MockVaultAPI_VaultDeleteSharedSecrets_Call {
+	return &MockVaultAPI_VaultDeleteSharedSecrets_Call{Call: _e.mock.On("VaultDeleteSharedSecrets", ctx, teamId, vaultName)}
+}
+
+func (_c *MockVaultAPI_VaultDeleteSharedSecrets_Call) Run(run func(ctx context.Context, teamId int, vaultName string)) *MockVaultAPI_VaultDeleteSharedSecrets_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 int
+		if args[1] != nil {
+			arg1 = args[1].(int)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultDeleteSharedSecrets_Call) Return(apiVaultDeleteSharedSecretsRequest ApiVaultDeleteSharedSecretsRequest) *MockVaultAPI_VaultDeleteSharedSecrets_Call {
+	_c.Call.Return(apiVaultDeleteSharedSecretsRequest)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultDeleteSharedSecrets_Call) RunAndReturn(run func(ctx context.Context, teamId int, vaultName string) ApiVaultDeleteSharedSecretsRequest) *MockVaultAPI_VaultDeleteSharedSecrets_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// VaultDeleteSharedSecretsExecute provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultDeleteSharedSecretsExecute(r ApiVaultDeleteSharedSecretsRequest) (*http.Response, error) {
+	ret := _mock.Called(r)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultDeleteSharedSecretsExecute")
+	}
+
+	var r0 *http.Response
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultDeleteSharedSecretsRequest) (*http.Response, error)); ok {
+		return returnFunc(r)
+	}
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultDeleteSharedSecretsRequest) *http.Response); ok {
+		r0 = returnFunc(r)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*http.Response)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(ApiVaultDeleteSharedSecretsRequest) error); ok {
+		r1 = returnFunc(r)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockVaultAPI_VaultDeleteSharedSecretsExecute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultDeleteSharedSecretsExecute'
+type MockVaultAPI_VaultDeleteSharedSecretsExecute_Call struct {
+	*mock.Call
+}
+
+// VaultDeleteSharedSecretsExecute is a helper method to define mock.On call
+//   - r ApiVaultDeleteSharedSecretsRequest
+func (_e *MockVaultAPI_Expecter) VaultDeleteSharedSecretsExecute(r any) *MockVaultAPI_VaultDeleteSharedSecretsExecute_Call {
+	return &MockVaultAPI_VaultDeleteSharedSecretsExecute_Call{Call: _e.mock.On("VaultDeleteSharedSecretsExecute", r)}
+}
+
+func (_c *MockVaultAPI_VaultDeleteSharedSecretsExecute_Call) Run(run func(r ApiVaultDeleteSharedSecretsRequest)) *MockVaultAPI_VaultDeleteSharedSecretsExecute_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 ApiVaultDeleteSharedSecretsRequest
+		if args[0] != nil {
+			arg0 = args[0].(ApiVaultDeleteSharedSecretsRequest)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultDeleteSharedSecretsExecute_Call) Return(response *http.Response, err error) *MockVaultAPI_VaultDeleteSharedSecretsExecute_Call {
+	_c.Call.Return(response, err)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultDeleteSharedSecretsExecute_Call) RunAndReturn(run func(r ApiVaultDeleteSharedSecretsRequest) (*http.Response, error)) *MockVaultAPI_VaultDeleteSharedSecretsExecute_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// VaultDeleteSharedVault provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultDeleteSharedVault(ctx context.Context, teamId int, vaultName string) ApiVaultDeleteSharedVaultRequest {
+	ret := _mock.Called(ctx, teamId, vaultName)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultDeleteSharedVault")
+	}
+
+	var r0 ApiVaultDeleteSharedVaultRequest
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiVaultDeleteSharedVaultRequest); ok {
+		r0 = returnFunc(ctx, teamId, vaultName)
+	} else {
+		r0 = ret.Get(0).(ApiVaultDeleteSharedVaultRequest)
+	}
+	return r0
+}
+
+// MockVaultAPI_VaultDeleteSharedVault_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultDeleteSharedVault'
+type MockVaultAPI_VaultDeleteSharedVault_Call struct {
+	*mock.Call
+}
+
+// VaultDeleteSharedVault is a helper method to define mock.On call
+//   - ctx context.Context
+//   - teamId int
+//   - vaultName string
+func (_e *MockVaultAPI_Expecter) VaultDeleteSharedVault(ctx any, teamId any, vaultName any) *MockVaultAPI_VaultDeleteSharedVault_Call {
+	return &MockVaultAPI_VaultDeleteSharedVault_Call{Call: _e.mock.On("VaultDeleteSharedVault", ctx, teamId, vaultName)}
+}
+
+func (_c *MockVaultAPI_VaultDeleteSharedVault_Call) Run(run func(ctx context.Context, teamId int, vaultName string)) *MockVaultAPI_VaultDeleteSharedVault_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 int
+		if args[1] != nil {
+			arg1 = args[1].(int)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultDeleteSharedVault_Call) Return(apiVaultDeleteSharedVaultRequest ApiVaultDeleteSharedVaultRequest) *MockVaultAPI_VaultDeleteSharedVault_Call {
+	_c.Call.Return(apiVaultDeleteSharedVaultRequest)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultDeleteSharedVault_Call) RunAndReturn(run func(ctx context.Context, teamId int, vaultName string) ApiVaultDeleteSharedVaultRequest) *MockVaultAPI_VaultDeleteSharedVault_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// VaultDeleteSharedVaultExecute provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultDeleteSharedVaultExecute(r ApiVaultDeleteSharedVaultRequest) (*http.Response, error) {
+	ret := _mock.Called(r)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultDeleteSharedVaultExecute")
+	}
+
+	var r0 *http.Response
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultDeleteSharedVaultRequest) (*http.Response, error)); ok {
+		return returnFunc(r)
+	}
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultDeleteSharedVaultRequest) *http.Response); ok {
+		r0 = returnFunc(r)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*http.Response)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(ApiVaultDeleteSharedVaultRequest) error); ok {
+		r1 = returnFunc(r)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockVaultAPI_VaultDeleteSharedVaultExecute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultDeleteSharedVaultExecute'
+type MockVaultAPI_VaultDeleteSharedVaultExecute_Call struct {
+	*mock.Call
+}
+
+// VaultDeleteSharedVaultExecute is a helper method to define mock.On call
+//   - r ApiVaultDeleteSharedVaultRequest
+func (_e *MockVaultAPI_Expecter) VaultDeleteSharedVaultExecute(r any) *MockVaultAPI_VaultDeleteSharedVaultExecute_Call {
+	return &MockVaultAPI_VaultDeleteSharedVaultExecute_Call{Call: _e.mock.On("VaultDeleteSharedVaultExecute", r)}
+}
+
+func (_c *MockVaultAPI_VaultDeleteSharedVaultExecute_Call) Run(run func(r ApiVaultDeleteSharedVaultRequest)) *MockVaultAPI_VaultDeleteSharedVaultExecute_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 ApiVaultDeleteSharedVaultRequest
+		if args[0] != nil {
+			arg0 = args[0].(ApiVaultDeleteSharedVaultRequest)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultDeleteSharedVaultExecute_Call) Return(response *http.Response, err error) *MockVaultAPI_VaultDeleteSharedVaultExecute_Call {
+	_c.Call.Return(response, err)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultDeleteSharedVaultExecute_Call) RunAndReturn(run func(r ApiVaultDeleteSharedVaultRequest) (*http.Response, error)) *MockVaultAPI_VaultDeleteSharedVaultExecute_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // VaultDeleteWorkspaceSecrets provides a mock function for the type MockVaultAPI
-func (_mock *MockVaultAPI) VaultDeleteWorkspaceSecrets(ctx context.Context, teamId float32, workspaceId float32) ApiVaultDeleteWorkspaceSecretsRequest {
+func (_mock *MockVaultAPI) VaultDeleteWorkspaceSecrets(ctx context.Context, teamId int, workspaceId int) ApiVaultDeleteWorkspaceSecretsRequest {
 	ret := _mock.Called(ctx, teamId, workspaceId)
 
 	if len(ret) == 0 {
@@ -4837,7 +5206,7 @@ func (_mock *MockVaultAPI) VaultDeleteWorkspaceSecrets(ctx context.Context, team
 	}
 
 	var r0 ApiVaultDeleteWorkspaceSecretsRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, float32) ApiVaultDeleteWorkspaceSecretsRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, int) ApiVaultDeleteWorkspaceSecretsRequest); ok {
 		r0 = returnFunc(ctx, teamId, workspaceId)
 	} else {
 		r0 = ret.Get(0).(ApiVaultDeleteWorkspaceSecretsRequest)
@@ -4852,25 +5221,25 @@ type MockVaultAPI_VaultDeleteWorkspaceSecrets_Call struct {
 
 // VaultDeleteWorkspaceSecrets is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
-//   - workspaceId float32
+//   - teamId int
+//   - workspaceId int
 func (_e *MockVaultAPI_Expecter) VaultDeleteWorkspaceSecrets(ctx any, teamId any, workspaceId any) *MockVaultAPI_VaultDeleteWorkspaceSecrets_Call {
 	return &MockVaultAPI_VaultDeleteWorkspaceSecrets_Call{Call: _e.mock.On("VaultDeleteWorkspaceSecrets", ctx, teamId, workspaceId)}
 }
 
-func (_c *MockVaultAPI_VaultDeleteWorkspaceSecrets_Call) Run(run func(ctx context.Context, teamId float32, workspaceId float32)) *MockVaultAPI_VaultDeleteWorkspaceSecrets_Call {
+func (_c *MockVaultAPI_VaultDeleteWorkspaceSecrets_Call) Run(run func(ctx context.Context, teamId int, workspaceId int)) *MockVaultAPI_VaultDeleteWorkspaceSecrets_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
-		var arg2 float32
+		var arg2 int
 		if args[2] != nil {
-			arg2 = args[2].(float32)
+			arg2 = args[2].(int)
 		}
 		run(
 			arg0,
@@ -4886,7 +5255,7 @@ func (_c *MockVaultAPI_VaultDeleteWorkspaceSecrets_Call) Return(apiVaultDeleteWo
 	return _c
 }
 
-func (_c *MockVaultAPI_VaultDeleteWorkspaceSecrets_Call) RunAndReturn(run func(ctx context.Context, teamId float32, workspaceId float32) ApiVaultDeleteWorkspaceSecretsRequest) *MockVaultAPI_VaultDeleteWorkspaceSecrets_Call {
+func (_c *MockVaultAPI_VaultDeleteWorkspaceSecrets_Call) RunAndReturn(run func(ctx context.Context, teamId int, workspaceId int) ApiVaultDeleteWorkspaceSecretsRequest) *MockVaultAPI_VaultDeleteWorkspaceSecrets_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -4953,8 +5322,534 @@ func (_c *MockVaultAPI_VaultDeleteWorkspaceSecretsExecute_Call) RunAndReturn(run
 	return _c
 }
 
+// VaultGenerateSecrets provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultGenerateSecrets(ctx context.Context, teamId int, workspaceId int) ApiVaultGenerateSecretsRequest {
+	ret := _mock.Called(ctx, teamId, workspaceId)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultGenerateSecrets")
+	}
+
+	var r0 ApiVaultGenerateSecretsRequest
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, int) ApiVaultGenerateSecretsRequest); ok {
+		r0 = returnFunc(ctx, teamId, workspaceId)
+	} else {
+		r0 = ret.Get(0).(ApiVaultGenerateSecretsRequest)
+	}
+	return r0
+}
+
+// MockVaultAPI_VaultGenerateSecrets_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultGenerateSecrets'
+type MockVaultAPI_VaultGenerateSecrets_Call struct {
+	*mock.Call
+}
+
+// VaultGenerateSecrets is a helper method to define mock.On call
+//   - ctx context.Context
+//   - teamId int
+//   - workspaceId int
+func (_e *MockVaultAPI_Expecter) VaultGenerateSecrets(ctx any, teamId any, workspaceId any) *MockVaultAPI_VaultGenerateSecrets_Call {
+	return &MockVaultAPI_VaultGenerateSecrets_Call{Call: _e.mock.On("VaultGenerateSecrets", ctx, teamId, workspaceId)}
+}
+
+func (_c *MockVaultAPI_VaultGenerateSecrets_Call) Run(run func(ctx context.Context, teamId int, workspaceId int)) *MockVaultAPI_VaultGenerateSecrets_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 int
+		if args[1] != nil {
+			arg1 = args[1].(int)
+		}
+		var arg2 int
+		if args[2] != nil {
+			arg2 = args[2].(int)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultGenerateSecrets_Call) Return(apiVaultGenerateSecretsRequest ApiVaultGenerateSecretsRequest) *MockVaultAPI_VaultGenerateSecrets_Call {
+	_c.Call.Return(apiVaultGenerateSecretsRequest)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultGenerateSecrets_Call) RunAndReturn(run func(ctx context.Context, teamId int, workspaceId int) ApiVaultGenerateSecretsRequest) *MockVaultAPI_VaultGenerateSecrets_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// VaultGenerateSecretsExecute provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultGenerateSecretsExecute(r ApiVaultGenerateSecretsRequest) (map[string]interface{}, *http.Response, error) {
+	ret := _mock.Called(r)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultGenerateSecretsExecute")
+	}
+
+	var r0 map[string]interface{}
+	var r1 *http.Response
+	var r2 error
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultGenerateSecretsRequest) (map[string]interface{}, *http.Response, error)); ok {
+		return returnFunc(r)
+	}
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultGenerateSecretsRequest) map[string]interface{}); ok {
+		r0 = returnFunc(r)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(map[string]interface{})
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(ApiVaultGenerateSecretsRequest) *http.Response); ok {
+		r1 = returnFunc(r)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*http.Response)
+		}
+	}
+	if returnFunc, ok := ret.Get(2).(func(ApiVaultGenerateSecretsRequest) error); ok {
+		r2 = returnFunc(r)
+	} else {
+		r2 = ret.Error(2)
+	}
+	return r0, r1, r2
+}
+
+// MockVaultAPI_VaultGenerateSecretsExecute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultGenerateSecretsExecute'
+type MockVaultAPI_VaultGenerateSecretsExecute_Call struct {
+	*mock.Call
+}
+
+// VaultGenerateSecretsExecute is a helper method to define mock.On call
+//   - r ApiVaultGenerateSecretsRequest
+func (_e *MockVaultAPI_Expecter) VaultGenerateSecretsExecute(r any) *MockVaultAPI_VaultGenerateSecretsExecute_Call {
+	return &MockVaultAPI_VaultGenerateSecretsExecute_Call{Call: _e.mock.On("VaultGenerateSecretsExecute", r)}
+}
+
+func (_c *MockVaultAPI_VaultGenerateSecretsExecute_Call) Run(run func(r ApiVaultGenerateSecretsRequest)) *MockVaultAPI_VaultGenerateSecretsExecute_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 ApiVaultGenerateSecretsRequest
+		if args[0] != nil {
+			arg0 = args[0].(ApiVaultGenerateSecretsRequest)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultGenerateSecretsExecute_Call) Return(stringToIfaceVal map[string]interface{}, response *http.Response, err error) *MockVaultAPI_VaultGenerateSecretsExecute_Call {
+	_c.Call.Return(stringToIfaceVal, response, err)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultGenerateSecretsExecute_Call) RunAndReturn(run func(r ApiVaultGenerateSecretsRequest) (map[string]interface{}, *http.Response, error)) *MockVaultAPI_VaultGenerateSecretsExecute_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// VaultGenerateSharedSecrets provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultGenerateSharedSecrets(ctx context.Context, teamId int, vaultName string) ApiVaultGenerateSharedSecretsRequest {
+	ret := _mock.Called(ctx, teamId, vaultName)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultGenerateSharedSecrets")
+	}
+
+	var r0 ApiVaultGenerateSharedSecretsRequest
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiVaultGenerateSharedSecretsRequest); ok {
+		r0 = returnFunc(ctx, teamId, vaultName)
+	} else {
+		r0 = ret.Get(0).(ApiVaultGenerateSharedSecretsRequest)
+	}
+	return r0
+}
+
+// MockVaultAPI_VaultGenerateSharedSecrets_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultGenerateSharedSecrets'
+type MockVaultAPI_VaultGenerateSharedSecrets_Call struct {
+	*mock.Call
+}
+
+// VaultGenerateSharedSecrets is a helper method to define mock.On call
+//   - ctx context.Context
+//   - teamId int
+//   - vaultName string
+func (_e *MockVaultAPI_Expecter) VaultGenerateSharedSecrets(ctx any, teamId any, vaultName any) *MockVaultAPI_VaultGenerateSharedSecrets_Call {
+	return &MockVaultAPI_VaultGenerateSharedSecrets_Call{Call: _e.mock.On("VaultGenerateSharedSecrets", ctx, teamId, vaultName)}
+}
+
+func (_c *MockVaultAPI_VaultGenerateSharedSecrets_Call) Run(run func(ctx context.Context, teamId int, vaultName string)) *MockVaultAPI_VaultGenerateSharedSecrets_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 int
+		if args[1] != nil {
+			arg1 = args[1].(int)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultGenerateSharedSecrets_Call) Return(apiVaultGenerateSharedSecretsRequest ApiVaultGenerateSharedSecretsRequest) *MockVaultAPI_VaultGenerateSharedSecrets_Call {
+	_c.Call.Return(apiVaultGenerateSharedSecretsRequest)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultGenerateSharedSecrets_Call) RunAndReturn(run func(ctx context.Context, teamId int, vaultName string) ApiVaultGenerateSharedSecretsRequest) *MockVaultAPI_VaultGenerateSharedSecrets_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// VaultGenerateSharedSecretsExecute provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultGenerateSharedSecretsExecute(r ApiVaultGenerateSharedSecretsRequest) (map[string]interface{}, *http.Response, error) {
+	ret := _mock.Called(r)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultGenerateSharedSecretsExecute")
+	}
+
+	var r0 map[string]interface{}
+	var r1 *http.Response
+	var r2 error
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultGenerateSharedSecretsRequest) (map[string]interface{}, *http.Response, error)); ok {
+		return returnFunc(r)
+	}
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultGenerateSharedSecretsRequest) map[string]interface{}); ok {
+		r0 = returnFunc(r)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(map[string]interface{})
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(ApiVaultGenerateSharedSecretsRequest) *http.Response); ok {
+		r1 = returnFunc(r)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*http.Response)
+		}
+	}
+	if returnFunc, ok := ret.Get(2).(func(ApiVaultGenerateSharedSecretsRequest) error); ok {
+		r2 = returnFunc(r)
+	} else {
+		r2 = ret.Error(2)
+	}
+	return r0, r1, r2
+}
+
+// MockVaultAPI_VaultGenerateSharedSecretsExecute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultGenerateSharedSecretsExecute'
+type MockVaultAPI_VaultGenerateSharedSecretsExecute_Call struct {
+	*mock.Call
+}
+
+// VaultGenerateSharedSecretsExecute is a helper method to define mock.On call
+//   - r ApiVaultGenerateSharedSecretsRequest
+func (_e *MockVaultAPI_Expecter) VaultGenerateSharedSecretsExecute(r any) *MockVaultAPI_VaultGenerateSharedSecretsExecute_Call {
+	return &MockVaultAPI_VaultGenerateSharedSecretsExecute_Call{Call: _e.mock.On("VaultGenerateSharedSecretsExecute", r)}
+}
+
+func (_c *MockVaultAPI_VaultGenerateSharedSecretsExecute_Call) Run(run func(r ApiVaultGenerateSharedSecretsRequest)) *MockVaultAPI_VaultGenerateSharedSecretsExecute_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 ApiVaultGenerateSharedSecretsRequest
+		if args[0] != nil {
+			arg0 = args[0].(ApiVaultGenerateSharedSecretsRequest)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultGenerateSharedSecretsExecute_Call) Return(stringToIfaceVal map[string]interface{}, response *http.Response, err error) *MockVaultAPI_VaultGenerateSharedSecretsExecute_Call {
+	_c.Call.Return(stringToIfaceVal, response, err)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultGenerateSharedSecretsExecute_Call) RunAndReturn(run func(r ApiVaultGenerateSharedSecretsRequest) (map[string]interface{}, *http.Response, error)) *MockVaultAPI_VaultGenerateSharedSecretsExecute_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// VaultListSharedSecretKeys provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultListSharedSecretKeys(ctx context.Context, teamId int, vaultName string) ApiVaultListSharedSecretKeysRequest {
+	ret := _mock.Called(ctx, teamId, vaultName)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultListSharedSecretKeys")
+	}
+
+	var r0 ApiVaultListSharedSecretKeysRequest
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiVaultListSharedSecretKeysRequest); ok {
+		r0 = returnFunc(ctx, teamId, vaultName)
+	} else {
+		r0 = ret.Get(0).(ApiVaultListSharedSecretKeysRequest)
+	}
+	return r0
+}
+
+// MockVaultAPI_VaultListSharedSecretKeys_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultListSharedSecretKeys'
+type MockVaultAPI_VaultListSharedSecretKeys_Call struct {
+	*mock.Call
+}
+
+// VaultListSharedSecretKeys is a helper method to define mock.On call
+//   - ctx context.Context
+//   - teamId int
+//   - vaultName string
+func (_e *MockVaultAPI_Expecter) VaultListSharedSecretKeys(ctx any, teamId any, vaultName any) *MockVaultAPI_VaultListSharedSecretKeys_Call {
+	return &MockVaultAPI_VaultListSharedSecretKeys_Call{Call: _e.mock.On("VaultListSharedSecretKeys", ctx, teamId, vaultName)}
+}
+
+func (_c *MockVaultAPI_VaultListSharedSecretKeys_Call) Run(run func(ctx context.Context, teamId int, vaultName string)) *MockVaultAPI_VaultListSharedSecretKeys_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 int
+		if args[1] != nil {
+			arg1 = args[1].(int)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultListSharedSecretKeys_Call) Return(apiVaultListSharedSecretKeysRequest ApiVaultListSharedSecretKeysRequest) *MockVaultAPI_VaultListSharedSecretKeys_Call {
+	_c.Call.Return(apiVaultListSharedSecretKeysRequest)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultListSharedSecretKeys_Call) RunAndReturn(run func(ctx context.Context, teamId int, vaultName string) ApiVaultListSharedSecretKeysRequest) *MockVaultAPI_VaultListSharedSecretKeys_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// VaultListSharedSecretKeysExecute provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultListSharedSecretKeysExecute(r ApiVaultListSharedSecretKeysRequest) ([]string, *http.Response, error) {
+	ret := _mock.Called(r)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultListSharedSecretKeysExecute")
+	}
+
+	var r0 []string
+	var r1 *http.Response
+	var r2 error
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultListSharedSecretKeysRequest) ([]string, *http.Response, error)); ok {
+		return returnFunc(r)
+	}
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultListSharedSecretKeysRequest) []string); ok {
+		r0 = returnFunc(r)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]string)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(ApiVaultListSharedSecretKeysRequest) *http.Response); ok {
+		r1 = returnFunc(r)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*http.Response)
+		}
+	}
+	if returnFunc, ok := ret.Get(2).(func(ApiVaultListSharedSecretKeysRequest) error); ok {
+		r2 = returnFunc(r)
+	} else {
+		r2 = ret.Error(2)
+	}
+	return r0, r1, r2
+}
+
+// MockVaultAPI_VaultListSharedSecretKeysExecute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultListSharedSecretKeysExecute'
+type MockVaultAPI_VaultListSharedSecretKeysExecute_Call struct {
+	*mock.Call
+}
+
+// VaultListSharedSecretKeysExecute is a helper method to define mock.On call
+//   - r ApiVaultListSharedSecretKeysRequest
+func (_e *MockVaultAPI_Expecter) VaultListSharedSecretKeysExecute(r any) *MockVaultAPI_VaultListSharedSecretKeysExecute_Call {
+	return &MockVaultAPI_VaultListSharedSecretKeysExecute_Call{Call: _e.mock.On("VaultListSharedSecretKeysExecute", r)}
+}
+
+func (_c *MockVaultAPI_VaultListSharedSecretKeysExecute_Call) Run(run func(r ApiVaultListSharedSecretKeysRequest)) *MockVaultAPI_VaultListSharedSecretKeysExecute_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 ApiVaultListSharedSecretKeysRequest
+		if args[0] != nil {
+			arg0 = args[0].(ApiVaultListSharedSecretKeysRequest)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultListSharedSecretKeysExecute_Call) Return(strings []string, response *http.Response, err error) *MockVaultAPI_VaultListSharedSecretKeysExecute_Call {
+	_c.Call.Return(strings, response, err)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultListSharedSecretKeysExecute_Call) RunAndReturn(run func(r ApiVaultListSharedSecretKeysRequest) ([]string, *http.Response, error)) *MockVaultAPI_VaultListSharedSecretKeysExecute_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// VaultListSharedVaults provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultListSharedVaults(ctx context.Context, teamId int) ApiVaultListSharedVaultsRequest {
+	ret := _mock.Called(ctx, teamId)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultListSharedVaults")
+	}
+
+	var r0 ApiVaultListSharedVaultsRequest
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiVaultListSharedVaultsRequest); ok {
+		r0 = returnFunc(ctx, teamId)
+	} else {
+		r0 = ret.Get(0).(ApiVaultListSharedVaultsRequest)
+	}
+	return r0
+}
+
+// MockVaultAPI_VaultListSharedVaults_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultListSharedVaults'
+type MockVaultAPI_VaultListSharedVaults_Call struct {
+	*mock.Call
+}
+
+// VaultListSharedVaults is a helper method to define mock.On call
+//   - ctx context.Context
+//   - teamId int
+func (_e *MockVaultAPI_Expecter) VaultListSharedVaults(ctx any, teamId any) *MockVaultAPI_VaultListSharedVaults_Call {
+	return &MockVaultAPI_VaultListSharedVaults_Call{Call: _e.mock.On("VaultListSharedVaults", ctx, teamId)}
+}
+
+func (_c *MockVaultAPI_VaultListSharedVaults_Call) Run(run func(ctx context.Context, teamId int)) *MockVaultAPI_VaultListSharedVaults_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 int
+		if args[1] != nil {
+			arg1 = args[1].(int)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultListSharedVaults_Call) Return(apiVaultListSharedVaultsRequest ApiVaultListSharedVaultsRequest) *MockVaultAPI_VaultListSharedVaults_Call {
+	_c.Call.Return(apiVaultListSharedVaultsRequest)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultListSharedVaults_Call) RunAndReturn(run func(ctx context.Context, teamId int) ApiVaultListSharedVaultsRequest) *MockVaultAPI_VaultListSharedVaults_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// VaultListSharedVaultsExecute provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultListSharedVaultsExecute(r ApiVaultListSharedVaultsRequest) ([]string, *http.Response, error) {
+	ret := _mock.Called(r)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultListSharedVaultsExecute")
+	}
+
+	var r0 []string
+	var r1 *http.Response
+	var r2 error
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultListSharedVaultsRequest) ([]string, *http.Response, error)); ok {
+		return returnFunc(r)
+	}
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultListSharedVaultsRequest) []string); ok {
+		r0 = returnFunc(r)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]string)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(ApiVaultListSharedVaultsRequest) *http.Response); ok {
+		r1 = returnFunc(r)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*http.Response)
+		}
+	}
+	if returnFunc, ok := ret.Get(2).(func(ApiVaultListSharedVaultsRequest) error); ok {
+		r2 = returnFunc(r)
+	} else {
+		r2 = ret.Error(2)
+	}
+	return r0, r1, r2
+}
+
+// MockVaultAPI_VaultListSharedVaultsExecute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultListSharedVaultsExecute'
+type MockVaultAPI_VaultListSharedVaultsExecute_Call struct {
+	*mock.Call
+}
+
+// VaultListSharedVaultsExecute is a helper method to define mock.On call
+//   - r ApiVaultListSharedVaultsRequest
+func (_e *MockVaultAPI_Expecter) VaultListSharedVaultsExecute(r any) *MockVaultAPI_VaultListSharedVaultsExecute_Call {
+	return &MockVaultAPI_VaultListSharedVaultsExecute_Call{Call: _e.mock.On("VaultListSharedVaultsExecute", r)}
+}
+
+func (_c *MockVaultAPI_VaultListSharedVaultsExecute_Call) Run(run func(r ApiVaultListSharedVaultsRequest)) *MockVaultAPI_VaultListSharedVaultsExecute_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 ApiVaultListSharedVaultsRequest
+		if args[0] != nil {
+			arg0 = args[0].(ApiVaultListSharedVaultsRequest)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultListSharedVaultsExecute_Call) Return(strings []string, response *http.Response, err error) *MockVaultAPI_VaultListSharedVaultsExecute_Call {
+	_c.Call.Return(strings, response, err)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultListSharedVaultsExecute_Call) RunAndReturn(run func(r ApiVaultListSharedVaultsRequest) ([]string, *http.Response, error)) *MockVaultAPI_VaultListSharedVaultsExecute_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // VaultListWorkspaceSecrets provides a mock function for the type MockVaultAPI
-func (_mock *MockVaultAPI) VaultListWorkspaceSecrets(ctx context.Context, teamId float32, workspaceId float32) ApiVaultListWorkspaceSecretsRequest {
+func (_mock *MockVaultAPI) VaultListWorkspaceSecrets(ctx context.Context, teamId int, workspaceId int) ApiVaultListWorkspaceSecretsRequest {
 	ret := _mock.Called(ctx, teamId, workspaceId)
 
 	if len(ret) == 0 {
@@ -4962,7 +5857,7 @@ func (_mock *MockVaultAPI) VaultListWorkspaceSecrets(ctx context.Context, teamId
 	}
 
 	var r0 ApiVaultListWorkspaceSecretsRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, float32) ApiVaultListWorkspaceSecretsRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, int) ApiVaultListWorkspaceSecretsRequest); ok {
 		r0 = returnFunc(ctx, teamId, workspaceId)
 	} else {
 		r0 = ret.Get(0).(ApiVaultListWorkspaceSecretsRequest)
@@ -4977,25 +5872,25 @@ type MockVaultAPI_VaultListWorkspaceSecrets_Call struct {
 
 // VaultListWorkspaceSecrets is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
-//   - workspaceId float32
+//   - teamId int
+//   - workspaceId int
 func (_e *MockVaultAPI_Expecter) VaultListWorkspaceSecrets(ctx any, teamId any, workspaceId any) *MockVaultAPI_VaultListWorkspaceSecrets_Call {
 	return &MockVaultAPI_VaultListWorkspaceSecrets_Call{Call: _e.mock.On("VaultListWorkspaceSecrets", ctx, teamId, workspaceId)}
 }
 
-func (_c *MockVaultAPI_VaultListWorkspaceSecrets_Call) Run(run func(ctx context.Context, teamId float32, workspaceId float32)) *MockVaultAPI_VaultListWorkspaceSecrets_Call {
+func (_c *MockVaultAPI_VaultListWorkspaceSecrets_Call) Run(run func(ctx context.Context, teamId int, workspaceId int)) *MockVaultAPI_VaultListWorkspaceSecrets_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
-		var arg2 float32
+		var arg2 int
 		if args[2] != nil {
-			arg2 = args[2].(float32)
+			arg2 = args[2].(int)
 		}
 		run(
 			arg0,
@@ -5011,7 +5906,7 @@ func (_c *MockVaultAPI_VaultListWorkspaceSecrets_Call) Return(apiVaultListWorksp
 	return _c
 }
 
-func (_c *MockVaultAPI_VaultListWorkspaceSecrets_Call) RunAndReturn(run func(ctx context.Context, teamId float32, workspaceId float32) ApiVaultListWorkspaceSecretsRequest) *MockVaultAPI_VaultListWorkspaceSecrets_Call {
+func (_c *MockVaultAPI_VaultListWorkspaceSecrets_Call) RunAndReturn(run func(ctx context.Context, teamId int, workspaceId int) ApiVaultListWorkspaceSecretsRequest) *MockVaultAPI_VaultListWorkspaceSecrets_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -5086,8 +5981,141 @@ func (_c *MockVaultAPI_VaultListWorkspaceSecretsExecute_Call) RunAndReturn(run f
 	return _c
 }
 
+// VaultStoreSharedSecrets provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultStoreSharedSecrets(ctx context.Context, teamId int, vaultName string) ApiVaultStoreSharedSecretsRequest {
+	ret := _mock.Called(ctx, teamId, vaultName)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultStoreSharedSecrets")
+	}
+
+	var r0 ApiVaultStoreSharedSecretsRequest
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiVaultStoreSharedSecretsRequest); ok {
+		r0 = returnFunc(ctx, teamId, vaultName)
+	} else {
+		r0 = ret.Get(0).(ApiVaultStoreSharedSecretsRequest)
+	}
+	return r0
+}
+
+// MockVaultAPI_VaultStoreSharedSecrets_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultStoreSharedSecrets'
+type MockVaultAPI_VaultStoreSharedSecrets_Call struct {
+	*mock.Call
+}
+
+// VaultStoreSharedSecrets is a helper method to define mock.On call
+//   - ctx context.Context
+//   - teamId int
+//   - vaultName string
+func (_e *MockVaultAPI_Expecter) VaultStoreSharedSecrets(ctx any, teamId any, vaultName any) *MockVaultAPI_VaultStoreSharedSecrets_Call {
+	return &MockVaultAPI_VaultStoreSharedSecrets_Call{Call: _e.mock.On("VaultStoreSharedSecrets", ctx, teamId, vaultName)}
+}
+
+func (_c *MockVaultAPI_VaultStoreSharedSecrets_Call) Run(run func(ctx context.Context, teamId int, vaultName string)) *MockVaultAPI_VaultStoreSharedSecrets_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 int
+		if args[1] != nil {
+			arg1 = args[1].(int)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultStoreSharedSecrets_Call) Return(apiVaultStoreSharedSecretsRequest ApiVaultStoreSharedSecretsRequest) *MockVaultAPI_VaultStoreSharedSecrets_Call {
+	_c.Call.Return(apiVaultStoreSharedSecretsRequest)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultStoreSharedSecrets_Call) RunAndReturn(run func(ctx context.Context, teamId int, vaultName string) ApiVaultStoreSharedSecretsRequest) *MockVaultAPI_VaultStoreSharedSecrets_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// VaultStoreSharedSecretsExecute provides a mock function for the type MockVaultAPI
+func (_mock *MockVaultAPI) VaultStoreSharedSecretsExecute(r ApiVaultStoreSharedSecretsRequest) (map[string]interface{}, *http.Response, error) {
+	ret := _mock.Called(r)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VaultStoreSharedSecretsExecute")
+	}
+
+	var r0 map[string]interface{}
+	var r1 *http.Response
+	var r2 error
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultStoreSharedSecretsRequest) (map[string]interface{}, *http.Response, error)); ok {
+		return returnFunc(r)
+	}
+	if returnFunc, ok := ret.Get(0).(func(ApiVaultStoreSharedSecretsRequest) map[string]interface{}); ok {
+		r0 = returnFunc(r)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(map[string]interface{})
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(ApiVaultStoreSharedSecretsRequest) *http.Response); ok {
+		r1 = returnFunc(r)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*http.Response)
+		}
+	}
+	if returnFunc, ok := ret.Get(2).(func(ApiVaultStoreSharedSecretsRequest) error); ok {
+		r2 = returnFunc(r)
+	} else {
+		r2 = ret.Error(2)
+	}
+	return r0, r1, r2
+}
+
+// MockVaultAPI_VaultStoreSharedSecretsExecute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'VaultStoreSharedSecretsExecute'
+type MockVaultAPI_VaultStoreSharedSecretsExecute_Call struct {
+	*mock.Call
+}
+
+// VaultStoreSharedSecretsExecute is a helper method to define mock.On call
+//   - r ApiVaultStoreSharedSecretsRequest
+func (_e *MockVaultAPI_Expecter) VaultStoreSharedSecretsExecute(r any) *MockVaultAPI_VaultStoreSharedSecretsExecute_Call {
+	return &MockVaultAPI_VaultStoreSharedSecretsExecute_Call{Call: _e.mock.On("VaultStoreSharedSecretsExecute", r)}
+}
+
+func (_c *MockVaultAPI_VaultStoreSharedSecretsExecute_Call) Run(run func(r ApiVaultStoreSharedSecretsRequest)) *MockVaultAPI_VaultStoreSharedSecretsExecute_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 ApiVaultStoreSharedSecretsRequest
+		if args[0] != nil {
+			arg0 = args[0].(ApiVaultStoreSharedSecretsRequest)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultStoreSharedSecretsExecute_Call) Return(stringToIfaceVal map[string]interface{}, response *http.Response, err error) *MockVaultAPI_VaultStoreSharedSecretsExecute_Call {
+	_c.Call.Return(stringToIfaceVal, response, err)
+	return _c
+}
+
+func (_c *MockVaultAPI_VaultStoreSharedSecretsExecute_Call) RunAndReturn(run func(r ApiVaultStoreSharedSecretsRequest) (map[string]interface{}, *http.Response, error)) *MockVaultAPI_VaultStoreSharedSecretsExecute_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // VaultStoreWorkspaceSecrets provides a mock function for the type MockVaultAPI
-func (_mock *MockVaultAPI) VaultStoreWorkspaceSecrets(ctx context.Context, teamId float32, workspaceId float32) ApiVaultStoreWorkspaceSecretsRequest {
+func (_mock *MockVaultAPI) VaultStoreWorkspaceSecrets(ctx context.Context, teamId int, workspaceId int) ApiVaultStoreWorkspaceSecretsRequest {
 	ret := _mock.Called(ctx, teamId, workspaceId)
 
 	if len(ret) == 0 {
@@ -5095,7 +6123,7 @@ func (_mock *MockVaultAPI) VaultStoreWorkspaceSecrets(ctx context.Context, teamI
 	}
 
 	var r0 ApiVaultStoreWorkspaceSecretsRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, float32) ApiVaultStoreWorkspaceSecretsRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, int) ApiVaultStoreWorkspaceSecretsRequest); ok {
 		r0 = returnFunc(ctx, teamId, workspaceId)
 	} else {
 		r0 = ret.Get(0).(ApiVaultStoreWorkspaceSecretsRequest)
@@ -5110,25 +6138,25 @@ type MockVaultAPI_VaultStoreWorkspaceSecrets_Call struct {
 
 // VaultStoreWorkspaceSecrets is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
-//   - workspaceId float32
+//   - teamId int
+//   - workspaceId int
 func (_e *MockVaultAPI_Expecter) VaultStoreWorkspaceSecrets(ctx any, teamId any, workspaceId any) *MockVaultAPI_VaultStoreWorkspaceSecrets_Call {
 	return &MockVaultAPI_VaultStoreWorkspaceSecrets_Call{Call: _e.mock.On("VaultStoreWorkspaceSecrets", ctx, teamId, workspaceId)}
 }
 
-func (_c *MockVaultAPI_VaultStoreWorkspaceSecrets_Call) Run(run func(ctx context.Context, teamId float32, workspaceId float32)) *MockVaultAPI_VaultStoreWorkspaceSecrets_Call {
+func (_c *MockVaultAPI_VaultStoreWorkspaceSecrets_Call) Run(run func(ctx context.Context, teamId int, workspaceId int)) *MockVaultAPI_VaultStoreWorkspaceSecrets_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
-		var arg2 float32
+		var arg2 int
 		if args[2] != nil {
-			arg2 = args[2].(float32)
+			arg2 = args[2].(int)
 		}
 		run(
 			arg0,
@@ -5144,7 +6172,7 @@ func (_c *MockVaultAPI_VaultStoreWorkspaceSecrets_Call) Return(apiVaultStoreWork
 	return _c
 }
 
-func (_c *MockVaultAPI_VaultStoreWorkspaceSecrets_Call) RunAndReturn(run func(ctx context.Context, teamId float32, workspaceId float32) ApiVaultStoreWorkspaceSecretsRequest) *MockVaultAPI_VaultStoreWorkspaceSecrets_Call {
+func (_c *MockVaultAPI_VaultStoreWorkspaceSecrets_Call) RunAndReturn(run func(ctx context.Context, teamId int, workspaceId int) ApiVaultStoreWorkspaceSecretsRequest) *MockVaultAPI_VaultStoreWorkspaceSecrets_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -5368,7 +6396,7 @@ func (_c *MockWorkspacesAPI_WorkspacesCreateWorkspaceExecute_Call) RunAndReturn(
 }
 
 // WorkspacesDeleteEnvVar provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesDeleteEnvVar(ctx context.Context, workspaceId float32) ApiWorkspacesDeleteEnvVarRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesDeleteEnvVar(ctx context.Context, workspaceId int) ApiWorkspacesDeleteEnvVarRequest {
 	ret := _mock.Called(ctx, workspaceId)
 
 	if len(ret) == 0 {
@@ -5376,7 +6404,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesDeleteEnvVar(ctx context.Context, work
 	}
 
 	var r0 ApiWorkspacesDeleteEnvVarRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiWorkspacesDeleteEnvVarRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiWorkspacesDeleteEnvVarRequest); ok {
 		r0 = returnFunc(ctx, workspaceId)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesDeleteEnvVarRequest)
@@ -5391,20 +6419,20 @@ type MockWorkspacesAPI_WorkspacesDeleteEnvVar_Call struct {
 
 // WorkspacesDeleteEnvVar is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesDeleteEnvVar(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesDeleteEnvVar_Call {
 	return &MockWorkspacesAPI_WorkspacesDeleteEnvVar_Call{Call: _e.mock.On("WorkspacesDeleteEnvVar", ctx, workspaceId)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesDeleteEnvVar_Call) Run(run func(ctx context.Context, workspaceId float32)) *MockWorkspacesAPI_WorkspacesDeleteEnvVar_Call {
+func (_c *MockWorkspacesAPI_WorkspacesDeleteEnvVar_Call) Run(run func(ctx context.Context, workspaceId int)) *MockWorkspacesAPI_WorkspacesDeleteEnvVar_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -5419,7 +6447,7 @@ func (_c *MockWorkspacesAPI_WorkspacesDeleteEnvVar_Call) Return(apiWorkspacesDel
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesDeleteEnvVar_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32) ApiWorkspacesDeleteEnvVarRequest) *MockWorkspacesAPI_WorkspacesDeleteEnvVar_Call {
+func (_c *MockWorkspacesAPI_WorkspacesDeleteEnvVar_Call) RunAndReturn(run func(ctx context.Context, workspaceId int) ApiWorkspacesDeleteEnvVarRequest) *MockWorkspacesAPI_WorkspacesDeleteEnvVar_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -5487,7 +6515,7 @@ func (_c *MockWorkspacesAPI_WorkspacesDeleteEnvVarExecute_Call) RunAndReturn(run
 }
 
 // WorkspacesDeleteWorkspace provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesDeleteWorkspace(ctx context.Context, workspaceId float32) ApiWorkspacesDeleteWorkspaceRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesDeleteWorkspace(ctx context.Context, workspaceId int) ApiWorkspacesDeleteWorkspaceRequest {
 	ret := _mock.Called(ctx, workspaceId)
 
 	if len(ret) == 0 {
@@ -5495,7 +6523,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesDeleteWorkspace(ctx context.Context, w
 	}
 
 	var r0 ApiWorkspacesDeleteWorkspaceRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiWorkspacesDeleteWorkspaceRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiWorkspacesDeleteWorkspaceRequest); ok {
 		r0 = returnFunc(ctx, workspaceId)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesDeleteWorkspaceRequest)
@@ -5510,20 +6538,20 @@ type MockWorkspacesAPI_WorkspacesDeleteWorkspace_Call struct {
 
 // WorkspacesDeleteWorkspace is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesDeleteWorkspace(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesDeleteWorkspace_Call {
 	return &MockWorkspacesAPI_WorkspacesDeleteWorkspace_Call{Call: _e.mock.On("WorkspacesDeleteWorkspace", ctx, workspaceId)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesDeleteWorkspace_Call) Run(run func(ctx context.Context, workspaceId float32)) *MockWorkspacesAPI_WorkspacesDeleteWorkspace_Call {
+func (_c *MockWorkspacesAPI_WorkspacesDeleteWorkspace_Call) Run(run func(ctx context.Context, workspaceId int)) *MockWorkspacesAPI_WorkspacesDeleteWorkspace_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -5538,7 +6566,7 @@ func (_c *MockWorkspacesAPI_WorkspacesDeleteWorkspace_Call) Return(apiWorkspaces
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesDeleteWorkspace_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32) ApiWorkspacesDeleteWorkspaceRequest) *MockWorkspacesAPI_WorkspacesDeleteWorkspace_Call {
+func (_c *MockWorkspacesAPI_WorkspacesDeleteWorkspace_Call) RunAndReturn(run func(ctx context.Context, workspaceId int) ApiWorkspacesDeleteWorkspaceRequest) *MockWorkspacesAPI_WorkspacesDeleteWorkspace_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -5606,7 +6634,7 @@ func (_c *MockWorkspacesAPI_WorkspacesDeleteWorkspaceExecute_Call) RunAndReturn(
 }
 
 // WorkspacesDeployLandscape provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesDeployLandscape(ctx context.Context, workspaceId float32) ApiWorkspacesDeployLandscapeRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesDeployLandscape(ctx context.Context, workspaceId int) ApiWorkspacesDeployLandscapeRequest {
 	ret := _mock.Called(ctx, workspaceId)
 
 	if len(ret) == 0 {
@@ -5614,7 +6642,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesDeployLandscape(ctx context.Context, w
 	}
 
 	var r0 ApiWorkspacesDeployLandscapeRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiWorkspacesDeployLandscapeRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiWorkspacesDeployLandscapeRequest); ok {
 		r0 = returnFunc(ctx, workspaceId)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesDeployLandscapeRequest)
@@ -5629,20 +6657,20 @@ type MockWorkspacesAPI_WorkspacesDeployLandscape_Call struct {
 
 // WorkspacesDeployLandscape is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesDeployLandscape(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesDeployLandscape_Call {
 	return &MockWorkspacesAPI_WorkspacesDeployLandscape_Call{Call: _e.mock.On("WorkspacesDeployLandscape", ctx, workspaceId)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesDeployLandscape_Call) Run(run func(ctx context.Context, workspaceId float32)) *MockWorkspacesAPI_WorkspacesDeployLandscape_Call {
+func (_c *MockWorkspacesAPI_WorkspacesDeployLandscape_Call) Run(run func(ctx context.Context, workspaceId int)) *MockWorkspacesAPI_WorkspacesDeployLandscape_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -5657,13 +6685,13 @@ func (_c *MockWorkspacesAPI_WorkspacesDeployLandscape_Call) Return(apiWorkspaces
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesDeployLandscape_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32) ApiWorkspacesDeployLandscapeRequest) *MockWorkspacesAPI_WorkspacesDeployLandscape_Call {
+func (_c *MockWorkspacesAPI_WorkspacesDeployLandscape_Call) RunAndReturn(run func(ctx context.Context, workspaceId int) ApiWorkspacesDeployLandscapeRequest) *MockWorkspacesAPI_WorkspacesDeployLandscape_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
 // WorkspacesDeployLandscape1 provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesDeployLandscape1(ctx context.Context, workspaceId float32, profile string) ApiWorkspacesDeployLandscape1Request {
+func (_mock *MockWorkspacesAPI) WorkspacesDeployLandscape1(ctx context.Context, workspaceId int, profile string) ApiWorkspacesDeployLandscape1Request {
 	ret := _mock.Called(ctx, workspaceId, profile)
 
 	if len(ret) == 0 {
@@ -5671,7 +6699,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesDeployLandscape1(ctx context.Context, 
 	}
 
 	var r0 ApiWorkspacesDeployLandscape1Request
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, string) ApiWorkspacesDeployLandscape1Request); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiWorkspacesDeployLandscape1Request); ok {
 		r0 = returnFunc(ctx, workspaceId, profile)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesDeployLandscape1Request)
@@ -5686,21 +6714,21 @@ type MockWorkspacesAPI_WorkspacesDeployLandscape1_Call struct {
 
 // WorkspacesDeployLandscape1 is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 //   - profile string
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesDeployLandscape1(ctx any, workspaceId any, profile any) *MockWorkspacesAPI_WorkspacesDeployLandscape1_Call {
 	return &MockWorkspacesAPI_WorkspacesDeployLandscape1_Call{Call: _e.mock.On("WorkspacesDeployLandscape1", ctx, workspaceId, profile)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesDeployLandscape1_Call) Run(run func(ctx context.Context, workspaceId float32, profile string)) *MockWorkspacesAPI_WorkspacesDeployLandscape1_Call {
+func (_c *MockWorkspacesAPI_WorkspacesDeployLandscape1_Call) Run(run func(ctx context.Context, workspaceId int, profile string)) *MockWorkspacesAPI_WorkspacesDeployLandscape1_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		var arg2 string
 		if args[2] != nil {
@@ -5720,7 +6748,7 @@ func (_c *MockWorkspacesAPI_WorkspacesDeployLandscape1_Call) Return(apiWorkspace
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesDeployLandscape1_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32, profile string) ApiWorkspacesDeployLandscape1Request) *MockWorkspacesAPI_WorkspacesDeployLandscape1_Call {
+func (_c *MockWorkspacesAPI_WorkspacesDeployLandscape1_Call) RunAndReturn(run func(ctx context.Context, workspaceId int, profile string) ApiWorkspacesDeployLandscape1Request) *MockWorkspacesAPI_WorkspacesDeployLandscape1_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -5850,7 +6878,7 @@ func (_c *MockWorkspacesAPI_WorkspacesDeployLandscapeExecute_Call) RunAndReturn(
 }
 
 // WorkspacesExecuteCommand provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesExecuteCommand(ctx context.Context, workspaceId float32) ApiWorkspacesExecuteCommandRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesExecuteCommand(ctx context.Context, workspaceId int) ApiWorkspacesExecuteCommandRequest {
 	ret := _mock.Called(ctx, workspaceId)
 
 	if len(ret) == 0 {
@@ -5858,7 +6886,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesExecuteCommand(ctx context.Context, wo
 	}
 
 	var r0 ApiWorkspacesExecuteCommandRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiWorkspacesExecuteCommandRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiWorkspacesExecuteCommandRequest); ok {
 		r0 = returnFunc(ctx, workspaceId)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesExecuteCommandRequest)
@@ -5873,20 +6901,20 @@ type MockWorkspacesAPI_WorkspacesExecuteCommand_Call struct {
 
 // WorkspacesExecuteCommand is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesExecuteCommand(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesExecuteCommand_Call {
 	return &MockWorkspacesAPI_WorkspacesExecuteCommand_Call{Call: _e.mock.On("WorkspacesExecuteCommand", ctx, workspaceId)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesExecuteCommand_Call) Run(run func(ctx context.Context, workspaceId float32)) *MockWorkspacesAPI_WorkspacesExecuteCommand_Call {
+func (_c *MockWorkspacesAPI_WorkspacesExecuteCommand_Call) Run(run func(ctx context.Context, workspaceId int)) *MockWorkspacesAPI_WorkspacesExecuteCommand_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -5901,7 +6929,7 @@ func (_c *MockWorkspacesAPI_WorkspacesExecuteCommand_Call) Return(apiWorkspacesE
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesExecuteCommand_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32) ApiWorkspacesExecuteCommandRequest) *MockWorkspacesAPI_WorkspacesExecuteCommand_Call {
+func (_c *MockWorkspacesAPI_WorkspacesExecuteCommand_Call) RunAndReturn(run func(ctx context.Context, workspaceId int) ApiWorkspacesExecuteCommandRequest) *MockWorkspacesAPI_WorkspacesExecuteCommand_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -5977,7 +7005,7 @@ func (_c *MockWorkspacesAPI_WorkspacesExecuteCommandExecute_Call) RunAndReturn(r
 }
 
 // WorkspacesGetWorkspace provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesGetWorkspace(ctx context.Context, workspaceId float32) ApiWorkspacesGetWorkspaceRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesGetWorkspace(ctx context.Context, workspaceId int) ApiWorkspacesGetWorkspaceRequest {
 	ret := _mock.Called(ctx, workspaceId)
 
 	if len(ret) == 0 {
@@ -5985,7 +7013,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesGetWorkspace(ctx context.Context, work
 	}
 
 	var r0 ApiWorkspacesGetWorkspaceRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiWorkspacesGetWorkspaceRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiWorkspacesGetWorkspaceRequest); ok {
 		r0 = returnFunc(ctx, workspaceId)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesGetWorkspaceRequest)
@@ -6000,20 +7028,20 @@ type MockWorkspacesAPI_WorkspacesGetWorkspace_Call struct {
 
 // WorkspacesGetWorkspace is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesGetWorkspace(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesGetWorkspace_Call {
 	return &MockWorkspacesAPI_WorkspacesGetWorkspace_Call{Call: _e.mock.On("WorkspacesGetWorkspace", ctx, workspaceId)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesGetWorkspace_Call) Run(run func(ctx context.Context, workspaceId float32)) *MockWorkspacesAPI_WorkspacesGetWorkspace_Call {
+func (_c *MockWorkspacesAPI_WorkspacesGetWorkspace_Call) Run(run func(ctx context.Context, workspaceId int)) *MockWorkspacesAPI_WorkspacesGetWorkspace_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -6028,7 +7056,7 @@ func (_c *MockWorkspacesAPI_WorkspacesGetWorkspace_Call) Return(apiWorkspacesGet
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesGetWorkspace_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32) ApiWorkspacesGetWorkspaceRequest) *MockWorkspacesAPI_WorkspacesGetWorkspace_Call {
+func (_c *MockWorkspacesAPI_WorkspacesGetWorkspace_Call) RunAndReturn(run func(ctx context.Context, workspaceId int) ApiWorkspacesGetWorkspaceRequest) *MockWorkspacesAPI_WorkspacesGetWorkspace_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -6104,7 +7132,7 @@ func (_c *MockWorkspacesAPI_WorkspacesGetWorkspaceExecute_Call) RunAndReturn(run
 }
 
 // WorkspacesGetWorkspaceStatus provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesGetWorkspaceStatus(ctx context.Context, workspaceId float32) ApiWorkspacesGetWorkspaceStatusRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesGetWorkspaceStatus(ctx context.Context, workspaceId int) ApiWorkspacesGetWorkspaceStatusRequest {
 	ret := _mock.Called(ctx, workspaceId)
 
 	if len(ret) == 0 {
@@ -6112,7 +7140,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesGetWorkspaceStatus(ctx context.Context
 	}
 
 	var r0 ApiWorkspacesGetWorkspaceStatusRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiWorkspacesGetWorkspaceStatusRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiWorkspacesGetWorkspaceStatusRequest); ok {
 		r0 = returnFunc(ctx, workspaceId)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesGetWorkspaceStatusRequest)
@@ -6127,20 +7155,20 @@ type MockWorkspacesAPI_WorkspacesGetWorkspaceStatus_Call struct {
 
 // WorkspacesGetWorkspaceStatus is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesGetWorkspaceStatus(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesGetWorkspaceStatus_Call {
 	return &MockWorkspacesAPI_WorkspacesGetWorkspaceStatus_Call{Call: _e.mock.On("WorkspacesGetWorkspaceStatus", ctx, workspaceId)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesGetWorkspaceStatus_Call) Run(run func(ctx context.Context, workspaceId float32)) *MockWorkspacesAPI_WorkspacesGetWorkspaceStatus_Call {
+func (_c *MockWorkspacesAPI_WorkspacesGetWorkspaceStatus_Call) Run(run func(ctx context.Context, workspaceId int)) *MockWorkspacesAPI_WorkspacesGetWorkspaceStatus_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -6155,7 +7183,7 @@ func (_c *MockWorkspacesAPI_WorkspacesGetWorkspaceStatus_Call) Return(apiWorkspa
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesGetWorkspaceStatus_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32) ApiWorkspacesGetWorkspaceStatusRequest) *MockWorkspacesAPI_WorkspacesGetWorkspaceStatus_Call {
+func (_c *MockWorkspacesAPI_WorkspacesGetWorkspaceStatus_Call) RunAndReturn(run func(ctx context.Context, workspaceId int) ApiWorkspacesGetWorkspaceStatusRequest) *MockWorkspacesAPI_WorkspacesGetWorkspaceStatus_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -6231,7 +7259,7 @@ func (_c *MockWorkspacesAPI_WorkspacesGetWorkspaceStatusExecute_Call) RunAndRetu
 }
 
 // WorkspacesGitHead provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesGitHead(ctx context.Context, workspaceId float32) ApiWorkspacesGitHeadRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesGitHead(ctx context.Context, workspaceId int) ApiWorkspacesGitHeadRequest {
 	ret := _mock.Called(ctx, workspaceId)
 
 	if len(ret) == 0 {
@@ -6239,7 +7267,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesGitHead(ctx context.Context, workspace
 	}
 
 	var r0 ApiWorkspacesGitHeadRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiWorkspacesGitHeadRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiWorkspacesGitHeadRequest); ok {
 		r0 = returnFunc(ctx, workspaceId)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesGitHeadRequest)
@@ -6254,20 +7282,20 @@ type MockWorkspacesAPI_WorkspacesGitHead_Call struct {
 
 // WorkspacesGitHead is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesGitHead(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesGitHead_Call {
 	return &MockWorkspacesAPI_WorkspacesGitHead_Call{Call: _e.mock.On("WorkspacesGitHead", ctx, workspaceId)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesGitHead_Call) Run(run func(ctx context.Context, workspaceId float32)) *MockWorkspacesAPI_WorkspacesGitHead_Call {
+func (_c *MockWorkspacesAPI_WorkspacesGitHead_Call) Run(run func(ctx context.Context, workspaceId int)) *MockWorkspacesAPI_WorkspacesGitHead_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -6282,7 +7310,7 @@ func (_c *MockWorkspacesAPI_WorkspacesGitHead_Call) Return(apiWorkspacesGitHeadR
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesGitHead_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32) ApiWorkspacesGitHeadRequest) *MockWorkspacesAPI_WorkspacesGitHead_Call {
+func (_c *MockWorkspacesAPI_WorkspacesGitHead_Call) RunAndReturn(run func(ctx context.Context, workspaceId int) ApiWorkspacesGitHeadRequest) *MockWorkspacesAPI_WorkspacesGitHead_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -6358,7 +7386,7 @@ func (_c *MockWorkspacesAPI_WorkspacesGitHeadExecute_Call) RunAndReturn(run func
 }
 
 // WorkspacesGitPull provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesGitPull(ctx context.Context, workspaceId float32) ApiWorkspacesGitPullRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesGitPull(ctx context.Context, workspaceId int) ApiWorkspacesGitPullRequest {
 	ret := _mock.Called(ctx, workspaceId)
 
 	if len(ret) == 0 {
@@ -6366,7 +7394,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesGitPull(ctx context.Context, workspace
 	}
 
 	var r0 ApiWorkspacesGitPullRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiWorkspacesGitPullRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiWorkspacesGitPullRequest); ok {
 		r0 = returnFunc(ctx, workspaceId)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesGitPullRequest)
@@ -6381,20 +7409,20 @@ type MockWorkspacesAPI_WorkspacesGitPull_Call struct {
 
 // WorkspacesGitPull is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesGitPull(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesGitPull_Call {
 	return &MockWorkspacesAPI_WorkspacesGitPull_Call{Call: _e.mock.On("WorkspacesGitPull", ctx, workspaceId)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesGitPull_Call) Run(run func(ctx context.Context, workspaceId float32)) *MockWorkspacesAPI_WorkspacesGitPull_Call {
+func (_c *MockWorkspacesAPI_WorkspacesGitPull_Call) Run(run func(ctx context.Context, workspaceId int)) *MockWorkspacesAPI_WorkspacesGitPull_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -6409,13 +7437,13 @@ func (_c *MockWorkspacesAPI_WorkspacesGitPull_Call) Return(apiWorkspacesGitPullR
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesGitPull_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32) ApiWorkspacesGitPullRequest) *MockWorkspacesAPI_WorkspacesGitPull_Call {
+func (_c *MockWorkspacesAPI_WorkspacesGitPull_Call) RunAndReturn(run func(ctx context.Context, workspaceId int) ApiWorkspacesGitPullRequest) *MockWorkspacesAPI_WorkspacesGitPull_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
 // WorkspacesGitPull1 provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesGitPull1(ctx context.Context, workspaceId float32, remote string) ApiWorkspacesGitPull1Request {
+func (_mock *MockWorkspacesAPI) WorkspacesGitPull1(ctx context.Context, workspaceId int, remote string) ApiWorkspacesGitPull1Request {
 	ret := _mock.Called(ctx, workspaceId, remote)
 
 	if len(ret) == 0 {
@@ -6423,7 +7451,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesGitPull1(ctx context.Context, workspac
 	}
 
 	var r0 ApiWorkspacesGitPull1Request
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, string) ApiWorkspacesGitPull1Request); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiWorkspacesGitPull1Request); ok {
 		r0 = returnFunc(ctx, workspaceId, remote)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesGitPull1Request)
@@ -6438,21 +7466,21 @@ type MockWorkspacesAPI_WorkspacesGitPull1_Call struct {
 
 // WorkspacesGitPull1 is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 //   - remote string
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesGitPull1(ctx any, workspaceId any, remote any) *MockWorkspacesAPI_WorkspacesGitPull1_Call {
 	return &MockWorkspacesAPI_WorkspacesGitPull1_Call{Call: _e.mock.On("WorkspacesGitPull1", ctx, workspaceId, remote)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesGitPull1_Call) Run(run func(ctx context.Context, workspaceId float32, remote string)) *MockWorkspacesAPI_WorkspacesGitPull1_Call {
+func (_c *MockWorkspacesAPI_WorkspacesGitPull1_Call) Run(run func(ctx context.Context, workspaceId int, remote string)) *MockWorkspacesAPI_WorkspacesGitPull1_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		var arg2 string
 		if args[2] != nil {
@@ -6472,7 +7500,7 @@ func (_c *MockWorkspacesAPI_WorkspacesGitPull1_Call) Return(apiWorkspacesGitPull
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesGitPull1_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32, remote string) ApiWorkspacesGitPull1Request) *MockWorkspacesAPI_WorkspacesGitPull1_Call {
+func (_c *MockWorkspacesAPI_WorkspacesGitPull1_Call) RunAndReturn(run func(ctx context.Context, workspaceId int, remote string) ApiWorkspacesGitPull1Request) *MockWorkspacesAPI_WorkspacesGitPull1_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -6540,7 +7568,7 @@ func (_c *MockWorkspacesAPI_WorkspacesGitPull1Execute_Call) RunAndReturn(run fun
 }
 
 // WorkspacesGitPull2 provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesGitPull2(ctx context.Context, workspaceId float32, remote string, branch string) ApiWorkspacesGitPull2Request {
+func (_mock *MockWorkspacesAPI) WorkspacesGitPull2(ctx context.Context, workspaceId int, remote string, branch string) ApiWorkspacesGitPull2Request {
 	ret := _mock.Called(ctx, workspaceId, remote, branch)
 
 	if len(ret) == 0 {
@@ -6548,7 +7576,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesGitPull2(ctx context.Context, workspac
 	}
 
 	var r0 ApiWorkspacesGitPull2Request
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, string, string) ApiWorkspacesGitPull2Request); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string, string) ApiWorkspacesGitPull2Request); ok {
 		r0 = returnFunc(ctx, workspaceId, remote, branch)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesGitPull2Request)
@@ -6563,22 +7591,22 @@ type MockWorkspacesAPI_WorkspacesGitPull2_Call struct {
 
 // WorkspacesGitPull2 is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 //   - remote string
 //   - branch string
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesGitPull2(ctx any, workspaceId any, remote any, branch any) *MockWorkspacesAPI_WorkspacesGitPull2_Call {
 	return &MockWorkspacesAPI_WorkspacesGitPull2_Call{Call: _e.mock.On("WorkspacesGitPull2", ctx, workspaceId, remote, branch)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesGitPull2_Call) Run(run func(ctx context.Context, workspaceId float32, remote string, branch string)) *MockWorkspacesAPI_WorkspacesGitPull2_Call {
+func (_c *MockWorkspacesAPI_WorkspacesGitPull2_Call) Run(run func(ctx context.Context, workspaceId int, remote string, branch string)) *MockWorkspacesAPI_WorkspacesGitPull2_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		var arg2 string
 		if args[2] != nil {
@@ -6603,7 +7631,7 @@ func (_c *MockWorkspacesAPI_WorkspacesGitPull2_Call) Return(apiWorkspacesGitPull
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesGitPull2_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32, remote string, branch string) ApiWorkspacesGitPull2Request) *MockWorkspacesAPI_WorkspacesGitPull2_Call {
+func (_c *MockWorkspacesAPI_WorkspacesGitPull2_Call) RunAndReturn(run func(ctx context.Context, workspaceId int, remote string, branch string) ApiWorkspacesGitPull2Request) *MockWorkspacesAPI_WorkspacesGitPull2_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -6733,7 +7761,7 @@ func (_c *MockWorkspacesAPI_WorkspacesGitPullExecute_Call) RunAndReturn(run func
 }
 
 // WorkspacesListEnvVars provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesListEnvVars(ctx context.Context, workspaceId float32) ApiWorkspacesListEnvVarsRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesListEnvVars(ctx context.Context, workspaceId int) ApiWorkspacesListEnvVarsRequest {
 	ret := _mock.Called(ctx, workspaceId)
 
 	if len(ret) == 0 {
@@ -6741,7 +7769,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesListEnvVars(ctx context.Context, works
 	}
 
 	var r0 ApiWorkspacesListEnvVarsRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiWorkspacesListEnvVarsRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiWorkspacesListEnvVarsRequest); ok {
 		r0 = returnFunc(ctx, workspaceId)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesListEnvVarsRequest)
@@ -6756,20 +7784,20 @@ type MockWorkspacesAPI_WorkspacesListEnvVars_Call struct {
 
 // WorkspacesListEnvVars is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesListEnvVars(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesListEnvVars_Call {
 	return &MockWorkspacesAPI_WorkspacesListEnvVars_Call{Call: _e.mock.On("WorkspacesListEnvVars", ctx, workspaceId)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesListEnvVars_Call) Run(run func(ctx context.Context, workspaceId float32)) *MockWorkspacesAPI_WorkspacesListEnvVars_Call {
+func (_c *MockWorkspacesAPI_WorkspacesListEnvVars_Call) Run(run func(ctx context.Context, workspaceId int)) *MockWorkspacesAPI_WorkspacesListEnvVars_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -6784,7 +7812,7 @@ func (_c *MockWorkspacesAPI_WorkspacesListEnvVars_Call) Return(apiWorkspacesList
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesListEnvVars_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32) ApiWorkspacesListEnvVarsRequest) *MockWorkspacesAPI_WorkspacesListEnvVars_Call {
+func (_c *MockWorkspacesAPI_WorkspacesListEnvVars_Call) RunAndReturn(run func(ctx context.Context, workspaceId int) ApiWorkspacesListEnvVarsRequest) *MockWorkspacesAPI_WorkspacesListEnvVars_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -6860,7 +7888,7 @@ func (_c *MockWorkspacesAPI_WorkspacesListEnvVarsExecute_Call) RunAndReturn(run 
 }
 
 // WorkspacesListWorkspaces provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesListWorkspaces(ctx context.Context, teamId float32) ApiWorkspacesListWorkspacesRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesListWorkspaces(ctx context.Context, teamId int) ApiWorkspacesListWorkspacesRequest {
 	ret := _mock.Called(ctx, teamId)
 
 	if len(ret) == 0 {
@@ -6868,7 +7896,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesListWorkspaces(ctx context.Context, te
 	}
 
 	var r0 ApiWorkspacesListWorkspacesRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiWorkspacesListWorkspacesRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiWorkspacesListWorkspacesRequest); ok {
 		r0 = returnFunc(ctx, teamId)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesListWorkspacesRequest)
@@ -6883,20 +7911,20 @@ type MockWorkspacesAPI_WorkspacesListWorkspaces_Call struct {
 
 // WorkspacesListWorkspaces is a helper method to define mock.On call
 //   - ctx context.Context
-//   - teamId float32
+//   - teamId int
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesListWorkspaces(ctx any, teamId any) *MockWorkspacesAPI_WorkspacesListWorkspaces_Call {
 	return &MockWorkspacesAPI_WorkspacesListWorkspaces_Call{Call: _e.mock.On("WorkspacesListWorkspaces", ctx, teamId)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesListWorkspaces_Call) Run(run func(ctx context.Context, teamId float32)) *MockWorkspacesAPI_WorkspacesListWorkspaces_Call {
+func (_c *MockWorkspacesAPI_WorkspacesListWorkspaces_Call) Run(run func(ctx context.Context, teamId int)) *MockWorkspacesAPI_WorkspacesListWorkspaces_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -6911,7 +7939,7 @@ func (_c *MockWorkspacesAPI_WorkspacesListWorkspaces_Call) Return(apiWorkspacesL
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesListWorkspaces_Call) RunAndReturn(run func(ctx context.Context, teamId float32) ApiWorkspacesListWorkspacesRequest) *MockWorkspacesAPI_WorkspacesListWorkspaces_Call {
+func (_c *MockWorkspacesAPI_WorkspacesListWorkspaces_Call) RunAndReturn(run func(ctx context.Context, teamId int) ApiWorkspacesListWorkspacesRequest) *MockWorkspacesAPI_WorkspacesListWorkspaces_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -6987,7 +8015,7 @@ func (_c *MockWorkspacesAPI_WorkspacesListWorkspacesExecute_Call) RunAndReturn(r
 }
 
 // WorkspacesLogs provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesLogs(ctx context.Context, workspaceId float32, stage string, step float32) ApiWorkspacesLogsRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesLogs(ctx context.Context, workspaceId int, stage string, step int) ApiWorkspacesLogsRequest {
 	ret := _mock.Called(ctx, workspaceId, stage, step)
 
 	if len(ret) == 0 {
@@ -6995,7 +8023,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesLogs(ctx context.Context, workspaceId 
 	}
 
 	var r0 ApiWorkspacesLogsRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, string, float32) ApiWorkspacesLogsRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string, int) ApiWorkspacesLogsRequest); ok {
 		r0 = returnFunc(ctx, workspaceId, stage, step)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesLogsRequest)
@@ -7010,30 +8038,30 @@ type MockWorkspacesAPI_WorkspacesLogs_Call struct {
 
 // WorkspacesLogs is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 //   - stage string
-//   - step float32
+//   - step int
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesLogs(ctx any, workspaceId any, stage any, step any) *MockWorkspacesAPI_WorkspacesLogs_Call {
 	return &MockWorkspacesAPI_WorkspacesLogs_Call{Call: _e.mock.On("WorkspacesLogs", ctx, workspaceId, stage, step)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesLogs_Call) Run(run func(ctx context.Context, workspaceId float32, stage string, step float32)) *MockWorkspacesAPI_WorkspacesLogs_Call {
+func (_c *MockWorkspacesAPI_WorkspacesLogs_Call) Run(run func(ctx context.Context, workspaceId int, stage string, step int)) *MockWorkspacesAPI_WorkspacesLogs_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		var arg2 string
 		if args[2] != nil {
 			arg2 = args[2].(string)
 		}
-		var arg3 float32
+		var arg3 int
 		if args[3] != nil {
-			arg3 = args[3].(float32)
+			arg3 = args[3].(int)
 		}
 		run(
 			arg0,
@@ -7050,7 +8078,7 @@ func (_c *MockWorkspacesAPI_WorkspacesLogs_Call) Return(apiWorkspacesLogsRequest
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesLogs_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32, stage string, step float32) ApiWorkspacesLogsRequest) *MockWorkspacesAPI_WorkspacesLogs_Call {
+func (_c *MockWorkspacesAPI_WorkspacesLogs_Call) RunAndReturn(run func(ctx context.Context, workspaceId int, stage string, step int) ApiWorkspacesLogsRequest) *MockWorkspacesAPI_WorkspacesLogs_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -7126,7 +8154,7 @@ func (_c *MockWorkspacesAPI_WorkspacesLogsExecute_Call) RunAndReturn(run func(r 
 }
 
 // WorkspacesPipelineStatus provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesPipelineStatus(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesPipelineStatusRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesPipelineStatus(ctx context.Context, workspaceId int, stage string) ApiWorkspacesPipelineStatusRequest {
 	ret := _mock.Called(ctx, workspaceId, stage)
 
 	if len(ret) == 0 {
@@ -7134,7 +8162,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesPipelineStatus(ctx context.Context, wo
 	}
 
 	var r0 ApiWorkspacesPipelineStatusRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, string) ApiWorkspacesPipelineStatusRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiWorkspacesPipelineStatusRequest); ok {
 		r0 = returnFunc(ctx, workspaceId, stage)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesPipelineStatusRequest)
@@ -7149,21 +8177,21 @@ type MockWorkspacesAPI_WorkspacesPipelineStatus_Call struct {
 
 // WorkspacesPipelineStatus is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 //   - stage string
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesPipelineStatus(ctx any, workspaceId any, stage any) *MockWorkspacesAPI_WorkspacesPipelineStatus_Call {
 	return &MockWorkspacesAPI_WorkspacesPipelineStatus_Call{Call: _e.mock.On("WorkspacesPipelineStatus", ctx, workspaceId, stage)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesPipelineStatus_Call) Run(run func(ctx context.Context, workspaceId float32, stage string)) *MockWorkspacesAPI_WorkspacesPipelineStatus_Call {
+func (_c *MockWorkspacesAPI_WorkspacesPipelineStatus_Call) Run(run func(ctx context.Context, workspaceId int, stage string)) *MockWorkspacesAPI_WorkspacesPipelineStatus_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		var arg2 string
 		if args[2] != nil {
@@ -7183,7 +8211,7 @@ func (_c *MockWorkspacesAPI_WorkspacesPipelineStatus_Call) Return(apiWorkspacesP
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesPipelineStatus_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesPipelineStatusRequest) *MockWorkspacesAPI_WorkspacesPipelineStatus_Call {
+func (_c *MockWorkspacesAPI_WorkspacesPipelineStatus_Call) RunAndReturn(run func(ctx context.Context, workspaceId int, stage string) ApiWorkspacesPipelineStatusRequest) *MockWorkspacesAPI_WorkspacesPipelineStatus_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -7259,7 +8287,7 @@ func (_c *MockWorkspacesAPI_WorkspacesPipelineStatusExecute_Call) RunAndReturn(r
 }
 
 // WorkspacesReplicaLogs provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesReplicaLogs(ctx context.Context, workspaceId float32, step float32, replica string) ApiWorkspacesReplicaLogsRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesReplicaLogs(ctx context.Context, workspaceId int, step int, replica string) ApiWorkspacesReplicaLogsRequest {
 	ret := _mock.Called(ctx, workspaceId, step, replica)
 
 	if len(ret) == 0 {
@@ -7267,7 +8295,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesReplicaLogs(ctx context.Context, works
 	}
 
 	var r0 ApiWorkspacesReplicaLogsRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, float32, string) ApiWorkspacesReplicaLogsRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, int, string) ApiWorkspacesReplicaLogsRequest); ok {
 		r0 = returnFunc(ctx, workspaceId, step, replica)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesReplicaLogsRequest)
@@ -7282,26 +8310,26 @@ type MockWorkspacesAPI_WorkspacesReplicaLogs_Call struct {
 
 // WorkspacesReplicaLogs is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
-//   - step float32
+//   - workspaceId int
+//   - step int
 //   - replica string
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesReplicaLogs(ctx any, workspaceId any, step any, replica any) *MockWorkspacesAPI_WorkspacesReplicaLogs_Call {
 	return &MockWorkspacesAPI_WorkspacesReplicaLogs_Call{Call: _e.mock.On("WorkspacesReplicaLogs", ctx, workspaceId, step, replica)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesReplicaLogs_Call) Run(run func(ctx context.Context, workspaceId float32, step float32, replica string)) *MockWorkspacesAPI_WorkspacesReplicaLogs_Call {
+func (_c *MockWorkspacesAPI_WorkspacesReplicaLogs_Call) Run(run func(ctx context.Context, workspaceId int, step int, replica string)) *MockWorkspacesAPI_WorkspacesReplicaLogs_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
-		var arg2 float32
+		var arg2 int
 		if args[2] != nil {
-			arg2 = args[2].(float32)
+			arg2 = args[2].(int)
 		}
 		var arg3 string
 		if args[3] != nil {
@@ -7322,7 +8350,7 @@ func (_c *MockWorkspacesAPI_WorkspacesReplicaLogs_Call) Return(apiWorkspacesRepl
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesReplicaLogs_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32, step float32, replica string) ApiWorkspacesReplicaLogsRequest) *MockWorkspacesAPI_WorkspacesReplicaLogs_Call {
+func (_c *MockWorkspacesAPI_WorkspacesReplicaLogs_Call) RunAndReturn(run func(ctx context.Context, workspaceId int, step int, replica string) ApiWorkspacesReplicaLogsRequest) *MockWorkspacesAPI_WorkspacesReplicaLogs_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -7398,7 +8426,7 @@ func (_c *MockWorkspacesAPI_WorkspacesReplicaLogsExecute_Call) RunAndReturn(run 
 }
 
 // WorkspacesScaleLandscapeServices provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesScaleLandscapeServices(ctx context.Context, workspaceId float32) ApiWorkspacesScaleLandscapeServicesRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesScaleLandscapeServices(ctx context.Context, workspaceId int) ApiWorkspacesScaleLandscapeServicesRequest {
 	ret := _mock.Called(ctx, workspaceId)
 
 	if len(ret) == 0 {
@@ -7406,7 +8434,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesScaleLandscapeServices(ctx context.Con
 	}
 
 	var r0 ApiWorkspacesScaleLandscapeServicesRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiWorkspacesScaleLandscapeServicesRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiWorkspacesScaleLandscapeServicesRequest); ok {
 		r0 = returnFunc(ctx, workspaceId)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesScaleLandscapeServicesRequest)
@@ -7421,20 +8449,20 @@ type MockWorkspacesAPI_WorkspacesScaleLandscapeServices_Call struct {
 
 // WorkspacesScaleLandscapeServices is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesScaleLandscapeServices(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesScaleLandscapeServices_Call {
 	return &MockWorkspacesAPI_WorkspacesScaleLandscapeServices_Call{Call: _e.mock.On("WorkspacesScaleLandscapeServices", ctx, workspaceId)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesScaleLandscapeServices_Call) Run(run func(ctx context.Context, workspaceId float32)) *MockWorkspacesAPI_WorkspacesScaleLandscapeServices_Call {
+func (_c *MockWorkspacesAPI_WorkspacesScaleLandscapeServices_Call) Run(run func(ctx context.Context, workspaceId int)) *MockWorkspacesAPI_WorkspacesScaleLandscapeServices_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -7449,7 +8477,7 @@ func (_c *MockWorkspacesAPI_WorkspacesScaleLandscapeServices_Call) Return(apiWor
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesScaleLandscapeServices_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32) ApiWorkspacesScaleLandscapeServicesRequest) *MockWorkspacesAPI_WorkspacesScaleLandscapeServices_Call {
+func (_c *MockWorkspacesAPI_WorkspacesScaleLandscapeServices_Call) RunAndReturn(run func(ctx context.Context, workspaceId int) ApiWorkspacesScaleLandscapeServicesRequest) *MockWorkspacesAPI_WorkspacesScaleLandscapeServices_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -7517,7 +8545,7 @@ func (_c *MockWorkspacesAPI_WorkspacesScaleLandscapeServicesExecute_Call) RunAnd
 }
 
 // WorkspacesServerLogs provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesServerLogs(ctx context.Context, workspaceId float32, step float32, server string) ApiWorkspacesServerLogsRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesServerLogs(ctx context.Context, workspaceId int, step int, server string) ApiWorkspacesServerLogsRequest {
 	ret := _mock.Called(ctx, workspaceId, step, server)
 
 	if len(ret) == 0 {
@@ -7525,7 +8553,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesServerLogs(ctx context.Context, worksp
 	}
 
 	var r0 ApiWorkspacesServerLogsRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, float32, string) ApiWorkspacesServerLogsRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, int, string) ApiWorkspacesServerLogsRequest); ok {
 		r0 = returnFunc(ctx, workspaceId, step, server)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesServerLogsRequest)
@@ -7540,26 +8568,26 @@ type MockWorkspacesAPI_WorkspacesServerLogs_Call struct {
 
 // WorkspacesServerLogs is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
-//   - step float32
+//   - workspaceId int
+//   - step int
 //   - server string
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesServerLogs(ctx any, workspaceId any, step any, server any) *MockWorkspacesAPI_WorkspacesServerLogs_Call {
 	return &MockWorkspacesAPI_WorkspacesServerLogs_Call{Call: _e.mock.On("WorkspacesServerLogs", ctx, workspaceId, step, server)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesServerLogs_Call) Run(run func(ctx context.Context, workspaceId float32, step float32, server string)) *MockWorkspacesAPI_WorkspacesServerLogs_Call {
+func (_c *MockWorkspacesAPI_WorkspacesServerLogs_Call) Run(run func(ctx context.Context, workspaceId int, step int, server string)) *MockWorkspacesAPI_WorkspacesServerLogs_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
-		var arg2 float32
+		var arg2 int
 		if args[2] != nil {
-			arg2 = args[2].(float32)
+			arg2 = args[2].(int)
 		}
 		var arg3 string
 		if args[3] != nil {
@@ -7580,7 +8608,7 @@ func (_c *MockWorkspacesAPI_WorkspacesServerLogs_Call) Return(apiWorkspacesServe
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesServerLogs_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32, step float32, server string) ApiWorkspacesServerLogsRequest) *MockWorkspacesAPI_WorkspacesServerLogs_Call {
+func (_c *MockWorkspacesAPI_WorkspacesServerLogs_Call) RunAndReturn(run func(ctx context.Context, workspaceId int, step int, server string) ApiWorkspacesServerLogsRequest) *MockWorkspacesAPI_WorkspacesServerLogs_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -7656,7 +8684,7 @@ func (_c *MockWorkspacesAPI_WorkspacesServerLogsExecute_Call) RunAndReturn(run f
 }
 
 // WorkspacesSetEnvVar provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesSetEnvVar(ctx context.Context, workspaceId float32) ApiWorkspacesSetEnvVarRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesSetEnvVar(ctx context.Context, workspaceId int) ApiWorkspacesSetEnvVarRequest {
 	ret := _mock.Called(ctx, workspaceId)
 
 	if len(ret) == 0 {
@@ -7664,7 +8692,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesSetEnvVar(ctx context.Context, workspa
 	}
 
 	var r0 ApiWorkspacesSetEnvVarRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiWorkspacesSetEnvVarRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiWorkspacesSetEnvVarRequest); ok {
 		r0 = returnFunc(ctx, workspaceId)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesSetEnvVarRequest)
@@ -7679,20 +8707,20 @@ type MockWorkspacesAPI_WorkspacesSetEnvVar_Call struct {
 
 // WorkspacesSetEnvVar is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesSetEnvVar(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesSetEnvVar_Call {
 	return &MockWorkspacesAPI_WorkspacesSetEnvVar_Call{Call: _e.mock.On("WorkspacesSetEnvVar", ctx, workspaceId)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesSetEnvVar_Call) Run(run func(ctx context.Context, workspaceId float32)) *MockWorkspacesAPI_WorkspacesSetEnvVar_Call {
+func (_c *MockWorkspacesAPI_WorkspacesSetEnvVar_Call) Run(run func(ctx context.Context, workspaceId int)) *MockWorkspacesAPI_WorkspacesSetEnvVar_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -7707,7 +8735,7 @@ func (_c *MockWorkspacesAPI_WorkspacesSetEnvVar_Call) Return(apiWorkspacesSetEnv
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesSetEnvVar_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32) ApiWorkspacesSetEnvVarRequest) *MockWorkspacesAPI_WorkspacesSetEnvVar_Call {
+func (_c *MockWorkspacesAPI_WorkspacesSetEnvVar_Call) RunAndReturn(run func(ctx context.Context, workspaceId int) ApiWorkspacesSetEnvVarRequest) *MockWorkspacesAPI_WorkspacesSetEnvVar_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -7775,7 +8803,7 @@ func (_c *MockWorkspacesAPI_WorkspacesSetEnvVarExecute_Call) RunAndReturn(run fu
 }
 
 // WorkspacesStartPipelineStage provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesStartPipelineStage(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesStartPipelineStageRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesStartPipelineStage(ctx context.Context, workspaceId int, stage string) ApiWorkspacesStartPipelineStageRequest {
 	ret := _mock.Called(ctx, workspaceId, stage)
 
 	if len(ret) == 0 {
@@ -7783,7 +8811,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesStartPipelineStage(ctx context.Context
 	}
 
 	var r0 ApiWorkspacesStartPipelineStageRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, string) ApiWorkspacesStartPipelineStageRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiWorkspacesStartPipelineStageRequest); ok {
 		r0 = returnFunc(ctx, workspaceId, stage)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesStartPipelineStageRequest)
@@ -7798,21 +8826,21 @@ type MockWorkspacesAPI_WorkspacesStartPipelineStage_Call struct {
 
 // WorkspacesStartPipelineStage is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 //   - stage string
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesStartPipelineStage(ctx any, workspaceId any, stage any) *MockWorkspacesAPI_WorkspacesStartPipelineStage_Call {
 	return &MockWorkspacesAPI_WorkspacesStartPipelineStage_Call{Call: _e.mock.On("WorkspacesStartPipelineStage", ctx, workspaceId, stage)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesStartPipelineStage_Call) Run(run func(ctx context.Context, workspaceId float32, stage string)) *MockWorkspacesAPI_WorkspacesStartPipelineStage_Call {
+func (_c *MockWorkspacesAPI_WorkspacesStartPipelineStage_Call) Run(run func(ctx context.Context, workspaceId int, stage string)) *MockWorkspacesAPI_WorkspacesStartPipelineStage_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		var arg2 string
 		if args[2] != nil {
@@ -7832,13 +8860,13 @@ func (_c *MockWorkspacesAPI_WorkspacesStartPipelineStage_Call) Return(apiWorkspa
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesStartPipelineStage_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesStartPipelineStageRequest) *MockWorkspacesAPI_WorkspacesStartPipelineStage_Call {
+func (_c *MockWorkspacesAPI_WorkspacesStartPipelineStage_Call) RunAndReturn(run func(ctx context.Context, workspaceId int, stage string) ApiWorkspacesStartPipelineStageRequest) *MockWorkspacesAPI_WorkspacesStartPipelineStage_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
 // WorkspacesStartPipelineStage1 provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesStartPipelineStage1(ctx context.Context, workspaceId float32, stage string, profile string) ApiWorkspacesStartPipelineStage1Request {
+func (_mock *MockWorkspacesAPI) WorkspacesStartPipelineStage1(ctx context.Context, workspaceId int, stage string, profile string) ApiWorkspacesStartPipelineStage1Request {
 	ret := _mock.Called(ctx, workspaceId, stage, profile)
 
 	if len(ret) == 0 {
@@ -7846,7 +8874,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesStartPipelineStage1(ctx context.Contex
 	}
 
 	var r0 ApiWorkspacesStartPipelineStage1Request
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, string, string) ApiWorkspacesStartPipelineStage1Request); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string, string) ApiWorkspacesStartPipelineStage1Request); ok {
 		r0 = returnFunc(ctx, workspaceId, stage, profile)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesStartPipelineStage1Request)
@@ -7861,22 +8889,22 @@ type MockWorkspacesAPI_WorkspacesStartPipelineStage1_Call struct {
 
 // WorkspacesStartPipelineStage1 is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 //   - stage string
 //   - profile string
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesStartPipelineStage1(ctx any, workspaceId any, stage any, profile any) *MockWorkspacesAPI_WorkspacesStartPipelineStage1_Call {
 	return &MockWorkspacesAPI_WorkspacesStartPipelineStage1_Call{Call: _e.mock.On("WorkspacesStartPipelineStage1", ctx, workspaceId, stage, profile)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesStartPipelineStage1_Call) Run(run func(ctx context.Context, workspaceId float32, stage string, profile string)) *MockWorkspacesAPI_WorkspacesStartPipelineStage1_Call {
+func (_c *MockWorkspacesAPI_WorkspacesStartPipelineStage1_Call) Run(run func(ctx context.Context, workspaceId int, stage string, profile string)) *MockWorkspacesAPI_WorkspacesStartPipelineStage1_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		var arg2 string
 		if args[2] != nil {
@@ -7901,7 +8929,7 @@ func (_c *MockWorkspacesAPI_WorkspacesStartPipelineStage1_Call) Return(apiWorksp
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesStartPipelineStage1_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32, stage string, profile string) ApiWorkspacesStartPipelineStage1Request) *MockWorkspacesAPI_WorkspacesStartPipelineStage1_Call {
+func (_c *MockWorkspacesAPI_WorkspacesStartPipelineStage1_Call) RunAndReturn(run func(ctx context.Context, workspaceId int, stage string, profile string) ApiWorkspacesStartPipelineStage1Request) *MockWorkspacesAPI_WorkspacesStartPipelineStage1_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -8031,7 +9059,7 @@ func (_c *MockWorkspacesAPI_WorkspacesStartPipelineStageExecute_Call) RunAndRetu
 }
 
 // WorkspacesStopPipelineStage provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesStopPipelineStage(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesStopPipelineStageRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesStopPipelineStage(ctx context.Context, workspaceId int, stage string) ApiWorkspacesStopPipelineStageRequest {
 	ret := _mock.Called(ctx, workspaceId, stage)
 
 	if len(ret) == 0 {
@@ -8039,7 +9067,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesStopPipelineStage(ctx context.Context,
 	}
 
 	var r0 ApiWorkspacesStopPipelineStageRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32, string) ApiWorkspacesStopPipelineStageRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) ApiWorkspacesStopPipelineStageRequest); ok {
 		r0 = returnFunc(ctx, workspaceId, stage)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesStopPipelineStageRequest)
@@ -8054,21 +9082,21 @@ type MockWorkspacesAPI_WorkspacesStopPipelineStage_Call struct {
 
 // WorkspacesStopPipelineStage is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 //   - stage string
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesStopPipelineStage(ctx any, workspaceId any, stage any) *MockWorkspacesAPI_WorkspacesStopPipelineStage_Call {
 	return &MockWorkspacesAPI_WorkspacesStopPipelineStage_Call{Call: _e.mock.On("WorkspacesStopPipelineStage", ctx, workspaceId, stage)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesStopPipelineStage_Call) Run(run func(ctx context.Context, workspaceId float32, stage string)) *MockWorkspacesAPI_WorkspacesStopPipelineStage_Call {
+func (_c *MockWorkspacesAPI_WorkspacesStopPipelineStage_Call) Run(run func(ctx context.Context, workspaceId int, stage string)) *MockWorkspacesAPI_WorkspacesStopPipelineStage_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		var arg2 string
 		if args[2] != nil {
@@ -8088,7 +9116,7 @@ func (_c *MockWorkspacesAPI_WorkspacesStopPipelineStage_Call) Return(apiWorkspac
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesStopPipelineStage_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesStopPipelineStageRequest) *MockWorkspacesAPI_WorkspacesStopPipelineStage_Call {
+func (_c *MockWorkspacesAPI_WorkspacesStopPipelineStage_Call) RunAndReturn(run func(ctx context.Context, workspaceId int, stage string) ApiWorkspacesStopPipelineStageRequest) *MockWorkspacesAPI_WorkspacesStopPipelineStage_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -8156,7 +9184,7 @@ func (_c *MockWorkspacesAPI_WorkspacesStopPipelineStageExecute_Call) RunAndRetur
 }
 
 // WorkspacesTeardownLandscape provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesTeardownLandscape(ctx context.Context, workspaceId float32) ApiWorkspacesTeardownLandscapeRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesTeardownLandscape(ctx context.Context, workspaceId int) ApiWorkspacesTeardownLandscapeRequest {
 	ret := _mock.Called(ctx, workspaceId)
 
 	if len(ret) == 0 {
@@ -8164,7 +9192,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesTeardownLandscape(ctx context.Context,
 	}
 
 	var r0 ApiWorkspacesTeardownLandscapeRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiWorkspacesTeardownLandscapeRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiWorkspacesTeardownLandscapeRequest); ok {
 		r0 = returnFunc(ctx, workspaceId)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesTeardownLandscapeRequest)
@@ -8179,20 +9207,20 @@ type MockWorkspacesAPI_WorkspacesTeardownLandscape_Call struct {
 
 // WorkspacesTeardownLandscape is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesTeardownLandscape(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesTeardownLandscape_Call {
 	return &MockWorkspacesAPI_WorkspacesTeardownLandscape_Call{Call: _e.mock.On("WorkspacesTeardownLandscape", ctx, workspaceId)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesTeardownLandscape_Call) Run(run func(ctx context.Context, workspaceId float32)) *MockWorkspacesAPI_WorkspacesTeardownLandscape_Call {
+func (_c *MockWorkspacesAPI_WorkspacesTeardownLandscape_Call) Run(run func(ctx context.Context, workspaceId int)) *MockWorkspacesAPI_WorkspacesTeardownLandscape_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -8207,7 +9235,7 @@ func (_c *MockWorkspacesAPI_WorkspacesTeardownLandscape_Call) Return(apiWorkspac
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesTeardownLandscape_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32) ApiWorkspacesTeardownLandscapeRequest) *MockWorkspacesAPI_WorkspacesTeardownLandscape_Call {
+func (_c *MockWorkspacesAPI_WorkspacesTeardownLandscape_Call) RunAndReturn(run func(ctx context.Context, workspaceId int) ApiWorkspacesTeardownLandscapeRequest) *MockWorkspacesAPI_WorkspacesTeardownLandscape_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -8275,7 +9303,7 @@ func (_c *MockWorkspacesAPI_WorkspacesTeardownLandscapeExecute_Call) RunAndRetur
 }
 
 // WorkspacesUpdateWorkspace provides a mock function for the type MockWorkspacesAPI
-func (_mock *MockWorkspacesAPI) WorkspacesUpdateWorkspace(ctx context.Context, workspaceId float32) ApiWorkspacesUpdateWorkspaceRequest {
+func (_mock *MockWorkspacesAPI) WorkspacesUpdateWorkspace(ctx context.Context, workspaceId int) ApiWorkspacesUpdateWorkspaceRequest {
 	ret := _mock.Called(ctx, workspaceId)
 
 	if len(ret) == 0 {
@@ -8283,7 +9311,7 @@ func (_mock *MockWorkspacesAPI) WorkspacesUpdateWorkspace(ctx context.Context, w
 	}
 
 	var r0 ApiWorkspacesUpdateWorkspaceRequest
-	if returnFunc, ok := ret.Get(0).(func(context.Context, float32) ApiWorkspacesUpdateWorkspaceRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ApiWorkspacesUpdateWorkspaceRequest); ok {
 		r0 = returnFunc(ctx, workspaceId)
 	} else {
 		r0 = ret.Get(0).(ApiWorkspacesUpdateWorkspaceRequest)
@@ -8298,20 +9326,20 @@ type MockWorkspacesAPI_WorkspacesUpdateWorkspace_Call struct {
 
 // WorkspacesUpdateWorkspace is a helper method to define mock.On call
 //   - ctx context.Context
-//   - workspaceId float32
+//   - workspaceId int
 func (_e *MockWorkspacesAPI_Expecter) WorkspacesUpdateWorkspace(ctx any, workspaceId any) *MockWorkspacesAPI_WorkspacesUpdateWorkspace_Call {
 	return &MockWorkspacesAPI_WorkspacesUpdateWorkspace_Call{Call: _e.mock.On("WorkspacesUpdateWorkspace", ctx, workspaceId)}
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesUpdateWorkspace_Call) Run(run func(ctx context.Context, workspaceId float32)) *MockWorkspacesAPI_WorkspacesUpdateWorkspace_Call {
+func (_c *MockWorkspacesAPI_WorkspacesUpdateWorkspace_Call) Run(run func(ctx context.Context, workspaceId int)) *MockWorkspacesAPI_WorkspacesUpdateWorkspace_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 float32
+		var arg1 int
 		if args[1] != nil {
-			arg1 = args[1].(float32)
+			arg1 = args[1].(int)
 		}
 		run(
 			arg0,
@@ -8326,7 +9354,7 @@ func (_c *MockWorkspacesAPI_WorkspacesUpdateWorkspace_Call) Return(apiWorkspaces
 	return _c
 }
 
-func (_c *MockWorkspacesAPI_WorkspacesUpdateWorkspace_Call) RunAndReturn(run func(ctx context.Context, workspaceId float32) ApiWorkspacesUpdateWorkspaceRequest) *MockWorkspacesAPI_WorkspacesUpdateWorkspace_Call {
+func (_c *MockWorkspacesAPI_WorkspacesUpdateWorkspace_Call) RunAndReturn(run func(ctx context.Context, workspaceId int) ApiWorkspacesUpdateWorkspaceRequest) *MockWorkspacesAPI_WorkspacesUpdateWorkspace_Call {
 	_c.Call.Return(run)
 	return _c
 }
