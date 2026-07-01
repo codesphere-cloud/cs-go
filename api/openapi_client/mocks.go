@@ -1367,9 +1367,9 @@ type MockManagedServicesAPI_ManagedServicesDeleteProvider_Call struct {
 // ManagedServicesDeleteProvider is a helper method to define mock.On call
 //   - ctx context.Context
 //   - name string
-//   - version string
-func (_e *MockManagedServicesAPI_Expecter) ManagedServicesDeleteProvider(ctx interface{}, name interface{}, version interface{}) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
-	return &MockManagedServicesAPI_ManagedServicesDeleteProvider_Call{Call: _e.mock.On("ManagedServicesDeleteProvider", ctx, name, version)}
+//   - schemaVersion string
+func (_e *MockManagedServicesAPI_Expecter) ManagedServicesDeleteProvider(ctx any, name any, schemaVersion any) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
+	return &MockManagedServicesAPI_ManagedServicesDeleteProvider_Call{Call: _e.mock.On("ManagedServicesDeleteProvider", ctx, name, schemaVersion)}
 }
 
 func (_c *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call) Run(run func(ctx context.Context, name string, schemaVersion string)) *MockManagedServicesAPI_ManagedServicesDeleteProvider_Call {
@@ -2115,9 +2115,9 @@ type MockManagedServicesAPI_ManagedServicesUpdateProvider_Call struct {
 // ManagedServicesUpdateProvider is a helper method to define mock.On call
 //   - ctx context.Context
 //   - name string
-//   - version string
-func (_e *MockManagedServicesAPI_Expecter) ManagedServicesUpdateProvider(ctx interface{}, name interface{}, version interface{}) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
-	return &MockManagedServicesAPI_ManagedServicesUpdateProvider_Call{Call: _e.mock.On("ManagedServicesUpdateProvider", ctx, name, version)}
+//   - schemaVersion string
+func (_e *MockManagedServicesAPI_Expecter) ManagedServicesUpdateProvider(ctx any, name any, schemaVersion any) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
+	return &MockManagedServicesAPI_ManagedServicesUpdateProvider_Call{Call: _e.mock.On("ManagedServicesUpdateProvider", ctx, name, schemaVersion)}
 }
 
 func (_c *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call) Run(run func(ctx context.Context, name string, schemaVersion string)) *MockManagedServicesAPI_ManagedServicesUpdateProvider_Call {
