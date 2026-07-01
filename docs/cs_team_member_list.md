@@ -1,11 +1,30 @@
-## cs team member
+## cs team member list
 
-Manage team members
+List team members
+
+### Synopsis
+
+List all members of a team
+
+```
+cs team member list [flags]
+```
+
+### Examples
+
+```
+# List all members of a team
+$ cs team member list -t <teamId>
+
+# List all members of a team in JSON format
+$ cs team member list -t <teamId> -o json
+```
 
 ### Options
 
 ```
-  -h, --help   help for member
+  -h, --help            help for list
+  -o, --output string   Output format (table, json, yaml) (default "table")
 ```
 
 ### Options inherited from parent commands
@@ -20,8 +39,5 @@ Manage team members
 
 ### SEE ALSO
 
-* [cs team](cs_team.md)	 - Manage Team
-* [cs team member add](cs_team_member_add.md)	 - Add team member
-* [cs team member list](cs_team_member_list.md)	 - List team members
-* [cs team member remove](cs_team_member_remove.md)	 - Remove team member
+* [cs team member](cs_team_member.md)	 - Manage team members
 
