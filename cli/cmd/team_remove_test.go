@@ -43,16 +43,14 @@ var _ = Describe("RemoveTeam", func() {
 
 	Context("RunE execution flow", func() {
 		It("should successfully remove a team", func() {
-			mockEnv.EXPECT().GetOrgId().Return("").Once()
-			mockClient.EXPECT().DeleteTeam("", teamId).Return(nil).Once()
+			mockClient.EXPECT().DeleteTeam(teamId).Return(nil).Once()
 
 			err := c.RunE(nil, []string{})
 			Expect(err).ToNot(HaveOccurred())
 		})
 
 		It("should fail when the token is not allowed to remove a team", func() {
-			mockEnv.EXPECT().GetOrgId().Return("").Once()
-			mockClient.EXPECT().DeleteTeam("", teamId).Return(errors.New("failed")).Once()
+			mockClient.EXPECT().DeleteTeam(teamId).Return(errors.New("failed")).Once()
 
 			err := c.RunE(nil, []string{})
 			Expect(err).To(HaveOccurred())
@@ -71,7 +69,6 @@ var _ = Describe("RemoveTeam", func() {
 
 		It("should fail when team ID is unavailable", func() {
 			c.Opts.TeamId = -1
-			mockEnv.EXPECT().GetOrgId().Return("").Once()
 			mockEnv.EXPECT().GetTeamId().Return(-1, errors.New("CS_TEAM_ID env var required, but not set")).Once()
 
 			err := c.RunE(nil, []string{})

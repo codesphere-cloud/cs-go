@@ -28,8 +28,7 @@ func AddRemoveTeamCmd(team *cobra.Command, opts *GlobalOptions) {
 			Short: "Remove team",
 			Long:  `Remove a team from Codesphere or an Organization`,
 			Example: io.FormatExampleCommands("team remove", []io.Example{
-				{Cmd: "-t <teamId>", Desc: "Remove a team that does not belong to an Organization"},
-				{Cmd: "-O <orgId> -t <teamId>", Desc: "Remove a team that does belong to an Organization"},
+				{Cmd: "-t <teamId>", Desc: "Remove a team"},
 			}),
 		},
 		Opts: RemoveTeamOpts{
@@ -47,17 +46,12 @@ func (c *RemoveTeamCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to create Codespehre client: %w", err)
 	}
 
-	orgId, err := c.Opts.GetOrgId()
-	if err != nil {
-		return err
-	}
-
 	teamId, err := c.Opts.GetTeamId()
 	if err != nil {
 		return errors.New("team ID not set, use -t or CS_TEAM_ID to set it")
 	}
 
-	err = client.DeleteTeam(orgId, teamId)
+	err = client.DeleteTeam(teamId)
 	if err != nil {
 		return fmt.Errorf("failed to delete team: %w", err)
 	}

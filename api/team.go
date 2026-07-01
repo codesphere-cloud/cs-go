@@ -103,7 +103,7 @@ func (c *Client) createOrgTeam(orgId string, name string, dc int) (*Team, error)
 	return ConvertToTeam(team), nil
 }
 
-func (c *Client) DeleteTeam(orgId string, teamId int) error {
+func (c *Client) DeleteTeam(teamId int) error {
 	r, err := c.api.TeamsAPI.TeamsDeleteTeam(c.ctx, teamId).Execute()
 	return cserrors.FormatAPIError(r, err)
 }
