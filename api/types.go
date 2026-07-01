@@ -9,8 +9,23 @@ import (
 	openapi "github.com/codesphere-cloud/cs-go/api/openapi_client"
 )
 
+type OpenAPITeam = openapi.TeamsGetTeam200Response
+type OpenAPIListTeam = openapi.TeamsListTeams200ResponseInner
+type OpenAPIOrgTeam = openapi.OrganizationsListOrgTeams200ResponseInner
+type OpenAPITeamMember = openapi.TeamsListMembers200ResponseInner
+
 type DataCenter = openapi.MetadataGetDatacenters200ResponseInner
-type Team = openapi.TeamsListTeams200ResponseInner
+type Team struct {
+	Id                  int     `json:"id"`
+	DefaultDataCenterId int     `json:"defaultDataCenterId"`
+	Name                string  `json:"name"`
+	Description         *string `json:"description,omitempty"`
+	AvatarId            *string `json:"avatarId,omitempty"`
+	AvatarUrl           *string `json:"avatarUrl,omitempty"`
+	IsFirst             *bool   `json:"isFirst,omitempty"`
+	OrganizationId      *string `json:"organizationId,omitempty"`
+	Role                *int    `json:"role,omitempty"`
+}
 type Domain = openapi.DomainsGetDomain200Response
 type DomainVerificationStatus = openapi.DomainsGetDomain200ResponseDomainVerificationStatus
 type UpdateDomainArgs = openapi.DomainsUpdateDomainRequest
@@ -24,8 +39,33 @@ type WorkspacePlan = openapi.MetadataGetWorkspacePlans200ResponseInner
 
 type PipelineStatus = openapi.WorkspacesPipelineStatus200ResponseInner
 
-// TODO: remove the conversion once the api is fixed
-func ConvertToTeam(t *openapi.TeamsGetTeam200Response) *Team {
+type TeamMember struct {
+	UserId    int        `json:"userId"`
+	TeamId    int        `json:"teamId"`
+	Role      int        `json:"role"`
+	Pending   bool       `json:"pending"`
+	CreatedAt time.Time  `json:"createdAt"`
+	Name      *string    `json:"name,omitempty"`
+	Email     *string    `json:"email,omitempty"`
+	AvatarUrl *string    `json:"avatarUrl,omitempty"`
+	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+}
+
+func ConvertToTeam(t *OpenAPITeam) *Team {
+	return &Team{
+		Id:                  t.Id,
+		DefaultDataCenterId: t.DefaultDataCenterId,
+		Name:                t.Name,
+		Description:         nullableStringToPtr(t.Description),
+		AvatarId:            nullableStringToPtr(t.AvatarId),
+		AvatarUrl:           nullableStringToPtr(t.AvatarUrl),
+		IsFirst:             t.IsFirst,
+		OrganizationId:      t.OrganizationId,
+		Role:                nil, // GetTeam API does not return role
+	}
+}
+
+func ConvertOrgTeamToTeam(t OpenAPIOrgTeam, orgId string) *Team {
 	return &Team{
 		Id:                  t.Id,
 		DefaultDataCenterId: t.DefaultDataCenterId,
@@ -34,22 +74,45 @@ func ConvertToTeam(t *openapi.TeamsGetTeam200Response) *Team {
 		AvatarId:            t.AvatarId,
 		AvatarUrl:           t.AvatarUrl,
 		IsFirst:             t.IsFirst,
-
-		Role: 0,
+		OrganizationId:      &orgId,
+		Role:                nil, // Org teams API does not return role
 	}
 }
 
-func ConvertOrgTeamToTeam(t openapi.OrganizationsListOrgTeams200ResponseInner, orgId string) *Team {
+func ConvertFromListTeams(t OpenAPIListTeam) *Team {
+	role := t.Role
 	return &Team{
 		Id:                  t.Id,
 		DefaultDataCenterId: t.DefaultDataCenterId,
 		Name:                t.Name,
-		Description:         *openapi.NewNullableString(t.Description),
-		AvatarId:            *openapi.NewNullableString(t.AvatarId),
-		AvatarUrl:           *openapi.NewNullableString(t.AvatarUrl),
+		Description:         nullableStringToPtr(t.Description),
+		AvatarId:            nullableStringToPtr(t.AvatarId),
+		AvatarUrl:           nullableStringToPtr(t.AvatarUrl),
 		IsFirst:             t.IsFirst,
-		OrganizationId:      &orgId,
-		Role:                0, // Default to admin role if not specified by org API
+		OrganizationId:      t.OrganizationId,
+		Role:                &role,
+	}
+}
+
+func nullableStringToPtr(ns openapi.NullableString) *string {
+	if ns.IsSet() && ns.Get() != nil {
+		v := *ns.Get()
+		return &v
+	}
+	return nil
+}
+
+func ConvertToTeamMember(t OpenAPITeamMember) TeamMember {
+	return TeamMember{
+		UserId:    t.UserId,
+		TeamId:    t.TeamId,
+		Role:      t.Role,
+		Pending:   t.Pending,
+		CreatedAt: t.CreatedAt,
+		Name:      nullableStringToPtr(t.Name),
+		Email:     nullableStringToPtr(t.Email),
+		AvatarUrl: nullableStringToPtr(t.AvatarUrl),
+		DeletedAt: t.DeletedAt,
 	}
 }
 

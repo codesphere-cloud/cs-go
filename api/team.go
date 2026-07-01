@@ -53,8 +53,15 @@ func (c *Client) ListTeams(orgId string) ([]Team, error) {
 		return res, nil
 	}
 
-	teams, r, err := c.api.TeamsAPI.TeamsListTeams(c.ctx).Execute()
-	return teams, cserrors.FormatAPIError(r, err)
+	apiTeams, r, err := c.api.TeamsAPI.TeamsListTeams(c.ctx).Execute()
+	if err != nil {
+		return nil, cserrors.FormatAPIError(r, err)
+	}
+	res := make([]Team, len(apiTeams))
+	for i, t := range apiTeams {
+		res[i] = *ConvertFromListTeams(t)
+	}
+	return res, nil
 }
 
 func (c *Client) GetTeam(teamId int) (*Team, error) {
@@ -126,4 +133,16 @@ func (c *Client) RemoveTeamMember(teamId int, userId int) error {
 		return cserrors.FormatAPIError(r, err)
 	}
 	return nil
+}
+
+func (c *Client) ListTeamMembers(teamId int) ([]TeamMember, error) {
+	members, r, err := c.api.TeamsAPI.TeamsListMembers(c.ctx, teamId).Execute()
+	if err != nil {
+		return nil, cserrors.FormatAPIError(r, err)
+	}
+	res := make([]TeamMember, len(members))
+	for i, m := range members {
+		res[i] = ConvertToTeamMember(m)
+	}
+	return res, nil
 }
