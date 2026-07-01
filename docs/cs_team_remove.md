@@ -13,11 +13,8 @@ cs team remove [flags]
 ### Examples
 
 ```
-# Remove a team that does not belong to an Organization
+# Remove a team
 $ cs team remove -t <teamId>
-
-# Remove a team that does belong to an Organization
-$ cs team remove -O <orgId> -t <teamId>
 ```
 
 ### Options
