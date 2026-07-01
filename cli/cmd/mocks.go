@@ -177,16 +177,16 @@ func (_c *MockClient_CreateTeam_Call) RunAndReturn(run func(orgId string, name s
 }
 
 // DeleteTeam provides a mock function for the type MockClient
-func (_mock *MockClient) DeleteTeam(orgId string, teamId int) error {
-	ret := _mock.Called(orgId, teamId)
+func (_mock *MockClient) DeleteTeam(teamId int) error {
+	ret := _mock.Called(teamId)
 
 	if len(ret) == 0 {
 		panic("no return value specified for DeleteTeam")
 	}
 
 	var r0 error
-	if returnFunc, ok := ret.Get(0).(func(string, int) error); ok {
-		r0 = returnFunc(orgId, teamId)
+	if returnFunc, ok := ret.Get(0).(func(int) error); ok {
+		r0 = returnFunc(teamId)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -199,25 +199,19 @@ type MockClient_DeleteTeam_Call struct {
 }
 
 // DeleteTeam is a helper method to define mock.On call
-//   - orgId string
 //   - teamId int
-func (_e *MockClient_Expecter) DeleteTeam(orgId any, teamId any) *MockClient_DeleteTeam_Call {
-	return &MockClient_DeleteTeam_Call{Call: _e.mock.On("DeleteTeam", orgId, teamId)}
+func (_e *MockClient_Expecter) DeleteTeam(teamId any) *MockClient_DeleteTeam_Call {
+	return &MockClient_DeleteTeam_Call{Call: _e.mock.On("DeleteTeam", teamId)}
 }
 
-func (_c *MockClient_DeleteTeam_Call) Run(run func(orgId string, teamId int)) *MockClient_DeleteTeam_Call {
+func (_c *MockClient_DeleteTeam_Call) Run(run func(teamId int)) *MockClient_DeleteTeam_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 string
+		var arg0 int
 		if args[0] != nil {
-			arg0 = args[0].(string)
-		}
-		var arg1 int
-		if args[1] != nil {
-			arg1 = args[1].(int)
+			arg0 = args[0].(int)
 		}
 		run(
 			arg0,
-			arg1,
 		)
 	})
 	return _c
@@ -228,7 +222,7 @@ func (_c *MockClient_DeleteTeam_Call) Return(err error) *MockClient_DeleteTeam_C
 	return _c
 }
 
-func (_c *MockClient_DeleteTeam_Call) RunAndReturn(run func(orgId string, teamId int) error) *MockClient_DeleteTeam_Call {
+func (_c *MockClient_DeleteTeam_Call) RunAndReturn(run func(teamId int) error) *MockClient_DeleteTeam_Call {
 	_c.Call.Return(run)
 	return _c
 }

@@ -67,7 +67,7 @@ func RegisterTeamTools(server *mcp.Server, client *api.Client) {
 		Name:        "delete_team",
 		Description: "Delete a team by ID",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args DeleteTeamArgs) (*mcp.CallToolResult, any, error) {
-		err := client.DeleteTeam(args.OrgId, args.TeamId)
+		err := client.DeleteTeam(args.TeamId)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}

@@ -35,7 +35,7 @@ type Client interface {
 	GitPull(wsId int, remote string, branch string) error
 	DeployLandscape(wsId int, profile string) error
 	CreateTeam(orgId string, name string, dcId int) (*api.Team, error)
-	DeleteTeam(orgId string, teamId int) error
+	DeleteTeam(teamId int) error
 	AddTeamMember(teamId int, email string, role int) error
 	RemoveTeamMember(teamId int, userId int) error
 }
