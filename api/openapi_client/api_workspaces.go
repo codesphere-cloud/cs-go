@@ -41,7 +41,7 @@ type WorkspacesAPI interface {
 		@param workspaceId
 		@return ApiWorkspacesDeleteEnvVarRequest
 	*/
-	WorkspacesDeleteEnvVar(ctx context.Context, workspaceId float32) ApiWorkspacesDeleteEnvVarRequest
+	WorkspacesDeleteEnvVar(ctx context.Context, workspaceId int) ApiWorkspacesDeleteEnvVarRequest
 
 	// WorkspacesDeleteEnvVarExecute executes the request
 	WorkspacesDeleteEnvVarExecute(r ApiWorkspacesDeleteEnvVarRequest) (*http.Response, error)
@@ -53,7 +53,7 @@ type WorkspacesAPI interface {
 		@param workspaceId
 		@return ApiWorkspacesDeleteWorkspaceRequest
 	*/
-	WorkspacesDeleteWorkspace(ctx context.Context, workspaceId float32) ApiWorkspacesDeleteWorkspaceRequest
+	WorkspacesDeleteWorkspace(ctx context.Context, workspaceId int) ApiWorkspacesDeleteWorkspaceRequest
 
 	// WorkspacesDeleteWorkspaceExecute executes the request
 	WorkspacesDeleteWorkspaceExecute(r ApiWorkspacesDeleteWorkspaceRequest) (*http.Response, error)
@@ -65,7 +65,7 @@ type WorkspacesAPI interface {
 		@param workspaceId
 		@return ApiWorkspacesDeployLandscapeRequest
 	*/
-	WorkspacesDeployLandscape(ctx context.Context, workspaceId float32) ApiWorkspacesDeployLandscapeRequest
+	WorkspacesDeployLandscape(ctx context.Context, workspaceId int) ApiWorkspacesDeployLandscapeRequest
 
 	// WorkspacesDeployLandscapeExecute executes the request
 	WorkspacesDeployLandscapeExecute(r ApiWorkspacesDeployLandscapeRequest) (*http.Response, error)
@@ -78,7 +78,7 @@ type WorkspacesAPI interface {
 		@param profile
 		@return ApiWorkspacesDeployLandscape1Request
 	*/
-	WorkspacesDeployLandscape1(ctx context.Context, workspaceId float32, profile string) ApiWorkspacesDeployLandscape1Request
+	WorkspacesDeployLandscape1(ctx context.Context, workspaceId int, profile string) ApiWorkspacesDeployLandscape1Request
 
 	// WorkspacesDeployLandscape1Execute executes the request
 	WorkspacesDeployLandscape1Execute(r ApiWorkspacesDeployLandscape1Request) (*http.Response, error)
@@ -92,7 +92,7 @@ type WorkspacesAPI interface {
 		@param workspaceId
 		@return ApiWorkspacesExecuteCommandRequest
 	*/
-	WorkspacesExecuteCommand(ctx context.Context, workspaceId float32) ApiWorkspacesExecuteCommandRequest
+	WorkspacesExecuteCommand(ctx context.Context, workspaceId int) ApiWorkspacesExecuteCommandRequest
 
 	// WorkspacesExecuteCommandExecute executes the request
 	//  @return WorkspacesExecuteCommand200Response
@@ -105,7 +105,7 @@ type WorkspacesAPI interface {
 		@param workspaceId
 		@return ApiWorkspacesGetWorkspaceRequest
 	*/
-	WorkspacesGetWorkspace(ctx context.Context, workspaceId float32) ApiWorkspacesGetWorkspaceRequest
+	WorkspacesGetWorkspace(ctx context.Context, workspaceId int) ApiWorkspacesGetWorkspaceRequest
 
 	// WorkspacesGetWorkspaceExecute executes the request
 	//  @return WorkspacesGetWorkspace200Response
@@ -118,7 +118,7 @@ type WorkspacesAPI interface {
 		@param workspaceId
 		@return ApiWorkspacesGetWorkspaceStatusRequest
 	*/
-	WorkspacesGetWorkspaceStatus(ctx context.Context, workspaceId float32) ApiWorkspacesGetWorkspaceStatusRequest
+	WorkspacesGetWorkspaceStatus(ctx context.Context, workspaceId int) ApiWorkspacesGetWorkspaceStatusRequest
 
 	// WorkspacesGetWorkspaceStatusExecute executes the request
 	//  @return WorkspacesGetWorkspaceStatus200Response
@@ -131,7 +131,7 @@ type WorkspacesAPI interface {
 		@param workspaceId
 		@return ApiWorkspacesGitHeadRequest
 	*/
-	WorkspacesGitHead(ctx context.Context, workspaceId float32) ApiWorkspacesGitHeadRequest
+	WorkspacesGitHead(ctx context.Context, workspaceId int) ApiWorkspacesGitHeadRequest
 
 	// WorkspacesGitHeadExecute executes the request
 	//  @return WorkspacesGitHead200Response
@@ -144,7 +144,7 @@ type WorkspacesAPI interface {
 		@param workspaceId
 		@return ApiWorkspacesGitPullRequest
 	*/
-	WorkspacesGitPull(ctx context.Context, workspaceId float32) ApiWorkspacesGitPullRequest
+	WorkspacesGitPull(ctx context.Context, workspaceId int) ApiWorkspacesGitPullRequest
 
 	// WorkspacesGitPullExecute executes the request
 	WorkspacesGitPullExecute(r ApiWorkspacesGitPullRequest) (*http.Response, error)
@@ -157,7 +157,7 @@ type WorkspacesAPI interface {
 		@param remote
 		@return ApiWorkspacesGitPull1Request
 	*/
-	WorkspacesGitPull1(ctx context.Context, workspaceId float32, remote string) ApiWorkspacesGitPull1Request
+	WorkspacesGitPull1(ctx context.Context, workspaceId int, remote string) ApiWorkspacesGitPull1Request
 
 	// WorkspacesGitPull1Execute executes the request
 	WorkspacesGitPull1Execute(r ApiWorkspacesGitPull1Request) (*http.Response, error)
@@ -171,7 +171,7 @@ type WorkspacesAPI interface {
 		@param branch
 		@return ApiWorkspacesGitPull2Request
 	*/
-	WorkspacesGitPull2(ctx context.Context, workspaceId float32, remote string, branch string) ApiWorkspacesGitPull2Request
+	WorkspacesGitPull2(ctx context.Context, workspaceId int, remote string, branch string) ApiWorkspacesGitPull2Request
 
 	// WorkspacesGitPull2Execute executes the request
 	WorkspacesGitPull2Execute(r ApiWorkspacesGitPull2Request) (*http.Response, error)
@@ -183,7 +183,7 @@ type WorkspacesAPI interface {
 		@param workspaceId
 		@return ApiWorkspacesListEnvVarsRequest
 	*/
-	WorkspacesListEnvVars(ctx context.Context, workspaceId float32) ApiWorkspacesListEnvVarsRequest
+	WorkspacesListEnvVars(ctx context.Context, workspaceId int) ApiWorkspacesListEnvVarsRequest
 
 	// WorkspacesListEnvVarsExecute executes the request
 	//  @return []WorkspacesCreateWorkspaceRequestEnvInner
@@ -196,7 +196,7 @@ type WorkspacesAPI interface {
 		@param teamId
 		@return ApiWorkspacesListWorkspacesRequest
 	*/
-	WorkspacesListWorkspaces(ctx context.Context, teamId float32) ApiWorkspacesListWorkspacesRequest
+	WorkspacesListWorkspaces(ctx context.Context, teamId int) ApiWorkspacesListWorkspacesRequest
 
 	// WorkspacesListWorkspacesExecute executes the request
 	//  @return []WorkspacesGetWorkspace200Response
@@ -213,7 +213,7 @@ type WorkspacesAPI interface {
 		@param step
 		@return ApiWorkspacesLogsRequest
 	*/
-	WorkspacesLogs(ctx context.Context, workspaceId float32, stage string, step float32) ApiWorkspacesLogsRequest
+	WorkspacesLogs(ctx context.Context, workspaceId int, stage string, step int) ApiWorkspacesLogsRequest
 
 	// WorkspacesLogsExecute executes the request
 	//  @return WorkspacesLogs200Response
@@ -227,7 +227,7 @@ type WorkspacesAPI interface {
 		@param stage
 		@return ApiWorkspacesPipelineStatusRequest
 	*/
-	WorkspacesPipelineStatus(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesPipelineStatusRequest
+	WorkspacesPipelineStatus(ctx context.Context, workspaceId int, stage string) ApiWorkspacesPipelineStatusRequest
 
 	// WorkspacesPipelineStatusExecute executes the request
 	//  @return []WorkspacesPipelineStatus200ResponseInner
@@ -242,7 +242,7 @@ type WorkspacesAPI interface {
 		@param replica
 		@return ApiWorkspacesReplicaLogsRequest
 	*/
-	WorkspacesReplicaLogs(ctx context.Context, workspaceId float32, step float32, replica string) ApiWorkspacesReplicaLogsRequest
+	WorkspacesReplicaLogs(ctx context.Context, workspaceId int, step int, replica string) ApiWorkspacesReplicaLogsRequest
 
 	// WorkspacesReplicaLogsExecute executes the request
 	//  @return WorkspacesReplicaLogs200Response
@@ -255,7 +255,7 @@ type WorkspacesAPI interface {
 		@param workspaceId
 		@return ApiWorkspacesScaleLandscapeServicesRequest
 	*/
-	WorkspacesScaleLandscapeServices(ctx context.Context, workspaceId float32) ApiWorkspacesScaleLandscapeServicesRequest
+	WorkspacesScaleLandscapeServices(ctx context.Context, workspaceId int) ApiWorkspacesScaleLandscapeServicesRequest
 
 	// WorkspacesScaleLandscapeServicesExecute executes the request
 	WorkspacesScaleLandscapeServicesExecute(r ApiWorkspacesScaleLandscapeServicesRequest) (*http.Response, error)
@@ -269,7 +269,7 @@ type WorkspacesAPI interface {
 		@param server
 		@return ApiWorkspacesServerLogsRequest
 	*/
-	WorkspacesServerLogs(ctx context.Context, workspaceId float32, step float32, server string) ApiWorkspacesServerLogsRequest
+	WorkspacesServerLogs(ctx context.Context, workspaceId int, step int, server string) ApiWorkspacesServerLogsRequest
 
 	// WorkspacesServerLogsExecute executes the request
 	//  @return WorkspacesServerLogs200Response
@@ -282,7 +282,7 @@ type WorkspacesAPI interface {
 		@param workspaceId
 		@return ApiWorkspacesSetEnvVarRequest
 	*/
-	WorkspacesSetEnvVar(ctx context.Context, workspaceId float32) ApiWorkspacesSetEnvVarRequest
+	WorkspacesSetEnvVar(ctx context.Context, workspaceId int) ApiWorkspacesSetEnvVarRequest
 
 	// WorkspacesSetEnvVarExecute executes the request
 	WorkspacesSetEnvVarExecute(r ApiWorkspacesSetEnvVarRequest) (*http.Response, error)
@@ -295,7 +295,7 @@ type WorkspacesAPI interface {
 		@param stage
 		@return ApiWorkspacesStartPipelineStageRequest
 	*/
-	WorkspacesStartPipelineStage(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesStartPipelineStageRequest
+	WorkspacesStartPipelineStage(ctx context.Context, workspaceId int, stage string) ApiWorkspacesStartPipelineStageRequest
 
 	// WorkspacesStartPipelineStageExecute executes the request
 	WorkspacesStartPipelineStageExecute(r ApiWorkspacesStartPipelineStageRequest) (*http.Response, error)
@@ -309,7 +309,7 @@ type WorkspacesAPI interface {
 		@param profile
 		@return ApiWorkspacesStartPipelineStage1Request
 	*/
-	WorkspacesStartPipelineStage1(ctx context.Context, workspaceId float32, stage string, profile string) ApiWorkspacesStartPipelineStage1Request
+	WorkspacesStartPipelineStage1(ctx context.Context, workspaceId int, stage string, profile string) ApiWorkspacesStartPipelineStage1Request
 
 	// WorkspacesStartPipelineStage1Execute executes the request
 	WorkspacesStartPipelineStage1Execute(r ApiWorkspacesStartPipelineStage1Request) (*http.Response, error)
@@ -322,7 +322,7 @@ type WorkspacesAPI interface {
 		@param stage
 		@return ApiWorkspacesStopPipelineStageRequest
 	*/
-	WorkspacesStopPipelineStage(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesStopPipelineStageRequest
+	WorkspacesStopPipelineStage(ctx context.Context, workspaceId int, stage string) ApiWorkspacesStopPipelineStageRequest
 
 	// WorkspacesStopPipelineStageExecute executes the request
 	WorkspacesStopPipelineStageExecute(r ApiWorkspacesStopPipelineStageRequest) (*http.Response, error)
@@ -334,7 +334,7 @@ type WorkspacesAPI interface {
 		@param workspaceId
 		@return ApiWorkspacesTeardownLandscapeRequest
 	*/
-	WorkspacesTeardownLandscape(ctx context.Context, workspaceId float32) ApiWorkspacesTeardownLandscapeRequest
+	WorkspacesTeardownLandscape(ctx context.Context, workspaceId int) ApiWorkspacesTeardownLandscapeRequest
 
 	// WorkspacesTeardownLandscapeExecute executes the request
 	WorkspacesTeardownLandscapeExecute(r ApiWorkspacesTeardownLandscapeRequest) (*http.Response, error)
@@ -346,7 +346,7 @@ type WorkspacesAPI interface {
 		@param workspaceId
 		@return ApiWorkspacesUpdateWorkspaceRequest
 	*/
-	WorkspacesUpdateWorkspace(ctx context.Context, workspaceId float32) ApiWorkspacesUpdateWorkspaceRequest
+	WorkspacesUpdateWorkspace(ctx context.Context, workspaceId int) ApiWorkspacesUpdateWorkspaceRequest
 
 	// WorkspacesUpdateWorkspaceExecute executes the request
 	WorkspacesUpdateWorkspaceExecute(r ApiWorkspacesUpdateWorkspaceRequest) (*http.Response, error)
@@ -485,7 +485,7 @@ func (a *WorkspacesAPIService) WorkspacesCreateWorkspaceExecute(r ApiWorkspacesC
 type ApiWorkspacesDeleteEnvVarRequest struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 	requestBody *[]string
 }
 
@@ -505,7 +505,7 @@ WorkspacesDeleteEnvVar deleteEnvVar
 	@param workspaceId
 	@return ApiWorkspacesDeleteEnvVarRequest
 */
-func (a *WorkspacesAPIService) WorkspacesDeleteEnvVar(ctx context.Context, workspaceId float32) ApiWorkspacesDeleteEnvVarRequest {
+func (a *WorkspacesAPIService) WorkspacesDeleteEnvVar(ctx context.Context, workspaceId int) ApiWorkspacesDeleteEnvVarRequest {
 	return ApiWorkspacesDeleteEnvVarRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -532,6 +532,9 @@ func (a *WorkspacesAPIService) WorkspacesDeleteEnvVarExecute(r ApiWorkspacesDele
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -615,7 +618,7 @@ func (a *WorkspacesAPIService) WorkspacesDeleteEnvVarExecute(r ApiWorkspacesDele
 type ApiWorkspacesDeleteWorkspaceRequest struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 }
 
 func (r ApiWorkspacesDeleteWorkspaceRequest) Execute() (*http.Response, error) {
@@ -629,7 +632,7 @@ WorkspacesDeleteWorkspace deleteWorkspace
 	@param workspaceId
 	@return ApiWorkspacesDeleteWorkspaceRequest
 */
-func (a *WorkspacesAPIService) WorkspacesDeleteWorkspace(ctx context.Context, workspaceId float32) ApiWorkspacesDeleteWorkspaceRequest {
+func (a *WorkspacesAPIService) WorkspacesDeleteWorkspace(ctx context.Context, workspaceId int) ApiWorkspacesDeleteWorkspaceRequest {
 	return ApiWorkspacesDeleteWorkspaceRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -656,6 +659,9 @@ func (a *WorkspacesAPIService) WorkspacesDeleteWorkspaceExecute(r ApiWorkspacesD
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -737,7 +743,7 @@ func (a *WorkspacesAPIService) WorkspacesDeleteWorkspaceExecute(r ApiWorkspacesD
 type ApiWorkspacesDeployLandscapeRequest struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 }
 
 func (r ApiWorkspacesDeployLandscapeRequest) Execute() (*http.Response, error) {
@@ -751,7 +757,7 @@ WorkspacesDeployLandscape deployLandscape
 	@param workspaceId
 	@return ApiWorkspacesDeployLandscapeRequest
 */
-func (a *WorkspacesAPIService) WorkspacesDeployLandscape(ctx context.Context, workspaceId float32) ApiWorkspacesDeployLandscapeRequest {
+func (a *WorkspacesAPIService) WorkspacesDeployLandscape(ctx context.Context, workspaceId int) ApiWorkspacesDeployLandscapeRequest {
 	return ApiWorkspacesDeployLandscapeRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -778,6 +784,9 @@ func (a *WorkspacesAPIService) WorkspacesDeployLandscapeExecute(r ApiWorkspacesD
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -859,7 +868,7 @@ func (a *WorkspacesAPIService) WorkspacesDeployLandscapeExecute(r ApiWorkspacesD
 type ApiWorkspacesDeployLandscape1Request struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 	profile     string
 }
 
@@ -875,7 +884,7 @@ WorkspacesDeployLandscape1 deployLandscape
 	@param profile
 	@return ApiWorkspacesDeployLandscape1Request
 */
-func (a *WorkspacesAPIService) WorkspacesDeployLandscape1(ctx context.Context, workspaceId float32, profile string) ApiWorkspacesDeployLandscape1Request {
+func (a *WorkspacesAPIService) WorkspacesDeployLandscape1(ctx context.Context, workspaceId int, profile string) ApiWorkspacesDeployLandscape1Request {
 	return ApiWorkspacesDeployLandscape1Request{
 		ApiService:  a,
 		ctx:         ctx,
@@ -904,6 +913,9 @@ func (a *WorkspacesAPIService) WorkspacesDeployLandscape1Execute(r ApiWorkspaces
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -985,7 +997,7 @@ func (a *WorkspacesAPIService) WorkspacesDeployLandscape1Execute(r ApiWorkspaces
 type ApiWorkspacesExecuteCommandRequest struct {
 	ctx                             context.Context
 	ApiService                      WorkspacesAPI
-	workspaceId                     float32
+	workspaceId                     int
 	workspacesExecuteCommandRequest *WorkspacesExecuteCommandRequest
 }
 
@@ -1007,7 +1019,7 @@ Executes the command with "bash -c command". Timeouts after 5000ms.
 	@param workspaceId
 	@return ApiWorkspacesExecuteCommandRequest
 */
-func (a *WorkspacesAPIService) WorkspacesExecuteCommand(ctx context.Context, workspaceId float32) ApiWorkspacesExecuteCommandRequest {
+func (a *WorkspacesAPIService) WorkspacesExecuteCommand(ctx context.Context, workspaceId int) ApiWorkspacesExecuteCommandRequest {
 	return ApiWorkspacesExecuteCommandRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -1037,6 +1049,9 @@ func (a *WorkspacesAPIService) WorkspacesExecuteCommandExecute(r ApiWorkspacesEx
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return localVarReturnValue, nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -1129,7 +1144,7 @@ func (a *WorkspacesAPIService) WorkspacesExecuteCommandExecute(r ApiWorkspacesEx
 type ApiWorkspacesGetWorkspaceRequest struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 }
 
 func (r ApiWorkspacesGetWorkspaceRequest) Execute() (*WorkspacesGetWorkspace200Response, *http.Response, error) {
@@ -1143,7 +1158,7 @@ WorkspacesGetWorkspace getWorkspace
 	@param workspaceId
 	@return ApiWorkspacesGetWorkspaceRequest
 */
-func (a *WorkspacesAPIService) WorkspacesGetWorkspace(ctx context.Context, workspaceId float32) ApiWorkspacesGetWorkspaceRequest {
+func (a *WorkspacesAPIService) WorkspacesGetWorkspace(ctx context.Context, workspaceId int) ApiWorkspacesGetWorkspaceRequest {
 	return ApiWorkspacesGetWorkspaceRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -1173,6 +1188,9 @@ func (a *WorkspacesAPIService) WorkspacesGetWorkspaceExecute(r ApiWorkspacesGetW
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return localVarReturnValue, nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1263,7 +1281,7 @@ func (a *WorkspacesAPIService) WorkspacesGetWorkspaceExecute(r ApiWorkspacesGetW
 type ApiWorkspacesGetWorkspaceStatusRequest struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 }
 
 func (r ApiWorkspacesGetWorkspaceStatusRequest) Execute() (*WorkspacesGetWorkspaceStatus200Response, *http.Response, error) {
@@ -1277,7 +1295,7 @@ WorkspacesGetWorkspaceStatus getWorkspaceStatus
 	@param workspaceId
 	@return ApiWorkspacesGetWorkspaceStatusRequest
 */
-func (a *WorkspacesAPIService) WorkspacesGetWorkspaceStatus(ctx context.Context, workspaceId float32) ApiWorkspacesGetWorkspaceStatusRequest {
+func (a *WorkspacesAPIService) WorkspacesGetWorkspaceStatus(ctx context.Context, workspaceId int) ApiWorkspacesGetWorkspaceStatusRequest {
 	return ApiWorkspacesGetWorkspaceStatusRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -1307,6 +1325,9 @@ func (a *WorkspacesAPIService) WorkspacesGetWorkspaceStatusExecute(r ApiWorkspac
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return localVarReturnValue, nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1397,7 +1418,7 @@ func (a *WorkspacesAPIService) WorkspacesGetWorkspaceStatusExecute(r ApiWorkspac
 type ApiWorkspacesGitHeadRequest struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 }
 
 func (r ApiWorkspacesGitHeadRequest) Execute() (*WorkspacesGitHead200Response, *http.Response, error) {
@@ -1411,7 +1432,7 @@ WorkspacesGitHead gitHead
 	@param workspaceId
 	@return ApiWorkspacesGitHeadRequest
 */
-func (a *WorkspacesAPIService) WorkspacesGitHead(ctx context.Context, workspaceId float32) ApiWorkspacesGitHeadRequest {
+func (a *WorkspacesAPIService) WorkspacesGitHead(ctx context.Context, workspaceId int) ApiWorkspacesGitHeadRequest {
 	return ApiWorkspacesGitHeadRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -1441,6 +1462,9 @@ func (a *WorkspacesAPIService) WorkspacesGitHeadExecute(r ApiWorkspacesGitHeadRe
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return localVarReturnValue, nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1531,7 +1555,7 @@ func (a *WorkspacesAPIService) WorkspacesGitHeadExecute(r ApiWorkspacesGitHeadRe
 type ApiWorkspacesGitPullRequest struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 }
 
 func (r ApiWorkspacesGitPullRequest) Execute() (*http.Response, error) {
@@ -1545,7 +1569,7 @@ WorkspacesGitPull gitPull
 	@param workspaceId
 	@return ApiWorkspacesGitPullRequest
 */
-func (a *WorkspacesAPIService) WorkspacesGitPull(ctx context.Context, workspaceId float32) ApiWorkspacesGitPullRequest {
+func (a *WorkspacesAPIService) WorkspacesGitPull(ctx context.Context, workspaceId int) ApiWorkspacesGitPullRequest {
 	return ApiWorkspacesGitPullRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -1572,6 +1596,9 @@ func (a *WorkspacesAPIService) WorkspacesGitPullExecute(r ApiWorkspacesGitPullRe
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1653,7 +1680,7 @@ func (a *WorkspacesAPIService) WorkspacesGitPullExecute(r ApiWorkspacesGitPullRe
 type ApiWorkspacesGitPull1Request struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 	remote      string
 }
 
@@ -1669,7 +1696,7 @@ WorkspacesGitPull1 gitPull
 	@param remote
 	@return ApiWorkspacesGitPull1Request
 */
-func (a *WorkspacesAPIService) WorkspacesGitPull1(ctx context.Context, workspaceId float32, remote string) ApiWorkspacesGitPull1Request {
+func (a *WorkspacesAPIService) WorkspacesGitPull1(ctx context.Context, workspaceId int, remote string) ApiWorkspacesGitPull1Request {
 	return ApiWorkspacesGitPull1Request{
 		ApiService:  a,
 		ctx:         ctx,
@@ -1698,6 +1725,9 @@ func (a *WorkspacesAPIService) WorkspacesGitPull1Execute(r ApiWorkspacesGitPull1
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1779,7 +1809,7 @@ func (a *WorkspacesAPIService) WorkspacesGitPull1Execute(r ApiWorkspacesGitPull1
 type ApiWorkspacesGitPull2Request struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 	remote      string
 	branch      string
 }
@@ -1797,7 +1827,7 @@ WorkspacesGitPull2 gitPull
 	@param branch
 	@return ApiWorkspacesGitPull2Request
 */
-func (a *WorkspacesAPIService) WorkspacesGitPull2(ctx context.Context, workspaceId float32, remote string, branch string) ApiWorkspacesGitPull2Request {
+func (a *WorkspacesAPIService) WorkspacesGitPull2(ctx context.Context, workspaceId int, remote string, branch string) ApiWorkspacesGitPull2Request {
 	return ApiWorkspacesGitPull2Request{
 		ApiService:  a,
 		ctx:         ctx,
@@ -1828,6 +1858,9 @@ func (a *WorkspacesAPIService) WorkspacesGitPull2Execute(r ApiWorkspacesGitPull2
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1909,7 +1942,7 @@ func (a *WorkspacesAPIService) WorkspacesGitPull2Execute(r ApiWorkspacesGitPull2
 type ApiWorkspacesListEnvVarsRequest struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 }
 
 func (r ApiWorkspacesListEnvVarsRequest) Execute() ([]WorkspacesCreateWorkspaceRequestEnvInner, *http.Response, error) {
@@ -1923,7 +1956,7 @@ WorkspacesListEnvVars listEnvVars
 	@param workspaceId
 	@return ApiWorkspacesListEnvVarsRequest
 */
-func (a *WorkspacesAPIService) WorkspacesListEnvVars(ctx context.Context, workspaceId float32) ApiWorkspacesListEnvVarsRequest {
+func (a *WorkspacesAPIService) WorkspacesListEnvVars(ctx context.Context, workspaceId int) ApiWorkspacesListEnvVarsRequest {
 	return ApiWorkspacesListEnvVarsRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -1953,6 +1986,9 @@ func (a *WorkspacesAPIService) WorkspacesListEnvVarsExecute(r ApiWorkspacesListE
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return localVarReturnValue, nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -2043,7 +2079,7 @@ func (a *WorkspacesAPIService) WorkspacesListEnvVarsExecute(r ApiWorkspacesListE
 type ApiWorkspacesListWorkspacesRequest struct {
 	ctx        context.Context
 	ApiService WorkspacesAPI
-	teamId     float32
+	teamId     int
 }
 
 func (r ApiWorkspacesListWorkspacesRequest) Execute() ([]WorkspacesGetWorkspace200Response, *http.Response, error) {
@@ -2057,7 +2093,7 @@ WorkspacesListWorkspaces listWorkspaces
 	@param teamId
 	@return ApiWorkspacesListWorkspacesRequest
 */
-func (a *WorkspacesAPIService) WorkspacesListWorkspaces(ctx context.Context, teamId float32) ApiWorkspacesListWorkspacesRequest {
+func (a *WorkspacesAPIService) WorkspacesListWorkspaces(ctx context.Context, teamId int) ApiWorkspacesListWorkspacesRequest {
 	return ApiWorkspacesListWorkspacesRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -2087,6 +2123,9 @@ func (a *WorkspacesAPIService) WorkspacesListWorkspacesExecute(r ApiWorkspacesLi
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.teamId < 0 {
+		return localVarReturnValue, nil, reportError("teamId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -2166,9 +2205,9 @@ func (a *WorkspacesAPIService) WorkspacesListWorkspacesExecute(r ApiWorkspacesLi
 type ApiWorkspacesLogsRequest struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 	stage       string
-	step        float32
+	step        int
 }
 
 func (r ApiWorkspacesLogsRequest) Execute() (*WorkspacesLogs200Response, *http.Response, error) {
@@ -2186,7 +2225,7 @@ Returns a stream of logs for a given "stage" and "step". For "run" stage logs of
 	@param step
 	@return ApiWorkspacesLogsRequest
 */
-func (a *WorkspacesAPIService) WorkspacesLogs(ctx context.Context, workspaceId float32, stage string, step float32) ApiWorkspacesLogsRequest {
+func (a *WorkspacesAPIService) WorkspacesLogs(ctx context.Context, workspaceId int, stage string, step int) ApiWorkspacesLogsRequest {
 	return ApiWorkspacesLogsRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -2220,6 +2259,12 @@ func (a *WorkspacesAPIService) WorkspacesLogsExecute(r ApiWorkspacesLogsRequest)
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return localVarReturnValue, nil, reportError("workspaceId must be greater than 0")
+	}
+	if r.step < 0 {
+		return localVarReturnValue, nil, reportError("step must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -2278,7 +2323,7 @@ func (a *WorkspacesAPIService) WorkspacesLogsExecute(r ApiWorkspacesLogsRequest)
 type ApiWorkspacesPipelineStatusRequest struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 	stage       string
 }
 
@@ -2294,7 +2339,7 @@ WorkspacesPipelineStatus pipelineStatus
 	@param stage
 	@return ApiWorkspacesPipelineStatusRequest
 */
-func (a *WorkspacesAPIService) WorkspacesPipelineStatus(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesPipelineStatusRequest {
+func (a *WorkspacesAPIService) WorkspacesPipelineStatus(ctx context.Context, workspaceId int, stage string) ApiWorkspacesPipelineStatusRequest {
 	return ApiWorkspacesPipelineStatusRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -2326,6 +2371,9 @@ func (a *WorkspacesAPIService) WorkspacesPipelineStatusExecute(r ApiWorkspacesPi
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return localVarReturnValue, nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -2416,8 +2464,8 @@ func (a *WorkspacesAPIService) WorkspacesPipelineStatusExecute(r ApiWorkspacesPi
 type ApiWorkspacesReplicaLogsRequest struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
-	step        float32
+	workspaceId int
+	step        int
 	replica     string
 }
 
@@ -2434,7 +2482,7 @@ WorkspacesReplicaLogs replicaLogs
 	@param replica
 	@return ApiWorkspacesReplicaLogsRequest
 */
-func (a *WorkspacesAPIService) WorkspacesReplicaLogs(ctx context.Context, workspaceId float32, step float32, replica string) ApiWorkspacesReplicaLogsRequest {
+func (a *WorkspacesAPIService) WorkspacesReplicaLogs(ctx context.Context, workspaceId int, step int, replica string) ApiWorkspacesReplicaLogsRequest {
 	return ApiWorkspacesReplicaLogsRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -2468,6 +2516,12 @@ func (a *WorkspacesAPIService) WorkspacesReplicaLogsExecute(r ApiWorkspacesRepli
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return localVarReturnValue, nil, reportError("workspaceId must be greater than 0")
+	}
+	if r.step < 0 {
+		return localVarReturnValue, nil, reportError("step must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -2526,7 +2580,7 @@ func (a *WorkspacesAPIService) WorkspacesReplicaLogsExecute(r ApiWorkspacesRepli
 type ApiWorkspacesScaleLandscapeServicesRequest struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 	requestBody *map[string]int
 }
 
@@ -2546,7 +2600,7 @@ WorkspacesScaleLandscapeServices scaleLandscapeServices
 	@param workspaceId
 	@return ApiWorkspacesScaleLandscapeServicesRequest
 */
-func (a *WorkspacesAPIService) WorkspacesScaleLandscapeServices(ctx context.Context, workspaceId float32) ApiWorkspacesScaleLandscapeServicesRequest {
+func (a *WorkspacesAPIService) WorkspacesScaleLandscapeServices(ctx context.Context, workspaceId int) ApiWorkspacesScaleLandscapeServicesRequest {
 	return ApiWorkspacesScaleLandscapeServicesRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -2573,6 +2627,9 @@ func (a *WorkspacesAPIService) WorkspacesScaleLandscapeServicesExecute(r ApiWork
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -2656,8 +2713,8 @@ func (a *WorkspacesAPIService) WorkspacesScaleLandscapeServicesExecute(r ApiWork
 type ApiWorkspacesServerLogsRequest struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
-	step        float32
+	workspaceId int
+	step        int
 	server      string
 }
 
@@ -2674,7 +2731,7 @@ WorkspacesServerLogs serverLogs
 	@param server
 	@return ApiWorkspacesServerLogsRequest
 */
-func (a *WorkspacesAPIService) WorkspacesServerLogs(ctx context.Context, workspaceId float32, step float32, server string) ApiWorkspacesServerLogsRequest {
+func (a *WorkspacesAPIService) WorkspacesServerLogs(ctx context.Context, workspaceId int, step int, server string) ApiWorkspacesServerLogsRequest {
 	return ApiWorkspacesServerLogsRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -2708,6 +2765,12 @@ func (a *WorkspacesAPIService) WorkspacesServerLogsExecute(r ApiWorkspacesServer
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return localVarReturnValue, nil, reportError("workspaceId must be greater than 0")
+	}
+	if r.step < 0 {
+		return localVarReturnValue, nil, reportError("step must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -2766,7 +2829,7 @@ func (a *WorkspacesAPIService) WorkspacesServerLogsExecute(r ApiWorkspacesServer
 type ApiWorkspacesSetEnvVarRequest struct {
 	ctx                                      context.Context
 	ApiService                               WorkspacesAPI
-	workspaceId                              float32
+	workspaceId                              int
 	workspacesCreateWorkspaceRequestEnvInner *[]WorkspacesCreateWorkspaceRequestEnvInner
 }
 
@@ -2786,7 +2849,7 @@ WorkspacesSetEnvVar setEnvVar
 	@param workspaceId
 	@return ApiWorkspacesSetEnvVarRequest
 */
-func (a *WorkspacesAPIService) WorkspacesSetEnvVar(ctx context.Context, workspaceId float32) ApiWorkspacesSetEnvVarRequest {
+func (a *WorkspacesAPIService) WorkspacesSetEnvVar(ctx context.Context, workspaceId int) ApiWorkspacesSetEnvVarRequest {
 	return ApiWorkspacesSetEnvVarRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -2813,6 +2876,9 @@ func (a *WorkspacesAPIService) WorkspacesSetEnvVarExecute(r ApiWorkspacesSetEnvV
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -2896,7 +2962,7 @@ func (a *WorkspacesAPIService) WorkspacesSetEnvVarExecute(r ApiWorkspacesSetEnvV
 type ApiWorkspacesStartPipelineStageRequest struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 	stage       string
 }
 
@@ -2912,7 +2978,7 @@ WorkspacesStartPipelineStage startPipelineStage
 	@param stage
 	@return ApiWorkspacesStartPipelineStageRequest
 */
-func (a *WorkspacesAPIService) WorkspacesStartPipelineStage(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesStartPipelineStageRequest {
+func (a *WorkspacesAPIService) WorkspacesStartPipelineStage(ctx context.Context, workspaceId int, stage string) ApiWorkspacesStartPipelineStageRequest {
 	return ApiWorkspacesStartPipelineStageRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -2941,6 +3007,9 @@ func (a *WorkspacesAPIService) WorkspacesStartPipelineStageExecute(r ApiWorkspac
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -3022,7 +3091,7 @@ func (a *WorkspacesAPIService) WorkspacesStartPipelineStageExecute(r ApiWorkspac
 type ApiWorkspacesStartPipelineStage1Request struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 	stage       string
 	profile     string
 }
@@ -3040,7 +3109,7 @@ WorkspacesStartPipelineStage1 startPipelineStage
 	@param profile
 	@return ApiWorkspacesStartPipelineStage1Request
 */
-func (a *WorkspacesAPIService) WorkspacesStartPipelineStage1(ctx context.Context, workspaceId float32, stage string, profile string) ApiWorkspacesStartPipelineStage1Request {
+func (a *WorkspacesAPIService) WorkspacesStartPipelineStage1(ctx context.Context, workspaceId int, stage string, profile string) ApiWorkspacesStartPipelineStage1Request {
 	return ApiWorkspacesStartPipelineStage1Request{
 		ApiService:  a,
 		ctx:         ctx,
@@ -3071,6 +3140,9 @@ func (a *WorkspacesAPIService) WorkspacesStartPipelineStage1Execute(r ApiWorkspa
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -3152,7 +3224,7 @@ func (a *WorkspacesAPIService) WorkspacesStartPipelineStage1Execute(r ApiWorkspa
 type ApiWorkspacesStopPipelineStageRequest struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 	stage       string
 }
 
@@ -3168,7 +3240,7 @@ WorkspacesStopPipelineStage stopPipelineStage
 	@param stage
 	@return ApiWorkspacesStopPipelineStageRequest
 */
-func (a *WorkspacesAPIService) WorkspacesStopPipelineStage(ctx context.Context, workspaceId float32, stage string) ApiWorkspacesStopPipelineStageRequest {
+func (a *WorkspacesAPIService) WorkspacesStopPipelineStage(ctx context.Context, workspaceId int, stage string) ApiWorkspacesStopPipelineStageRequest {
 	return ApiWorkspacesStopPipelineStageRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -3197,6 +3269,9 @@ func (a *WorkspacesAPIService) WorkspacesStopPipelineStageExecute(r ApiWorkspace
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -3278,7 +3353,7 @@ func (a *WorkspacesAPIService) WorkspacesStopPipelineStageExecute(r ApiWorkspace
 type ApiWorkspacesTeardownLandscapeRequest struct {
 	ctx         context.Context
 	ApiService  WorkspacesAPI
-	workspaceId float32
+	workspaceId int
 }
 
 func (r ApiWorkspacesTeardownLandscapeRequest) Execute() (*http.Response, error) {
@@ -3292,7 +3367,7 @@ WorkspacesTeardownLandscape teardownLandscape
 	@param workspaceId
 	@return ApiWorkspacesTeardownLandscapeRequest
 */
-func (a *WorkspacesAPIService) WorkspacesTeardownLandscape(ctx context.Context, workspaceId float32) ApiWorkspacesTeardownLandscapeRequest {
+func (a *WorkspacesAPIService) WorkspacesTeardownLandscape(ctx context.Context, workspaceId int) ApiWorkspacesTeardownLandscapeRequest {
 	return ApiWorkspacesTeardownLandscapeRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -3319,6 +3394,9 @@ func (a *WorkspacesAPIService) WorkspacesTeardownLandscapeExecute(r ApiWorkspace
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -3400,7 +3478,7 @@ func (a *WorkspacesAPIService) WorkspacesTeardownLandscapeExecute(r ApiWorkspace
 type ApiWorkspacesUpdateWorkspaceRequest struct {
 	ctx                              context.Context
 	ApiService                       WorkspacesAPI
-	workspaceId                      float32
+	workspaceId                      int
 	workspacesUpdateWorkspaceRequest *WorkspacesUpdateWorkspaceRequest
 }
 
@@ -3420,7 +3498,7 @@ WorkspacesUpdateWorkspace updateWorkspace
 	@param workspaceId
 	@return ApiWorkspacesUpdateWorkspaceRequest
 */
-func (a *WorkspacesAPIService) WorkspacesUpdateWorkspace(ctx context.Context, workspaceId float32) ApiWorkspacesUpdateWorkspaceRequest {
+func (a *WorkspacesAPIService) WorkspacesUpdateWorkspace(ctx context.Context, workspaceId int) ApiWorkspacesUpdateWorkspaceRequest {
 	return ApiWorkspacesUpdateWorkspaceRequest{
 		ApiService:  a,
 		ctx:         ctx,
@@ -3447,6 +3525,9 @@ func (a *WorkspacesAPIService) WorkspacesUpdateWorkspaceExecute(r ApiWorkspacesU
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.workspaceId < 0 {
+		return nil, reportError("workspaceId must be greater than 0")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
