@@ -41,6 +41,7 @@ func AddCreateTeamCmd(team *cobra.Command, opts *GlobalOptions) {
 	}
 	t.cmd.RunE = t.RunE
 	t.cmd.Flags().StringVarP(&t.Opts.Name, "name", "n", "", "Team name")
+	_ = t.cmd.MarkFlagRequired("name")
 	t.cmd.Flags().IntVarP(&t.Opts.DcId, "dc-id", "d", 0, "Data center ID")
 	AddCmd(team, t.cmd)
 }
