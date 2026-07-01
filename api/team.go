@@ -58,7 +58,7 @@ func (c *Client) ListTeams(orgId string) ([]Team, error) {
 }
 
 func (c *Client) GetTeam(teamId int) (*Team, error) {
-	team, r, err := c.api.TeamsAPI.TeamsGetTeam(c.ctx, float32(teamId)).Execute()
+	team, r, err := c.api.TeamsAPI.TeamsGetTeam(c.ctx, teamId).Execute()
 	if err != nil {
 		return nil, cserrors.FormatAPIError(r, err)
 	}
@@ -101,12 +101,12 @@ func (c *Client) createOrgTeam(orgId string, name string, dc int) (*Team, error)
 }
 
 func (c *Client) DeleteTeam(orgId string, teamId int) error {
-	r, err := c.api.TeamsAPI.TeamsDeleteTeam(c.ctx, float32(teamId)).Execute()
+	r, err := c.api.TeamsAPI.TeamsDeleteTeam(c.ctx, teamId).Execute()
 	return cserrors.FormatAPIError(r, err)
 }
 
 func (c *Client) AddTeamMember(teamId int, email string, role int) error {
-	r, err := c.api.TeamsAPI.TeamsInviteMember(c.ctx, float32(teamId)).
+	r, err := c.api.TeamsAPI.TeamsInviteMember(c.ctx, teamId).
 		TeamsInviteMemberRequest(openapi_client.TeamsInviteMemberRequest{
 			UserEmail: email,
 			Role:      role,
@@ -118,7 +118,7 @@ func (c *Client) AddTeamMember(teamId int, email string, role int) error {
 }
 
 func (c *Client) RemoveTeamMember(teamId int, userId int) error {
-	r, err := c.api.TeamsAPI.TeamsRemoveMember(c.ctx, float32(teamId), float32(userId)).Execute()
+	r, err := c.api.TeamsAPI.TeamsRemoveMember(c.ctx, teamId, userId).Execute()
 	if err != nil {
 		return cserrors.FormatAPIError(r, err)
 	}
