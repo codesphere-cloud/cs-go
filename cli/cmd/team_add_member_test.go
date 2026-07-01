@@ -97,7 +97,7 @@ var _ = Describe("AddTeamMember", func() {
 
 			err := c.RunE(nil, []string{})
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(ContainSubstring("failed to create Codespehre client: client init failed"))
+			Expect(err.Error()).To(ContainSubstring("failed to create Codesphere client: client init failed"))
 		})
 
 		It("should fail when team ID is unavailable", func() {
