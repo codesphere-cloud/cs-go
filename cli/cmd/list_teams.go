@@ -58,7 +58,11 @@ func (l *ListTeamsCmd) RunE(_ *cobra.Command, args []string) (err error) {
 		if team.IsFirst != nil && *team.IsFirst {
 			first = "*"
 		}
-		t.AppendRow(table.Row{first, team.Id, team.Name, cs.GetRoleName(int(team.Role)), team.DefaultDataCenterId})
+		roleName := "N/A"
+		if team.Role != nil {
+			roleName = cs.GetRoleName(*team.Role)
+		}
+		t.AppendRow(table.Row{first, team.Id, team.Name, roleName, team.DefaultDataCenterId})
 	}
 	t.Render()
 

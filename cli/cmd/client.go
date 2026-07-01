@@ -38,6 +38,7 @@ type Client interface {
 	DeleteTeam(teamId int) error
 	AddTeamMember(teamId int, email string, role int) error
 	RemoveTeamMember(teamId int, userId int) error
+	ListTeamMembers(teamId int) ([]api.TeamMember, error)
 }
 
 // CommandExecutor abstracts command execution for testing

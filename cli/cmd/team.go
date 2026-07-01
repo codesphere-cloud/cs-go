@@ -35,6 +35,7 @@ func AddMemberCmd(t *cobra.Command, opts *GlobalOptions) {
 
 	AddAddTeamMemberCmd(memberCmd, opts)
 	AddRemoveTeamMemberCmd(memberCmd, opts)
+	AddListTeamMembersCmd(memberCmd, opts)
 
 	t.AddCommand(memberCmd)
 }
