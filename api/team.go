@@ -62,6 +62,9 @@ func (c *Client) GetTeam(teamId int) (*Team, error) {
 	if err != nil {
 		return nil, cserrors.FormatAPIError(r, err)
 	}
+	if team == nil {
+		return nil, cserrors.NotFound("team not found")
+	}
 	return ConvertToTeam(team), nil
 }
 
