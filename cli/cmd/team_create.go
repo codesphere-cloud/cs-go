@@ -29,7 +29,7 @@ func AddCreateTeamCmd(team *cobra.Command, opts *GlobalOptions) {
 			Use:   "create",
 			Short: "Create team",
 			Long:  `Create a team in Codesphere or an Organization`,
-			Example: io.FormatExampleCommands("team member add", []io.Example{
+			Example: io.FormatExampleCommands("team create", []io.Example{
 				{Cmd: "-d <datacenterId> -n <teamName>", Desc: "Create a team in a specific datacenter"},
 				{Cmd: "-d <datacenterId> -n <teamName> -O <orgId>", Desc: "Create a team in a specific datacenter within an organization"},
 			}),
