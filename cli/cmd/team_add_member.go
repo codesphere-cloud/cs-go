@@ -81,8 +81,6 @@ func (c *AddTeamMemberCmd) AddTeamMember(client Client, teamId int, email string
 		return errors.New("invalid role: must be 0 for admin or 1 for member")
 	}
 
-	fmt.Printf("add member: %s to team %d with role: %d", email, teamId, role)
-
 	err := client.AddTeamMember(teamId, email, role)
 	if err != nil {
 		return fmt.Errorf("failed to add member to team: %w", err)
