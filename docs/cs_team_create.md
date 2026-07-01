@@ -14,10 +14,10 @@ cs team create [flags]
 
 ```
 # Create a team in a specific datacenter
-$ cs team member add -d <datacenterId> -n <teamName>
+$ cs team create -d <datacenterId> -n <teamName>
 
 # Create a team in a specific datacenter within an organization
-$ cs team member add -d <datacenterId> -n <teamName> -O <orgId>
+$ cs team create -d <datacenterId> -n <teamName> -O <orgId>
 ```
 
 ### Options
