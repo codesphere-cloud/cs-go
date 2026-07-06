@@ -7,6 +7,7 @@ import (
 	"errors"
 
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
@@ -17,7 +18,7 @@ var _ = Describe("AddTeamMember", func() {
 		mockClient *cmd.MockClient
 		c          *cmd.AddTeamMemberCmd
 		teamId     int
-		dcId       int
+		role       cs.TeamRole
 		email      string
 	)
 
@@ -26,7 +27,7 @@ var _ = Describe("AddTeamMember", func() {
 		mockEnv = cmd.NewMockEnv(GinkgoT())
 		teamId = 42
 		email = "test@test.com"
-		dcId = 1 // Default data center ID for testing
+		role = cs.RoleMember
 		c = &cmd.AddTeamMemberCmd{
 			Opts: cmd.AddTeamMemberOpts{
 				GlobalOptions: &cmd.GlobalOptions{
@@ -36,6 +37,7 @@ var _ = Describe("AddTeamMember", func() {
 				},
 				Email:  email,
 				TeamId: teamId,
+				Role:   -1,
 			},
 			ClientFactory: func(opts cmd.GlobalOptions) (cmd.Client, error) {
 				return mockClient, nil
@@ -52,7 +54,7 @@ var _ = Describe("AddTeamMember", func() {
 	Context("Validation", func() {
 		It("should fail if the mail is empty", func() {
 
-			err := c.AddTeamMember(mockClient, teamId, "", dcId)
+			err := c.AddTeamMember(mockClient, teamId, "", role)
 
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal("email cannot be empty"))
@@ -60,30 +62,46 @@ var _ = Describe("AddTeamMember", func() {
 
 		It("should fail if the email is invalid", func() {
 
-			err := c.AddTeamMember(mockClient, teamId, "invalid-email", dcId)
+			err := c.AddTeamMember(mockClient, teamId, "invalid-email", role)
 
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("invalid email address"))
 		})
 
-		It("should fail if the role is invalid", func() {
-			err := c.AddTeamMember(mockClient, teamId, "user@example.com", 2)
+		It("should fail if the role is invalid (e.g. 3)", func() {
+			err := c.AddTeamMember(mockClient, teamId, "user@example.com", 3)
 
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(Equal("invalid role: must be 0 for admin or 1 for member"))
+			Expect(err.Error()).To(Equal("invalid role: must be 1 for member or -1 for admin"))
+		})
+
+		It("should fail if the role is 0", func() {
+			err := c.AddTeamMember(mockClient, teamId, "user@example.com", 0)
+
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(Equal("invalid role: must be 1 for member or -1 for admin"))
 		})
 	})
 
 	Context("RunE execution flow", func() {
-		It("should successfully add a member to a team", func() {
-			mockClient.EXPECT().AddTeamMember(teamId, email, 0).Return(nil).Once()
+		It("should successfully add a member to a team with role -1 (admin)", func() {
+			c.Opts.Role = -1
+			mockClient.EXPECT().AddTeamMember(teamId, email, -1).Return(nil).Once()
+
+			err := c.RunE(nil, []string{})
+			Expect(err).ToNot(HaveOccurred())
+		})
+
+		It("should successfully add a member to a team with role 1 (member)", func() {
+			c.Opts.Role = 1
+			mockClient.EXPECT().AddTeamMember(teamId, email, 1).Return(nil).Once()
 
 			err := c.RunE(nil, []string{})
 			Expect(err).ToNot(HaveOccurred())
 		})
 
 		It("should fail when the token is not allowed to add a member", func() {
-			mockClient.EXPECT().AddTeamMember(teamId, email, 0).Return(errors.New("failed")).Once()
+			mockClient.EXPECT().AddTeamMember(teamId, email, -1).Return(errors.New("failed")).Once()
 
 			err := c.RunE(nil, []string{})
 			Expect(err).To(HaveOccurred())
@@ -123,11 +141,18 @@ var _ = Describe("AddTeamMember", func() {
 			Expect(err.Error()).To(ContainSubstring("invalid email address"))
 		})
 
-		It("should fail when role is invalid", func() {
-			c.Opts.Role = 2
+		It("should fail when role is invalid (e.g. 3)", func() {
+			c.Opts.Role = 3
 			err := c.RunE(nil, []string{})
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(Equal("invalid role: must be 0 for admin or 1 for member"))
+			Expect(err.Error()).To(Equal("invalid role: must be 1 for member or -1 for admin"))
+		})
+
+		It("should fail when role is 0", func() {
+			c.Opts.Role = 0
+			err := c.RunE(nil, []string{})
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(Equal("invalid role: must be 1 for member or -1 for admin"))
 		})
 	})
 

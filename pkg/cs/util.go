@@ -74,8 +74,8 @@ func SetAuthoriziationHeader(req *http.Request) error {
 type TeamRole int
 
 const (
-	RoleAdmin  TeamRole = 0
 	RoleMember TeamRole = 1
+	RoleAdmin  TeamRole = -1
 )
 
 func (r TeamRole) IsValid() bool {
@@ -83,10 +83,14 @@ func (r TeamRole) IsValid() bool {
 }
 
 func (r TeamRole) String() string {
-	if r == RoleMember {
+	switch r {
+	case RoleMember:
 		return "Member"
+	case RoleAdmin, 0:
+		return "Admin"
+	default:
+		return "Unknown"
 	}
-	return "Admin"
 }
 
 func GetRoleName(role int) string {

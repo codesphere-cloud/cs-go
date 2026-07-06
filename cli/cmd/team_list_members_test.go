@@ -51,7 +51,7 @@ var _ = Describe("ListTeamMembers", func() {
 				{
 					UserId:    1,
 					TeamId:    teamId,
-					Role:      0,
+					Role:      -1,
 					Pending:   false,
 					CreatedAt: time.Now(),
 					Name:      &name,

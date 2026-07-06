@@ -49,7 +49,7 @@ func AddRemoveTeamMemberCmd(team *cobra.Command, opts *GlobalOptions) {
 func (c *RemoveTeamMemberCmd) RunE(_ *cobra.Command, args []string) error {
 	client, err := c.ClientFactory(*c.Opts.GlobalOptions)
 	if err != nil {
-		return fmt.Errorf("failed to create Codespehre client: %w", err)
+		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
 	teamId, err := c.Opts.GetTeamId()

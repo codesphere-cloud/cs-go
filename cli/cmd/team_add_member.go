@@ -22,7 +22,7 @@ type AddTeamMemberCmd struct {
 type AddTeamMemberOpts struct {
 	*GlobalOptions
 	Email  string
-	Role   int
+	Role   cs.TeamRole
 	TeamId int
 }
 
@@ -36,7 +36,7 @@ func AddAddTeamMemberCmd(team *cobra.Command, opts *GlobalOptions) {
 				To add a member to a team within an organization, the CS_ORG_ID environment variable or the -O/--org flag must be set.`),
 			Example: io.FormatExampleCommands("team member add", []io.Example{
 				{Cmd: "-t <teamId> -e user@example.com -r 1", Desc: "Add a user to a team as a member"},
-				{Cmd: "-t <teamId> -e admin@example.com -r 0", Desc: "Add a user to a team as an admin"},
+				{Cmd: "-t <teamId> -e admin@example.com -r -1", Desc: "Add a user to a team as an admin"},
 				{Cmd: "-O <org-id> -t  <teamId> -e user@example.com -r 1", Desc: "Add a user to a team within an organization"},
 			}),
 		},
@@ -48,7 +48,7 @@ func AddAddTeamMemberCmd(team *cobra.Command, opts *GlobalOptions) {
 	t.cmd.RunE = t.RunE
 	t.cmd.Flags().StringVarP(&t.Opts.Email, "email", "e", "", "Team member email")
 	_ = t.cmd.MarkFlagRequired("email")
-	t.cmd.Flags().IntVarP(&t.Opts.Role, "role", "r", int(cs.RoleAdmin), "Team member role 0=admin, 1=member")
+	t.cmd.Flags().IntVarP((*int)(&t.Opts.Role), "role", "r", int(cs.RoleMember), "Team member role 1=member, -1=admin")
 	AddCmd(team, t.cmd)
 }
 
@@ -68,7 +68,7 @@ func (c *AddTeamMemberCmd) RunE(_ *cobra.Command, args []string) error {
 
 }
 
-func (c *AddTeamMemberCmd) AddTeamMember(client Client, teamId int, email string, role int) error {
+func (c *AddTeamMemberCmd) AddTeamMember(client Client, teamId int, email string, role cs.TeamRole) error {
 	if email == "" {
 		return errors.New("email cannot be empty")
 	}
@@ -77,11 +77,11 @@ func (c *AddTeamMemberCmd) AddTeamMember(client Client, teamId int, email string
 		return fmt.Errorf("invalid email address: %w", err)
 	}
 
-	if !cs.TeamRole(role).IsValid() {
-		return errors.New("invalid role: must be 0 for admin or 1 for member")
+	if !role.IsValid() {
+		return errors.New("invalid role: must be 1 for member or -1 for admin")
 	}
 
-	err := client.AddTeamMember(teamId, email, role)
+	err := client.AddTeamMember(teamId, email, int(role))
 	if err != nil {
 		return fmt.Errorf("failed to add member to team: %w", err)
 	}
