@@ -84,7 +84,7 @@ var _ = Describe("CreateTeam", func() {
 			err := c.RunE(nil, []string{})
 			Expect(err).ToNot(HaveOccurred())
 
-			w.Close()
+			_ = w.Close()
 			var buf bytes.Buffer
 			_, _ = io.Copy(&buf, r)
 			os.Stdout = oldStdout
@@ -110,7 +110,7 @@ var _ = Describe("CreateTeam", func() {
 			err := c.RunE(nil, []string{})
 			Expect(err).ToNot(HaveOccurred())
 
-			w.Close()
+			_ = w.Close()
 			var buf bytes.Buffer
 			_, _ = io.Copy(&buf, r)
 			os.Stdout = oldStdout
