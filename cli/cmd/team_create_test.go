@@ -4,7 +4,10 @@
 package cmd_test
 
 import (
+	"bytes"
 	"fmt"
+	"io"
+	"os"
 
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
@@ -74,8 +77,46 @@ var _ = Describe("CreateTeam", func() {
 			}
 			mockClient.EXPECT().CreateTeam(orgId, teamName, dcId).Return(&expectedTeam, nil).Once()
 
+			oldStdout := os.Stdout
+			r, w, _ := os.Pipe()
+			os.Stdout = w
+
 			err := c.RunE(nil, []string{})
 			Expect(err).ToNot(HaveOccurred())
+
+			w.Close()
+			var buf bytes.Buffer
+			_, _ = io.Copy(&buf, r)
+			os.Stdout = oldStdout
+
+			Expect(buf.String()).To(ContainSubstring(fmt.Sprintf("Team created: %v in Organization: %v\n", teamId, orgId)))
+		})
+
+		It("should successfully create a team and print the correct message when no organization ID is provided", func() {
+			c.Opts.OrgId = "" // Ensure flag is empty
+			mockEnv.EXPECT().GetOrgId().Return("").Once()
+
+			expectedTeam := api.Team{
+				Id:                  teamId,
+				Name:                teamName,
+				DefaultDataCenterId: dcId,
+			}
+			mockClient.EXPECT().CreateTeam("", teamName, dcId).Return(&expectedTeam, nil).Once()
+
+			oldStdout := os.Stdout
+			r, w, _ := os.Pipe()
+			os.Stdout = w
+
+			err := c.RunE(nil, []string{})
+			Expect(err).ToNot(HaveOccurred())
+
+			w.Close()
+			var buf bytes.Buffer
+			_, _ = io.Copy(&buf, r)
+			os.Stdout = oldStdout
+
+			Expect(buf.String()).To(ContainSubstring(fmt.Sprintf("Team created: %v\n", teamId)))
+			Expect(buf.String()).ToNot(ContainSubstring("in Organization"))
 		})
 	})
 

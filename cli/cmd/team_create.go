@@ -62,7 +62,11 @@ func (c *CreateTeamCmd) RunE(_ *cobra.Command, args []string) error {
 		return err
 	}
 
-	fmt.Printf("Team created: %+v in Organization: %+v\n", createdTeam.Id, orgId)
+	if orgId != "" {
+		fmt.Printf("Team created: %+v in Organization: %+v\n", createdTeam.Id, orgId)
+	} else {
+		fmt.Printf("Team created: %+v\n", createdTeam.Id)
+	}
 	return nil
 }
 
