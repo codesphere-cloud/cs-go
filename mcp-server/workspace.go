@@ -60,6 +60,11 @@ type StartPipelineStageArgs struct {
 	Stage       string `json:"stage" jsonschema:"Stage name"`
 }
 
+type StopPipelineStageArgs struct {
+	WorkspaceId int    `json:"workspaceId" jsonschema:"ID of the workspace"`
+	Stage       string `json:"stage" jsonschema:"Stage name"`
+}
+
 type GetPipelineStateArgs struct {
 	WorkspaceId int    `json:"workspaceId" jsonschema:"ID of the workspace"`
 	Stage       string `json:"stage" jsonschema:"Stage name"`
@@ -201,6 +206,17 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
 		return nil, map[string]string{"status": "started"}, nil
+	})
+
+	mcp.AddTool(server, &mcp.Tool{
+		Name:        "stop_pipeline_stage",
+		Description: "Stop a CI pipeline stage",
+	}, func(ctx context.Context, req *mcp.CallToolRequest, args StopPipelineStageArgs) (*mcp.CallToolResult, any, error) {
+		err := client.StopPipelineStage(args.WorkspaceId, args.Stage)
+		if err != nil {
+			return &mcp.CallToolResult{IsError: true}, nil, err
+		}
+		return nil, map[string]string{"status": "stopped"}, nil
 	})
 
 	mcp.AddTool(server, &mcp.Tool{

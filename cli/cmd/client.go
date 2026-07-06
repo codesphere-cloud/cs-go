@@ -31,6 +31,7 @@ type Client interface {
 	DeployWorkspace(args api.DeployWorkspaceArgs) (*api.Workspace, error)
 	DeleteWorkspace(wsId int) error
 	StartPipelineStage(wsId int, profile string, stage string) error
+	StopPipelineStage(wsId int, stage string) error
 	GetPipelineState(wsId int, stage string) ([]api.PipelineStatus, error)
 	GitPull(wsId int, remote string, branch string) error
 	DeployLandscape(wsId int, profile string) error

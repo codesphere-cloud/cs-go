@@ -115,6 +115,7 @@ func GetRootCmd() *cobra.Command {
 	AddDeleteCmd(rootCmd, &opts)
 	AddMonitorCmd(rootCmd, &opts)
 	AddStartCmd(rootCmd, &opts)
+	AddStopCmd(rootCmd, &opts)
 	AddGitCmd(rootCmd, &opts)
 	AddSyncCmd(rootCmd, &opts)
 	AddUpdateCmd(rootCmd)
