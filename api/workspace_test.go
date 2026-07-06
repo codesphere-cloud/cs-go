@@ -30,7 +30,7 @@ func mockTime() *api.MockTime {
 }
 
 func mockWorkspaceStatus(wsApiMock *openapi_client.MockWorkspacesAPI, workspaceId int, isRunning ...bool) {
-	wsApiMock.EXPECT().WorkspacesGetWorkspaceStatus(mock.Anything, float32(workspaceId)).
+	wsApiMock.EXPECT().WorkspacesGetWorkspaceStatus(mock.Anything, workspaceId).
 		Return(openapi_client.ApiWorkspacesGetWorkspaceStatusRequest{ApiService: wsApiMock})
 	for _, running := range isRunning {
 		wsApiMock.EXPECT().WorkspacesGetWorkspaceStatusExecute(mock.Anything).Once().Return(&api.WorkspaceStatus{
@@ -64,7 +64,7 @@ var _ = Describe("Workspace", func() {
 			}
 			teamId := 42
 
-			wsApiMock.EXPECT().WorkspacesListWorkspaces(mock.Anything, float32(teamId)).
+			wsApiMock.EXPECT().WorkspacesListWorkspaces(mock.Anything, teamId).
 				Return(openapi_client.ApiWorkspacesListWorkspacesRequest{ApiService: wsApiMock})
 			wsApiMock.EXPECT().WorkspacesListWorkspacesExecute(mock.Anything).Return(expectedWorkspaces, nil, nil)
 			workspaces, err := client.ListWorkspaces(teamId)
@@ -105,7 +105,7 @@ var _ = Describe("Workspace", func() {
 	})
 	Context("GitPull", func() {
 		It("sends request to pull without remote and origin", func() {
-			wsApiMock.EXPECT().WorkspacesGitPull(mock.Anything, float32(ws.Id)).
+			wsApiMock.EXPECT().WorkspacesGitPull(mock.Anything, ws.Id).
 				Return(openapi_client.ApiWorkspacesGitPullRequest{
 					ApiService: wsApiMock,
 				})
@@ -117,7 +117,7 @@ var _ = Describe("Workspace", func() {
 		})
 
 		It("sends request to pull with remote and origin when specified", func() {
-			wsApiMock.EXPECT().WorkspacesGitPull2(mock.Anything, float32(ws.Id), "origin", "my-branch").
+			wsApiMock.EXPECT().WorkspacesGitPull2(mock.Anything, ws.Id, "origin", "my-branch").
 				Return(openapi_client.ApiWorkspacesGitPull2Request{
 					ApiService: wsApiMock,
 				})
@@ -148,7 +148,7 @@ var _ = Describe("Workspace", func() {
 			})
 
 			It("Calls SetEnvVar endpoint when env vars are set", func() {
-				wsApiMock.EXPECT().WorkspacesSetEnvVar(mock.Anything, float32(0)).
+				wsApiMock.EXPECT().WorkspacesSetEnvVar(mock.Anything, 0).
 					Return(openapi_client.ApiWorkspacesSetEnvVarRequest{ApiService: wsApiMock})
 				wsApiMock.EXPECT().WorkspacesSetEnvVarExecute(mock.Anything).Return(nil, nil).Once()
 
@@ -252,7 +252,7 @@ var _ = Describe("Workspace", func() {
 				wsApiMock.EXPECT().WorkspacesCreateWorkspaceExecute(mock.Anything).Return(&ws, nil, nil)
 
 				envErr := fmt.Errorf("codesphere API returned error 500 (Internal Server Error): failed to set env")
-				wsApiMock.EXPECT().WorkspacesSetEnvVar(mock.Anything, float32(0)).
+				wsApiMock.EXPECT().WorkspacesSetEnvVar(mock.Anything, 0).
 					Return(openapi_client.ApiWorkspacesSetEnvVarRequest{ApiService: wsApiMock})
 				wsApiMock.EXPECT().WorkspacesSetEnvVarExecute(mock.Anything).Return(nil, envErr).Once()
 

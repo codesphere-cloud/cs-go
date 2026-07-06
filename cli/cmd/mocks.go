@@ -1000,6 +1000,63 @@ func (_c *MockClient_StartPipelineStage_Call) RunAndReturn(run func(wsId int, pr
 	return _c
 }
 
+// StopPipelineStage provides a mock function for the type MockClient
+func (_mock *MockClient) StopPipelineStage(wsId int, stage string) error {
+	ret := _mock.Called(wsId, stage)
+
+	if len(ret) == 0 {
+		panic("no return value specified for StopPipelineStage")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(int, string) error); ok {
+		r0 = returnFunc(wsId, stage)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockClient_StopPipelineStage_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'StopPipelineStage'
+type MockClient_StopPipelineStage_Call struct {
+	*mock.Call
+}
+
+// StopPipelineStage is a helper method to define mock.On call
+//   - wsId int
+//   - stage string
+func (_e *MockClient_Expecter) StopPipelineStage(wsId any, stage any) *MockClient_StopPipelineStage_Call {
+	return &MockClient_StopPipelineStage_Call{Call: _e.mock.On("StopPipelineStage", wsId, stage)}
+}
+
+func (_c *MockClient_StopPipelineStage_Call) Run(run func(wsId int, stage string)) *MockClient_StopPipelineStage_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 int
+		if args[0] != nil {
+			arg0 = args[0].(int)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockClient_StopPipelineStage_Call) Return(err error) *MockClient_StopPipelineStage_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockClient_StopPipelineStage_Call) RunAndReturn(run func(wsId int, stage string) error) *MockClient_StopPipelineStage_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // WaitForWorkspaceRunning provides a mock function for the type MockClient
 func (_mock *MockClient) WaitForWorkspaceRunning(workspace *api.Workspace, timeout time.Duration) error {
 	ret := _mock.Called(workspace, timeout)

@@ -13,12 +13,12 @@ import (
 )
 
 func (c *Client) ListWorkspaces(teamId int) ([]Workspace, error) {
-	workspaces, r, err := c.api.WorkspacesAPI.WorkspacesListWorkspaces(c.ctx, float32(teamId)).Execute()
+	workspaces, r, err := c.api.WorkspacesAPI.WorkspacesListWorkspaces(c.ctx, teamId).Execute()
 	return workspaces, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) GetWorkspace(workspaceId int) (Workspace, error) {
-	workspace, r, err := c.api.WorkspacesAPI.WorkspacesGetWorkspace(c.ctx, float32(workspaceId)).Execute()
+	workspace, r, err := c.api.WorkspacesAPI.WorkspacesGetWorkspace(c.ctx, workspaceId).Execute()
 
 	if workspace != nil {
 		return *workspace, errors.FormatAPIError(r, err)
@@ -27,12 +27,12 @@ func (c *Client) GetWorkspace(workspaceId int) (Workspace, error) {
 }
 
 func (c *Client) DeleteWorkspace(workspaceId int) error {
-	r, err := c.api.WorkspacesAPI.WorkspacesDeleteWorkspace(c.ctx, float32(workspaceId)).Execute()
+	r, err := c.api.WorkspacesAPI.WorkspacesDeleteWorkspace(c.ctx, workspaceId).Execute()
 	return errors.FormatAPIError(r, err)
 }
 
 func (c *Client) WorkspaceStatus(workspaceId int) (*WorkspaceStatus, error) {
-	status, r, err := c.api.WorkspacesAPI.WorkspacesGetWorkspaceStatus(c.ctx, float32(workspaceId)).Execute()
+	status, r, err := c.api.WorkspacesAPI.WorkspacesGetWorkspaceStatus(c.ctx, workspaceId).Execute()
 	return status, errors.FormatAPIError(r, err)
 }
 
@@ -50,7 +50,7 @@ func (c *Client) SetEnvVarOnWorkspace(workspaceId int, envVars map[string]string
 		})
 	}
 
-	req := c.api.WorkspacesAPI.WorkspacesSetEnvVar(c.ctx, float32(workspaceId)).
+	req := c.api.WorkspacesAPI.WorkspacesSetEnvVar(c.ctx, workspaceId).
 		WorkspacesCreateWorkspaceRequestEnvInner(vars)
 	r, err := c.api.WorkspacesAPI.WorkspacesSetEnvVarExecute(req)
 	return errors.FormatAPIError(r, err)
@@ -68,7 +68,7 @@ func (c *Client) ExecCommand(workspaceId int, command string, workdir string, en
 		Env:        &env,
 	}
 
-	req := c.api.WorkspacesAPI.WorkspacesExecuteCommand(c.ctx, float32(workspaceId)).WorkspacesExecuteCommandRequest(cmd)
+	req := c.api.WorkspacesAPI.WorkspacesExecuteCommand(c.ctx, workspaceId).WorkspacesExecuteCommandRequest(cmd)
 	res, r, err := req.Execute()
 
 	if err != nil {
@@ -82,28 +82,34 @@ func (c *Client) ExecCommand(workspaceId int, command string, workdir string, en
 
 func (c *Client) DeployLandscape(wsId int, profile string) error {
 	if profile == "ci.yml" || profile == "" {
-		req := c.api.WorkspacesAPI.WorkspacesDeployLandscape(c.ctx, float32(wsId))
+		req := c.api.WorkspacesAPI.WorkspacesDeployLandscape(c.ctx, wsId)
 		r, err := req.Execute()
 		return errors.FormatAPIError(r, err)
 	}
-	req := c.api.WorkspacesAPI.WorkspacesDeployLandscape1(c.ctx, float32(wsId), profile)
+	req := c.api.WorkspacesAPI.WorkspacesDeployLandscape1(c.ctx, wsId, profile)
 	r, err := req.Execute()
 	return errors.FormatAPIError(r, err)
 }
 
 func (c *Client) StartPipelineStage(wsId int, profile string, stage string) error {
 	if profile == "ci.yml" || profile == "" {
-		req := c.api.WorkspacesAPI.WorkspacesStartPipelineStage(c.ctx, float32(wsId), stage)
+		req := c.api.WorkspacesAPI.WorkspacesStartPipelineStage(c.ctx, wsId, stage)
 		r, err := req.Execute()
 		return errors.FormatAPIError(r, err)
 	}
-	req := c.api.WorkspacesAPI.WorkspacesStartPipelineStage1(c.ctx, float32(wsId), stage, profile)
+	req := c.api.WorkspacesAPI.WorkspacesStartPipelineStage1(c.ctx, wsId, stage, profile)
+	r, err := req.Execute()
+	return errors.FormatAPIError(r, err)
+}
+
+func (c *Client) StopPipelineStage(wsId int, stage string) error {
+	req := c.api.WorkspacesAPI.WorkspacesStopPipelineStage(c.ctx, wsId, stage)
 	r, err := req.Execute()
 	return errors.FormatAPIError(r, err)
 }
 
 func (c *Client) GetPipelineState(wsId int, stage string) ([]PipelineStatus, error) {
-	req := c.api.WorkspacesAPI.WorkspacesPipelineStatus(c.ctx, float32(wsId), stage)
+	req := c.api.WorkspacesAPI.WorkspacesPipelineStatus(c.ctx, wsId, stage)
 	res, r, err := req.Execute()
 	return res, errors.FormatAPIError(r, err)
 }
@@ -111,7 +117,7 @@ func (c *Client) GetPipelineState(wsId int, stage string) ([]PipelineStatus, err
 // ScaleWorkspace sets the number of replicas for a workspace.
 // For on-demand workspaces, setting replicas to 1 wakes up the workspace.
 func (c *Client) ScaleWorkspace(wsId int, replicas int) error {
-	req := c.api.WorkspacesAPI.WorkspacesUpdateWorkspace(c.ctx, float32(wsId)).
+	req := c.api.WorkspacesAPI.WorkspacesUpdateWorkspace(c.ctx, wsId).
 		WorkspacesUpdateWorkspaceRequest(openapi_client.WorkspacesUpdateWorkspaceRequest{
 			Replicas: &replicas,
 		})
@@ -122,7 +128,7 @@ func (c *Client) ScaleWorkspace(wsId int, replicas int) error {
 // ScaleLandscapeServices scales landscape services by name.
 // The services map contains service name -> replica count.
 func (c *Client) ScaleLandscapeServices(wsId int, services map[string]int) error {
-	req := c.api.WorkspacesAPI.WorkspacesScaleLandscapeServices(c.ctx, float32(wsId)).
+	req := c.api.WorkspacesAPI.WorkspacesScaleLandscapeServices(c.ctx, wsId).
 		RequestBody(services)
 	resp, err := req.Execute()
 	return errors.FormatAPIError(resp, err)
@@ -223,27 +229,27 @@ func (client Client) DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, erro
 
 func (c Client) GitPull(workspaceId int, remote string, branch string) error {
 	if remote == "" {
-		req := c.api.WorkspacesAPI.WorkspacesGitPull(c.ctx, float32(workspaceId))
+		req := c.api.WorkspacesAPI.WorkspacesGitPull(c.ctx, workspaceId)
 		r, err := req.Execute()
 		return errors.FormatAPIError(r, err)
 	}
 
-	req := c.api.WorkspacesAPI.WorkspacesGitPull2(c.ctx, float32(workspaceId), remote, branch)
+	req := c.api.WorkspacesAPI.WorkspacesGitPull2(c.ctx, workspaceId, remote, branch)
 	r, err := req.Execute()
 	return errors.FormatAPIError(r, err)
 }
 
 func (c *Client) GetLogsOfStage(workspaceId int, stage string, step int) (*openapi_client.WorkspacesLogs200Response, error) {
-	resp, r, err := c.api.WorkspacesAPI.WorkspacesLogs(c.ctx, float32(workspaceId), stage, float32(step)).Execute()
+	resp, r, err := c.api.WorkspacesAPI.WorkspacesLogs(c.ctx, workspaceId, stage, step).Execute()
 	return resp, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) GetLogsOfReplica(workspaceId int, step int, replica string) (*openapi_client.WorkspacesReplicaLogs200Response, error) {
-	resp, r, err := c.api.WorkspacesAPI.WorkspacesReplicaLogs(c.ctx, float32(workspaceId), float32(step), replica).Execute()
+	resp, r, err := c.api.WorkspacesAPI.WorkspacesReplicaLogs(c.ctx, workspaceId, step, replica).Execute()
 	return resp, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) GetLogsOfServer(workspaceId int, step int, server string) (*openapi_client.WorkspacesServerLogs200Response, error) {
-	resp, r, err := c.api.WorkspacesAPI.WorkspacesServerLogs(c.ctx, float32(workspaceId), float32(step), server).Execute()
+	resp, r, err := c.api.WorkspacesAPI.WorkspacesServerLogs(c.ctx, workspaceId, step, server).Execute()
 	return resp, errors.FormatAPIError(r, err)
 }

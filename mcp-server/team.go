@@ -34,7 +34,7 @@ func RegisterTeamTools(server *mcp.Server, client *api.Client) {
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
-		return nil, teams, nil
+		return nil, map[string]any{"items": teams}, nil
 	})
 
 	mcp.AddTool(server, &mcp.Tool{

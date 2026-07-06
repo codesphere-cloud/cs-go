@@ -49,7 +49,7 @@ func RegisterDomainTools(server *mcp.Server, client *api.Client) {
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
-		return nil, domains, nil
+		return nil, map[string]any{"items": domains}, nil
 	})
 
 	mcp.AddTool(server, &mcp.Tool{
