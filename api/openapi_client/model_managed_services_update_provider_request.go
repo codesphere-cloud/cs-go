@@ -36,7 +36,7 @@ type ManagedServicesUpdateProviderRequest struct {
 	Plans         []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner              `json:"plans,omitempty"`
 	Versions      *map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue `json:"versions,omitempty"`
 	Backend       *ManagedServicesListProviders200ResponseInnerAnyOfBackend                  `json:"backend,omitempty"`
-	Scope         *ManagedServicesCreateProviderRequestAnyOfScope                            `json:"scope,omitempty"`
+	Scope         *ManagedServicesUpsertProviderRequestAnyOfScope                            `json:"scope,omitempty"`
 }
 
 // NewManagedServicesUpdateProviderRequest instantiates a new ManagedServicesUpdateProviderRequest object
@@ -473,9 +473,9 @@ func (o *ManagedServicesUpdateProviderRequest) SetBackend(v ManagedServicesListP
 }
 
 // GetScope returns the Scope field value if set, zero value otherwise.
-func (o *ManagedServicesUpdateProviderRequest) GetScope() ManagedServicesCreateProviderRequestAnyOfScope {
+func (o *ManagedServicesUpdateProviderRequest) GetScope() ManagedServicesUpsertProviderRequestAnyOfScope {
 	if o == nil || IsNil(o.Scope) {
-		var ret ManagedServicesCreateProviderRequestAnyOfScope
+		var ret ManagedServicesUpsertProviderRequestAnyOfScope
 		return ret
 	}
 	return *o.Scope
@@ -483,7 +483,7 @@ func (o *ManagedServicesUpdateProviderRequest) GetScope() ManagedServicesCreateP
 
 // GetScopeOk returns a tuple with the Scope field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesUpdateProviderRequest) GetScopeOk() (*ManagedServicesCreateProviderRequestAnyOfScope, bool) {
+func (o *ManagedServicesUpdateProviderRequest) GetScopeOk() (*ManagedServicesUpsertProviderRequestAnyOfScope, bool) {
 	if o == nil || IsNil(o.Scope) {
 		return nil, false
 	}
@@ -499,8 +499,8 @@ func (o *ManagedServicesUpdateProviderRequest) HasScope() bool {
 	return false
 }
 
-// SetScope gets a reference to the given ManagedServicesCreateProviderRequestAnyOfScope and assigns it to the Scope field.
-func (o *ManagedServicesUpdateProviderRequest) SetScope(v ManagedServicesCreateProviderRequestAnyOfScope) {
+// SetScope gets a reference to the given ManagedServicesUpsertProviderRequestAnyOfScope and assigns it to the Scope field.
+func (o *ManagedServicesUpdateProviderRequest) SetScope(v ManagedServicesUpsertProviderRequestAnyOfScope) {
 	o.Scope = &v
 }
 

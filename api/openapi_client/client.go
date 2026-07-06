@@ -57,6 +57,8 @@ type APIClient struct {
 
 	OrganizationsAPI OrganizationsAPI
 
+	SshAPI SshAPI
+
 	TeamsAPI TeamsAPI
 
 	UsageAPI UsageAPI
@@ -86,6 +88,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.ManagedServicesAPI = (*ManagedServicesAPIService)(&c.common)
 	c.MetadataAPI = (*MetadataAPIService)(&c.common)
 	c.OrganizationsAPI = (*OrganizationsAPIService)(&c.common)
+	c.SshAPI = (*SshAPIService)(&c.common)
 	c.TeamsAPI = (*TeamsAPIService)(&c.common)
 	c.UsageAPI = (*UsageAPIService)(&c.common)
 	c.VaultAPI = (*VaultAPIService)(&c.common)

@@ -2223,6 +2223,127 @@ func (_c *MockManagedServicesAPI_ManagedServicesUpdateProviderExecute_Call) RunA
 	return _c
 }
 
+// ManagedServicesUpsertProvider provides a mock function for the type MockManagedServicesAPI
+func (_mock *MockManagedServicesAPI) ManagedServicesUpsertProvider(ctx context.Context) ApiManagedServicesUpsertProviderRequest {
+	ret := _mock.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ManagedServicesUpsertProvider")
+	}
+
+	var r0 ApiManagedServicesUpsertProviderRequest
+	if returnFunc, ok := ret.Get(0).(func(context.Context) ApiManagedServicesUpsertProviderRequest); ok {
+		r0 = returnFunc(ctx)
+	} else {
+		r0 = ret.Get(0).(ApiManagedServicesUpsertProviderRequest)
+	}
+	return r0
+}
+
+// MockManagedServicesAPI_ManagedServicesUpsertProvider_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ManagedServicesUpsertProvider'
+type MockManagedServicesAPI_ManagedServicesUpsertProvider_Call struct {
+	*mock.Call
+}
+
+// ManagedServicesUpsertProvider is a helper method to define mock.On call
+//   - ctx context.Context
+func (_e *MockManagedServicesAPI_Expecter) ManagedServicesUpsertProvider(ctx any) *MockManagedServicesAPI_ManagedServicesUpsertProvider_Call {
+	return &MockManagedServicesAPI_ManagedServicesUpsertProvider_Call{Call: _e.mock.On("ManagedServicesUpsertProvider", ctx)}
+}
+
+func (_c *MockManagedServicesAPI_ManagedServicesUpsertProvider_Call) Run(run func(ctx context.Context)) *MockManagedServicesAPI_ManagedServicesUpsertProvider_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockManagedServicesAPI_ManagedServicesUpsertProvider_Call) Return(apiManagedServicesUpsertProviderRequest ApiManagedServicesUpsertProviderRequest) *MockManagedServicesAPI_ManagedServicesUpsertProvider_Call {
+	_c.Call.Return(apiManagedServicesUpsertProviderRequest)
+	return _c
+}
+
+func (_c *MockManagedServicesAPI_ManagedServicesUpsertProvider_Call) RunAndReturn(run func(ctx context.Context) ApiManagedServicesUpsertProviderRequest) *MockManagedServicesAPI_ManagedServicesUpsertProvider_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ManagedServicesUpsertProviderExecute provides a mock function for the type MockManagedServicesAPI
+func (_mock *MockManagedServicesAPI) ManagedServicesUpsertProviderExecute(r ApiManagedServicesUpsertProviderRequest) (*ManagedServicesListProviders200ResponseInnerAnyOf, *http.Response, error) {
+	ret := _mock.Called(r)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ManagedServicesUpsertProviderExecute")
+	}
+
+	var r0 *ManagedServicesListProviders200ResponseInnerAnyOf
+	var r1 *http.Response
+	var r2 error
+	if returnFunc, ok := ret.Get(0).(func(ApiManagedServicesUpsertProviderRequest) (*ManagedServicesListProviders200ResponseInnerAnyOf, *http.Response, error)); ok {
+		return returnFunc(r)
+	}
+	if returnFunc, ok := ret.Get(0).(func(ApiManagedServicesUpsertProviderRequest) *ManagedServicesListProviders200ResponseInnerAnyOf); ok {
+		r0 = returnFunc(r)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ManagedServicesListProviders200ResponseInnerAnyOf)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(ApiManagedServicesUpsertProviderRequest) *http.Response); ok {
+		r1 = returnFunc(r)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*http.Response)
+		}
+	}
+	if returnFunc, ok := ret.Get(2).(func(ApiManagedServicesUpsertProviderRequest) error); ok {
+		r2 = returnFunc(r)
+	} else {
+		r2 = ret.Error(2)
+	}
+	return r0, r1, r2
+}
+
+// MockManagedServicesAPI_ManagedServicesUpsertProviderExecute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ManagedServicesUpsertProviderExecute'
+type MockManagedServicesAPI_ManagedServicesUpsertProviderExecute_Call struct {
+	*mock.Call
+}
+
+// ManagedServicesUpsertProviderExecute is a helper method to define mock.On call
+//   - r ApiManagedServicesUpsertProviderRequest
+func (_e *MockManagedServicesAPI_Expecter) ManagedServicesUpsertProviderExecute(r any) *MockManagedServicesAPI_ManagedServicesUpsertProviderExecute_Call {
+	return &MockManagedServicesAPI_ManagedServicesUpsertProviderExecute_Call{Call: _e.mock.On("ManagedServicesUpsertProviderExecute", r)}
+}
+
+func (_c *MockManagedServicesAPI_ManagedServicesUpsertProviderExecute_Call) Run(run func(r ApiManagedServicesUpsertProviderRequest)) *MockManagedServicesAPI_ManagedServicesUpsertProviderExecute_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 ApiManagedServicesUpsertProviderRequest
+		if args[0] != nil {
+			arg0 = args[0].(ApiManagedServicesUpsertProviderRequest)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockManagedServicesAPI_ManagedServicesUpsertProviderExecute_Call) Return(managedServicesListProviders200ResponseInnerAnyOf *ManagedServicesListProviders200ResponseInnerAnyOf, response *http.Response, err error) *MockManagedServicesAPI_ManagedServicesUpsertProviderExecute_Call {
+	_c.Call.Return(managedServicesListProviders200ResponseInnerAnyOf, response, err)
+	return _c
+}
+
+func (_c *MockManagedServicesAPI_ManagedServicesUpsertProviderExecute_Call) RunAndReturn(run func(r ApiManagedServicesUpsertProviderRequest) (*ManagedServicesListProviders200ResponseInnerAnyOf, *http.Response, error)) *MockManagedServicesAPI_ManagedServicesUpsertProviderExecute_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // NewMockMetadataAPI creates a new instance of MockMetadataAPI. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewMockMetadataAPI(t interface {
@@ -3380,6 +3501,380 @@ func (_c *MockOrganizationsAPI_OrganizationsRemoveOrgMemberExecute_Call) Return(
 }
 
 func (_c *MockOrganizationsAPI_OrganizationsRemoveOrgMemberExecute_Call) RunAndReturn(run func(r ApiOrganizationsRemoveOrgMemberRequest) (*http.Response, error)) *MockOrganizationsAPI_OrganizationsRemoveOrgMemberExecute_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// NewMockSshAPI creates a new instance of MockSshAPI. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
+// The first argument is typically a *testing.T value.
+func NewMockSshAPI(t interface {
+	mock.TestingT
+	Cleanup(func())
+}) *MockSshAPI {
+	mock := &MockSshAPI{}
+	mock.Mock.Test(t)
+
+	t.Cleanup(func() { mock.AssertExpectations(t) })
+
+	return mock
+}
+
+// MockSshAPI is an autogenerated mock type for the SshAPI type
+type MockSshAPI struct {
+	mock.Mock
+}
+
+type MockSshAPI_Expecter struct {
+	mock *mock.Mock
+}
+
+func (_m *MockSshAPI) EXPECT() *MockSshAPI_Expecter {
+	return &MockSshAPI_Expecter{mock: &_m.Mock}
+}
+
+// SshDeletePublicKey provides a mock function for the type MockSshAPI
+func (_mock *MockSshAPI) SshDeletePublicKey(ctx context.Context) ApiSshDeletePublicKeyRequest {
+	ret := _mock.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for SshDeletePublicKey")
+	}
+
+	var r0 ApiSshDeletePublicKeyRequest
+	if returnFunc, ok := ret.Get(0).(func(context.Context) ApiSshDeletePublicKeyRequest); ok {
+		r0 = returnFunc(ctx)
+	} else {
+		r0 = ret.Get(0).(ApiSshDeletePublicKeyRequest)
+	}
+	return r0
+}
+
+// MockSshAPI_SshDeletePublicKey_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SshDeletePublicKey'
+type MockSshAPI_SshDeletePublicKey_Call struct {
+	*mock.Call
+}
+
+// SshDeletePublicKey is a helper method to define mock.On call
+//   - ctx context.Context
+func (_e *MockSshAPI_Expecter) SshDeletePublicKey(ctx any) *MockSshAPI_SshDeletePublicKey_Call {
+	return &MockSshAPI_SshDeletePublicKey_Call{Call: _e.mock.On("SshDeletePublicKey", ctx)}
+}
+
+func (_c *MockSshAPI_SshDeletePublicKey_Call) Run(run func(ctx context.Context)) *MockSshAPI_SshDeletePublicKey_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockSshAPI_SshDeletePublicKey_Call) Return(apiSshDeletePublicKeyRequest ApiSshDeletePublicKeyRequest) *MockSshAPI_SshDeletePublicKey_Call {
+	_c.Call.Return(apiSshDeletePublicKeyRequest)
+	return _c
+}
+
+func (_c *MockSshAPI_SshDeletePublicKey_Call) RunAndReturn(run func(ctx context.Context) ApiSshDeletePublicKeyRequest) *MockSshAPI_SshDeletePublicKey_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// SshDeletePublicKeyExecute provides a mock function for the type MockSshAPI
+func (_mock *MockSshAPI) SshDeletePublicKeyExecute(r ApiSshDeletePublicKeyRequest) (*http.Response, error) {
+	ret := _mock.Called(r)
+
+	if len(ret) == 0 {
+		panic("no return value specified for SshDeletePublicKeyExecute")
+	}
+
+	var r0 *http.Response
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(ApiSshDeletePublicKeyRequest) (*http.Response, error)); ok {
+		return returnFunc(r)
+	}
+	if returnFunc, ok := ret.Get(0).(func(ApiSshDeletePublicKeyRequest) *http.Response); ok {
+		r0 = returnFunc(r)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*http.Response)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(ApiSshDeletePublicKeyRequest) error); ok {
+		r1 = returnFunc(r)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockSshAPI_SshDeletePublicKeyExecute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SshDeletePublicKeyExecute'
+type MockSshAPI_SshDeletePublicKeyExecute_Call struct {
+	*mock.Call
+}
+
+// SshDeletePublicKeyExecute is a helper method to define mock.On call
+//   - r ApiSshDeletePublicKeyRequest
+func (_e *MockSshAPI_Expecter) SshDeletePublicKeyExecute(r any) *MockSshAPI_SshDeletePublicKeyExecute_Call {
+	return &MockSshAPI_SshDeletePublicKeyExecute_Call{Call: _e.mock.On("SshDeletePublicKeyExecute", r)}
+}
+
+func (_c *MockSshAPI_SshDeletePublicKeyExecute_Call) Run(run func(r ApiSshDeletePublicKeyRequest)) *MockSshAPI_SshDeletePublicKeyExecute_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 ApiSshDeletePublicKeyRequest
+		if args[0] != nil {
+			arg0 = args[0].(ApiSshDeletePublicKeyRequest)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockSshAPI_SshDeletePublicKeyExecute_Call) Return(response *http.Response, err error) *MockSshAPI_SshDeletePublicKeyExecute_Call {
+	_c.Call.Return(response, err)
+	return _c
+}
+
+func (_c *MockSshAPI_SshDeletePublicKeyExecute_Call) RunAndReturn(run func(r ApiSshDeletePublicKeyRequest) (*http.Response, error)) *MockSshAPI_SshDeletePublicKeyExecute_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// SshListPublicKeys provides a mock function for the type MockSshAPI
+func (_mock *MockSshAPI) SshListPublicKeys(ctx context.Context) ApiSshListPublicKeysRequest {
+	ret := _mock.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for SshListPublicKeys")
+	}
+
+	var r0 ApiSshListPublicKeysRequest
+	if returnFunc, ok := ret.Get(0).(func(context.Context) ApiSshListPublicKeysRequest); ok {
+		r0 = returnFunc(ctx)
+	} else {
+		r0 = ret.Get(0).(ApiSshListPublicKeysRequest)
+	}
+	return r0
+}
+
+// MockSshAPI_SshListPublicKeys_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SshListPublicKeys'
+type MockSshAPI_SshListPublicKeys_Call struct {
+	*mock.Call
+}
+
+// SshListPublicKeys is a helper method to define mock.On call
+//   - ctx context.Context
+func (_e *MockSshAPI_Expecter) SshListPublicKeys(ctx any) *MockSshAPI_SshListPublicKeys_Call {
+	return &MockSshAPI_SshListPublicKeys_Call{Call: _e.mock.On("SshListPublicKeys", ctx)}
+}
+
+func (_c *MockSshAPI_SshListPublicKeys_Call) Run(run func(ctx context.Context)) *MockSshAPI_SshListPublicKeys_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockSshAPI_SshListPublicKeys_Call) Return(apiSshListPublicKeysRequest ApiSshListPublicKeysRequest) *MockSshAPI_SshListPublicKeys_Call {
+	_c.Call.Return(apiSshListPublicKeysRequest)
+	return _c
+}
+
+func (_c *MockSshAPI_SshListPublicKeys_Call) RunAndReturn(run func(ctx context.Context) ApiSshListPublicKeysRequest) *MockSshAPI_SshListPublicKeys_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// SshListPublicKeysExecute provides a mock function for the type MockSshAPI
+func (_mock *MockSshAPI) SshListPublicKeysExecute(r ApiSshListPublicKeysRequest) ([]SshListPublicKeys200ResponseInner, *http.Response, error) {
+	ret := _mock.Called(r)
+
+	if len(ret) == 0 {
+		panic("no return value specified for SshListPublicKeysExecute")
+	}
+
+	var r0 []SshListPublicKeys200ResponseInner
+	var r1 *http.Response
+	var r2 error
+	if returnFunc, ok := ret.Get(0).(func(ApiSshListPublicKeysRequest) ([]SshListPublicKeys200ResponseInner, *http.Response, error)); ok {
+		return returnFunc(r)
+	}
+	if returnFunc, ok := ret.Get(0).(func(ApiSshListPublicKeysRequest) []SshListPublicKeys200ResponseInner); ok {
+		r0 = returnFunc(r)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]SshListPublicKeys200ResponseInner)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(ApiSshListPublicKeysRequest) *http.Response); ok {
+		r1 = returnFunc(r)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*http.Response)
+		}
+	}
+	if returnFunc, ok := ret.Get(2).(func(ApiSshListPublicKeysRequest) error); ok {
+		r2 = returnFunc(r)
+	} else {
+		r2 = ret.Error(2)
+	}
+	return r0, r1, r2
+}
+
+// MockSshAPI_SshListPublicKeysExecute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SshListPublicKeysExecute'
+type MockSshAPI_SshListPublicKeysExecute_Call struct {
+	*mock.Call
+}
+
+// SshListPublicKeysExecute is a helper method to define mock.On call
+//   - r ApiSshListPublicKeysRequest
+func (_e *MockSshAPI_Expecter) SshListPublicKeysExecute(r any) *MockSshAPI_SshListPublicKeysExecute_Call {
+	return &MockSshAPI_SshListPublicKeysExecute_Call{Call: _e.mock.On("SshListPublicKeysExecute", r)}
+}
+
+func (_c *MockSshAPI_SshListPublicKeysExecute_Call) Run(run func(r ApiSshListPublicKeysRequest)) *MockSshAPI_SshListPublicKeysExecute_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 ApiSshListPublicKeysRequest
+		if args[0] != nil {
+			arg0 = args[0].(ApiSshListPublicKeysRequest)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockSshAPI_SshListPublicKeysExecute_Call) Return(sshListPublicKeys200ResponseInners []SshListPublicKeys200ResponseInner, response *http.Response, err error) *MockSshAPI_SshListPublicKeysExecute_Call {
+	_c.Call.Return(sshListPublicKeys200ResponseInners, response, err)
+	return _c
+}
+
+func (_c *MockSshAPI_SshListPublicKeysExecute_Call) RunAndReturn(run func(r ApiSshListPublicKeysRequest) ([]SshListPublicKeys200ResponseInner, *http.Response, error)) *MockSshAPI_SshListPublicKeysExecute_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// SshUploadPublicKey provides a mock function for the type MockSshAPI
+func (_mock *MockSshAPI) SshUploadPublicKey(ctx context.Context) ApiSshUploadPublicKeyRequest {
+	ret := _mock.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for SshUploadPublicKey")
+	}
+
+	var r0 ApiSshUploadPublicKeyRequest
+	if returnFunc, ok := ret.Get(0).(func(context.Context) ApiSshUploadPublicKeyRequest); ok {
+		r0 = returnFunc(ctx)
+	} else {
+		r0 = ret.Get(0).(ApiSshUploadPublicKeyRequest)
+	}
+	return r0
+}
+
+// MockSshAPI_SshUploadPublicKey_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SshUploadPublicKey'
+type MockSshAPI_SshUploadPublicKey_Call struct {
+	*mock.Call
+}
+
+// SshUploadPublicKey is a helper method to define mock.On call
+//   - ctx context.Context
+func (_e *MockSshAPI_Expecter) SshUploadPublicKey(ctx any) *MockSshAPI_SshUploadPublicKey_Call {
+	return &MockSshAPI_SshUploadPublicKey_Call{Call: _e.mock.On("SshUploadPublicKey", ctx)}
+}
+
+func (_c *MockSshAPI_SshUploadPublicKey_Call) Run(run func(ctx context.Context)) *MockSshAPI_SshUploadPublicKey_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockSshAPI_SshUploadPublicKey_Call) Return(apiSshUploadPublicKeyRequest ApiSshUploadPublicKeyRequest) *MockSshAPI_SshUploadPublicKey_Call {
+	_c.Call.Return(apiSshUploadPublicKeyRequest)
+	return _c
+}
+
+func (_c *MockSshAPI_SshUploadPublicKey_Call) RunAndReturn(run func(ctx context.Context) ApiSshUploadPublicKeyRequest) *MockSshAPI_SshUploadPublicKey_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// SshUploadPublicKeyExecute provides a mock function for the type MockSshAPI
+func (_mock *MockSshAPI) SshUploadPublicKeyExecute(r ApiSshUploadPublicKeyRequest) (*http.Response, error) {
+	ret := _mock.Called(r)
+
+	if len(ret) == 0 {
+		panic("no return value specified for SshUploadPublicKeyExecute")
+	}
+
+	var r0 *http.Response
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(ApiSshUploadPublicKeyRequest) (*http.Response, error)); ok {
+		return returnFunc(r)
+	}
+	if returnFunc, ok := ret.Get(0).(func(ApiSshUploadPublicKeyRequest) *http.Response); ok {
+		r0 = returnFunc(r)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*http.Response)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(ApiSshUploadPublicKeyRequest) error); ok {
+		r1 = returnFunc(r)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockSshAPI_SshUploadPublicKeyExecute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SshUploadPublicKeyExecute'
+type MockSshAPI_SshUploadPublicKeyExecute_Call struct {
+	*mock.Call
+}
+
+// SshUploadPublicKeyExecute is a helper method to define mock.On call
+//   - r ApiSshUploadPublicKeyRequest
+func (_e *MockSshAPI_Expecter) SshUploadPublicKeyExecute(r any) *MockSshAPI_SshUploadPublicKeyExecute_Call {
+	return &MockSshAPI_SshUploadPublicKeyExecute_Call{Call: _e.mock.On("SshUploadPublicKeyExecute", r)}
+}
+
+func (_c *MockSshAPI_SshUploadPublicKeyExecute_Call) Run(run func(r ApiSshUploadPublicKeyRequest)) *MockSshAPI_SshUploadPublicKeyExecute_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 ApiSshUploadPublicKeyRequest
+		if args[0] != nil {
+			arg0 = args[0].(ApiSshUploadPublicKeyRequest)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockSshAPI_SshUploadPublicKeyExecute_Call) Return(response *http.Response, err error) *MockSshAPI_SshUploadPublicKeyExecute_Call {
+	_c.Call.Return(response, err)
+	return _c
+}
+
+func (_c *MockSshAPI_SshUploadPublicKeyExecute_Call) RunAndReturn(run func(r ApiSshUploadPublicKeyRequest) (*http.Response, error)) *MockSshAPI_SshUploadPublicKeyExecute_Call {
 	_c.Call.Return(run)
 	return _c
 }

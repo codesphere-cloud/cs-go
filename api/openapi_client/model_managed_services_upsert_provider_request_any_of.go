@@ -17,11 +17,11 @@ import (
 	"fmt"
 )
 
-// checks if the ManagedServicesCreateProviderRequestAnyOf type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &ManagedServicesCreateProviderRequestAnyOf{}
+// checks if the ManagedServicesUpsertProviderRequestAnyOf type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ManagedServicesUpsertProviderRequestAnyOf{}
 
-// ManagedServicesCreateProviderRequestAnyOf struct for ManagedServicesCreateProviderRequestAnyOf
-type ManagedServicesCreateProviderRequestAnyOf struct {
+// ManagedServicesUpsertProviderRequestAnyOf struct for ManagedServicesUpsertProviderRequestAnyOf
+type ManagedServicesUpsertProviderRequestAnyOf struct {
 	Author       string                                                         `json:"author"`
 	Backups      *ManagedServicesListProviders200ResponseInnerAnyOfBackups      `json:"backups,omitempty"`
 	Capabilities *ManagedServicesListProviders200ResponseInnerAnyOfCapabilities `json:"capabilities,omitempty"`
@@ -41,17 +41,17 @@ type ManagedServicesCreateProviderRequestAnyOf struct {
 	Version       *string                                                                    `json:"version,omitempty" validate:"regexp=^v[0-9][0-9a-z]*$"`
 	SchemaVersion *string                                                                    `json:"schemaVersion,omitempty" validate:"regexp=^v[0-9][0-9a-z]*$"`
 	Backend       ManagedServicesListProviders200ResponseInnerAnyOfBackend                   `json:"backend"`
-	Scope         *ManagedServicesCreateProviderRequestAnyOfScope                            `json:"scope,omitempty"`
+	Scope         *ManagedServicesUpsertProviderRequestAnyOfScope                            `json:"scope,omitempty"`
 }
 
-type _ManagedServicesCreateProviderRequestAnyOf ManagedServicesCreateProviderRequestAnyOf
+type _ManagedServicesUpsertProviderRequestAnyOf ManagedServicesUpsertProviderRequestAnyOf
 
-// NewManagedServicesCreateProviderRequestAnyOf instantiates a new ManagedServicesCreateProviderRequestAnyOf object
+// NewManagedServicesUpsertProviderRequestAnyOf instantiates a new ManagedServicesUpsertProviderRequestAnyOf object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewManagedServicesCreateProviderRequestAnyOf(author string, category string, description string, displayName string, iconUrl string, configSchema map[string]interface{}, detailsSchema map[string]interface{}, secretsSchema map[string]interface{}, plans []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner, name string, backend ManagedServicesListProviders200ResponseInnerAnyOfBackend) *ManagedServicesCreateProviderRequestAnyOf {
-	this := ManagedServicesCreateProviderRequestAnyOf{}
+func NewManagedServicesUpsertProviderRequestAnyOf(author string, category string, description string, displayName string, iconUrl string, configSchema map[string]interface{}, detailsSchema map[string]interface{}, secretsSchema map[string]interface{}, plans []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner, name string, backend ManagedServicesListProviders200ResponseInnerAnyOfBackend) *ManagedServicesUpsertProviderRequestAnyOf {
+	this := ManagedServicesUpsertProviderRequestAnyOf{}
 	this.Author = author
 	this.Category = category
 	this.Description = description
@@ -66,16 +66,16 @@ func NewManagedServicesCreateProviderRequestAnyOf(author string, category string
 	return &this
 }
 
-// NewManagedServicesCreateProviderRequestAnyOfWithDefaults instantiates a new ManagedServicesCreateProviderRequestAnyOf object
+// NewManagedServicesUpsertProviderRequestAnyOfWithDefaults instantiates a new ManagedServicesUpsertProviderRequestAnyOf object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewManagedServicesCreateProviderRequestAnyOfWithDefaults() *ManagedServicesCreateProviderRequestAnyOf {
-	this := ManagedServicesCreateProviderRequestAnyOf{}
+func NewManagedServicesUpsertProviderRequestAnyOfWithDefaults() *ManagedServicesUpsertProviderRequestAnyOf {
+	this := ManagedServicesUpsertProviderRequestAnyOf{}
 	return &this
 }
 
 // GetAuthor returns the Author field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetAuthor() string {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetAuthor() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -86,7 +86,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetAuthor() string {
 
 // GetAuthorOk returns a tuple with the Author field value
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetAuthorOk() (*string, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetAuthorOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -94,12 +94,12 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetAuthorOk() (*string, bool
 }
 
 // SetAuthor sets field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetAuthor(v string) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetAuthor(v string) {
 	o.Author = v
 }
 
 // GetBackups returns the Backups field value if set, zero value otherwise.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetBackups() ManagedServicesListProviders200ResponseInnerAnyOfBackups {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetBackups() ManagedServicesListProviders200ResponseInnerAnyOfBackups {
 	if o == nil || IsNil(o.Backups) {
 		var ret ManagedServicesListProviders200ResponseInnerAnyOfBackups
 		return ret
@@ -109,7 +109,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetBackups() ManagedServices
 
 // GetBackupsOk returns a tuple with the Backups field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetBackupsOk() (*ManagedServicesListProviders200ResponseInnerAnyOfBackups, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetBackupsOk() (*ManagedServicesListProviders200ResponseInnerAnyOfBackups, bool) {
 	if o == nil || IsNil(o.Backups) {
 		return nil, false
 	}
@@ -117,7 +117,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetBackupsOk() (*ManagedServ
 }
 
 // HasBackups returns a boolean if a field has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) HasBackups() bool {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) HasBackups() bool {
 	if o != nil && !IsNil(o.Backups) {
 		return true
 	}
@@ -126,12 +126,12 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) HasBackups() bool {
 }
 
 // SetBackups gets a reference to the given ManagedServicesListProviders200ResponseInnerAnyOfBackups and assigns it to the Backups field.
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetBackups(v ManagedServicesListProviders200ResponseInnerAnyOfBackups) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetBackups(v ManagedServicesListProviders200ResponseInnerAnyOfBackups) {
 	o.Backups = &v
 }
 
 // GetCapabilities returns the Capabilities field value if set, zero value otherwise.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetCapabilities() ManagedServicesListProviders200ResponseInnerAnyOfCapabilities {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetCapabilities() ManagedServicesListProviders200ResponseInnerAnyOfCapabilities {
 	if o == nil || IsNil(o.Capabilities) {
 		var ret ManagedServicesListProviders200ResponseInnerAnyOfCapabilities
 		return ret
@@ -141,7 +141,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetCapabilities() ManagedSer
 
 // GetCapabilitiesOk returns a tuple with the Capabilities field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetCapabilitiesOk() (*ManagedServicesListProviders200ResponseInnerAnyOfCapabilities, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetCapabilitiesOk() (*ManagedServicesListProviders200ResponseInnerAnyOfCapabilities, bool) {
 	if o == nil || IsNil(o.Capabilities) {
 		return nil, false
 	}
@@ -149,7 +149,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetCapabilitiesOk() (*Manage
 }
 
 // HasCapabilities returns a boolean if a field has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) HasCapabilities() bool {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) HasCapabilities() bool {
 	if o != nil && !IsNil(o.Capabilities) {
 		return true
 	}
@@ -158,12 +158,12 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) HasCapabilities() bool {
 }
 
 // SetCapabilities gets a reference to the given ManagedServicesListProviders200ResponseInnerAnyOfCapabilities and assigns it to the Capabilities field.
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetCapabilities(v ManagedServicesListProviders200ResponseInnerAnyOfCapabilities) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetCapabilities(v ManagedServicesListProviders200ResponseInnerAnyOfCapabilities) {
 	o.Capabilities = &v
 }
 
 // GetCategory returns the Category field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetCategory() string {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetCategory() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -174,7 +174,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetCategory() string {
 
 // GetCategoryOk returns a tuple with the Category field value
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetCategoryOk() (*string, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetCategoryOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -182,12 +182,12 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetCategoryOk() (*string, bo
 }
 
 // SetCategory sets field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetCategory(v string) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetCategory(v string) {
 	o.Category = v
 }
 
 // GetDescription returns the Description field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetDescription() string {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetDescription() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -198,7 +198,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetDescription() string {
 
 // GetDescriptionOk returns a tuple with the Description field value
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetDescriptionOk() (*string, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetDescriptionOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -206,12 +206,12 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetDescriptionOk() (*string,
 }
 
 // SetDescription sets field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetDescription(v string) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetDescription(v string) {
 	o.Description = v
 }
 
 // GetDisplayName returns the DisplayName field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetDisplayName() string {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetDisplayName() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -222,7 +222,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetDisplayName() string {
 
 // GetDisplayNameOk returns a tuple with the DisplayName field value
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetDisplayNameOk() (*string, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetDisplayNameOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -230,12 +230,12 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetDisplayNameOk() (*string,
 }
 
 // SetDisplayName sets field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetDisplayName(v string) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetDisplayName(v string) {
 	o.DisplayName = v
 }
 
 // GetIconUrl returns the IconUrl field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetIconUrl() string {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetIconUrl() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -246,7 +246,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetIconUrl() string {
 
 // GetIconUrlOk returns a tuple with the IconUrl field value
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetIconUrlOk() (*string, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetIconUrlOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -254,12 +254,12 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetIconUrlOk() (*string, boo
 }
 
 // SetIconUrl sets field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetIconUrl(v string) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetIconUrl(v string) {
 	o.IconUrl = v
 }
 
 // GetConfigSchema returns the ConfigSchema field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetConfigSchema() map[string]interface{} {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetConfigSchema() map[string]interface{} {
 	if o == nil {
 		var ret map[string]interface{}
 		return ret
@@ -270,7 +270,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetConfigSchema() map[string
 
 // GetConfigSchemaOk returns a tuple with the ConfigSchema field value
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetConfigSchemaOk() (map[string]interface{}, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetConfigSchemaOk() (map[string]interface{}, bool) {
 	if o == nil {
 		return map[string]interface{}{}, false
 	}
@@ -278,12 +278,12 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetConfigSchemaOk() (map[str
 }
 
 // SetConfigSchema sets field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetConfigSchema(v map[string]interface{}) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetConfigSchema(v map[string]interface{}) {
 	o.ConfigSchema = v
 }
 
 // GetDetailsSchema returns the DetailsSchema field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetDetailsSchema() map[string]interface{} {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetDetailsSchema() map[string]interface{} {
 	if o == nil {
 		var ret map[string]interface{}
 		return ret
@@ -294,7 +294,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetDetailsSchema() map[strin
 
 // GetDetailsSchemaOk returns a tuple with the DetailsSchema field value
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetDetailsSchemaOk() (map[string]interface{}, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetDetailsSchemaOk() (map[string]interface{}, bool) {
 	if o == nil {
 		return map[string]interface{}{}, false
 	}
@@ -302,12 +302,12 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetDetailsSchemaOk() (map[st
 }
 
 // SetDetailsSchema sets field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetDetailsSchema(v map[string]interface{}) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetDetailsSchema(v map[string]interface{}) {
 	o.DetailsSchema = v
 }
 
 // GetSecretsSchema returns the SecretsSchema field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetSecretsSchema() map[string]interface{} {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetSecretsSchema() map[string]interface{} {
 	if o == nil {
 		var ret map[string]interface{}
 		return ret
@@ -318,7 +318,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetSecretsSchema() map[strin
 
 // GetSecretsSchemaOk returns a tuple with the SecretsSchema field value
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetSecretsSchemaOk() (map[string]interface{}, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetSecretsSchemaOk() (map[string]interface{}, bool) {
 	if o == nil {
 		return map[string]interface{}{}, false
 	}
@@ -326,12 +326,12 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetSecretsSchemaOk() (map[st
 }
 
 // SetSecretsSchema sets field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetSecretsSchema(v map[string]interface{}) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetSecretsSchema(v map[string]interface{}) {
 	o.SecretsSchema = v
 }
 
 // GetPlans returns the Plans field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetPlans() []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetPlans() []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner {
 	if o == nil {
 		var ret []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner
 		return ret
@@ -342,7 +342,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetPlans() []ManagedServices
 
 // GetPlansOk returns a tuple with the Plans field value
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetPlansOk() ([]ManagedServicesListProviders200ResponseInnerAnyOfPlansInner, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetPlansOk() ([]ManagedServicesListProviders200ResponseInnerAnyOfPlansInner, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -350,12 +350,12 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetPlansOk() ([]ManagedServi
 }
 
 // SetPlans sets field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetPlans(v []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetPlans(v []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner) {
 	o.Plans = v
 }
 
 // GetVersions returns the Versions field value if set, zero value otherwise.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetVersions() map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetVersions() map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue {
 	if o == nil || IsNil(o.Versions) {
 		var ret map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue
 		return ret
@@ -365,7 +365,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetVersions() map[string]Man
 
 // GetVersionsOk returns a tuple with the Versions field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetVersionsOk() (*map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetVersionsOk() (*map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue, bool) {
 	if o == nil || IsNil(o.Versions) {
 		return nil, false
 	}
@@ -373,7 +373,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetVersionsOk() (*map[string
 }
 
 // HasVersions returns a boolean if a field has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) HasVersions() bool {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) HasVersions() bool {
 	if o != nil && !IsNil(o.Versions) {
 		return true
 	}
@@ -382,12 +382,12 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) HasVersions() bool {
 }
 
 // SetVersions gets a reference to the given map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue and assigns it to the Versions field.
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetVersions(v map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetVersions(v map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue) {
 	o.Versions = &v
 }
 
 // GetName returns the Name field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetName() string {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetName() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -398,7 +398,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetName() string {
 
 // GetNameOk returns a tuple with the Name field value
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetNameOk() (*string, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetNameOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -406,12 +406,12 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetNameOk() (*string, bool) 
 }
 
 // SetName sets field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetName(v string) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetName(v string) {
 	o.Name = v
 }
 
 // GetVersion returns the Version field value if set, zero value otherwise.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetVersion() string {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetVersion() string {
 	if o == nil || IsNil(o.Version) {
 		var ret string
 		return ret
@@ -421,7 +421,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetVersion() string {
 
 // GetVersionOk returns a tuple with the Version field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetVersionOk() (*string, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetVersionOk() (*string, bool) {
 	if o == nil || IsNil(o.Version) {
 		return nil, false
 	}
@@ -429,7 +429,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetVersionOk() (*string, boo
 }
 
 // HasVersion returns a boolean if a field has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) HasVersion() bool {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) HasVersion() bool {
 	if o != nil && !IsNil(o.Version) {
 		return true
 	}
@@ -438,12 +438,12 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) HasVersion() bool {
 }
 
 // SetVersion gets a reference to the given string and assigns it to the Version field.
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetVersion(v string) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetVersion(v string) {
 	o.Version = &v
 }
 
 // GetSchemaVersion returns the SchemaVersion field value if set, zero value otherwise.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetSchemaVersion() string {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetSchemaVersion() string {
 	if o == nil || IsNil(o.SchemaVersion) {
 		var ret string
 		return ret
@@ -453,7 +453,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetSchemaVersion() string {
 
 // GetSchemaVersionOk returns a tuple with the SchemaVersion field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetSchemaVersionOk() (*string, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetSchemaVersionOk() (*string, bool) {
 	if o == nil || IsNil(o.SchemaVersion) {
 		return nil, false
 	}
@@ -461,7 +461,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetSchemaVersionOk() (*strin
 }
 
 // HasSchemaVersion returns a boolean if a field has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) HasSchemaVersion() bool {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) HasSchemaVersion() bool {
 	if o != nil && !IsNil(o.SchemaVersion) {
 		return true
 	}
@@ -470,12 +470,12 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) HasSchemaVersion() bool {
 }
 
 // SetSchemaVersion gets a reference to the given string and assigns it to the SchemaVersion field.
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetSchemaVersion(v string) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetSchemaVersion(v string) {
 	o.SchemaVersion = &v
 }
 
 // GetBackend returns the Backend field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetBackend() ManagedServicesListProviders200ResponseInnerAnyOfBackend {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetBackend() ManagedServicesListProviders200ResponseInnerAnyOfBackend {
 	if o == nil {
 		var ret ManagedServicesListProviders200ResponseInnerAnyOfBackend
 		return ret
@@ -486,7 +486,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetBackend() ManagedServices
 
 // GetBackendOk returns a tuple with the Backend field value
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetBackendOk() (*ManagedServicesListProviders200ResponseInnerAnyOfBackend, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetBackendOk() (*ManagedServicesListProviders200ResponseInnerAnyOfBackend, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -494,14 +494,14 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetBackendOk() (*ManagedServ
 }
 
 // SetBackend sets field value
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetBackend(v ManagedServicesListProviders200ResponseInnerAnyOfBackend) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetBackend(v ManagedServicesListProviders200ResponseInnerAnyOfBackend) {
 	o.Backend = v
 }
 
 // GetScope returns the Scope field value if set, zero value otherwise.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetScope() ManagedServicesCreateProviderRequestAnyOfScope {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetScope() ManagedServicesUpsertProviderRequestAnyOfScope {
 	if o == nil || IsNil(o.Scope) {
-		var ret ManagedServicesCreateProviderRequestAnyOfScope
+		var ret ManagedServicesUpsertProviderRequestAnyOfScope
 		return ret
 	}
 	return *o.Scope
@@ -509,7 +509,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetScope() ManagedServicesCr
 
 // GetScopeOk returns a tuple with the Scope field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) GetScopeOk() (*ManagedServicesCreateProviderRequestAnyOfScope, bool) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) GetScopeOk() (*ManagedServicesUpsertProviderRequestAnyOfScope, bool) {
 	if o == nil || IsNil(o.Scope) {
 		return nil, false
 	}
@@ -517,7 +517,7 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) GetScopeOk() (*ManagedServic
 }
 
 // HasScope returns a boolean if a field has been set.
-func (o *ManagedServicesCreateProviderRequestAnyOf) HasScope() bool {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) HasScope() bool {
 	if o != nil && !IsNil(o.Scope) {
 		return true
 	}
@@ -525,12 +525,12 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) HasScope() bool {
 	return false
 }
 
-// SetScope gets a reference to the given ManagedServicesCreateProviderRequestAnyOfScope and assigns it to the Scope field.
-func (o *ManagedServicesCreateProviderRequestAnyOf) SetScope(v ManagedServicesCreateProviderRequestAnyOfScope) {
+// SetScope gets a reference to the given ManagedServicesUpsertProviderRequestAnyOfScope and assigns it to the Scope field.
+func (o *ManagedServicesUpsertProviderRequestAnyOf) SetScope(v ManagedServicesUpsertProviderRequestAnyOfScope) {
 	o.Scope = &v
 }
 
-func (o ManagedServicesCreateProviderRequestAnyOf) MarshalJSON() ([]byte, error) {
+func (o ManagedServicesUpsertProviderRequestAnyOf) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -538,7 +538,7 @@ func (o ManagedServicesCreateProviderRequestAnyOf) MarshalJSON() ([]byte, error)
 	return json.Marshal(toSerialize)
 }
 
-func (o ManagedServicesCreateProviderRequestAnyOf) ToMap() (map[string]interface{}, error) {
+func (o ManagedServicesUpsertProviderRequestAnyOf) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["author"] = o.Author
 	if !IsNil(o.Backups) {
@@ -572,7 +572,7 @@ func (o ManagedServicesCreateProviderRequestAnyOf) ToMap() (map[string]interface
 	return toSerialize, nil
 }
 
-func (o *ManagedServicesCreateProviderRequestAnyOf) UnmarshalJSON(data []byte) (err error) {
+func (o *ManagedServicesUpsertProviderRequestAnyOf) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -604,53 +604,53 @@ func (o *ManagedServicesCreateProviderRequestAnyOf) UnmarshalJSON(data []byte) (
 		}
 	}
 
-	varManagedServicesCreateProviderRequestAnyOf := _ManagedServicesCreateProviderRequestAnyOf{}
+	varManagedServicesUpsertProviderRequestAnyOf := _ManagedServicesUpsertProviderRequestAnyOf{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	//decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varManagedServicesCreateProviderRequestAnyOf)
+	err = decoder.Decode(&varManagedServicesUpsertProviderRequestAnyOf)
 
 	if err != nil {
 		return err
 	}
 
-	*o = ManagedServicesCreateProviderRequestAnyOf(varManagedServicesCreateProviderRequestAnyOf)
+	*o = ManagedServicesUpsertProviderRequestAnyOf(varManagedServicesUpsertProviderRequestAnyOf)
 
 	return err
 }
 
-type NullableManagedServicesCreateProviderRequestAnyOf struct {
-	value *ManagedServicesCreateProviderRequestAnyOf
+type NullableManagedServicesUpsertProviderRequestAnyOf struct {
+	value *ManagedServicesUpsertProviderRequestAnyOf
 	isSet bool
 }
 
-func (v NullableManagedServicesCreateProviderRequestAnyOf) Get() *ManagedServicesCreateProviderRequestAnyOf {
+func (v NullableManagedServicesUpsertProviderRequestAnyOf) Get() *ManagedServicesUpsertProviderRequestAnyOf {
 	return v.value
 }
 
-func (v *NullableManagedServicesCreateProviderRequestAnyOf) Set(val *ManagedServicesCreateProviderRequestAnyOf) {
+func (v *NullableManagedServicesUpsertProviderRequestAnyOf) Set(val *ManagedServicesUpsertProviderRequestAnyOf) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableManagedServicesCreateProviderRequestAnyOf) IsSet() bool {
+func (v NullableManagedServicesUpsertProviderRequestAnyOf) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableManagedServicesCreateProviderRequestAnyOf) Unset() {
+func (v *NullableManagedServicesUpsertProviderRequestAnyOf) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableManagedServicesCreateProviderRequestAnyOf(val *ManagedServicesCreateProviderRequestAnyOf) *NullableManagedServicesCreateProviderRequestAnyOf {
-	return &NullableManagedServicesCreateProviderRequestAnyOf{value: val, isSet: true}
+func NewNullableManagedServicesUpsertProviderRequestAnyOf(val *ManagedServicesUpsertProviderRequestAnyOf) *NullableManagedServicesUpsertProviderRequestAnyOf {
+	return &NullableManagedServicesUpsertProviderRequestAnyOf{value: val, isSet: true}
 }
 
-func (v NullableManagedServicesCreateProviderRequestAnyOf) MarshalJSON() ([]byte, error) {
+func (v NullableManagedServicesUpsertProviderRequestAnyOf) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableManagedServicesCreateProviderRequestAnyOf) UnmarshalJSON(src []byte) error {
+func (v *NullableManagedServicesUpsertProviderRequestAnyOf) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

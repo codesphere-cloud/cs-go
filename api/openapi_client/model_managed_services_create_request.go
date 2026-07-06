@@ -25,7 +25,7 @@ type ManagedServicesCreateRequest struct {
 	Backups     *ManagedServicesCreateRequestBackups     `json:"backups,omitempty"`
 	Config      map[string]interface{}                   `json:"config"`
 	Provider    ManagedServicesCreateRequestProvider     `json:"provider"`
-	Name        string                                   `json:"name"`
+	Name        string                                   `json:"name" validate:"regexp=^(?!\\\\s)[a-zA-Z0-9\\\\-_\\\\s]{0,126}[a-zA-Z0-9\\\\-_]$"`
 	Plan        ManagedServicesList200ResponseInnerPlan  `json:"plan"`
 	RecoverFrom *ManagedServicesCreateRequestRecoverFrom `json:"recoverFrom,omitempty"`
 	Secrets     map[string]interface{}                   `json:"secrets"`
