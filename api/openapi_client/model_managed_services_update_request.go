@@ -26,6 +26,8 @@ type ManagedServicesUpdateRequest struct {
 	Name    *string                                  `json:"name,omitempty"`
 	Pause   *bool                                    `json:"pause,omitempty"`
 	Plan    *ManagedServicesList200ResponseInnerPlan `json:"plan,omitempty"`
+	// A semantic version number
+	Version *string `json:"version,omitempty"`
 }
 
 // NewManagedServicesUpdateRequest instantiates a new ManagedServicesUpdateRequest object
@@ -237,6 +239,38 @@ func (o *ManagedServicesUpdateRequest) SetPlan(v ManagedServicesList200ResponseI
 	o.Plan = &v
 }
 
+// GetVersion returns the Version field value if set, zero value otherwise.
+func (o *ManagedServicesUpdateRequest) GetVersion() string {
+	if o == nil || IsNil(o.Version) {
+		var ret string
+		return ret
+	}
+	return *o.Version
+}
+
+// GetVersionOk returns a tuple with the Version field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ManagedServicesUpdateRequest) GetVersionOk() (*string, bool) {
+	if o == nil || IsNil(o.Version) {
+		return nil, false
+	}
+	return o.Version, true
+}
+
+// HasVersion returns a boolean if a field has been set.
+func (o *ManagedServicesUpdateRequest) HasVersion() bool {
+	if o != nil && !IsNil(o.Version) {
+		return true
+	}
+
+	return false
+}
+
+// SetVersion gets a reference to the given string and assigns it to the Version field.
+func (o *ManagedServicesUpdateRequest) SetVersion(v string) {
+	o.Version = &v
+}
+
 func (o ManagedServicesUpdateRequest) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -264,6 +298,9 @@ func (o ManagedServicesUpdateRequest) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Plan) {
 		toSerialize["plan"] = o.Plan
+	}
+	if !IsNil(o.Version) {
+		toSerialize["version"] = o.Version
 	}
 	return toSerialize, nil
 }

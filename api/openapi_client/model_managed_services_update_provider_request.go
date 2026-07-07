@@ -32,10 +32,11 @@ type ManagedServicesUpdateProviderRequest struct {
 	// JSON Schema
 	DetailsSchema map[string]interface{} `json:"detailsSchema,omitempty"`
 	// JSON Schema
-	SecretsSchema map[string]interface{}                                        `json:"secretsSchema,omitempty"`
-	Plans         []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner `json:"plans,omitempty"`
-	Backend       *ManagedServicesListProviders200ResponseInnerAnyOfBackend     `json:"backend,omitempty"`
-	Scope         *ManagedServicesCreateProviderRequestAnyOfScope               `json:"scope,omitempty"`
+	SecretsSchema map[string]interface{}                                                     `json:"secretsSchema,omitempty"`
+	Plans         []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner              `json:"plans,omitempty"`
+	Versions      *map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue `json:"versions,omitempty"`
+	Backend       *ManagedServicesListProviders200ResponseInnerAnyOfBackend                  `json:"backend,omitempty"`
+	Scope         *ManagedServicesUpsertProviderRequestAnyOfScope                            `json:"scope,omitempty"`
 }
 
 // NewManagedServicesUpdateProviderRequest instantiates a new ManagedServicesUpdateProviderRequest object
@@ -407,6 +408,38 @@ func (o *ManagedServicesUpdateProviderRequest) SetPlans(v []ManagedServicesListP
 	o.Plans = v
 }
 
+// GetVersions returns the Versions field value if set, zero value otherwise.
+func (o *ManagedServicesUpdateProviderRequest) GetVersions() map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue {
+	if o == nil || IsNil(o.Versions) {
+		var ret map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue
+		return ret
+	}
+	return *o.Versions
+}
+
+// GetVersionsOk returns a tuple with the Versions field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ManagedServicesUpdateProviderRequest) GetVersionsOk() (*map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue, bool) {
+	if o == nil || IsNil(o.Versions) {
+		return nil, false
+	}
+	return o.Versions, true
+}
+
+// HasVersions returns a boolean if a field has been set.
+func (o *ManagedServicesUpdateProviderRequest) HasVersions() bool {
+	if o != nil && !IsNil(o.Versions) {
+		return true
+	}
+
+	return false
+}
+
+// SetVersions gets a reference to the given map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue and assigns it to the Versions field.
+func (o *ManagedServicesUpdateProviderRequest) SetVersions(v map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue) {
+	o.Versions = &v
+}
+
 // GetBackend returns the Backend field value if set, zero value otherwise.
 func (o *ManagedServicesUpdateProviderRequest) GetBackend() ManagedServicesListProviders200ResponseInnerAnyOfBackend {
 	if o == nil || IsNil(o.Backend) {
@@ -440,9 +473,9 @@ func (o *ManagedServicesUpdateProviderRequest) SetBackend(v ManagedServicesListP
 }
 
 // GetScope returns the Scope field value if set, zero value otherwise.
-func (o *ManagedServicesUpdateProviderRequest) GetScope() ManagedServicesCreateProviderRequestAnyOfScope {
+func (o *ManagedServicesUpdateProviderRequest) GetScope() ManagedServicesUpsertProviderRequestAnyOfScope {
 	if o == nil || IsNil(o.Scope) {
-		var ret ManagedServicesCreateProviderRequestAnyOfScope
+		var ret ManagedServicesUpsertProviderRequestAnyOfScope
 		return ret
 	}
 	return *o.Scope
@@ -450,7 +483,7 @@ func (o *ManagedServicesUpdateProviderRequest) GetScope() ManagedServicesCreateP
 
 // GetScopeOk returns a tuple with the Scope field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ManagedServicesUpdateProviderRequest) GetScopeOk() (*ManagedServicesCreateProviderRequestAnyOfScope, bool) {
+func (o *ManagedServicesUpdateProviderRequest) GetScopeOk() (*ManagedServicesUpsertProviderRequestAnyOfScope, bool) {
 	if o == nil || IsNil(o.Scope) {
 		return nil, false
 	}
@@ -466,8 +499,8 @@ func (o *ManagedServicesUpdateProviderRequest) HasScope() bool {
 	return false
 }
 
-// SetScope gets a reference to the given ManagedServicesCreateProviderRequestAnyOfScope and assigns it to the Scope field.
-func (o *ManagedServicesUpdateProviderRequest) SetScope(v ManagedServicesCreateProviderRequestAnyOfScope) {
+// SetScope gets a reference to the given ManagedServicesUpsertProviderRequestAnyOfScope and assigns it to the Scope field.
+func (o *ManagedServicesUpdateProviderRequest) SetScope(v ManagedServicesUpsertProviderRequestAnyOfScope) {
 	o.Scope = &v
 }
 
@@ -513,6 +546,9 @@ func (o ManagedServicesUpdateProviderRequest) ToMap() (map[string]interface{}, e
 	}
 	if !IsNil(o.Plans) {
 		toSerialize["plans"] = o.Plans
+	}
+	if !IsNil(o.Versions) {
+		toSerialize["versions"] = o.Versions
 	}
 	if !IsNil(o.Backend) {
 		toSerialize["backend"] = o.Backend

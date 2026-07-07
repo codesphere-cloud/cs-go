@@ -20,12 +20,14 @@ var _ MappedNullable = &WorkspacesUpdateWorkspaceRequest{}
 
 // WorkspacesUpdateWorkspaceRequest struct for WorkspacesUpdateWorkspaceRequest
 type WorkspacesUpdateWorkspaceRequest struct {
-	PlanId     *int           `json:"planId,omitempty"`
-	BaseImage  *string        `json:"baseImage,omitempty"`
-	Name       *string        `json:"name,omitempty"`
-	Replicas   *int           `json:"replicas,omitempty"`
-	VpnConfig  NullableString `json:"vpnConfig,omitempty"`
-	Restricted *bool          `json:"restricted,omitempty"`
+	PlanId          *int           `json:"planId,omitempty"`
+	BaseImage       *string        `json:"baseImage,omitempty"`
+	Name            *string        `json:"name,omitempty"`
+	Replicas        *int           `json:"replicas,omitempty"`
+	VpnConfig       NullableString `json:"vpnConfig,omitempty"`
+	Restricted      *bool          `json:"restricted,omitempty"`
+	StorageMib      NullableInt    `json:"storageMib,omitempty"`
+	SharedVaultName NullableString `json:"sharedVaultName,omitempty"`
 }
 
 // NewWorkspacesUpdateWorkspaceRequest instantiates a new WorkspacesUpdateWorkspaceRequest object
@@ -248,6 +250,92 @@ func (o *WorkspacesUpdateWorkspaceRequest) SetRestricted(v bool) {
 	o.Restricted = &v
 }
 
+// GetStorageMib returns the StorageMib field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *WorkspacesUpdateWorkspaceRequest) GetStorageMib() int {
+	if o == nil || IsNil(o.StorageMib.Get()) {
+		var ret int
+		return ret
+	}
+	return *o.StorageMib.Get()
+}
+
+// GetStorageMibOk returns a tuple with the StorageMib field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *WorkspacesUpdateWorkspaceRequest) GetStorageMibOk() (*int, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.StorageMib.Get(), o.StorageMib.IsSet()
+}
+
+// HasStorageMib returns a boolean if a field has been set.
+func (o *WorkspacesUpdateWorkspaceRequest) HasStorageMib() bool {
+	if o != nil && o.StorageMib.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetStorageMib gets a reference to the given NullableInt and assigns it to the StorageMib field.
+func (o *WorkspacesUpdateWorkspaceRequest) SetStorageMib(v int) {
+	o.StorageMib.Set(&v)
+}
+
+// SetStorageMibNil sets the value for StorageMib to be an explicit nil
+func (o *WorkspacesUpdateWorkspaceRequest) SetStorageMibNil() {
+	o.StorageMib.Set(nil)
+}
+
+// UnsetStorageMib ensures that no value is present for StorageMib, not even an explicit nil
+func (o *WorkspacesUpdateWorkspaceRequest) UnsetStorageMib() {
+	o.StorageMib.Unset()
+}
+
+// GetSharedVaultName returns the SharedVaultName field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *WorkspacesUpdateWorkspaceRequest) GetSharedVaultName() string {
+	if o == nil || IsNil(o.SharedVaultName.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.SharedVaultName.Get()
+}
+
+// GetSharedVaultNameOk returns a tuple with the SharedVaultName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *WorkspacesUpdateWorkspaceRequest) GetSharedVaultNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.SharedVaultName.Get(), o.SharedVaultName.IsSet()
+}
+
+// HasSharedVaultName returns a boolean if a field has been set.
+func (o *WorkspacesUpdateWorkspaceRequest) HasSharedVaultName() bool {
+	if o != nil && o.SharedVaultName.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetSharedVaultName gets a reference to the given NullableString and assigns it to the SharedVaultName field.
+func (o *WorkspacesUpdateWorkspaceRequest) SetSharedVaultName(v string) {
+	o.SharedVaultName.Set(&v)
+}
+
+// SetSharedVaultNameNil sets the value for SharedVaultName to be an explicit nil
+func (o *WorkspacesUpdateWorkspaceRequest) SetSharedVaultNameNil() {
+	o.SharedVaultName.Set(nil)
+}
+
+// UnsetSharedVaultName ensures that no value is present for SharedVaultName, not even an explicit nil
+func (o *WorkspacesUpdateWorkspaceRequest) UnsetSharedVaultName() {
+	o.SharedVaultName.Unset()
+}
+
 func (o WorkspacesUpdateWorkspaceRequest) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -275,6 +363,12 @@ func (o WorkspacesUpdateWorkspaceRequest) ToMap() (map[string]interface{}, error
 	}
 	if !IsNil(o.Restricted) {
 		toSerialize["restricted"] = o.Restricted
+	}
+	if o.StorageMib.IsSet() {
+		toSerialize["storageMib"] = o.StorageMib.Get()
+	}
+	if o.SharedVaultName.IsSet() {
+		toSerialize["sharedVaultName"] = o.SharedVaultName.Get()
 	}
 	return toSerialize, nil
 }

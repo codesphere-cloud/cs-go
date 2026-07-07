@@ -36,6 +36,8 @@ type WorkspacesCreateWorkspaceRequest struct {
 	VpnConfig         *string                                    `json:"vpnConfig,omitempty"`
 	Restricted        *bool                                      `json:"restricted,omitempty"`
 	Env               []WorkspacesCreateWorkspaceRequestEnvInner `json:"env,omitempty"`
+	StorageMib        *int                                       `json:"storageMib,omitempty"`
+	SharedVaultName   *string                                    `json:"sharedVaultName,omitempty"`
 }
 
 type _WorkspacesCreateWorkspaceRequest WorkspacesCreateWorkspaceRequest
@@ -470,6 +472,70 @@ func (o *WorkspacesCreateWorkspaceRequest) SetEnv(v []WorkspacesCreateWorkspaceR
 	o.Env = v
 }
 
+// GetStorageMib returns the StorageMib field value if set, zero value otherwise.
+func (o *WorkspacesCreateWorkspaceRequest) GetStorageMib() int {
+	if o == nil || IsNil(o.StorageMib) {
+		var ret int
+		return ret
+	}
+	return *o.StorageMib
+}
+
+// GetStorageMibOk returns a tuple with the StorageMib field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WorkspacesCreateWorkspaceRequest) GetStorageMibOk() (*int, bool) {
+	if o == nil || IsNil(o.StorageMib) {
+		return nil, false
+	}
+	return o.StorageMib, true
+}
+
+// HasStorageMib returns a boolean if a field has been set.
+func (o *WorkspacesCreateWorkspaceRequest) HasStorageMib() bool {
+	if o != nil && !IsNil(o.StorageMib) {
+		return true
+	}
+
+	return false
+}
+
+// SetStorageMib gets a reference to the given int and assigns it to the StorageMib field.
+func (o *WorkspacesCreateWorkspaceRequest) SetStorageMib(v int) {
+	o.StorageMib = &v
+}
+
+// GetSharedVaultName returns the SharedVaultName field value if set, zero value otherwise.
+func (o *WorkspacesCreateWorkspaceRequest) GetSharedVaultName() string {
+	if o == nil || IsNil(o.SharedVaultName) {
+		var ret string
+		return ret
+	}
+	return *o.SharedVaultName
+}
+
+// GetSharedVaultNameOk returns a tuple with the SharedVaultName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WorkspacesCreateWorkspaceRequest) GetSharedVaultNameOk() (*string, bool) {
+	if o == nil || IsNil(o.SharedVaultName) {
+		return nil, false
+	}
+	return o.SharedVaultName, true
+}
+
+// HasSharedVaultName returns a boolean if a field has been set.
+func (o *WorkspacesCreateWorkspaceRequest) HasSharedVaultName() bool {
+	if o != nil && !IsNil(o.SharedVaultName) {
+		return true
+	}
+
+	return false
+}
+
+// SetSharedVaultName gets a reference to the given string and assigns it to the SharedVaultName field.
+func (o *WorkspacesCreateWorkspaceRequest) SetSharedVaultName(v string) {
+	o.SharedVaultName = &v
+}
+
 func (o WorkspacesCreateWorkspaceRequest) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -511,6 +577,12 @@ func (o WorkspacesCreateWorkspaceRequest) ToMap() (map[string]interface{}, error
 	}
 	if !IsNil(o.Env) {
 		toSerialize["env"] = o.Env
+	}
+	if !IsNil(o.StorageMib) {
+		toSerialize["storageMib"] = o.StorageMib
+	}
+	if !IsNil(o.SharedVaultName) {
+		toSerialize["sharedVaultName"] = o.SharedVaultName
 	}
 	return toSerialize, nil
 }

@@ -5,9 +5,11 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 	"os"
 
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
+	"github.com/google/uuid"
 	"github.com/spf13/cobra"
 )
 
@@ -15,7 +17,7 @@ type GlobalOptions struct {
 	ApiUrl      string
 	TeamId      int
 	WorkspaceId int
-	OrgId       int
+	OrgId       string
 	Env         Env
 	Verbose     bool
 }
@@ -24,7 +26,7 @@ type Env interface {
 	GetApiToken() (string, error)
 	GetTeamId() (int, error)
 	GetWorkspaceId() (int, error)
-	GetOrgId() (int, error)
+	GetOrgId() string
 	GetApiUrl() string
 }
 
@@ -63,18 +65,21 @@ func (o GlobalOptions) GetWorkspaceId() (int, error) {
 	return wsId, nil
 }
 
-func (o GlobalOptions) GetOrgId() (int, error) {
-	if o.OrgId != -1 {
-		return o.OrgId, nil
+func (o GlobalOptions) GetOrgId() (string, error) {
+	orgId := o.OrgId
+	if orgId == "" {
+		orgId = o.Env.GetOrgId()
 	}
-	orgId, err := o.Env.GetOrgId()
+
+	if orgId == "" {
+		return "", nil
+	}
+
+	_, err := uuid.Parse(orgId)
 	if err != nil {
-		return -1, err
+		return "", fmt.Errorf("invalid organization ID format: %w", err)
 	}
-	if orgId < 0 {
-		// Note: No global flag for org-id currently exists in GetRootCmd
-		return -1, errors.New("organization ID not set, use CS_ORG_ID to set it")
-	}
+
 	return orgId, nil
 }
 
@@ -102,6 +107,7 @@ func GetRootCmd() *cobra.Command {
 	rootCmd.PersistentFlags().IntVarP(&opts.TeamId, "team", "t", -1, "Team ID (relevant for some commands, can also be CS_TEAM_ID)")
 	rootCmd.PersistentFlags().IntVarP(&opts.WorkspaceId, "workspace", "w", -1, "Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID)")
 	rootCmd.PersistentFlags().BoolVarP(&opts.Verbose, "verbose", "v", false, "Verbose output")
+	rootCmd.PersistentFlags().StringVarP(&opts.OrgId, "org", "O", "", "Organization ID (relevant for some commands)")
 
 	AddExecCmd(rootCmd, &opts)
 	AddLogCmd(rootCmd, &opts)
@@ -124,6 +130,7 @@ func GetRootCmd() *cobra.Command {
 	AddScaleCmd(rootCmd, &opts)
 	AddMcpCmd(rootCmd)
 
+	AddTeamManageCmd(rootCmd, &opts)
 	return rootCmd
 }
 

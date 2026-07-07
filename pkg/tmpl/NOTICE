@@ -166,6 +166,12 @@ License: MIT
 License URL: https://github.com/google/jsonschema-go/blob/v0.4.3/LICENSE
  
 ----------
+Module: github.com/google/uuid
+Version: v1.6.0
+License: BSD-3-Clause
+License URL: https://github.com/google/uuid/blob/v1.6.0/LICENSE
+ 
+----------
 Module: github.com/hashicorp/go-cleanhttp
 Version: v0.5.2
 License: MPL-2.0
@@ -191,9 +197,9 @@ License URL: https://github.com/jbenet/go-context/blob/d14ea06fba99/LICENSE
  
 ----------
 Module: github.com/jedib0t/go-pretty/v6
-Version: v6.8.1
+Version: v6.8.2
 License: MIT
-License URL: https://github.com/jedib0t/go-pretty/blob/v6.8.1/LICENSE
+License URL: https://github.com/jedib0t/go-pretty/blob/v6.8.2/LICENSE
  
 ----------
 Module: github.com/json-iterator/go
@@ -503,9 +509,9 @@ License URL: https://cs.opensource.google/go/x/time/+/v0.15.0:LICENSE
  
 ----------
 Module: golang.org/x/tools
-Version: v0.46.0
+Version: v0.47.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/tools/+/v0.46.0:LICENSE
+License URL: https://cs.opensource.google/go/x/tools/+/v0.47.0:LICENSE
  
 ----------
 Module: google.golang.org/protobuf

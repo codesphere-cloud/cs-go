@@ -63,10 +63,10 @@ type ManagedServicesAPI interface {
 
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 		@param name
-		@param version
+		@param schemaVersion
 		@return ApiManagedServicesDeleteProviderRequest
 	*/
-	ManagedServicesDeleteProvider(ctx context.Context, name string, version string) ApiManagedServicesDeleteProviderRequest
+	ManagedServicesDeleteProvider(ctx context.Context, name string, schemaVersion string) ApiManagedServicesDeleteProviderRequest
 
 	// ManagedServicesDeleteProviderExecute executes the request
 	ManagedServicesDeleteProviderExecute(r ApiManagedServicesDeleteProviderRequest) (*http.Response, error)
@@ -139,14 +139,26 @@ type ManagedServicesAPI interface {
 
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 		@param name
-		@param version
+		@param schemaVersion
 		@return ApiManagedServicesUpdateProviderRequest
 	*/
-	ManagedServicesUpdateProvider(ctx context.Context, name string, version string) ApiManagedServicesUpdateProviderRequest
+	ManagedServicesUpdateProvider(ctx context.Context, name string, schemaVersion string) ApiManagedServicesUpdateProviderRequest
 
 	// ManagedServicesUpdateProviderExecute executes the request
 	//  @return ManagedServicesListProviders200ResponseInnerAnyOf
 	ManagedServicesUpdateProviderExecute(r ApiManagedServicesUpdateProviderRequest) (*ManagedServicesListProviders200ResponseInnerAnyOf, *http.Response, error)
+
+	/*
+		ManagedServicesUpsertProvider upsertProvider
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiManagedServicesUpsertProviderRequest
+	*/
+	ManagedServicesUpsertProvider(ctx context.Context) ApiManagedServicesUpsertProviderRequest
+
+	// ManagedServicesUpsertProviderExecute executes the request
+	//  @return ManagedServicesListProviders200ResponseInnerAnyOf
+	ManagedServicesUpsertProviderExecute(r ApiManagedServicesUpsertProviderRequest) (*ManagedServicesListProviders200ResponseInnerAnyOf, *http.Response, error)
 }
 
 // ManagedServicesAPIService ManagedServicesAPI service
@@ -282,11 +294,11 @@ func (a *ManagedServicesAPIService) ManagedServicesCreateExecute(r ApiManagedSer
 type ApiManagedServicesCreateProviderRequest struct {
 	ctx                                  context.Context
 	ApiService                           ManagedServicesAPI
-	managedServicesCreateProviderRequest *ManagedServicesCreateProviderRequest
+	managedServicesUpsertProviderRequest *ManagedServicesUpsertProviderRequest
 }
 
-func (r ApiManagedServicesCreateProviderRequest) ManagedServicesCreateProviderRequest(managedServicesCreateProviderRequest ManagedServicesCreateProviderRequest) ApiManagedServicesCreateProviderRequest {
-	r.managedServicesCreateProviderRequest = &managedServicesCreateProviderRequest
+func (r ApiManagedServicesCreateProviderRequest) ManagedServicesUpsertProviderRequest(managedServicesUpsertProviderRequest ManagedServicesUpsertProviderRequest) ApiManagedServicesCreateProviderRequest {
+	r.managedServicesUpsertProviderRequest = &managedServicesUpsertProviderRequest
 	return r
 }
 
@@ -347,7 +359,7 @@ func (a *ManagedServicesAPIService) ManagedServicesCreateProviderExecute(r ApiMa
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.managedServicesCreateProviderRequest
+	localVarPostBody = r.managedServicesUpsertProviderRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -529,10 +541,10 @@ func (a *ManagedServicesAPIService) ManagedServicesDeleteExecute(r ApiManagedSer
 }
 
 type ApiManagedServicesDeleteProviderRequest struct {
-	ctx        context.Context
-	ApiService ManagedServicesAPI
-	name       string
-	version    string
+	ctx           context.Context
+	ApiService    ManagedServicesAPI
+	name          string
+	schemaVersion string
 }
 
 func (r ApiManagedServicesDeleteProviderRequest) Execute() (*http.Response, error) {
@@ -544,15 +556,15 @@ ManagedServicesDeleteProvider deleteProvider
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param name
-	@param version
+	@param schemaVersion
 	@return ApiManagedServicesDeleteProviderRequest
 */
-func (a *ManagedServicesAPIService) ManagedServicesDeleteProvider(ctx context.Context, name string, version string) ApiManagedServicesDeleteProviderRequest {
+func (a *ManagedServicesAPIService) ManagedServicesDeleteProvider(ctx context.Context, name string, schemaVersion string) ApiManagedServicesDeleteProviderRequest {
 	return ApiManagedServicesDeleteProviderRequest{
-		ApiService: a,
-		ctx:        ctx,
-		name:       name,
-		version:    version,
+		ApiService:    a,
+		ctx:           ctx,
+		name:          name,
+		schemaVersion: schemaVersion,
 	}
 }
 
@@ -569,9 +581,9 @@ func (a *ManagedServicesAPIService) ManagedServicesDeleteProviderExecute(r ApiMa
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/managed-services/providers/{name}/{version}"
+	localVarPath := localBasePath + "/managed-services/providers/{name}/{schemaVersion}"
 	localVarPath = strings.Replace(localVarPath, "{"+"name"+"}", url.PathEscape(parameterValueToString(r.name, "name")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"version"+"}", url.PathEscape(parameterValueToString(r.version, "version")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"schemaVersion"+"}", url.PathEscape(parameterValueToString(r.schemaVersion, "schemaVersion")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -791,11 +803,11 @@ func (a *ManagedServicesAPIService) ManagedServicesGetDetailsExecute(r ApiManage
 type ApiManagedServicesListRequest struct {
 	ctx            context.Context
 	ApiService     ManagedServicesAPI
-	team           *float32
+	team           *int
 	includeDeleted *bool
 }
 
-func (r ApiManagedServicesListRequest) Team(team float32) ApiManagedServicesListRequest {
+func (r ApiManagedServicesListRequest) Team(team int) ApiManagedServicesListRequest {
 	r.team = &team
 	return r
 }
@@ -845,6 +857,9 @@ func (a *ManagedServicesAPIService) ManagedServicesListExecute(r ApiManagedServi
 	localVarFormParams := url.Values{}
 	if r.team == nil {
 		return localVarReturnValue, nil, reportError("team is required and must be specified")
+	}
+	if *r.team < 0 {
+		return localVarReturnValue, nil, reportError("team must be greater than 0")
 	}
 	if r.includeDeleted == nil {
 		return localVarReturnValue, nil, reportError("includeDeleted is required and must be specified")
@@ -919,10 +934,10 @@ func (a *ManagedServicesAPIService) ManagedServicesListExecute(r ApiManagedServi
 type ApiManagedServicesListProvidersRequest struct {
 	ctx        context.Context
 	ApiService ManagedServicesAPI
-	teamId     *float32
+	teamId     *int
 }
 
-func (r ApiManagedServicesListProvidersRequest) TeamId(teamId float32) ApiManagedServicesListProvidersRequest {
+func (r ApiManagedServicesListProvidersRequest) TeamId(teamId int) ApiManagedServicesListProvidersRequest {
 	r.teamId = &teamId
 	return r
 }
@@ -1302,7 +1317,7 @@ type ApiManagedServicesUpdateProviderRequest struct {
 	ctx                                  context.Context
 	ApiService                           ManagedServicesAPI
 	name                                 string
-	version                              string
+	schemaVersion                        string
 	managedServicesUpdateProviderRequest *ManagedServicesUpdateProviderRequest
 }
 
@@ -1320,15 +1335,15 @@ ManagedServicesUpdateProvider updateProvider
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param name
-	@param version
+	@param schemaVersion
 	@return ApiManagedServicesUpdateProviderRequest
 */
-func (a *ManagedServicesAPIService) ManagedServicesUpdateProvider(ctx context.Context, name string, version string) ApiManagedServicesUpdateProviderRequest {
+func (a *ManagedServicesAPIService) ManagedServicesUpdateProvider(ctx context.Context, name string, schemaVersion string) ApiManagedServicesUpdateProviderRequest {
 	return ApiManagedServicesUpdateProviderRequest{
-		ApiService: a,
-		ctx:        ctx,
-		name:       name,
-		version:    version,
+		ApiService:    a,
+		ctx:           ctx,
+		name:          name,
+		schemaVersion: schemaVersion,
 	}
 }
 
@@ -1348,9 +1363,9 @@ func (a *ManagedServicesAPIService) ManagedServicesUpdateProviderExecute(r ApiMa
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/managed-services/providers/{name}/{version}"
+	localVarPath := localBasePath + "/managed-services/providers/{name}/{schemaVersion}"
 	localVarPath = strings.Replace(localVarPath, "{"+"name"+"}", url.PathEscape(parameterValueToString(r.name, "name")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"version"+"}", url.PathEscape(parameterValueToString(r.version, "version")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"schemaVersion"+"}", url.PathEscape(parameterValueToString(r.schemaVersion, "schemaVersion")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1421,6 +1436,133 @@ func (a *ManagedServicesAPIService) ManagedServicesUpdateProviderExecute(r ApiMa
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v DomainsGetDomain404Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiManagedServicesUpsertProviderRequest struct {
+	ctx                                  context.Context
+	ApiService                           ManagedServicesAPI
+	managedServicesUpsertProviderRequest *ManagedServicesUpsertProviderRequest
+}
+
+func (r ApiManagedServicesUpsertProviderRequest) ManagedServicesUpsertProviderRequest(managedServicesUpsertProviderRequest ManagedServicesUpsertProviderRequest) ApiManagedServicesUpsertProviderRequest {
+	r.managedServicesUpsertProviderRequest = &managedServicesUpsertProviderRequest
+	return r
+}
+
+func (r ApiManagedServicesUpsertProviderRequest) Execute() (*ManagedServicesListProviders200ResponseInnerAnyOf, *http.Response, error) {
+	return r.ApiService.ManagedServicesUpsertProviderExecute(r)
+}
+
+/*
+ManagedServicesUpsertProvider upsertProvider
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiManagedServicesUpsertProviderRequest
+*/
+func (a *ManagedServicesAPIService) ManagedServicesUpsertProvider(ctx context.Context) ApiManagedServicesUpsertProviderRequest {
+	return ApiManagedServicesUpsertProviderRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ManagedServicesListProviders200ResponseInnerAnyOf
+func (a *ManagedServicesAPIService) ManagedServicesUpsertProviderExecute(r ApiManagedServicesUpsertProviderRequest) (*ManagedServicesListProviders200ResponseInnerAnyOf, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPut
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ManagedServicesListProviders200ResponseInnerAnyOf
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagedServicesAPIService.ManagedServicesUpsertProvider")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/managed-services/providers"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.managedServicesUpsertProviderRequest
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v DomainsGetDomain400Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v DomainsGetDomain401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

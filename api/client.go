@@ -87,22 +87,22 @@ func (c *Client) ListDataCenters() ([]DataCenter, error) {
 }
 
 func (c *Client) ListDomains(teamId int) ([]Domain, error) {
-	domains, r, err := c.api.DomainsAPI.DomainsListDomains(c.ctx, float32(teamId)).Execute()
+	domains, r, err := c.api.DomainsAPI.DomainsListDomains(c.ctx, teamId).Execute()
 	return domains, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) GetDomain(teamId int, domainName string) (*Domain, error) {
-	domain, r, err := c.api.DomainsAPI.DomainsGetDomain(c.ctx, float32(teamId), domainName).Execute()
+	domain, r, err := c.api.DomainsAPI.DomainsGetDomain(c.ctx, teamId, domainName).Execute()
 	return domain, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) CreateDomain(teamId int, domainName string) (*Domain, error) {
-	domain, r, err := c.api.DomainsAPI.DomainsCreateDomain(c.ctx, float32(teamId), domainName).Execute()
+	domain, r, err := c.api.DomainsAPI.DomainsCreateDomain(c.ctx, teamId, domainName).Execute()
 	return domain, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) DeleteDomain(teamId int, domainName string) error {
-	r, err := c.api.DomainsAPI.DomainsDeleteDomain(c.ctx, float32(teamId), domainName).Execute()
+	r, err := c.api.DomainsAPI.DomainsDeleteDomain(c.ctx, teamId, domainName).Execute()
 	return errors.FormatAPIError(r, err)
 }
 
@@ -110,7 +110,7 @@ func (c *Client) UpdateDomain(
 	teamId int, domainName string, args UpdateDomainArgs,
 ) (*Domain, error) {
 	domain, r, err := c.api.DomainsAPI.
-		DomainsUpdateDomain(c.ctx, float32(teamId), domainName).
+		DomainsUpdateDomain(c.ctx, teamId, domainName).
 		DomainsUpdateDomainRequest(args).
 		Execute()
 	return domain, errors.FormatAPIError(r, err)
@@ -120,7 +120,7 @@ func (c *Client) VerifyDomain(
 	teamId int, domainName string,
 ) (*DomainVerificationStatus, error) {
 	status, r, err := c.api.DomainsAPI.
-		DomainsVerifyDomain(c.ctx, float32(teamId), domainName).Execute()
+		DomainsVerifyDomain(c.ctx, teamId, domainName).Execute()
 	return status, errors.FormatAPIError(r, err)
 }
 
@@ -136,7 +136,7 @@ func (c *Client) UpdateWorkspaceConnections(
 		req[path] = ids
 	}
 	domain, r, err := c.api.DomainsAPI.
-		DomainsUpdateWorkspaceConnections(c.ctx, float32(teamId), domainName).
+		DomainsUpdateWorkspaceConnections(c.ctx, teamId, domainName).
 		RequestBody(req).Execute()
 	return domain, errors.FormatAPIError(r, err)
 }
@@ -144,9 +144,4 @@ func (c *Client) UpdateWorkspaceConnections(
 func (c *Client) ListBaseimages() ([]Baseimage, error) {
 	baseimages, r, err := c.api.MetadataAPI.MetadataGetWorkspaceBaseImages(c.ctx).Execute()
 	return baseimages, errors.FormatAPIError(r, err)
-}
-
-func (c *Client) ListOrganizations() ([]Organization, error) {
-	organizations, r, err := c.api.OrganizationsAPI.OrganizationsListOrganizations(c.ctx).Execute()
-	return organizations, errors.FormatAPIError(r, err)
 }

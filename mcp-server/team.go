@@ -10,19 +10,23 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
-type ListTeamsArgs struct{}
+type ListTeamsArgs struct {
+	OrgId string `json:"orgId,omitempty" jsonschema:"Optional organization ID to list teams for"`
+}
 
 type GetTeamArgs struct {
 	TeamId int `json:"teamId" jsonschema:"ID of the team to get"`
 }
 
 type CreateTeamArgs struct {
-	Name string `json:"name" jsonschema:"Name of the new team"`
-	Dc   int    `json:"dc" jsonschema:"Default datacenter ID"`
+	OrgId string `json:"orgId,omitempty" jsonschema:"Optional organization ID to create the team in"`
+	Name  string `json:"name" jsonschema:"Name of the new team"`
+	Dc    int    `json:"dc" jsonschema:"Default datacenter ID"`
 }
 
 type DeleteTeamArgs struct {
-	TeamId int `json:"teamId" jsonschema:"ID of the team to delete"`
+	OrgId  string `json:"orgId,omitempty" jsonschema:"Optional organization ID the team belongs to"`
+	TeamId int    `json:"teamId" jsonschema:"ID of the team to delete"`
 }
 
 func RegisterTeamTools(server *mcp.Server, client *api.Client) {
@@ -30,7 +34,7 @@ func RegisterTeamTools(server *mcp.Server, client *api.Client) {
 		Name:        "list_teams",
 		Description: "List all teams the authenticated user belongs to",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args ListTeamsArgs) (*mcp.CallToolResult, any, error) {
-		teams, err := client.ListTeams()
+		teams, err := client.ListTeams(args.OrgId)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -52,7 +56,7 @@ func RegisterTeamTools(server *mcp.Server, client *api.Client) {
 		Name:        "create_team",
 		Description: "Create a new team",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args CreateTeamArgs) (*mcp.CallToolResult, any, error) {
-		team, err := client.CreateTeam(args.Name, args.Dc)
+		team, err := client.CreateTeam(args.OrgId, args.Name, args.Dc)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
