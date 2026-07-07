@@ -509,9 +509,9 @@ License URL: https://cs.opensource.google/go/x/time/+/v0.15.0:LICENSE
  
 ----------
 Module: golang.org/x/tools
-Version: v0.46.0
+Version: v0.47.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/tools/+/v0.46.0:LICENSE
+License URL: https://cs.opensource.google/go/x/tools/+/v0.47.0:LICENSE
  
 ----------
 Module: google.golang.org/protobuf

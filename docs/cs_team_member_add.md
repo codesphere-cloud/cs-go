@@ -6,7 +6,7 @@ Add team member
 
 Add team member to a team.
 
-To add a member to a team within an organization, the CS_ORG_ID environment variable or the -O/--org flag must be set.
+To add a member to a team within an organization or a standalone team
 
 ```
 cs team member add [flags]
@@ -19,10 +19,7 @@ cs team member add [flags]
 $ cs team member add -t <teamId> -e user@example.com -r 1
 
 # Add a user to a team as an admin
-$ cs team member add -t <teamId> -e admin@example.com -r 0
-
-# Add a user to a team within an organization
-$ cs team member add -O <org-id> -t  <teamId> -e user@example.com -r 1
+$ cs team member add -t <teamId> -e admin@example.com -r -1
 ```
 
 ### Options
@@ -30,7 +27,7 @@ $ cs team member add -O <org-id> -t  <teamId> -e user@example.com -r 1
 ```
   -e, --email string   Team member email
   -h, --help           help for add
-  -r, --role int       Team member role 0=admin, 1=member
+  -r, --role int       Team member role 1=member, -1=admin (default 1)
 ```
 
 ### Options inherited from parent commands
