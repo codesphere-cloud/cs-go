@@ -33,11 +33,10 @@ func AddAddTeamMemberCmd(team *cobra.Command, opts *GlobalOptions) {
 			Short: "Add team member",
 			Long: io.Long(`Add team member to a team.
 			
-				To add a member to a team within an organization, the CS_ORG_ID environment variable or the -O/--org flag must be set.`),
+				To add a member to a team within an organization or a standalone team`),
 			Example: io.FormatExampleCommands("team member add", []io.Example{
 				{Cmd: "-t <teamId> -e user@example.com -r 1", Desc: "Add a user to a team as a member"},
 				{Cmd: "-t <teamId> -e admin@example.com -r -1", Desc: "Add a user to a team as an admin"},
-				{Cmd: "-O <org-id> -t <teamId> -e user@example.com -r 1", Desc: "Add a user to a team within an organization"},
 			}),
 		},
 		Opts: AddTeamMemberOpts{
