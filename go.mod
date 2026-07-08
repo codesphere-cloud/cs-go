@@ -1,6 +1,6 @@
 module github.com/codesphere-cloud/cs-go
 
-go 1.26.4
+go 1.26.5
 
 require (
 	github.com/creativeprojects/go-selfupdate v1.6.0
