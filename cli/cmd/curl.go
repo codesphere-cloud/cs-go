@@ -4,6 +4,7 @@
 package cmd
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"io"
@@ -20,11 +21,19 @@ import (
 // DefaultCommandExecutor uses os/exec to run commands
 type DefaultCommandExecutor struct{}
 
-func (e *DefaultCommandExecutor) Execute(ctx context.Context, name string, args []string, stdout, stderr io.Writer) error {
+func (e *DefaultCommandExecutor) Execute(ctx context.Context, name string, args []string, stdout, stderr io.Writer) (string, error) {
+	var output bytes.Buffer
+
 	cmd := exec.CommandContext(ctx, name, args...)
-	cmd.Stdout = stdout
-	cmd.Stderr = stderr
-	return cmd.Run()
+	cmd.Stdout = io.MultiWriter(stdout, &output)
+	cmd.Stderr = io.MultiWriter(stderr, &output)
+
+	err := cmd.Run()
+	if err != nil {
+		return "", fmt.Errorf("execute curl failed: %w", err)
+	}
+
+	return output.String(), err
 }
 
 type CurlOptions struct {
@@ -77,7 +86,8 @@ func AddCurlCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 				{Cmd: "/api/data -w 1234 -- -XPOST -d '{\"key\":\"value\"}'", Desc: "POST request with data"},
 				{Cmd: "/api/endpoint -w 1234 -- -v", Desc: "verbose output"},
 				{Cmd: "-w 1234 -- -v", Desc: "verbose request to workspace root"},
-				{Cmd: "/ -- -k", Desc: "skip TLS verification"}, {Cmd: "/ -- -I", Desc: "HEAD request using workspace from env var"},
+				{Cmd: "/ -- -k", Desc: "skip TLS verification"},
+				{Cmd: "/ -- -I", Desc: "HEAD request using workspace from env var"},
 			}),
 			Args: cobra.ArbitraryArgs,
 		},
@@ -117,10 +127,33 @@ func (c *CurlCmd) CurlWorkspace(client Client, wsId int, token string, path stri
 	cmdArgs = append(cmdArgs, curlArgs...)
 	cmdArgs = append(cmdArgs, url)
 
-	err = c.Opts.Executor.Execute(ctx, cmdArgs[0], cmdArgs[1:], os.Stdout, os.Stderr)
+	output, err := c.Opts.Executor.Execute(ctx, cmdArgs[0], cmdArgs[1:], os.Stdout, os.Stderr)
 	if err != nil && err == context.DeadlineExceeded {
 		return fmt.Errorf("timeout exceeded while requesting workspace %d", wsId)
 	}
 
-	return err
+	if err != nil {
+		return err
+	}
+
+	if err = c.checkOutput(output); err != nil {
+		return fmt.Errorf("invalid output: %w", err)
+	}
+
+	return nil
+}
+
+func (c *CurlCmd) checkOutput(output string) error {
+	errorMessages := []string{
+		"Too Many Requests",
+		"Workspace server is starting",
+	}
+
+	for _, msg := range errorMessages {
+		if strings.Contains(output, msg) {
+			return fmt.Errorf("workspace not running. Found '%s' in output", msg)
+		}
+	}
+
+	return nil
 }
