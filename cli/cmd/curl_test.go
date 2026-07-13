@@ -84,7 +84,7 @@ var _ = Describe("Curl", func() {
 				}),
 				mock.Anything,
 				mock.Anything,
-			).Return(nil)
+			).Return("", nil)
 
 			err := c.CurlWorkspace(mockClient, wsId, token, "/api/health", []string{"-I"})
 
@@ -116,7 +116,7 @@ var _ = Describe("Curl", func() {
 				}),
 				mock.Anything,
 				mock.Anything,
-			).Return(nil)
+			).Return("", nil)
 
 			err := c.CurlWorkspace(mockClient, wsId, token, "/custom/path", []string{})
 
@@ -156,12 +156,46 @@ var _ = Describe("Curl", func() {
 				mock.Anything,
 				mock.Anything,
 				mock.Anything,
-			).Return(fmt.Errorf("command failed"))
+			).Return("", fmt.Errorf("command failed"))
 
 			err := c.CurlWorkspace(mockClient, wsId, token, "/", []string{})
 
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("command failed"))
+		})
+
+		It("should return error if output contains 'Too Many Requests' message", func() {
+			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockExecutor.EXPECT().Execute(
+				mock.Anything,
+				mock.Anything,
+				mock.Anything,
+				mock.Anything,
+				mock.Anything,
+			).Return("Too Many Requests", nil)
+
+			err := c.CurlWorkspace(mockClient, wsId, token, "/", []string{})
+
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(ContainSubstring("invalid output"))
+			Expect(err.Error()).To(ContainSubstring("workspace not running. Found 'Too Many Requests' in output"))
+		})
+
+		It("should return error if output contains 'Workspace server is starting' message", func() {
+			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockExecutor.EXPECT().Execute(
+				mock.Anything,
+				mock.Anything,
+				mock.Anything,
+				mock.Anything,
+				mock.Anything,
+			).Return("Workspace server is starting", nil)
+
+			err := c.CurlWorkspace(mockClient, wsId, token, "/", []string{})
+
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(ContainSubstring("invalid output"))
+			Expect(err.Error()).To(ContainSubstring("workspace not running. Found 'Workspace server is starting' in output"))
 		})
 	})
 })

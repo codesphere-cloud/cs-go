@@ -43,7 +43,9 @@ type Client interface {
 
 // CommandExecutor abstracts command execution for testing
 type CommandExecutor interface {
-	Execute(ctx context.Context, name string, args []string, stdout, stderr io.Writer) error
+	// Execute runs the command, streaming to stdout/stderr as usual, and additionally
+	// returns the combined stdout+stderr output that was written.
+	Execute(ctx context.Context, name string, args []string, stdout, stderr io.Writer) (string, error)
 }
 
 func NewClient(opts GlobalOptions) (Client, error) {

@@ -1461,20 +1461,29 @@ func (_m *MockCommandExecutor) EXPECT() *MockCommandExecutor_Expecter {
 }
 
 // Execute provides a mock function for the type MockCommandExecutor
-func (_mock *MockCommandExecutor) Execute(ctx context.Context, name string, args []string, stdout io.Writer, stderr io.Writer) error {
+func (_mock *MockCommandExecutor) Execute(ctx context.Context, name string, args []string, stdout io.Writer, stderr io.Writer) (string, error) {
 	ret := _mock.Called(ctx, name, args, stdout, stderr)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Execute")
 	}
 
-	var r0 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, string, []string, io.Writer, io.Writer) error); ok {
+	var r0 string
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, []string, io.Writer, io.Writer) (string, error)); ok {
+		return returnFunc(ctx, name, args, stdout, stderr)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, []string, io.Writer, io.Writer) string); ok {
 		r0 = returnFunc(ctx, name, args, stdout, stderr)
 	} else {
-		r0 = ret.Error(0)
+		r0 = ret.Get(0).(string)
 	}
-	return r0
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string, []string, io.Writer, io.Writer) error); ok {
+		r1 = returnFunc(ctx, name, args, stdout, stderr)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
 }
 
 // MockCommandExecutor_Execute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Execute'
@@ -1525,12 +1534,12 @@ func (_c *MockCommandExecutor_Execute_Call) Run(run func(ctx context.Context, na
 	return _c
 }
 
-func (_c *MockCommandExecutor_Execute_Call) Return(err error) *MockCommandExecutor_Execute_Call {
-	_c.Call.Return(err)
+func (_c *MockCommandExecutor_Execute_Call) Return(s string, err error) *MockCommandExecutor_Execute_Call {
+	_c.Call.Return(s, err)
 	return _c
 }
 
-func (_c *MockCommandExecutor_Execute_Call) RunAndReturn(run func(ctx context.Context, name string, args []string, stdout io.Writer, stderr io.Writer) error) *MockCommandExecutor_Execute_Call {
+func (_c *MockCommandExecutor_Execute_Call) RunAndReturn(run func(ctx context.Context, name string, args []string, stdout io.Writer, stderr io.Writer) (string, error)) *MockCommandExecutor_Execute_Call {
 	_c.Call.Return(run)
 	return _c
 }
