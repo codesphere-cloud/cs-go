@@ -19,96 +19,89 @@ import (
 	"net/url"
 )
 
-type SshAPI interface {
+type ClustersAPI interface {
 
 	/*
-		SshDeletePublicKey deletePublicKey
-
-		Delete a public SSH key for the authenticated user
+		ClustersAddClusterAdmin addClusterAdmin
 
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-		@return ApiSshDeletePublicKeyRequest
+		@return ApiClustersAddClusterAdminRequest
 	*/
-	SshDeletePublicKey(ctx context.Context) ApiSshDeletePublicKeyRequest
+	ClustersAddClusterAdmin(ctx context.Context) ApiClustersAddClusterAdminRequest
 
-	// SshDeletePublicKeyExecute executes the request
-	SshDeletePublicKeyExecute(r ApiSshDeletePublicKeyRequest) (*http.Response, error)
+	// ClustersAddClusterAdminExecute executes the request
+	ClustersAddClusterAdminExecute(r ApiClustersAddClusterAdminRequest) (*http.Response, error)
 
 	/*
-		SshListPublicKeys listPublicKeys
-
-		List public SSH keys for the authenticated user
+		ClustersCreateOrganization createOrganization
 
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-		@return ApiSshListPublicKeysRequest
+		@return ApiClustersCreateOrganizationRequest
 	*/
-	SshListPublicKeys(ctx context.Context) ApiSshListPublicKeysRequest
+	ClustersCreateOrganization(ctx context.Context) ApiClustersCreateOrganizationRequest
 
-	// SshListPublicKeysExecute executes the request
-	//  @return []SshListPublicKeys200ResponseInner
-	SshListPublicKeysExecute(r ApiSshListPublicKeysRequest) ([]SshListPublicKeys200ResponseInner, *http.Response, error)
+	// ClustersCreateOrganizationExecute executes the request
+	//  @return ClustersListAllOrganizations200ResponseInner
+	ClustersCreateOrganizationExecute(r ApiClustersCreateOrganizationRequest) (*ClustersListAllOrganizations200ResponseInner, *http.Response, error)
 
 	/*
-		SshUploadPublicKey uploadPublicKey
-
-		Upload a public SSH key for the authenticated user
+		ClustersListAllOrganizations listAllOrganizations
 
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-		@return ApiSshUploadPublicKeyRequest
+		@return ApiClustersListAllOrganizationsRequest
 	*/
-	SshUploadPublicKey(ctx context.Context) ApiSshUploadPublicKeyRequest
+	ClustersListAllOrganizations(ctx context.Context) ApiClustersListAllOrganizationsRequest
 
-	// SshUploadPublicKeyExecute executes the request
-	SshUploadPublicKeyExecute(r ApiSshUploadPublicKeyRequest) (*http.Response, error)
+	// ClustersListAllOrganizationsExecute executes the request
+	//  @return []ClustersListAllOrganizations200ResponseInner
+	ClustersListAllOrganizationsExecute(r ApiClustersListAllOrganizationsRequest) ([]ClustersListAllOrganizations200ResponseInner, *http.Response, error)
 }
 
-// SshAPIService SshAPI service
-type SshAPIService service
+// ClustersAPIService ClustersAPI service
+type ClustersAPIService service
 
-type ApiSshDeletePublicKeyRequest struct {
-	ctx                       context.Context
-	ApiService                SshAPI
-	sshDeletePublicKeyRequest *SshDeletePublicKeyRequest
+type ApiClustersAddClusterAdminRequest struct {
+	ctx                            context.Context
+	ApiService                     ClustersAPI
+	clustersAddClusterAdminRequest *ClustersAddClusterAdminRequest
 }
 
-func (r ApiSshDeletePublicKeyRequest) SshDeletePublicKeyRequest(sshDeletePublicKeyRequest SshDeletePublicKeyRequest) ApiSshDeletePublicKeyRequest {
-	r.sshDeletePublicKeyRequest = &sshDeletePublicKeyRequest
+func (r ApiClustersAddClusterAdminRequest) ClustersAddClusterAdminRequest(clustersAddClusterAdminRequest ClustersAddClusterAdminRequest) ApiClustersAddClusterAdminRequest {
+	r.clustersAddClusterAdminRequest = &clustersAddClusterAdminRequest
 	return r
 }
 
-func (r ApiSshDeletePublicKeyRequest) Execute() (*http.Response, error) {
-	return r.ApiService.SshDeletePublicKeyExecute(r)
+func (r ApiClustersAddClusterAdminRequest) Execute() (*http.Response, error) {
+	return r.ApiService.ClustersAddClusterAdminExecute(r)
 }
 
 /*
-SshDeletePublicKey deletePublicKey
-
-Delete a public SSH key for the authenticated user
+ClustersAddClusterAdmin addClusterAdmin
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiSshDeletePublicKeyRequest
+	@return ApiClustersAddClusterAdminRequest
 */
-func (a *SshAPIService) SshDeletePublicKey(ctx context.Context) ApiSshDeletePublicKeyRequest {
-	return ApiSshDeletePublicKeyRequest{
+func (a *ClustersAPIService) ClustersAddClusterAdmin(ctx context.Context) ApiClustersAddClusterAdminRequest {
+	return ApiClustersAddClusterAdminRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-func (a *SshAPIService) SshDeletePublicKeyExecute(r ApiSshDeletePublicKeyRequest) (*http.Response, error) {
+func (a *ClustersAPIService) ClustersAddClusterAdminExecute(r ApiClustersAddClusterAdminRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod = http.MethodDelete
+		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SshAPIService.SshDeletePublicKey")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ClustersAPIService.ClustersAddClusterAdmin")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/ssh/keys"
+	localVarPath := localBasePath + "/clusters/admins"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -132,7 +125,7 @@ func (a *SshAPIService) SshDeletePublicKeyExecute(r ApiSshDeletePublicKeyRequest
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.sshDeletePublicKeyRequest
+	localVarPostBody = r.clustersAddClusterAdminRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
@@ -175,17 +168,6 @@ func (a *SshAPIService) SshDeletePublicKeyExecute(r ApiSshDeletePublicKeyRequest
 			}
 			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 			newErr.model = v
-			return localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v DomainsGetDomain404Response
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -193,25 +175,29 @@ func (a *SshAPIService) SshDeletePublicKeyExecute(r ApiSshDeletePublicKeyRequest
 	return localVarHTTPResponse, nil
 }
 
-type ApiSshListPublicKeysRequest struct {
-	ctx        context.Context
-	ApiService SshAPI
+type ApiClustersCreateOrganizationRequest struct {
+	ctx                               context.Context
+	ApiService                        ClustersAPI
+	clustersCreateOrganizationRequest *ClustersCreateOrganizationRequest
 }
 
-func (r ApiSshListPublicKeysRequest) Execute() ([]SshListPublicKeys200ResponseInner, *http.Response, error) {
-	return r.ApiService.SshListPublicKeysExecute(r)
+func (r ApiClustersCreateOrganizationRequest) ClustersCreateOrganizationRequest(clustersCreateOrganizationRequest ClustersCreateOrganizationRequest) ApiClustersCreateOrganizationRequest {
+	r.clustersCreateOrganizationRequest = &clustersCreateOrganizationRequest
+	return r
+}
+
+func (r ApiClustersCreateOrganizationRequest) Execute() (*ClustersListAllOrganizations200ResponseInner, *http.Response, error) {
+	return r.ApiService.ClustersCreateOrganizationExecute(r)
 }
 
 /*
-SshListPublicKeys listPublicKeys
-
-List public SSH keys for the authenticated user
+ClustersCreateOrganization createOrganization
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiSshListPublicKeysRequest
+	@return ApiClustersCreateOrganizationRequest
 */
-func (a *SshAPIService) SshListPublicKeys(ctx context.Context) ApiSshListPublicKeysRequest {
-	return ApiSshListPublicKeysRequest{
+func (a *ClustersAPIService) ClustersCreateOrganization(ctx context.Context) ApiClustersCreateOrganizationRequest {
+	return ApiClustersCreateOrganizationRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -219,21 +205,142 @@ func (a *SshAPIService) SshListPublicKeys(ctx context.Context) ApiSshListPublicK
 
 // Execute executes the request
 //
-//	@return []SshListPublicKeys200ResponseInner
-func (a *SshAPIService) SshListPublicKeysExecute(r ApiSshListPublicKeysRequest) ([]SshListPublicKeys200ResponseInner, *http.Response, error) {
+//	@return ClustersListAllOrganizations200ResponseInner
+func (a *ClustersAPIService) ClustersCreateOrganizationExecute(r ApiClustersCreateOrganizationRequest) (*ClustersListAllOrganizations200ResponseInner, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodGet
+		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue []SshListPublicKeys200ResponseInner
+		localVarReturnValue *ClustersListAllOrganizations200ResponseInner
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SshAPIService.SshListPublicKeys")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ClustersAPIService.ClustersCreateOrganization")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/ssh/keys"
+	localVarPath := localBasePath + "/clusters/organizations"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.clustersCreateOrganizationRequest
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ClustersCreateOrganization400Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ClustersListAllOrganizations401Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiClustersListAllOrganizationsRequest struct {
+	ctx        context.Context
+	ApiService ClustersAPI
+}
+
+func (r ApiClustersListAllOrganizationsRequest) Execute() ([]ClustersListAllOrganizations200ResponseInner, *http.Response, error) {
+	return r.ApiService.ClustersListAllOrganizationsExecute(r)
+}
+
+/*
+ClustersListAllOrganizations listAllOrganizations
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiClustersListAllOrganizationsRequest
+*/
+func (a *ClustersAPIService) ClustersListAllOrganizations(ctx context.Context) ApiClustersListAllOrganizationsRequest {
+	return ApiClustersListAllOrganizationsRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return []ClustersListAllOrganizations200ResponseInner
+func (a *ClustersAPIService) ClustersListAllOrganizationsExecute(r ApiClustersListAllOrganizationsRequest) ([]ClustersListAllOrganizations200ResponseInner, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []ClustersListAllOrganizations200ResponseInner
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ClustersAPIService.ClustersListAllOrganizations")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/clusters/organizations"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -301,132 +408,4 @@ func (a *SshAPIService) SshListPublicKeysExecute(r ApiSshListPublicKeysRequest) 
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiSshUploadPublicKeyRequest struct {
-	ctx                       context.Context
-	ApiService                SshAPI
-	sshUploadPublicKeyRequest *SshUploadPublicKeyRequest
-}
-
-func (r ApiSshUploadPublicKeyRequest) SshUploadPublicKeyRequest(sshUploadPublicKeyRequest SshUploadPublicKeyRequest) ApiSshUploadPublicKeyRequest {
-	r.sshUploadPublicKeyRequest = &sshUploadPublicKeyRequest
-	return r
-}
-
-func (r ApiSshUploadPublicKeyRequest) Execute() (*http.Response, error) {
-	return r.ApiService.SshUploadPublicKeyExecute(r)
-}
-
-/*
-SshUploadPublicKey uploadPublicKey
-
-Upload a public SSH key for the authenticated user
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiSshUploadPublicKeyRequest
-*/
-func (a *SshAPIService) SshUploadPublicKey(ctx context.Context) ApiSshUploadPublicKeyRequest {
-	return ApiSshUploadPublicKeyRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-func (a *SshAPIService) SshUploadPublicKeyExecute(r ApiSshUploadPublicKeyRequest) (*http.Response, error) {
-	var (
-		localVarHTTPMethod = http.MethodPost
-		localVarPostBody   interface{}
-		formFiles          []formFile
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SshAPIService.SshUploadPublicKey")
-	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/ssh/keys"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	// body params
-	localVarPostBody = r.sshUploadPublicKeyRequest
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v ClustersCreateOrganization400Response
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ClustersListAllOrganizations401Response
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 409 {
-			var v DomainsUpdateDomain409Response
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-		}
-		return localVarHTTPResponse, newErr
-	}
-
-	return localVarHTTPResponse, nil
 }

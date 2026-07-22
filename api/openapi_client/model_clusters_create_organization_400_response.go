@@ -17,41 +17,41 @@ import (
 	"fmt"
 )
 
-// checks if the DomainsGetDomain401Response type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &DomainsGetDomain401Response{}
+// checks if the ClustersCreateOrganization400Response type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ClustersCreateOrganization400Response{}
 
-// DomainsGetDomain401Response struct for DomainsGetDomain401Response
-type DomainsGetDomain401Response struct {
+// ClustersCreateOrganization400Response struct for ClustersCreateOrganization400Response
+type ClustersCreateOrganization400Response struct {
 	Status  int     `json:"status"`
 	Title   string  `json:"title"`
 	Detail  *string `json:"detail,omitempty"`
 	TraceId string  `json:"traceId"`
 }
 
-type _DomainsGetDomain401Response DomainsGetDomain401Response
+type _ClustersCreateOrganization400Response ClustersCreateOrganization400Response
 
-// NewDomainsGetDomain401Response instantiates a new DomainsGetDomain401Response object
+// NewClustersCreateOrganization400Response instantiates a new ClustersCreateOrganization400Response object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDomainsGetDomain401Response(status int, title string, traceId string) *DomainsGetDomain401Response {
-	this := DomainsGetDomain401Response{}
+func NewClustersCreateOrganization400Response(status int, title string, traceId string) *ClustersCreateOrganization400Response {
+	this := ClustersCreateOrganization400Response{}
 	this.Status = status
 	this.Title = title
 	this.TraceId = traceId
 	return &this
 }
 
-// NewDomainsGetDomain401ResponseWithDefaults instantiates a new DomainsGetDomain401Response object
+// NewClustersCreateOrganization400ResponseWithDefaults instantiates a new ClustersCreateOrganization400Response object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewDomainsGetDomain401ResponseWithDefaults() *DomainsGetDomain401Response {
-	this := DomainsGetDomain401Response{}
+func NewClustersCreateOrganization400ResponseWithDefaults() *ClustersCreateOrganization400Response {
+	this := ClustersCreateOrganization400Response{}
 	return &this
 }
 
 // GetStatus returns the Status field value
-func (o *DomainsGetDomain401Response) GetStatus() int {
+func (o *ClustersCreateOrganization400Response) GetStatus() int {
 	if o == nil {
 		var ret int
 		return ret
@@ -62,7 +62,7 @@ func (o *DomainsGetDomain401Response) GetStatus() int {
 
 // GetStatusOk returns a tuple with the Status field value
 // and a boolean to check if the value has been set.
-func (o *DomainsGetDomain401Response) GetStatusOk() (*int, bool) {
+func (o *ClustersCreateOrganization400Response) GetStatusOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -70,12 +70,12 @@ func (o *DomainsGetDomain401Response) GetStatusOk() (*int, bool) {
 }
 
 // SetStatus sets field value
-func (o *DomainsGetDomain401Response) SetStatus(v int) {
+func (o *ClustersCreateOrganization400Response) SetStatus(v int) {
 	o.Status = v
 }
 
 // GetTitle returns the Title field value
-func (o *DomainsGetDomain401Response) GetTitle() string {
+func (o *ClustersCreateOrganization400Response) GetTitle() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -86,7 +86,7 @@ func (o *DomainsGetDomain401Response) GetTitle() string {
 
 // GetTitleOk returns a tuple with the Title field value
 // and a boolean to check if the value has been set.
-func (o *DomainsGetDomain401Response) GetTitleOk() (*string, bool) {
+func (o *ClustersCreateOrganization400Response) GetTitleOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -94,12 +94,12 @@ func (o *DomainsGetDomain401Response) GetTitleOk() (*string, bool) {
 }
 
 // SetTitle sets field value
-func (o *DomainsGetDomain401Response) SetTitle(v string) {
+func (o *ClustersCreateOrganization400Response) SetTitle(v string) {
 	o.Title = v
 }
 
 // GetDetail returns the Detail field value if set, zero value otherwise.
-func (o *DomainsGetDomain401Response) GetDetail() string {
+func (o *ClustersCreateOrganization400Response) GetDetail() string {
 	if o == nil || IsNil(o.Detail) {
 		var ret string
 		return ret
@@ -109,7 +109,7 @@ func (o *DomainsGetDomain401Response) GetDetail() string {
 
 // GetDetailOk returns a tuple with the Detail field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *DomainsGetDomain401Response) GetDetailOk() (*string, bool) {
+func (o *ClustersCreateOrganization400Response) GetDetailOk() (*string, bool) {
 	if o == nil || IsNil(o.Detail) {
 		return nil, false
 	}
@@ -117,7 +117,7 @@ func (o *DomainsGetDomain401Response) GetDetailOk() (*string, bool) {
 }
 
 // HasDetail returns a boolean if a field has been set.
-func (o *DomainsGetDomain401Response) HasDetail() bool {
+func (o *ClustersCreateOrganization400Response) HasDetail() bool {
 	if o != nil && !IsNil(o.Detail) {
 		return true
 	}
@@ -126,12 +126,12 @@ func (o *DomainsGetDomain401Response) HasDetail() bool {
 }
 
 // SetDetail gets a reference to the given string and assigns it to the Detail field.
-func (o *DomainsGetDomain401Response) SetDetail(v string) {
+func (o *ClustersCreateOrganization400Response) SetDetail(v string) {
 	o.Detail = &v
 }
 
 // GetTraceId returns the TraceId field value
-func (o *DomainsGetDomain401Response) GetTraceId() string {
+func (o *ClustersCreateOrganization400Response) GetTraceId() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -142,7 +142,7 @@ func (o *DomainsGetDomain401Response) GetTraceId() string {
 
 // GetTraceIdOk returns a tuple with the TraceId field value
 // and a boolean to check if the value has been set.
-func (o *DomainsGetDomain401Response) GetTraceIdOk() (*string, bool) {
+func (o *ClustersCreateOrganization400Response) GetTraceIdOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -150,11 +150,11 @@ func (o *DomainsGetDomain401Response) GetTraceIdOk() (*string, bool) {
 }
 
 // SetTraceId sets field value
-func (o *DomainsGetDomain401Response) SetTraceId(v string) {
+func (o *ClustersCreateOrganization400Response) SetTraceId(v string) {
 	o.TraceId = v
 }
 
-func (o DomainsGetDomain401Response) MarshalJSON() ([]byte, error) {
+func (o ClustersCreateOrganization400Response) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -162,7 +162,7 @@ func (o DomainsGetDomain401Response) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o DomainsGetDomain401Response) ToMap() (map[string]interface{}, error) {
+func (o ClustersCreateOrganization400Response) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["status"] = o.Status
 	toSerialize["title"] = o.Title
@@ -173,7 +173,7 @@ func (o DomainsGetDomain401Response) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *DomainsGetDomain401Response) UnmarshalJSON(data []byte) (err error) {
+func (o *ClustersCreateOrganization400Response) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -197,53 +197,53 @@ func (o *DomainsGetDomain401Response) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varDomainsGetDomain401Response := _DomainsGetDomain401Response{}
+	varClustersCreateOrganization400Response := _ClustersCreateOrganization400Response{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	//decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varDomainsGetDomain401Response)
+	err = decoder.Decode(&varClustersCreateOrganization400Response)
 
 	if err != nil {
 		return err
 	}
 
-	*o = DomainsGetDomain401Response(varDomainsGetDomain401Response)
+	*o = ClustersCreateOrganization400Response(varClustersCreateOrganization400Response)
 
 	return err
 }
 
-type NullableDomainsGetDomain401Response struct {
-	value *DomainsGetDomain401Response
+type NullableClustersCreateOrganization400Response struct {
+	value *ClustersCreateOrganization400Response
 	isSet bool
 }
 
-func (v NullableDomainsGetDomain401Response) Get() *DomainsGetDomain401Response {
+func (v NullableClustersCreateOrganization400Response) Get() *ClustersCreateOrganization400Response {
 	return v.value
 }
 
-func (v *NullableDomainsGetDomain401Response) Set(val *DomainsGetDomain401Response) {
+func (v *NullableClustersCreateOrganization400Response) Set(val *ClustersCreateOrganization400Response) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableDomainsGetDomain401Response) IsSet() bool {
+func (v NullableClustersCreateOrganization400Response) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableDomainsGetDomain401Response) Unset() {
+func (v *NullableClustersCreateOrganization400Response) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableDomainsGetDomain401Response(val *DomainsGetDomain401Response) *NullableDomainsGetDomain401Response {
-	return &NullableDomainsGetDomain401Response{value: val, isSet: true}
+func NewNullableClustersCreateOrganization400Response(val *ClustersCreateOrganization400Response) *NullableClustersCreateOrganization400Response {
+	return &NullableClustersCreateOrganization400Response{value: val, isSet: true}
 }
 
-func (v NullableDomainsGetDomain401Response) MarshalJSON() ([]byte, error) {
+func (v NullableClustersCreateOrganization400Response) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableDomainsGetDomain401Response) UnmarshalJSON(src []byte) error {
+func (v *NullableClustersCreateOrganization400Response) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

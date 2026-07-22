@@ -251,7 +251,7 @@ func (a *TeamsAPIService) TeamsChangeRoleExecute(r ApiTeamsChangeRoleRequest) (*
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -262,7 +262,7 @@ func (a *TeamsAPIService) TeamsChangeRoleExecute(r ApiTeamsChangeRoleRequest) (*
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -391,7 +391,7 @@ func (a *TeamsAPIService) TeamsCreateTeamExecute(r ApiTeamsCreateTeamRequest) (*
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -402,7 +402,7 @@ func (a *TeamsAPIService) TeamsCreateTeamExecute(r ApiTeamsCreateTeamRequest) (*
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -514,7 +514,7 @@ func (a *TeamsAPIService) TeamsDeleteTeamExecute(r ApiTeamsDeleteTeamRequest) (*
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -525,7 +525,7 @@ func (a *TeamsAPIService) TeamsDeleteTeamExecute(r ApiTeamsDeleteTeamRequest) (*
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -642,7 +642,7 @@ func (a *TeamsAPIService) TeamsGetTeamExecute(r ApiTeamsGetTeamRequest) (*TeamsG
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -653,7 +653,7 @@ func (a *TeamsAPIService) TeamsGetTeamExecute(r ApiTeamsGetTeamRequest) (*TeamsG
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -786,7 +786,7 @@ func (a *TeamsAPIService) TeamsInviteMemberExecute(r ApiTeamsInviteMemberRequest
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -797,7 +797,7 @@ func (a *TeamsAPIService) TeamsInviteMemberExecute(r ApiTeamsInviteMemberRequest
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -927,7 +927,7 @@ func (a *TeamsAPIService) TeamsListMembersExecute(r ApiTeamsListMembersRequest) 
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -938,7 +938,7 @@ func (a *TeamsAPIService) TeamsListMembersExecute(r ApiTeamsListMembersRequest) 
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1068,7 +1068,7 @@ func (a *TeamsAPIService) TeamsListTeamsExecute(r ApiTeamsListTeamsRequest) ([]T
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1188,7 +1188,7 @@ func (a *TeamsAPIService) TeamsMigrateTeamToOrgExecute(r ApiTeamsMigrateTeamToOr
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1199,7 +1199,7 @@ func (a *TeamsAPIService) TeamsMigrateTeamToOrgExecute(r ApiTeamsMigrateTeamToOr
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1311,7 +1311,7 @@ func (a *TeamsAPIService) TeamsRemoveMemberExecute(r ApiTeamsRemoveMemberRequest
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1322,7 +1322,7 @@ func (a *TeamsAPIService) TeamsRemoveMemberExecute(r ApiTeamsRemoveMemberRequest
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

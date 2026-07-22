@@ -145,7 +145,7 @@ func (a *MetadataAPIService) MetadataGetDatacentersExecute(r ApiMetadataGetDatac
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -253,7 +253,7 @@ func (a *MetadataAPIService) MetadataGetWorkspaceBaseImagesExecute(r ApiMetadata
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -361,7 +361,7 @@ func (a *MetadataAPIService) MetadataGetWorkspacePlansExecute(r ApiMetadataGetWo
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
