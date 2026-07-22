@@ -22,8 +22,10 @@ var _ MappedNullable = &ManagedServicesListProviders200ResponseInnerAnyOfBackend
 
 // ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape struct for ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape
 type ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape struct {
-	GitUrl    string `json:"gitUrl"`
-	CiProfile string `json:"ciProfile"`
+	GitUrl string `json:"gitUrl"`
+	// Deprecated legacy fallback CI profile. A provider must define at least one version; as a temporary backwards-compatibility fallback, a provider without versions is still accepted as long as it defines this field.
+	// Deprecated
+	CiProfile *string `json:"ciProfile,omitempty"`
 }
 
 type _ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape
@@ -32,10 +34,9 @@ type _ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape ManagedS
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape(gitUrl string, ciProfile string) *ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape {
+func NewManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape(gitUrl string) *ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape {
 	this := ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape{}
 	this.GitUrl = gitUrl
-	this.CiProfile = ciProfile
 	return &this
 }
 
@@ -71,28 +72,39 @@ func (o *ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape) SetG
 	o.GitUrl = v
 }
 
-// GetCiProfile returns the CiProfile field value
+// GetCiProfile returns the CiProfile field value if set, zero value otherwise.
+// Deprecated
 func (o *ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape) GetCiProfile() string {
-	if o == nil {
+	if o == nil || IsNil(o.CiProfile) {
 		var ret string
 		return ret
 	}
-
-	return o.CiProfile
+	return *o.CiProfile
 }
 
-// GetCiProfileOk returns a tuple with the CiProfile field value
+// GetCiProfileOk returns a tuple with the CiProfile field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape) GetCiProfileOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.CiProfile) {
 		return nil, false
 	}
-	return &o.CiProfile, true
+	return o.CiProfile, true
 }
 
-// SetCiProfile sets field value
+// HasCiProfile returns a boolean if a field has been set.
+func (o *ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape) HasCiProfile() bool {
+	if o != nil && !IsNil(o.CiProfile) {
+		return true
+	}
+
+	return false
+}
+
+// SetCiProfile gets a reference to the given string and assigns it to the CiProfile field.
+// Deprecated
 func (o *ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape) SetCiProfile(v string) {
-	o.CiProfile = v
+	o.CiProfile = &v
 }
 
 func (o ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape) MarshalJSON() ([]byte, error) {
@@ -106,7 +118,9 @@ func (o ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape) Marsh
 func (o ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["gitUrl"] = o.GitUrl
-	toSerialize["ciProfile"] = o.CiProfile
+	if !IsNil(o.CiProfile) {
+		toSerialize["ciProfile"] = o.CiProfile
+	}
 	return toSerialize, nil
 }
 
@@ -116,7 +130,6 @@ func (o *ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape) Unma
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"gitUrl",
-		"ciProfile",
 	}
 
 	allProperties := make(map[string]interface{})
