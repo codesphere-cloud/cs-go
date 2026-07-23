@@ -1208,8 +1208,8 @@ github.com/uudashr/gocognit v1.2.1 h1:CSJynt5txTnORn/DkhiB4mZjwPuifyASC8/6Q0I/QS
 github.com/uudashr/gocognit v1.2.1/go.mod h1:acaubQc6xYlXFEMb9nWX2dYBzJ/bIjEkc1zzvyIZg5Q=
 github.com/uudashr/iface v1.5.0 h1:PgdMt4uAettGG8K/Kbamc4B9FABgUgnS3TLbl6fnjEk=
 github.com/uudashr/iface v1.5.0/go.mod h1:pbeBPlbuU2qkNDn0mmfrxP2X+wjPMIQAy+r1MBXSXtg=
-github.com/vektra/mockery/v3 v3.7.1 h1:4jZJCTzf5CEXSXHOtgIu3TuHYUuDKwcc/0vurjQEpjk=
-github.com/vektra/mockery/v3 v3.7.1/go.mod h1:fbChccNiUvQaUVaCHS6/7OL5/D65KljJVk31LuPPUjY=
+github.com/vektra/mockery/v3 v3.7.2 h1:x4r2DwXSdOZdrs89+IKX4VS1dfJySc/YbZsrW80zMBY=
+github.com/vektra/mockery/v3 v3.7.2/go.mod h1:fbChccNiUvQaUVaCHS6/7OL5/D65KljJVk31LuPPUjY=
 github.com/wagoodman/go-progress v0.0.0-20260303201901-10176f79b2c0 h1:EHsPe0Q0ANoLOZff1dBLAyeWLTA4sbPTpGI+2zb0FnM=
 github.com/wagoodman/go-progress v0.0.0-20260303201901-10176f79b2c0/go.mod h1:g/D9uEUFp5YLyciwCpVsSOZOm56hfv4rzGJod6MlqIM=
 github.com/whyrusleeping/cbor-gen v0.3.1 h1:82ioxmhEYut7LBVGhGq8xoRkXPLElVuh5mV67AFfdv0=
