@@ -17,41 +17,41 @@ import (
 	"fmt"
 )
 
-// checks if the DomainsGetDomain400Response type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &DomainsGetDomain400Response{}
+// checks if the ClustersListAllOrganizations401Response type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ClustersListAllOrganizations401Response{}
 
-// DomainsGetDomain400Response struct for DomainsGetDomain400Response
-type DomainsGetDomain400Response struct {
+// ClustersListAllOrganizations401Response struct for ClustersListAllOrganizations401Response
+type ClustersListAllOrganizations401Response struct {
 	Status  int     `json:"status"`
 	Title   string  `json:"title"`
 	Detail  *string `json:"detail,omitempty"`
 	TraceId string  `json:"traceId"`
 }
 
-type _DomainsGetDomain400Response DomainsGetDomain400Response
+type _ClustersListAllOrganizations401Response ClustersListAllOrganizations401Response
 
-// NewDomainsGetDomain400Response instantiates a new DomainsGetDomain400Response object
+// NewClustersListAllOrganizations401Response instantiates a new ClustersListAllOrganizations401Response object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDomainsGetDomain400Response(status int, title string, traceId string) *DomainsGetDomain400Response {
-	this := DomainsGetDomain400Response{}
+func NewClustersListAllOrganizations401Response(status int, title string, traceId string) *ClustersListAllOrganizations401Response {
+	this := ClustersListAllOrganizations401Response{}
 	this.Status = status
 	this.Title = title
 	this.TraceId = traceId
 	return &this
 }
 
-// NewDomainsGetDomain400ResponseWithDefaults instantiates a new DomainsGetDomain400Response object
+// NewClustersListAllOrganizations401ResponseWithDefaults instantiates a new ClustersListAllOrganizations401Response object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewDomainsGetDomain400ResponseWithDefaults() *DomainsGetDomain400Response {
-	this := DomainsGetDomain400Response{}
+func NewClustersListAllOrganizations401ResponseWithDefaults() *ClustersListAllOrganizations401Response {
+	this := ClustersListAllOrganizations401Response{}
 	return &this
 }
 
 // GetStatus returns the Status field value
-func (o *DomainsGetDomain400Response) GetStatus() int {
+func (o *ClustersListAllOrganizations401Response) GetStatus() int {
 	if o == nil {
 		var ret int
 		return ret
@@ -62,7 +62,7 @@ func (o *DomainsGetDomain400Response) GetStatus() int {
 
 // GetStatusOk returns a tuple with the Status field value
 // and a boolean to check if the value has been set.
-func (o *DomainsGetDomain400Response) GetStatusOk() (*int, bool) {
+func (o *ClustersListAllOrganizations401Response) GetStatusOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -70,12 +70,12 @@ func (o *DomainsGetDomain400Response) GetStatusOk() (*int, bool) {
 }
 
 // SetStatus sets field value
-func (o *DomainsGetDomain400Response) SetStatus(v int) {
+func (o *ClustersListAllOrganizations401Response) SetStatus(v int) {
 	o.Status = v
 }
 
 // GetTitle returns the Title field value
-func (o *DomainsGetDomain400Response) GetTitle() string {
+func (o *ClustersListAllOrganizations401Response) GetTitle() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -86,7 +86,7 @@ func (o *DomainsGetDomain400Response) GetTitle() string {
 
 // GetTitleOk returns a tuple with the Title field value
 // and a boolean to check if the value has been set.
-func (o *DomainsGetDomain400Response) GetTitleOk() (*string, bool) {
+func (o *ClustersListAllOrganizations401Response) GetTitleOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -94,12 +94,12 @@ func (o *DomainsGetDomain400Response) GetTitleOk() (*string, bool) {
 }
 
 // SetTitle sets field value
-func (o *DomainsGetDomain400Response) SetTitle(v string) {
+func (o *ClustersListAllOrganizations401Response) SetTitle(v string) {
 	o.Title = v
 }
 
 // GetDetail returns the Detail field value if set, zero value otherwise.
-func (o *DomainsGetDomain400Response) GetDetail() string {
+func (o *ClustersListAllOrganizations401Response) GetDetail() string {
 	if o == nil || IsNil(o.Detail) {
 		var ret string
 		return ret
@@ -109,7 +109,7 @@ func (o *DomainsGetDomain400Response) GetDetail() string {
 
 // GetDetailOk returns a tuple with the Detail field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *DomainsGetDomain400Response) GetDetailOk() (*string, bool) {
+func (o *ClustersListAllOrganizations401Response) GetDetailOk() (*string, bool) {
 	if o == nil || IsNil(o.Detail) {
 		return nil, false
 	}
@@ -117,7 +117,7 @@ func (o *DomainsGetDomain400Response) GetDetailOk() (*string, bool) {
 }
 
 // HasDetail returns a boolean if a field has been set.
-func (o *DomainsGetDomain400Response) HasDetail() bool {
+func (o *ClustersListAllOrganizations401Response) HasDetail() bool {
 	if o != nil && !IsNil(o.Detail) {
 		return true
 	}
@@ -126,12 +126,12 @@ func (o *DomainsGetDomain400Response) HasDetail() bool {
 }
 
 // SetDetail gets a reference to the given string and assigns it to the Detail field.
-func (o *DomainsGetDomain400Response) SetDetail(v string) {
+func (o *ClustersListAllOrganizations401Response) SetDetail(v string) {
 	o.Detail = &v
 }
 
 // GetTraceId returns the TraceId field value
-func (o *DomainsGetDomain400Response) GetTraceId() string {
+func (o *ClustersListAllOrganizations401Response) GetTraceId() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -142,7 +142,7 @@ func (o *DomainsGetDomain400Response) GetTraceId() string {
 
 // GetTraceIdOk returns a tuple with the TraceId field value
 // and a boolean to check if the value has been set.
-func (o *DomainsGetDomain400Response) GetTraceIdOk() (*string, bool) {
+func (o *ClustersListAllOrganizations401Response) GetTraceIdOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -150,11 +150,11 @@ func (o *DomainsGetDomain400Response) GetTraceIdOk() (*string, bool) {
 }
 
 // SetTraceId sets field value
-func (o *DomainsGetDomain400Response) SetTraceId(v string) {
+func (o *ClustersListAllOrganizations401Response) SetTraceId(v string) {
 	o.TraceId = v
 }
 
-func (o DomainsGetDomain400Response) MarshalJSON() ([]byte, error) {
+func (o ClustersListAllOrganizations401Response) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -162,7 +162,7 @@ func (o DomainsGetDomain400Response) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o DomainsGetDomain400Response) ToMap() (map[string]interface{}, error) {
+func (o ClustersListAllOrganizations401Response) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["status"] = o.Status
 	toSerialize["title"] = o.Title
@@ -173,7 +173,7 @@ func (o DomainsGetDomain400Response) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *DomainsGetDomain400Response) UnmarshalJSON(data []byte) (err error) {
+func (o *ClustersListAllOrganizations401Response) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -197,53 +197,53 @@ func (o *DomainsGetDomain400Response) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varDomainsGetDomain400Response := _DomainsGetDomain400Response{}
+	varClustersListAllOrganizations401Response := _ClustersListAllOrganizations401Response{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	//decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varDomainsGetDomain400Response)
+	err = decoder.Decode(&varClustersListAllOrganizations401Response)
 
 	if err != nil {
 		return err
 	}
 
-	*o = DomainsGetDomain400Response(varDomainsGetDomain400Response)
+	*o = ClustersListAllOrganizations401Response(varClustersListAllOrganizations401Response)
 
 	return err
 }
 
-type NullableDomainsGetDomain400Response struct {
-	value *DomainsGetDomain400Response
+type NullableClustersListAllOrganizations401Response struct {
+	value *ClustersListAllOrganizations401Response
 	isSet bool
 }
 
-func (v NullableDomainsGetDomain400Response) Get() *DomainsGetDomain400Response {
+func (v NullableClustersListAllOrganizations401Response) Get() *ClustersListAllOrganizations401Response {
 	return v.value
 }
 
-func (v *NullableDomainsGetDomain400Response) Set(val *DomainsGetDomain400Response) {
+func (v *NullableClustersListAllOrganizations401Response) Set(val *ClustersListAllOrganizations401Response) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableDomainsGetDomain400Response) IsSet() bool {
+func (v NullableClustersListAllOrganizations401Response) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableDomainsGetDomain400Response) Unset() {
+func (v *NullableClustersListAllOrganizations401Response) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableDomainsGetDomain400Response(val *DomainsGetDomain400Response) *NullableDomainsGetDomain400Response {
-	return &NullableDomainsGetDomain400Response{value: val, isSet: true}
+func NewNullableClustersListAllOrganizations401Response(val *ClustersListAllOrganizations401Response) *NullableClustersListAllOrganizations401Response {
+	return &NullableClustersListAllOrganizations401Response{value: val, isSet: true}
 }
 
-func (v NullableDomainsGetDomain400Response) MarshalJSON() ([]byte, error) {
+func (v NullableClustersListAllOrganizations401Response) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableDomainsGetDomain400Response) UnmarshalJSON(src []byte) error {
+func (v *NullableClustersListAllOrganizations401Response) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

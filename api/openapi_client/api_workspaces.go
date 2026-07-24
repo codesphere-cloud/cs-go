@@ -447,7 +447,7 @@ func (a *WorkspacesAPIService) WorkspacesCreateWorkspaceExecute(r ApiWorkspacesC
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -458,7 +458,7 @@ func (a *WorkspacesAPIService) WorkspacesCreateWorkspaceExecute(r ApiWorkspacesC
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -578,7 +578,7 @@ func (a *WorkspacesAPIService) WorkspacesDeleteEnvVarExecute(r ApiWorkspacesDele
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -589,7 +589,7 @@ func (a *WorkspacesAPIService) WorkspacesDeleteEnvVarExecute(r ApiWorkspacesDele
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -703,7 +703,7 @@ func (a *WorkspacesAPIService) WorkspacesDeleteWorkspaceExecute(r ApiWorkspacesD
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -714,7 +714,7 @@ func (a *WorkspacesAPIService) WorkspacesDeleteWorkspaceExecute(r ApiWorkspacesD
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -828,7 +828,7 @@ func (a *WorkspacesAPIService) WorkspacesDeployLandscapeExecute(r ApiWorkspacesD
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -839,7 +839,7 @@ func (a *WorkspacesAPIService) WorkspacesDeployLandscapeExecute(r ApiWorkspacesD
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -957,7 +957,7 @@ func (a *WorkspacesAPIService) WorkspacesDeployLandscape1Execute(r ApiWorkspaces
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -968,7 +968,7 @@ func (a *WorkspacesAPIService) WorkspacesDeployLandscape1Execute(r ApiWorkspaces
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1095,7 +1095,7 @@ func (a *WorkspacesAPIService) WorkspacesExecuteCommandExecute(r ApiWorkspacesEx
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1106,7 +1106,7 @@ func (a *WorkspacesAPIService) WorkspacesExecuteCommandExecute(r ApiWorkspacesEx
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1232,7 +1232,7 @@ func (a *WorkspacesAPIService) WorkspacesGetWorkspaceExecute(r ApiWorkspacesGetW
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1243,7 +1243,7 @@ func (a *WorkspacesAPIService) WorkspacesGetWorkspaceExecute(r ApiWorkspacesGetW
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1369,7 +1369,7 @@ func (a *WorkspacesAPIService) WorkspacesGetWorkspaceStatusExecute(r ApiWorkspac
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1380,7 +1380,7 @@ func (a *WorkspacesAPIService) WorkspacesGetWorkspaceStatusExecute(r ApiWorkspac
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1506,7 +1506,7 @@ func (a *WorkspacesAPIService) WorkspacesGitHeadExecute(r ApiWorkspacesGitHeadRe
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1517,7 +1517,7 @@ func (a *WorkspacesAPIService) WorkspacesGitHeadExecute(r ApiWorkspacesGitHeadRe
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1640,7 +1640,7 @@ func (a *WorkspacesAPIService) WorkspacesGitPullExecute(r ApiWorkspacesGitPullRe
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1651,7 +1651,7 @@ func (a *WorkspacesAPIService) WorkspacesGitPullExecute(r ApiWorkspacesGitPullRe
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1769,7 +1769,7 @@ func (a *WorkspacesAPIService) WorkspacesGitPull1Execute(r ApiWorkspacesGitPull1
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1780,7 +1780,7 @@ func (a *WorkspacesAPIService) WorkspacesGitPull1Execute(r ApiWorkspacesGitPull1
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1902,7 +1902,7 @@ func (a *WorkspacesAPIService) WorkspacesGitPull2Execute(r ApiWorkspacesGitPull2
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -1913,7 +1913,7 @@ func (a *WorkspacesAPIService) WorkspacesGitPull2Execute(r ApiWorkspacesGitPull2
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2030,7 +2030,7 @@ func (a *WorkspacesAPIService) WorkspacesListEnvVarsExecute(r ApiWorkspacesListE
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2041,7 +2041,7 @@ func (a *WorkspacesAPIService) WorkspacesListEnvVarsExecute(r ApiWorkspacesListE
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2167,7 +2167,7 @@ func (a *WorkspacesAPIService) WorkspacesListWorkspacesExecute(r ApiWorkspacesLi
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2178,7 +2178,7 @@ func (a *WorkspacesAPIService) WorkspacesListWorkspacesExecute(r ApiWorkspacesLi
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2415,7 +2415,7 @@ func (a *WorkspacesAPIService) WorkspacesPipelineStatusExecute(r ApiWorkspacesPi
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2426,7 +2426,7 @@ func (a *WorkspacesAPIService) WorkspacesPipelineStatusExecute(r ApiWorkspacesPi
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2673,7 +2673,7 @@ func (a *WorkspacesAPIService) WorkspacesScaleLandscapeServicesExecute(r ApiWork
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2684,7 +2684,7 @@ func (a *WorkspacesAPIService) WorkspacesScaleLandscapeServicesExecute(r ApiWork
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2922,7 +2922,7 @@ func (a *WorkspacesAPIService) WorkspacesSetEnvVarExecute(r ApiWorkspacesSetEnvV
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -2933,7 +2933,7 @@ func (a *WorkspacesAPIService) WorkspacesSetEnvVarExecute(r ApiWorkspacesSetEnvV
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3051,7 +3051,7 @@ func (a *WorkspacesAPIService) WorkspacesStartPipelineStageExecute(r ApiWorkspac
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3062,7 +3062,7 @@ func (a *WorkspacesAPIService) WorkspacesStartPipelineStageExecute(r ApiWorkspac
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3184,7 +3184,7 @@ func (a *WorkspacesAPIService) WorkspacesStartPipelineStage1Execute(r ApiWorkspa
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3195,7 +3195,7 @@ func (a *WorkspacesAPIService) WorkspacesStartPipelineStage1Execute(r ApiWorkspa
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3313,7 +3313,7 @@ func (a *WorkspacesAPIService) WorkspacesStopPipelineStageExecute(r ApiWorkspace
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3324,7 +3324,7 @@ func (a *WorkspacesAPIService) WorkspacesStopPipelineStageExecute(r ApiWorkspace
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3438,7 +3438,7 @@ func (a *WorkspacesAPIService) WorkspacesTeardownLandscapeExecute(r ApiWorkspace
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3449,7 +3449,7 @@ func (a *WorkspacesAPIService) WorkspacesTeardownLandscapeExecute(r ApiWorkspace
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3571,7 +3571,7 @@ func (a *WorkspacesAPIService) WorkspacesUpdateWorkspaceExecute(r ApiWorkspacesU
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -3582,7 +3582,7 @@ func (a *WorkspacesAPIService) WorkspacesUpdateWorkspaceExecute(r ApiWorkspacesU
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

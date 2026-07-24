@@ -5,6 +5,7 @@ package api
 
 import (
 	cserrors "github.com/codesphere-cloud/cs-go/api/errors"
+	openapi "github.com/codesphere-cloud/cs-go/api/openapi_client"
 )
 
 func (c *Client) ListOrganizations() ([]Organization, error) {
@@ -16,4 +17,14 @@ func (c *Client) ListOrganizations() ([]Organization, error) {
 	res := make([]Organization, len(orgs))
 	copy(res, orgs)
 	return res, nil
+}
+
+func (c *Client) CreateOrganization(name string, adminEmail string) (*Organization, error) {
+	req := openapi.NewClustersCreateOrganizationRequest(name, adminEmail)
+	org, r, err := c.api.ClustersAPI.ClustersCreateOrganization(c.ctx).ClustersCreateOrganizationRequest(*req).Execute()
+	if err != nil {
+		return nil, cserrors.FormatAPIError(r, err)
+	}
+
+	return org, nil
 }

@@ -15,6 +15,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // checks if the ManagedServicesListProviders200ResponseInnerAnyOf type satisfies the MappedNullable interface at compile time
@@ -42,6 +43,7 @@ type ManagedServicesListProviders200ResponseInnerAnyOf struct {
 	Plans         []ManagedServicesListProviders200ResponseInnerAnyOfPlansInner              `json:"plans"`
 	Versions      *map[string]ManagedServicesListProviders200ResponseInnerAnyOfVersionsValue `json:"versions,omitempty"`
 	Backend       ManagedServicesListProviders200ResponseInnerAnyOfBackend                   `json:"backend"`
+	CreatedAt     *time.Time                                                                 `json:"createdAt,omitempty"`
 }
 
 type _ManagedServicesListProviders200ResponseInnerAnyOf ManagedServicesListProviders200ResponseInnerAnyOf
@@ -516,6 +518,38 @@ func (o *ManagedServicesListProviders200ResponseInnerAnyOf) SetBackend(v Managed
 	o.Backend = v
 }
 
+// GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
+func (o *ManagedServicesListProviders200ResponseInnerAnyOf) GetCreatedAt() time.Time {
+	if o == nil || IsNil(o.CreatedAt) {
+		var ret time.Time
+		return ret
+	}
+	return *o.CreatedAt
+}
+
+// GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ManagedServicesListProviders200ResponseInnerAnyOf) GetCreatedAtOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.CreatedAt) {
+		return nil, false
+	}
+	return o.CreatedAt, true
+}
+
+// HasCreatedAt returns a boolean if a field has been set.
+func (o *ManagedServicesListProviders200ResponseInnerAnyOf) HasCreatedAt() bool {
+	if o != nil && !IsNil(o.CreatedAt) {
+		return true
+	}
+
+	return false
+}
+
+// SetCreatedAt gets a reference to the given time.Time and assigns it to the CreatedAt field.
+func (o *ManagedServicesListProviders200ResponseInnerAnyOf) SetCreatedAt(v time.Time) {
+	o.CreatedAt = &v
+}
+
 func (o ManagedServicesListProviders200ResponseInnerAnyOf) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -551,6 +585,9 @@ func (o ManagedServicesListProviders200ResponseInnerAnyOf) ToMap() (map[string]i
 		toSerialize["versions"] = o.Versions
 	}
 	toSerialize["backend"] = o.Backend
+	if !IsNil(o.CreatedAt) {
+		toSerialize["createdAt"] = o.CreatedAt
+	}
 	return toSerialize, nil
 }
 
