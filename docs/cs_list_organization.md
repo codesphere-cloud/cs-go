@@ -1,4 +1,4 @@
-## cs list org
+## cs list organization
 
 List organizations
 
@@ -7,7 +7,7 @@ List organizations
 List organizations available in Codesphere
 
 ```
-cs list org [flags]
+cs list organization [flags]
 ```
 
 ### Examples
@@ -20,7 +20,7 @@ $ cs list org
 ### Options
 
 ```
-  -h, --help   help for org
+  -h, --help   help for organization
 ```
 
 ### Options inherited from parent commands
