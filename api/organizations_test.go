@@ -108,8 +108,33 @@ var _ = Describe("Organizations", func() {
 			Expect(org.Name).To(Equal(expectedOrg.Name))
 		})
 
-		It("handles empty strings and invalid email formats from API errors", func() {
+		It("handles empty strings from API errors", func() {
 			orgName := ""
+			adminEmail := "admin@example.com"
+			apiErr := errors.New("bad request: invalid payload")
+
+			clustersApiMock.EXPECT().ClustersCreateOrganization(mock.Anything).
+				Return(openapi_client.ApiClustersCreateOrganizationRequest{ApiService: clustersApiMock})
+			clustersApiMock.EXPECT().ClustersCreateOrganizationExecute(mock.MatchedBy(func(r openapi_client.ApiClustersCreateOrganizationRequest) bool {
+				val := reflect.ValueOf(r)
+				payloadField := val.FieldByName("clustersCreateOrganizationRequest")
+				if !payloadField.IsValid() || payloadField.IsNil() {
+					return false
+				}
+				elem := payloadField.Elem()
+				return elem.FieldByName("Name").String() == orgName &&
+					elem.FieldByName("AdminEmail").String() == adminEmail
+			})).Return(nil, &http.Response{StatusCode: 400}, apiErr)
+
+			org, err := client.CreateOrganization(orgName, adminEmail)
+
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(ContainSubstring("invalid payload"))
+			Expect(org).To(BeNil())
+		})
+
+		It("handles invalid email formats from API errors", func() {
+			orgName := "validOrg"
 			adminEmail := "invalid-email"
 			apiErr := errors.New("bad request: invalid payload")
 
