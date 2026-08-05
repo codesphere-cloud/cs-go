@@ -29,7 +29,7 @@ func AddCreateOrganizationCmd(parent *cobra.Command, opts *GlobalOptions) {
 	c := CreateOrganizationCmd{
 		cmd: &cobra.Command{
 			Use:     "organization",
-			Aliases: []string{"organizations", "org", "orgs"},
+			Aliases: []string{"organization", "org", "orgs"},
 			Short:   "Create organization",
 			Long:    `Create an organization in Codesphere`,
 			Example: io.FormatExampleCommands("create organization", []io.Example{
