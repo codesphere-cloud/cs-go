@@ -111,7 +111,7 @@ var _ = Describe("Organizations", func() {
 		It("handles empty strings from API errors", func() {
 			orgName := ""
 			adminEmail := "admin@example.com"
-			apiErr := errors.New("bad request: invalid payload")
+			apiErr := errors.New("the api gave an error")
 
 			clustersApiMock.EXPECT().ClustersCreateOrganization(mock.Anything).
 				Return(openapi_client.ApiClustersCreateOrganizationRequest{ApiService: clustersApiMock})
@@ -129,14 +129,14 @@ var _ = Describe("Organizations", func() {
 			org, err := client.CreateOrganization(orgName, adminEmail)
 
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(ContainSubstring("invalid payload"))
+			Expect(err.Error()).To(ContainSubstring("the api gave an error"))
 			Expect(org).To(BeNil())
 		})
 
 		It("handles invalid email formats from API errors", func() {
 			orgName := "validOrg"
 			adminEmail := "invalid-email"
-			apiErr := errors.New("bad request: invalid payload")
+			apiErr := errors.New("the api gave an error")
 
 			clustersApiMock.EXPECT().ClustersCreateOrganization(mock.Anything).
 				Return(openapi_client.ApiClustersCreateOrganizationRequest{ApiService: clustersApiMock})
@@ -154,7 +154,7 @@ var _ = Describe("Organizations", func() {
 			org, err := client.CreateOrganization(orgName, adminEmail)
 
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(ContainSubstring("invalid payload"))
+			Expect(err.Error()).To(ContainSubstring("the api gave an error"))
 			Expect(org).To(BeNil())
 		})
 
