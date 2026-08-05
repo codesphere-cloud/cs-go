@@ -6,6 +6,8 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"net/mail"
+
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
@@ -68,6 +70,9 @@ func (c *CreateOrganizationCmd) CreateOrganization(client Client, name string, a
 	}
 	if adminEmail == "" {
 		return nil, errors.New("admin email cannot be empty")
+	}
+	if _, err := mail.ParseAddress(adminEmail); err != nil {
+		return nil, errors.New("admin email is invalid")
 	}
 
 	createdOrg, err := client.CreateOrganization(name, adminEmail)
