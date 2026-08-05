@@ -201,14 +201,14 @@ var _ = Describe("AddListOrgCmd", func() {
 
 		var orgCmd *cobra.Command
 		for _, c := range parentCmd.Commands() {
-			if c.Use == "org" {
+			if c.Use == "organization" {
 				orgCmd = c
 				break
 			}
 		}
 
 		Expect(orgCmd).NotTo(BeNil())
-		Expect(orgCmd.Use).To(Equal("org"))
+		Expect(orgCmd.Use).To(Equal("organization"))
 		Expect(orgCmd.Short).To(Equal("List organizations"))
 		Expect(orgCmd.RunE).NotTo(BeNil())
 	})
