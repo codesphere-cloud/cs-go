@@ -82,8 +82,8 @@ type OrganizationsAPI interface {
 	OrganizationsListOrganizations(ctx context.Context) ApiOrganizationsListOrganizationsRequest
 
 	// OrganizationsListOrganizationsExecute executes the request
-	//  @return []OrganizationsListOrganizations200ResponseInner
-	OrganizationsListOrganizationsExecute(r ApiOrganizationsListOrganizationsRequest) ([]OrganizationsListOrganizations200ResponseInner, *http.Response, error)
+	//  @return []ClustersListAllOrganizations200ResponseInner
+	OrganizationsListOrganizationsExecute(r ApiOrganizationsListOrganizationsRequest) ([]ClustersListAllOrganizations200ResponseInner, *http.Response, error)
 
 	/*
 		OrganizationsRemoveOrgMember removeOrgMember
@@ -195,7 +195,7 @@ func (a *OrganizationsAPIService) OrganizationsAddOrgMemberExecute(r ApiOrganiza
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -206,7 +206,7 @@ func (a *OrganizationsAPIService) OrganizationsAddOrgMemberExecute(r ApiOrganiza
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -332,7 +332,7 @@ func (a *OrganizationsAPIService) OrganizationsChangeOrgRoleExecute(r ApiOrganiz
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -343,7 +343,7 @@ func (a *OrganizationsAPIService) OrganizationsChangeOrgRoleExecute(r ApiOrganiz
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -457,7 +457,7 @@ func (a *OrganizationsAPIService) OrganizationsListOrgMembersExecute(r ApiOrgani
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -468,7 +468,7 @@ func (a *OrganizationsAPIService) OrganizationsListOrgMembersExecute(r ApiOrgani
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -580,7 +580,7 @@ func (a *OrganizationsAPIService) OrganizationsListOrgTeamsExecute(r ApiOrganiza
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -591,7 +591,7 @@ func (a *OrganizationsAPIService) OrganizationsListOrgTeamsExecute(r ApiOrganiza
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -620,7 +620,7 @@ type ApiOrganizationsListOrganizationsRequest struct {
 	ApiService OrganizationsAPI
 }
 
-func (r ApiOrganizationsListOrganizationsRequest) Execute() ([]OrganizationsListOrganizations200ResponseInner, *http.Response, error) {
+func (r ApiOrganizationsListOrganizationsRequest) Execute() ([]ClustersListAllOrganizations200ResponseInner, *http.Response, error) {
 	return r.ApiService.OrganizationsListOrganizationsExecute(r)
 }
 
@@ -639,13 +639,13 @@ func (a *OrganizationsAPIService) OrganizationsListOrganizations(ctx context.Con
 
 // Execute executes the request
 //
-//	@return []OrganizationsListOrganizations200ResponseInner
-func (a *OrganizationsAPIService) OrganizationsListOrganizationsExecute(r ApiOrganizationsListOrganizationsRequest) ([]OrganizationsListOrganizations200ResponseInner, *http.Response, error) {
+//	@return []ClustersListAllOrganizations200ResponseInner
+func (a *OrganizationsAPIService) OrganizationsListOrganizationsExecute(r ApiOrganizationsListOrganizationsRequest) ([]ClustersListAllOrganizations200ResponseInner, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue []OrganizationsListOrganizations200ResponseInner
+		localVarReturnValue []ClustersListAllOrganizations200ResponseInner
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationsAPIService.OrganizationsListOrganizations")
@@ -699,7 +699,7 @@ func (a *OrganizationsAPIService) OrganizationsListOrganizationsExecute(r ApiOrg
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -815,7 +815,7 @@ func (a *OrganizationsAPIService) OrganizationsRemoveOrgMemberExecute(r ApiOrgan
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -826,7 +826,7 @@ func (a *OrganizationsAPIService) OrganizationsRemoveOrgMemberExecute(r ApiOrgan
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

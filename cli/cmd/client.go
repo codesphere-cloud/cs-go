@@ -20,6 +20,7 @@ type Client interface {
 	ListWorkspaces(teamId int) ([]api.Workspace, error)
 	ListBaseimages() ([]api.Baseimage, error)
 	ListOrganizations() ([]api.Organization, error)
+	CreateOrganization(name string, adminEmail string) (*api.Organization, error)
 	GetWorkspace(workspaceId int) (api.Workspace, error)
 	WorkspaceStatus(workspaceId int) (*api.WorkspaceStatus, error)
 	WaitForWorkspaceRunning(workspace *api.Workspace, timeout time.Duration) error

@@ -201,7 +201,7 @@ func (a *UsageAPIService) UsageGetLandscapeServiceEventsExecute(r ApiUsageGetLan
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -212,7 +212,7 @@ func (a *UsageAPIService) UsageGetLandscapeServiceEventsExecute(r ApiUsageGetLan
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -375,7 +375,7 @@ func (a *UsageAPIService) UsageGetUsageSummaryLandscapeExecute(r ApiUsageGetUsag
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
-			var v DomainsGetDomain400Response
+			var v ClustersCreateOrganization400Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -386,7 +386,7 @@ func (a *UsageAPIService) UsageGetUsageSummaryLandscapeExecute(r ApiUsageGetUsag
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
-			var v DomainsGetDomain401Response
+			var v ClustersListAllOrganizations401Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

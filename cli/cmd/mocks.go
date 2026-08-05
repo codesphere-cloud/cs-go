@@ -102,6 +102,74 @@ func (_c *MockClient_AddTeamMember_Call) RunAndReturn(run func(teamId int, email
 	return _c
 }
 
+// CreateOrganization provides a mock function for the type MockClient
+func (_mock *MockClient) CreateOrganization(name string, adminEmail string) (*api.Organization, error) {
+	ret := _mock.Called(name, adminEmail)
+
+	if len(ret) == 0 {
+		panic("no return value specified for CreateOrganization")
+	}
+
+	var r0 *api.Organization
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(string, string) (*api.Organization, error)); ok {
+		return returnFunc(name, adminEmail)
+	}
+	if returnFunc, ok := ret.Get(0).(func(string, string) *api.Organization); ok {
+		r0 = returnFunc(name, adminEmail)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*api.Organization)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(string, string) error); ok {
+		r1 = returnFunc(name, adminEmail)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockClient_CreateOrganization_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateOrganization'
+type MockClient_CreateOrganization_Call struct {
+	*mock.Call
+}
+
+// CreateOrganization is a helper method to define mock.On call
+//   - name string
+//   - adminEmail string
+func (_e *MockClient_Expecter) CreateOrganization(name any, adminEmail any) *MockClient_CreateOrganization_Call {
+	return &MockClient_CreateOrganization_Call{Call: _e.mock.On("CreateOrganization", name, adminEmail)}
+}
+
+func (_c *MockClient_CreateOrganization_Call) Run(run func(name string, adminEmail string)) *MockClient_CreateOrganization_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 string
+		if args[0] != nil {
+			arg0 = args[0].(string)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockClient_CreateOrganization_Call) Return(v *api.Organization, err error) *MockClient_CreateOrganization_Call {
+	_c.Call.Return(v, err)
+	return _c
+}
+
+func (_c *MockClient_CreateOrganization_Call) RunAndReturn(run func(name string, adminEmail string) (*api.Organization, error)) *MockClient_CreateOrganization_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // CreateTeam provides a mock function for the type MockClient
 func (_mock *MockClient) CreateTeam(orgId string, name string, dcId int) (*api.Team, error) {
 	ret := _mock.Called(orgId, name, dcId)

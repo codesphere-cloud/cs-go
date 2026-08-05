@@ -1,15 +1,28 @@
-## cs create
+## cs create organization
 
-Create codesphere resource
+Create organization
 
 ### Synopsis
 
-Create codesphere resources like workspaces.
+Create an organization in Codesphere
+
+```
+cs create organization [flags]
+```
+
+### Examples
+
+```
+# Create an organization with a specific name and admin email
+$ cs create organization -n <name> -e <adminEmail>
+```
 
 ### Options
 
 ```
-  -h, --help   help for create
+  -e, --admin-email string   Organization admin email
+  -h, --help                 help for organization
+  -n, --name string          Organization name
 ```
 
 ### Options inherited from parent commands
@@ -24,7 +37,5 @@ Create codesphere resources like workspaces.
 
 ### SEE ALSO
 
-* [cs](cs.md)	 - The Codesphere CLI
-* [cs create organization](cs_create_organization.md)	 - Create organization
-* [cs create workspace](cs_create_workspace.md)	 - Create a workspace
+* [cs create](cs_create.md)	 - Create codesphere resource
 
