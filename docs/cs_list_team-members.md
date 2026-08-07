@@ -1,15 +1,29 @@
-## cs delete
+## cs list team-members
 
-Delete Codesphere resources
+List team members
 
 ### Synopsis
 
-Delete Codesphere resources, e.g. workspaces or teams.
+List all members of a team
+
+```
+cs list team-members [flags]
+```
+
+### Examples
+
+```
+# List all members of a team
+$ cs list team-members -t <teamId>
+
+# List all members of a team in JSON format
+$ cs list team-members -t <teamId> -o json
+```
 
 ### Options
 
 ```
-  -h, --help   help for delete
+  -h, --help   help for team-members
 ```
 
 ### Options inherited from parent commands
@@ -17,6 +31,7 @@ Delete Codesphere resources, e.g. workspaces or teams.
 ```
   -a, --api string      URL of Codesphere API (can also be CS_API)
   -O, --org string      Organization ID (relevant for some commands)
+  -o, --output string   Output format (table, json, yaml) (default "table")
   -t, --team int        Team ID (relevant for some commands, can also be CS_TEAM_ID) (default -1)
   -v, --verbose         Verbose output
   -w, --workspace int   Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)
@@ -24,8 +39,5 @@ Delete Codesphere resources, e.g. workspaces or teams.
 
 ### SEE ALSO
 
-* [cs](cs.md)	 - The Codesphere CLI
-* [cs delete team](cs_delete_team.md)	 - Delete team
-* [cs delete team-member](cs_delete_team-member.md)	 - Delete team member
-* [cs delete workspace](cs_delete_workspace.md)	 - Delete workspace
+* [cs list](cs_list.md)	 - List resources
 

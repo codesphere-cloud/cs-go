@@ -4,7 +4,7 @@ Create codesphere resource
 
 ### Synopsis
 
-Create codesphere resources like workspaces.
+Create Codesphere resources like workspaces, environment variables, and secrets.
 
 ### Options
 
@@ -25,6 +25,8 @@ Create codesphere resources like workspaces.
 ### SEE ALSO
 
 * [cs](cs.md)	 - The Codesphere CLI
+* [cs create env](cs_create_env.md)	 - Set environment variables
 * [cs create organization](cs_create_organization.md)	 - Create organization
+* [cs create team](cs_create_team.md)	 - Create team
 * [cs create workspace](cs_create_workspace.md)	 - Create a workspace
 

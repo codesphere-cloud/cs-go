@@ -50,18 +50,22 @@ type CommandExecutor interface {
 }
 
 func NewClient(opts GlobalOptions) (Client, error) {
-	token, err := opts.Env.GetApiToken()
+	return opts.NewClient()
+}
+
+func (o GlobalOptions) NewClient() (*api.Client, error) {
+	token, err := o.Env.GetApiToken()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get API token: %w", err)
 	}
-	apiUrl, err := url.Parse(opts.GetApiUrl())
+	apiUrl, err := url.Parse(o.GetApiUrl())
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse URL '%s': %w", opts.GetApiUrl(), err)
+		return nil, fmt.Errorf("failed to parse URL '%s': %w", o.GetApiUrl(), err)
 	}
 	client := api.NewClient(context.Background(), api.Configuration{
 		BaseUrl: apiUrl,
 		Token:   token,
-		Verbose: opts.Verbose,
+		Verbose: o.Verbose,
 	})
 	return client, nil
 }

@@ -8,6 +8,12 @@ import (
 	"fmt"
 	"os"
 
+	addcmd "github.com/codesphere-cloud/cs-go/cli/cmd/add"
+	createcmd "github.com/codesphere-cloud/cs-go/cli/cmd/create"
+	deletecmd "github.com/codesphere-cloud/cs-go/cli/cmd/delete"
+	generatecmd "github.com/codesphere-cloud/cs-go/cli/cmd/generate"
+	listcmd "github.com/codesphere-cloud/cs-go/cli/cmd/list"
+	startcmd "github.com/codesphere-cloud/cs-go/cli/cmd/start"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/google/uuid"
 	"github.com/spf13/cobra"
@@ -20,6 +26,14 @@ type GlobalOptions struct {
 	OrgId       string
 	Env         Env
 	Verbose     bool
+}
+
+func (o GlobalOptions) GetApiToken() (string, error) {
+	return o.Env.GetApiToken()
+}
+
+func (o GlobalOptions) GetVerbose() bool {
+	return o.Verbose
 }
 
 type Env interface {
@@ -110,17 +124,16 @@ func GetRootCmd() *cobra.Command {
 	rootCmd.PersistentFlags().StringVarP(&opts.OrgId, "org", "O", "", "Organization ID (relevant for some commands)")
 
 	AddExecCmd(rootCmd, &opts)
-	AddLogCmd(rootCmd, &opts)
-	AddListCmd(rootCmd, &opts)
-	AddSetEnvVarCmd(rootCmd, &opts)
+	listcmd.AddListCmd(rootCmd, &opts)
 	AddVersionCmd(rootCmd)
 	AddLicensesCmd(rootCmd)
 	AddOpenCmd(rootCmd, &opts)
-	AddGenerateCmd(rootCmd, &opts)
-	AddCreateCmd(rootCmd, &opts)
-	AddDeleteCmd(rootCmd, &opts)
+	generatecmd.AddGenerateCmd(rootCmd, &opts)
+	createcmd.AddCreateCmd(rootCmd, &opts)
+	deletecmd.AddDeleteCmd(rootCmd, &opts)
+	addcmd.AddAddCmd(rootCmd, &opts)
 	AddMonitorCmd(rootCmd, &opts)
-	AddStartCmd(rootCmd, &opts)
+	startcmd.AddStartCmd(rootCmd, &opts)
 	AddGitCmd(rootCmd, &opts)
 	AddSyncCmd(rootCmd, &opts)
 	AddUpdateCmd(rootCmd)
@@ -130,7 +143,6 @@ func GetRootCmd() *cobra.Command {
 	AddScaleCmd(rootCmd, &opts)
 	AddMcpCmd(rootCmd)
 
-	AddTeamManageCmd(rootCmd, &opts)
 	return rootCmd
 }
 

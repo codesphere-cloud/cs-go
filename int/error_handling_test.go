@@ -19,7 +19,7 @@ var _ = Describe("Command Error Handling Tests", Label("error-handling"), func()
 			args        []string
 		}{
 			{"open workspace", []string{"open", "workspace", "-w", intutil.NonExistentWorkspaceId}},
-			{"log", []string{"log", "-w", intutil.NonExistentWorkspaceId}},
+			{"list landscape-logs", []string{"list", "landscape-logs", "-w", intutil.NonExistentWorkspaceId}},
 			{"start pipeline", []string{"start", "pipeline", "-w", intutil.NonExistentWorkspaceId}},
 			{"git pull", []string{"git", "pull", "-w", intutil.NonExistentWorkspaceId}},
 			{"set-env", []string{"set-env", "-w", intutil.NonExistentWorkspaceId, "TEST_VAR=test"}},

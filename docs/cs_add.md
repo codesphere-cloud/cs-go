@@ -1,15 +1,15 @@
-## cs delete
+## cs add
 
-Delete Codesphere resources
+Add Codesphere resources
 
 ### Synopsis
 
-Delete Codesphere resources, e.g. workspaces or teams.
+Add resources to existing Codesphere resources, e.g. team members.
 
 ### Options
 
 ```
-  -h, --help   help for delete
+  -h, --help   help for add
 ```
 
 ### Options inherited from parent commands
@@ -25,7 +25,5 @@ Delete Codesphere resources, e.g. workspaces or teams.
 ### SEE ALSO
 
 * [cs](cs.md)	 - The Codesphere CLI
-* [cs delete team](cs_delete_team.md)	 - Delete team
-* [cs delete team-member](cs_delete_team-member.md)	 - Delete team member
-* [cs delete workspace](cs_delete_workspace.md)	 - Delete workspace
+* [cs add team-member](cs_add_team-member.md)	 - Add team member
 

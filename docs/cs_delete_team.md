@@ -1,15 +1,26 @@
-## cs delete
+## cs delete team
 
-Delete Codesphere resources
+Delete team
 
 ### Synopsis
 
-Delete Codesphere resources, e.g. workspaces or teams.
+Delete a team from Codesphere or an Organization
+
+```
+cs delete team [flags]
+```
+
+### Examples
+
+```
+# Delete a team
+$ cs delete team -t <teamId>
+```
 
 ### Options
 
 ```
-  -h, --help   help for delete
+  -h, --help   help for team
 ```
 
 ### Options inherited from parent commands
@@ -24,8 +35,5 @@ Delete Codesphere resources, e.g. workspaces or teams.
 
 ### SEE ALSO
 
-* [cs](cs.md)	 - The Codesphere CLI
-* [cs delete team](cs_delete_team.md)	 - Delete team
-* [cs delete team-member](cs_delete_team-member.md)	 - Delete team member
-* [cs delete workspace](cs_delete_workspace.md)	 - Delete workspace
+* [cs delete](cs_delete.md)	 - Delete Codesphere resources
 
