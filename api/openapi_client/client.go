@@ -51,6 +51,8 @@ type APIClient struct {
 
 	// API Services
 
+	ClustersAPI ClustersAPI
+
 	DomainsAPI DomainsAPI
 
 	ManagedServicesAPI ManagedServicesAPI
@@ -58,6 +60,8 @@ type APIClient struct {
 	MetadataAPI MetadataAPI
 
 	OrganizationsAPI OrganizationsAPI
+
+	SshAPI SshAPI
 
 	TeamsAPI TeamsAPI
 
@@ -84,10 +88,12 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
+	c.ClustersAPI = (*ClustersAPIService)(&c.common)
 	c.DomainsAPI = (*DomainsAPIService)(&c.common)
 	c.ManagedServicesAPI = (*ManagedServicesAPIService)(&c.common)
 	c.MetadataAPI = (*MetadataAPIService)(&c.common)
 	c.OrganizationsAPI = (*OrganizationsAPIService)(&c.common)
+	c.SshAPI = (*SshAPIService)(&c.common)
 	c.TeamsAPI = (*TeamsAPIService)(&c.common)
 	c.UsageAPI = (*UsageAPIService)(&c.common)
 	c.VaultAPI = (*VaultAPIService)(&c.common)

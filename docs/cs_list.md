@@ -24,6 +24,7 @@ $ cs list workspaces
 
 ```
   -a, --api string      URL of Codesphere API (can also be CS_API)
+  -O, --org string      Organization ID (relevant for some commands)
   -t, --team int        Team ID (relevant for some commands, can also be CS_TEAM_ID) (default -1)
   -v, --verbose         Verbose output
   -w, --workspace int   Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)
@@ -33,7 +34,7 @@ $ cs list workspaces
 
 * [cs](cs.md)	 - The Codesphere CLI
 * [cs list baseimages](cs_list_baseimages.md)	 - List baseimages
-* [cs list org](cs_list_org.md)	 - List organizations
+* [cs list organization](cs_list_organization.md)	 - List organizations
 * [cs list plans](cs_list_plans.md)	 - List available plans
 * [cs list teams](cs_list_teams.md)	 - List teams
 * [cs list workspaces](cs_list_workspaces.md)	 - List workspaces

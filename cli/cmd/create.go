@@ -23,4 +23,5 @@ func AddCreateCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 
 	// Add child commands here
 	AddCreateWorkspaceCmd(create.cmd, opts)
+	AddCreateOrganizationCmd(create.cmd, opts)
 }

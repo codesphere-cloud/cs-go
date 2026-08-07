@@ -33,7 +33,7 @@ var _ = Describe("Organization", func() {
 			Opts: &cmd.ListOptions{
 				GlobalOptions: &cmd.GlobalOptions{
 					Env:   mockEnv,
-					OrgId: -1, // force using the env mock to get a org ID
+					OrgId: "", // force using the env mock to get a org ID
 				},
 			},
 			ClientFactory: cmd.NewClient, // Default to real client, will be overridden in specific tests
@@ -164,8 +164,6 @@ var _ = Describe("Organization", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(orgs).To(Equal(expectedOrgs))
 
-
-
 			// Restore Stdout
 			err = w.Close()
 			var buf bytes.Buffer
@@ -203,14 +201,14 @@ var _ = Describe("AddListOrgCmd", func() {
 
 		var orgCmd *cobra.Command
 		for _, c := range parentCmd.Commands() {
-			if c.Use == "org" {
+			if c.Use == "organization" {
 				orgCmd = c
 				break
 			}
 		}
 
 		Expect(orgCmd).NotTo(BeNil())
-		Expect(orgCmd.Use).To(Equal("org"))
+		Expect(orgCmd.Use).To(Equal("organization"))
 		Expect(orgCmd.Short).To(Equal("List organizations"))
 		Expect(orgCmd.RunE).NotTo(BeNil())
 	})

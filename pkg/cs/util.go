@@ -71,11 +71,30 @@ func SetAuthoriziationHeader(req *http.Request) error {
 	return nil
 }
 
-func GetRoleName(role int) string {
-	if role == 1 {
+type TeamRole int
+
+const (
+	RoleMember TeamRole = 1
+	RoleAdmin  TeamRole = -1
+)
+
+func (r TeamRole) IsValid() bool {
+	return r == RoleAdmin || r == RoleMember
+}
+
+func (r TeamRole) String() string {
+	switch r {
+	case RoleMember:
 		return "Member"
+	case RoleAdmin, 0:
+		return "Admin"
+	default:
+		return "Unknown"
 	}
-	return "Admin"
+}
+
+func GetRoleName(role int) string {
+	return TeamRole(role).String()
 }
 
 func ArgToEnvVarMap(input []string) (map[string]string, error) {

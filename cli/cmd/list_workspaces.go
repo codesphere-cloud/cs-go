@@ -96,7 +96,7 @@ func (l *ListWorkspacesCmd) getTeamIds(client Client) (teams []int, err error) {
 		return
 	}
 	var allTeams []api.Team
-	allTeams, err = client.ListTeams()
+	allTeams, err = client.ListTeams(l.Opts.OrgId)
 	if err != nil {
 		return
 	}
