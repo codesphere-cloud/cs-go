@@ -102,6 +102,12 @@ func (c *Client) StartPipelineStage(wsId int, profile string, stage string) erro
 	return errors.FormatAPIError(r, err)
 }
 
+func (c *Client) StopPipelineStage(wsId int, stage string) error {
+	req := c.api.WorkspacesAPI.WorkspacesStopPipelineStage(c.ctx, wsId, stage)
+	r, err := req.Execute()
+	return errors.FormatAPIError(r, err)
+}
+
 func (c *Client) GetPipelineState(wsId int, stage string) ([]PipelineStatus, error) {
 	req := c.api.WorkspacesAPI.WorkspacesPipelineStatus(c.ctx, wsId, stage)
 	res, r, err := req.Execute()

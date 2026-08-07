@@ -29,6 +29,7 @@ type WorkspacesCreateWorkspaceRequest struct {
 	Replicas          int                                        `json:"replicas"`
 	BaseImage         *string                                    `json:"baseImage,omitempty"`
 	GitUrl            *string                                    `json:"gitUrl,omitempty"`
+	GitRef            *string                                    `json:"gitRef,omitempty"`
 	InitialBranch     *string                                    `json:"initialBranch,omitempty"`
 	CloneDepth        *int                                       `json:"cloneDepth,omitempty"`
 	SourceWorkspaceId *int                                       `json:"sourceWorkspaceId,omitempty"`
@@ -246,6 +247,38 @@ func (o *WorkspacesCreateWorkspaceRequest) HasGitUrl() bool {
 // SetGitUrl gets a reference to the given string and assigns it to the GitUrl field.
 func (o *WorkspacesCreateWorkspaceRequest) SetGitUrl(v string) {
 	o.GitUrl = &v
+}
+
+// GetGitRef returns the GitRef field value if set, zero value otherwise.
+func (o *WorkspacesCreateWorkspaceRequest) GetGitRef() string {
+	if o == nil || IsNil(o.GitRef) {
+		var ret string
+		return ret
+	}
+	return *o.GitRef
+}
+
+// GetGitRefOk returns a tuple with the GitRef field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WorkspacesCreateWorkspaceRequest) GetGitRefOk() (*string, bool) {
+	if o == nil || IsNil(o.GitRef) {
+		return nil, false
+	}
+	return o.GitRef, true
+}
+
+// HasGitRef returns a boolean if a field has been set.
+func (o *WorkspacesCreateWorkspaceRequest) HasGitRef() bool {
+	if o != nil && !IsNil(o.GitRef) {
+		return true
+	}
+
+	return false
+}
+
+// SetGitRef gets a reference to the given string and assigns it to the GitRef field.
+func (o *WorkspacesCreateWorkspaceRequest) SetGitRef(v string) {
+	o.GitRef = &v
 }
 
 // GetInitialBranch returns the InitialBranch field value if set, zero value otherwise.
@@ -556,6 +589,9 @@ func (o WorkspacesCreateWorkspaceRequest) ToMap() (map[string]interface{}, error
 	}
 	if !IsNil(o.GitUrl) {
 		toSerialize["gitUrl"] = o.GitUrl
+	}
+	if !IsNil(o.GitRef) {
+		toSerialize["gitRef"] = o.GitRef
 	}
 	if !IsNil(o.InitialBranch) {
 		toSerialize["initialBranch"] = o.InitialBranch

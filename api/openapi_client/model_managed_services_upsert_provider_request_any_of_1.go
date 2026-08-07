@@ -22,6 +22,7 @@ var _ MappedNullable = &ManagedServicesUpsertProviderRequestAnyOf1{}
 
 // ManagedServicesUpsertProviderRequestAnyOf1 struct for ManagedServicesUpsertProviderRequestAnyOf1
 type ManagedServicesUpsertProviderRequestAnyOf1 struct {
+	// full URL string
 	GitUrl string                                          `json:"gitUrl"`
 	GitRef *string                                         `json:"gitRef,omitempty"`
 	Scope  *ManagedServicesUpsertProviderRequestAnyOfScope `json:"scope,omitempty"`
