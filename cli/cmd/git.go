@@ -4,6 +4,7 @@
 package cmd
 
 import (
+	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
 )
@@ -23,7 +24,7 @@ func AddGitCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 				like pulling or switching to a specific branch.`),
 		},
 	}
-	AddCmd(rootCmd, git.cmd)
+	shared.AddCmd(rootCmd, git.cmd)
 
 	// Add child commands here
 	AddGitPullCmd(git.cmd, opts)

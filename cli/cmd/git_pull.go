@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 
+	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
 )
@@ -59,7 +60,7 @@ func AddGitPullCmd(git *cobra.Command, opts *GlobalOptions) {
 		Opts: GitPullOpts{GlobalOptions: opts},
 	}
 
-	AddCmd(git, pull.cmd)
+	shared.AddCmd(git, pull.cmd)
 	pull.Opts.Branch = pull.cmd.Flags().String("branch", "", "Branch to pull")
 	pull.Opts.Remote = pull.cmd.Flags().String("remote", "", "Remote to pull from")
 	pull.cmd.RunE = pull.RunE

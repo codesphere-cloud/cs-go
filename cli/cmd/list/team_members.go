@@ -19,7 +19,7 @@ type ListTeamMembersCmd struct {
 	ClientFactory func(shared.RootOptions) (Client, error)
 }
 
-func addListTeamMembersCmd(p *cobra.Command, opts *ListOptions) {
+func AddListTeamMembersCmd(p *cobra.Command, opts *ListOptions) {
 	l := ListTeamMembersCmd{
 		cmd: &cobra.Command{
 			Use:   "team-members",

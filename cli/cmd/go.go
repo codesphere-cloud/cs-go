@@ -11,6 +11,7 @@ import (
 	"log"
 	"strings"
 
+	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	"github.com/codesphere-cloud/cs-go/pkg/tmpl"
 	"github.com/spf13/cobra"
 )
@@ -31,6 +32,6 @@ func AddGoCmd(rootCmd *cobra.Command) {
 	goCmd := GoCmd{
 		cmd: &cobra.Command{Hidden: true, Use: "go"},
 	}
-	AddCmd(rootCmd, goCmd.cmd)
+	shared.AddCmd(rootCmd, goCmd.cmd)
 	goCmd.cmd.RunE = goCmd.RunE
 }

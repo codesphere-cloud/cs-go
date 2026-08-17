@@ -1,14 +1,13 @@
 // Copyright (c) Codesphere Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-package cmd_test
+package shared_test
 
 import (
+	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/spf13/cobra"
-
-	"github.com/codesphere-cloud/cs-go/cli/cmd"
 )
 
 var _ = Describe("AddCmd", func() {
@@ -23,7 +22,7 @@ var _ = Describe("AddCmd", func() {
 			Use:  "child",
 			RunE: func(_ *cobra.Command, _ []string) error { return nil },
 		}
-		cmd.AddCmd(parent, child)
+		shared.AddCmd(parent, child)
 
 		parent.SetArgs([]string{"child", "extra"})
 		err := parent.Execute()
@@ -49,7 +48,7 @@ var _ = Describe("AddCmd", func() {
 				return nil
 			},
 		}
-		cmd.AddCmd(parent, child)
+		shared.AddCmd(parent, child)
 
 		parent.SetArgs([]string{"child", "value"})
 		err := parent.Execute()

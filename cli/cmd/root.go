@@ -97,15 +97,6 @@ func (o GlobalOptions) GetOrgId() (string, error) {
 	return orgId, nil
 }
 
-// AddCmd adds a command, inheriting the parent's Args validator if not explicitly set.
-// Individual commands that need different argument rules can override this by setting their own Args validator.
-func AddCmd(parent *cobra.Command, cmd *cobra.Command) {
-	if cmd.Args == nil {
-		cmd.Args = parent.Args
-	}
-	parent.AddCommand(cmd)
-}
-
 func GetRootCmd() *cobra.Command {
 	var rootCmd = &cobra.Command{
 		Use:               "cs",
@@ -142,6 +133,7 @@ func GetRootCmd() *cobra.Command {
 	AddCurlCmd(rootCmd, &opts)
 	AddScaleCmd(rootCmd, &opts)
 	AddMcpCmd(rootCmd)
+	AddLegacyCmds(rootCmd, &opts)
 
 	return rootCmd
 }

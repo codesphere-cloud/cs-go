@@ -11,6 +11,7 @@ import (
 	"github.com/creativeprojects/go-selfupdate"
 	"github.com/spf13/cobra"
 
+	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 )
 
@@ -31,7 +32,7 @@ func AddUpdateCmd(rootCmd *cobra.Command) {
 			Long:  `Updates the Codesphere CLI to the latest release from GitHub.`,
 		},
 	}
-	AddCmd(rootCmd, update.cmd)
+	shared.AddCmd(rootCmd, update.cmd)
 	update.cmd.RunE = update.RunE
 }
 

@@ -9,6 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 )
 
@@ -51,7 +52,7 @@ func AddSyncLandscapeCmd(sync *cobra.Command, opts *GlobalOptions) {
 
 	workspace.cmd.RunE = workspace.RunE
 
-	AddCmd(sync, workspace.cmd)
+	shared.AddCmd(sync, workspace.cmd)
 }
 
 func (c *SyncLandscapeCmd) SyncLandscape(client Client, wsId int) error {

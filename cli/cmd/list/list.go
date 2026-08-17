@@ -47,6 +47,6 @@ func AddListCmd(rootCmd *cobra.Command, opts shared.RootOptions) {
 	addListTeamsCmd(l.cmd, listOpts)
 	AddListOrgCmd(l.cmd, listOpts)
 	AddListPlansCmd(l.cmd, listOpts)
-	addListTeamMembersCmd(l.cmd, listOpts)
+	AddListTeamMembersCmd(l.cmd, listOpts)
 	AddListLandscapeLogsCmd(l.cmd, listOpts)
 }

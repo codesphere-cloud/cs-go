@@ -25,7 +25,7 @@ import (
 
 func writeSSELogs(w http.ResponseWriter, entries []listcmd.LogEntry) {
 	payload, _ := json.Marshal(entries)
-	fmt.Fprintf(w, "event: message\ndata: %s\n\n", payload)
+	_, _ = fmt.Fprintf(w, "event: message\ndata: %s\n\n", payload)
 }
 
 var _ = Describe("ListLandscapeLogs", func() {

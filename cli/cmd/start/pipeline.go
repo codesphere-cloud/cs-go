@@ -93,7 +93,7 @@ func AddStartPipelineCmd(start *cobra.Command, opts shared.RootOptions) {
 
 	pipeline.Opts.Timeout = pipeline.cmd.Flags().Duration("timeout", 30*time.Minute, "Time to wait per stage before stopping the command execution (e.g. 10m)")
 	pipeline.Opts.Profile = pipeline.cmd.Flags().StringP("profile", "p", "", "CI profile to use (e.g. 'prod' for the profile defined in 'ci.prod.yml'), defaults to the ci.yml profile")
-	start.AddCommand(pipeline.cmd)
+	shared.AddCmd(start, pipeline.cmd)
 
 	pipeline.cmd.RunE = pipeline.RunE
 }

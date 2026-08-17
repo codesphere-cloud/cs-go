@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 
+	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
@@ -48,7 +49,7 @@ func AddOpenWorkspaceCmd(open *cobra.Command, opts *GlobalOptions) {
 		},
 		Opts: opts,
 	}
-	AddCmd(open, workspace.cmd)
+	shared.AddCmd(open, workspace.cmd)
 	workspace.cmd.RunE = workspace.RunE
 }
 
