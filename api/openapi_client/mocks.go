@@ -1536,24 +1536,24 @@ func (_c *MockManagedServicesAPI_ManagedServicesCreateProvider_Call) RunAndRetur
 }
 
 // ManagedServicesCreateProviderExecute provides a mock function for the type MockManagedServicesAPI
-func (_mock *MockManagedServicesAPI) ManagedServicesCreateProviderExecute(r ApiManagedServicesCreateProviderRequest) (*ManagedServicesListProviders200ResponseInnerAnyOf, *http.Response, error) {
+func (_mock *MockManagedServicesAPI) ManagedServicesCreateProviderExecute(r ApiManagedServicesCreateProviderRequest) (*ManagedServicesListProviders200ResponseInner, *http.Response, error) {
 	ret := _mock.Called(r)
 
 	if len(ret) == 0 {
 		panic("no return value specified for ManagedServicesCreateProviderExecute")
 	}
 
-	var r0 *ManagedServicesListProviders200ResponseInnerAnyOf
+	var r0 *ManagedServicesListProviders200ResponseInner
 	var r1 *http.Response
 	var r2 error
-	if returnFunc, ok := ret.Get(0).(func(ApiManagedServicesCreateProviderRequest) (*ManagedServicesListProviders200ResponseInnerAnyOf, *http.Response, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(ApiManagedServicesCreateProviderRequest) (*ManagedServicesListProviders200ResponseInner, *http.Response, error)); ok {
 		return returnFunc(r)
 	}
-	if returnFunc, ok := ret.Get(0).(func(ApiManagedServicesCreateProviderRequest) *ManagedServicesListProviders200ResponseInnerAnyOf); ok {
+	if returnFunc, ok := ret.Get(0).(func(ApiManagedServicesCreateProviderRequest) *ManagedServicesListProviders200ResponseInner); ok {
 		r0 = returnFunc(r)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*ManagedServicesListProviders200ResponseInnerAnyOf)
+			r0 = ret.Get(0).(*ManagedServicesListProviders200ResponseInner)
 		}
 	}
 	if returnFunc, ok := ret.Get(1).(func(ApiManagedServicesCreateProviderRequest) *http.Response); ok {
@@ -1595,12 +1595,12 @@ func (_c *MockManagedServicesAPI_ManagedServicesCreateProviderExecute_Call) Run(
 	return _c
 }
 
-func (_c *MockManagedServicesAPI_ManagedServicesCreateProviderExecute_Call) Return(managedServicesListProviders200ResponseInnerAnyOf *ManagedServicesListProviders200ResponseInnerAnyOf, response *http.Response, err error) *MockManagedServicesAPI_ManagedServicesCreateProviderExecute_Call {
-	_c.Call.Return(managedServicesListProviders200ResponseInnerAnyOf, response, err)
+func (_c *MockManagedServicesAPI_ManagedServicesCreateProviderExecute_Call) Return(managedServicesListProviders200ResponseInner *ManagedServicesListProviders200ResponseInner, response *http.Response, err error) *MockManagedServicesAPI_ManagedServicesCreateProviderExecute_Call {
+	_c.Call.Return(managedServicesListProviders200ResponseInner, response, err)
 	return _c
 }
 
-func (_c *MockManagedServicesAPI_ManagedServicesCreateProviderExecute_Call) RunAndReturn(run func(r ApiManagedServicesCreateProviderRequest) (*ManagedServicesListProviders200ResponseInnerAnyOf, *http.Response, error)) *MockManagedServicesAPI_ManagedServicesCreateProviderExecute_Call {
+func (_c *MockManagedServicesAPI_ManagedServicesCreateProviderExecute_Call) RunAndReturn(run func(r ApiManagedServicesCreateProviderRequest) (*ManagedServicesListProviders200ResponseInner, *http.Response, error)) *MockManagedServicesAPI_ManagedServicesCreateProviderExecute_Call {
 	_c.Call.Return(run)
 	return _c
 }

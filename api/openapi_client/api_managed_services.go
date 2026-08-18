@@ -43,8 +43,8 @@ type ManagedServicesAPI interface {
 	ManagedServicesCreateProvider(ctx context.Context) ApiManagedServicesCreateProviderRequest
 
 	// ManagedServicesCreateProviderExecute executes the request
-	//  @return ManagedServicesListProviders200ResponseInnerAnyOf
-	ManagedServicesCreateProviderExecute(r ApiManagedServicesCreateProviderRequest) (*ManagedServicesListProviders200ResponseInnerAnyOf, *http.Response, error)
+	//  @return ManagedServicesListProviders200ResponseInner
+	ManagedServicesCreateProviderExecute(r ApiManagedServicesCreateProviderRequest) (*ManagedServicesListProviders200ResponseInner, *http.Response, error)
 
 	/*
 		ManagedServicesDelete delete
@@ -294,15 +294,15 @@ func (a *ManagedServicesAPIService) ManagedServicesCreateExecute(r ApiManagedSer
 type ApiManagedServicesCreateProviderRequest struct {
 	ctx                                  context.Context
 	ApiService                           ManagedServicesAPI
-	managedServicesUpsertProviderRequest *ManagedServicesUpsertProviderRequest
+	managedServicesCreateProviderRequest *ManagedServicesCreateProviderRequest
 }
 
-func (r ApiManagedServicesCreateProviderRequest) ManagedServicesUpsertProviderRequest(managedServicesUpsertProviderRequest ManagedServicesUpsertProviderRequest) ApiManagedServicesCreateProviderRequest {
-	r.managedServicesUpsertProviderRequest = &managedServicesUpsertProviderRequest
+func (r ApiManagedServicesCreateProviderRequest) ManagedServicesCreateProviderRequest(managedServicesCreateProviderRequest ManagedServicesCreateProviderRequest) ApiManagedServicesCreateProviderRequest {
+	r.managedServicesCreateProviderRequest = &managedServicesCreateProviderRequest
 	return r
 }
 
-func (r ApiManagedServicesCreateProviderRequest) Execute() (*ManagedServicesListProviders200ResponseInnerAnyOf, *http.Response, error) {
+func (r ApiManagedServicesCreateProviderRequest) Execute() (*ManagedServicesListProviders200ResponseInner, *http.Response, error) {
 	return r.ApiService.ManagedServicesCreateProviderExecute(r)
 }
 
@@ -321,13 +321,13 @@ func (a *ManagedServicesAPIService) ManagedServicesCreateProvider(ctx context.Co
 
 // Execute executes the request
 //
-//	@return ManagedServicesListProviders200ResponseInnerAnyOf
-func (a *ManagedServicesAPIService) ManagedServicesCreateProviderExecute(r ApiManagedServicesCreateProviderRequest) (*ManagedServicesListProviders200ResponseInnerAnyOf, *http.Response, error) {
+//	@return ManagedServicesListProviders200ResponseInner
+func (a *ManagedServicesAPIService) ManagedServicesCreateProviderExecute(r ApiManagedServicesCreateProviderRequest) (*ManagedServicesListProviders200ResponseInner, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *ManagedServicesListProviders200ResponseInnerAnyOf
+		localVarReturnValue *ManagedServicesListProviders200ResponseInner
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagedServicesAPIService.ManagedServicesCreateProvider")
@@ -359,7 +359,7 @@ func (a *ManagedServicesAPIService) ManagedServicesCreateProviderExecute(r ApiMa
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.managedServicesUpsertProviderRequest
+	localVarPostBody = r.managedServicesCreateProviderRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
