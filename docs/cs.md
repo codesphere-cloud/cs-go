@@ -34,6 +34,7 @@ Manage and debug resources deployed in Codesphere via command line.
 * [cs scale](cs_scale.md)	 - Scale Codesphere resources
 * [cs set-env](cs_set-env.md)	 - Set environment variables
 * [cs start](cs_start.md)	 - Start workspace pipeline
+* [cs stop](cs_stop.md)	 - Stop workspace pipeline
 * [cs sync](cs_sync.md)	 - Sync Codesphere resources
 * [cs team](cs_team.md)	 - Manage Team
 * [cs update](cs_update.md)	 - Update Codesphere CLI

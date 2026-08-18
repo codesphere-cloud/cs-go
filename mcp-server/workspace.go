@@ -60,6 +60,13 @@ type StartPipelineStageArgs struct {
 	Stage       string `json:"stage" jsonschema:"Stage name"`
 }
 
+// StopPipelineStageArgs has no Profile field, unlike StartPipelineStageArgs:
+// The API stops the currently running pipeline as only one can run at a time.
+type StopPipelineStageArgs struct {
+	WorkspaceId int    `json:"workspaceId" jsonschema:"ID of the workspace"`
+	Stage       string `json:"stage" jsonschema:"Stage name"`
+}
+
 type GetPipelineStateArgs struct {
 	WorkspaceId int    `json:"workspaceId" jsonschema:"ID of the workspace"`
 	Stage       string `json:"stage" jsonschema:"Stage name"`
@@ -102,7 +109,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
-		return nil, workspaces, nil
+		return nil, itemsResult(workspaces), nil
 	})
 
 	mcp.AddTool(server, &mcp.Tool{
@@ -204,6 +211,17 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 	})
 
 	mcp.AddTool(server, &mcp.Tool{
+		Name:        "stop_pipeline_stage",
+		Description: "Stop a CI pipeline stage",
+	}, func(ctx context.Context, req *mcp.CallToolRequest, args StopPipelineStageArgs) (*mcp.CallToolResult, any, error) {
+		err := client.StopPipelineStage(args.WorkspaceId, args.Stage)
+		if err != nil {
+			return &mcp.CallToolResult{IsError: true}, nil, err
+		}
+		return nil, map[string]string{"status": "stopped"}, nil
+	})
+
+	mcp.AddTool(server, &mcp.Tool{
 		Name:        "get_pipeline_state",
 		Description: "Get the status of a pipeline stage",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args GetPipelineStateArgs) (*mcp.CallToolResult, any, error) {
@@ -211,7 +229,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
-		return nil, states, nil
+		return nil, itemsResult(states), nil
 	})
 
 	mcp.AddTool(server, &mcp.Tool{

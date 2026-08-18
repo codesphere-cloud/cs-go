@@ -22,6 +22,7 @@ var _ MappedNullable = &ManagedServicesListProviders200ResponseInnerAnyOfBackend
 
 // ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape struct for ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape
 type ManagedServicesListProviders200ResponseInnerAnyOfBackendLandscape struct {
+	// full URL string
 	GitUrl string `json:"gitUrl"`
 	// Deprecated legacy fallback CI profile. A provider must define at least one version; as a temporary backwards-compatibility fallback, a provider without versions is still accepted as long as it defines this field.
 	// Deprecated

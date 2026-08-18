@@ -22,7 +22,7 @@ func RegisterMetadataTools(server *mcp.Server, client *api.Client) {
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
-		return nil, dcs, nil
+		return nil, itemsResult(dcs), nil
 	})
 
 	mcp.AddTool(server, &mcp.Tool{
@@ -33,6 +33,6 @@ func RegisterMetadataTools(server *mcp.Server, client *api.Client) {
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
-		return nil, images, nil
+		return nil, itemsResult(images), nil
 	})
 }
