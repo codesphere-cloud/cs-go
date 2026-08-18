@@ -95,7 +95,7 @@ func (l *ListLandscapeLogsCmd) RunE(_ *cobra.Command, args []string) (err error)
 				"server", *l.scope.server,
 			)
 		}
-		return l.printLogsOfReplica("")
+		return l.printLogsOfReplica("", *l.scope.step, *l.scope.replica)
 	}
 	if *l.scope.server != "" {
 		return l.printLogsOfServer()
@@ -116,16 +116,12 @@ func (l *ListLandscapeLogsCmd) printAllLogs() error {
 
 	var wg sync.WaitGroup
 	for _, replica := range replicas {
-		for s := range replica.Steps {
+		for step := range replica.Steps {
 			wg.Add(1)
 			go func() {
 				defer wg.Done()
-				scope := l.scope
-				*scope.step = s
-				*scope.replica = replica.Replica
-				prefix := fmt.Sprintf("|%-10s|%s", replica.Server, replica.Replica[len(replica.Replica)-11:])
-				err = l.printLogsOfReplica(prefix)
-				if err != nil {
+				prefix := fmt.Sprintf("|%-10s|%s", replica.Server, lastN(replica.Replica, 11))
+				if err := l.printLogsOfReplica(prefix, step, replica.Replica); err != nil {
 					log.Printf("Error printling logs: %s\n", err.Error())
 				}
 			}()
@@ -147,15 +143,23 @@ func (l *ListLandscapeLogsCmd) printLogsOfStage() error {
 	return printLogsOfEndpoint("", endpoint)
 }
 
-func (l *ListLandscapeLogsCmd) printLogsOfReplica(prefix string) error {
+func (l *ListLandscapeLogsCmd) printLogsOfReplica(prefix string, step int, replicaId string) error {
 	endpoint := fmt.Sprintf(
 		"%s/workspaces/%d/logs/run/%d/replica/%s",
 		l.opts.GetApiUrl(),
 		l.scope.workspaceId,
-		*l.scope.step,
-		*l.scope.replica,
+		step,
+		replicaId,
 	)
 	return printLogsOfEndpoint(prefix, endpoint)
+}
+
+// lastN returns the last n characters of s, or s itself if it has fewer than n.
+func lastN(s string, n int) string {
+	if len(s) <= n {
+		return s
+	}
+	return s[len(s)-n:]
 }
 
 func (l *ListLandscapeLogsCmd) printLogsOfServer() error {
