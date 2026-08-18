@@ -21,6 +21,6 @@ func RegisterPlanTools(server *mcp.Server, client *api.Client) {
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
-		return nil, map[string]any{"items": plans}, nil
+		return nil, itemsResult(plans), nil
 	})
 }

@@ -60,6 +60,8 @@ type StartPipelineStageArgs struct {
 	Stage       string `json:"stage" jsonschema:"Stage name"`
 }
 
+// StopPipelineStageArgs has no Profile field, unlike StartPipelineStageArgs:
+// The API stops the currently running pipeline as only one can run at a time.
 type StopPipelineStageArgs struct {
 	WorkspaceId int    `json:"workspaceId" jsonschema:"ID of the workspace"`
 	Stage       string `json:"stage" jsonschema:"Stage name"`
@@ -107,7 +109,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
-		return nil, map[string]any{"items": workspaces}, nil
+		return nil, itemsResult(workspaces), nil
 	})
 
 	mcp.AddTool(server, &mcp.Tool{
@@ -227,7 +229,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
-		return nil, map[string]any{"items": states}, nil
+		return nil, itemsResult(states), nil
 	})
 
 	mcp.AddTool(server, &mcp.Tool{
