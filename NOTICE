@@ -263,9 +263,9 @@ License URL: https://github.com/munnerz/goautoneg/blob/a7dc8b61c822/LICENSE
  
 ----------
 Module: github.com/onsi/ginkgo/v2
-Version: v2.32.0
+Version: v2.32.1
 License: MIT
-License URL: https://github.com/onsi/ginkgo/blob/v2.32.0/LICENSE
+License URL: https://github.com/onsi/ginkgo/blob/v2.32.1/LICENSE
  
 ----------
 Module: github.com/onsi/gomega
