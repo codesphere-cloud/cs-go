@@ -6,6 +6,7 @@ package cmd
 import (
 	"log"
 
+	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/spf13/cobra"
 )
@@ -30,6 +31,6 @@ func AddVersionCmd(rootCmd *cobra.Command) {
 			Long:  `Print current version of Codesphere CLI.`,
 		},
 	}
-	AddCmd(rootCmd, version.cmd)
+	shared.AddCmd(rootCmd, version.cmd)
 	version.cmd.RunE = version.RunE
 }

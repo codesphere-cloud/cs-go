@@ -4,6 +4,7 @@
 package cmd
 
 import (
+	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	mcpserver "github.com/codesphere-cloud/cs-go/mcp-server"
 	csio "github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
@@ -45,5 +46,5 @@ func AddMcpCmd(rootCmd *cobra.Command) {
 		},
 	}
 	mcp.cmd.RunE = mcp.RunE
-	AddCmd(rootCmd, mcp.cmd)
+	shared.AddCmd(rootCmd, mcp.cmd)
 }

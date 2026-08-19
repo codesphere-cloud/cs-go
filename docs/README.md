@@ -19,6 +19,7 @@ Manage and debug resources deployed in Codesphere via command line.
 
 ### SEE ALSO
 
+* [cs add](cs_add.md)	 - Add Codesphere resources
 * [cs create](cs_create.md)	 - Create codesphere resource
 * [cs curl](cs_curl.md)	 - Send authenticated HTTP requests to workspace dev domain
 * [cs delete](cs_delete.md)	 - Delete Codesphere resources
@@ -27,16 +28,13 @@ Manage and debug resources deployed in Codesphere via command line.
 * [cs git](cs_git.md)	 - Interacting with the git repository of the workspace
 * [cs licenses](cs_licenses.md)	 - Print license information
 * [cs list](cs_list.md)	 - List resources
-* [cs log](cs_log.md)	 - Retrieve run logs from services
 * [cs mcp](cs_mcp.md)	 - Runs the MCP server for Codesphere
 * [cs monitor](cs_monitor.md)	 - Monitor a command and report health information
 * [cs open](cs_open.md)	 - Open the Codesphere IDE
 * [cs scale](cs_scale.md)	 - Scale Codesphere resources
-* [cs set-env](cs_set-env.md)	 - Set environment variables
 * [cs start](cs_start.md)	 - Start workspace pipeline
 * [cs stop](cs_stop.md)	 - Stop workspace pipeline
 * [cs sync](cs_sync.md)	 - Sync Codesphere resources
-* [cs team](cs_team.md)	 - Manage Team
 * [cs update](cs_update.md)	 - Update Codesphere CLI
 * [cs version](cs_version.md)	 - Print version
 * [cs wake-up](cs_wake-up.md)	 - Wake up an on-demand workspace

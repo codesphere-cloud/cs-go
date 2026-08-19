@@ -8,6 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 )
 
@@ -28,7 +29,7 @@ func AddOpenCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 			Long:  `Open the Codesphere IDE.`,
 		},
 	}
-	AddCmd(rootCmd, open.cmd)
+	shared.AddCmd(rootCmd, open.cmd)
 	open.cmd.RunE = open.RunE
 	AddOpenWorkspaceCmd(open.cmd, opts)
 }

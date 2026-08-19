@@ -18,6 +18,10 @@ packages:
     config:
       all: true
     interfaces:
+  github.com/codesphere-cloud/cs-go/cli/cmd/delete:
+    config:
+      all: true
+    interfaces:
   github.com/codesphere-cloud/cs-go/pkg/exporter:
     config:
       all: true

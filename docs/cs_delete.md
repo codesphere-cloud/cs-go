@@ -4,7 +4,7 @@ Delete Codesphere resources
 
 ### Synopsis
 
-Delete Codesphere resources, e.g. workspaces.
+Delete Codesphere resources, e.g. workspaces or teams.
 
 ### Options
 
@@ -25,5 +25,7 @@ Delete Codesphere resources, e.g. workspaces.
 ### SEE ALSO
 
 * [cs](cs.md)	 - The Codesphere CLI
+* [cs delete team](cs_delete_team.md)	 - Delete team
+* [cs delete team-member](cs_delete_team-member.md)	 - Delete team member
 * [cs delete workspace](cs_delete_workspace.md)	 - Delete workspace
 

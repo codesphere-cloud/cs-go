@@ -44,7 +44,7 @@ var _ = Describe("Version and Help Tests", Label("local"), func() {
 			}{
 				{[]string{"create", "--help"}, "workspace"},
 				{[]string{"exec", "--help"}, "exec"},
-				{[]string{"log", "--help"}, "log"},
+				{[]string{"list", "landscape-logs", "--help"}, "landscape-logs"},
 				{[]string{"start", "pipeline", "--help"}, "pipeline"},
 				{[]string{"git", "pull", "--help"}, "pull"},
 				{[]string{"set-env", "--help"}, "set-env"},

@@ -34,8 +34,10 @@ $ cs list workspaces
 
 * [cs](cs.md)	 - The Codesphere CLI
 * [cs list baseimages](cs_list_baseimages.md)	 - List baseimages
+* [cs list landscape-logs](cs_list_landscape-logs.md)	 - Retrieve run logs from services
 * [cs list organization](cs_list_organization.md)	 - List organizations
 * [cs list plans](cs_list_plans.md)	 - List available plans
+* [cs list team-members](cs_list_team-members.md)	 - List team members
 * [cs list teams](cs_list_teams.md)	 - List teams
 * [cs list workspaces](cs_list_workspaces.md)	 - List workspaces
 

@@ -6,7 +6,9 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"slices"
 
+	"github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
 )
@@ -53,13 +55,13 @@ func AddStopPipelineCmd(stop *cobra.Command, opts *GlobalOptions) {
 		},
 		Opts: StopPipelineOpts{GlobalOptions: opts},
 	}
-	AddCmd(stop, pipeline.cmd)
+	shared.AddCmd(stop, pipeline.cmd)
 	pipeline.cmd.RunE = pipeline.RunE
 }
 
 func (c *StopPipelineCmd) StopPipelineStages(client Client, wsId int, stages []string) error {
 	for _, stage := range stages {
-		if !isValidStage(stage) {
+		if !slices.Contains([]string{"prepare", "test", "run"}, stage) {
 			return fmt.Errorf("invalid pipeline stage: %s", stage)
 		}
 	}

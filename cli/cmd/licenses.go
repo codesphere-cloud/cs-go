@@ -7,6 +7,7 @@ import (
 	_ "embed"
 	"log"
 
+	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	"github.com/codesphere-cloud/cs-go/pkg/tmpl"
 	"github.com/spf13/cobra"
 )
@@ -35,6 +36,6 @@ func AddLicensesCmd(rootCmd *cobra.Command) {
 			Long:  `Print information about the Codesphere CLI license and open source licenses of dependencies.`,
 		},
 	}
-	AddCmd(rootCmd, licenses.cmd)
+	shared.AddCmd(rootCmd, licenses.cmd)
 	licenses.cmd.RunE = licenses.RunE
 }

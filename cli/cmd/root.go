@@ -8,6 +8,12 @@ import (
 	"fmt"
 	"os"
 
+	addcmd "github.com/codesphere-cloud/cs-go/cli/cmd/add"
+	createcmd "github.com/codesphere-cloud/cs-go/cli/cmd/create"
+	deletecmd "github.com/codesphere-cloud/cs-go/cli/cmd/delete"
+	generatecmd "github.com/codesphere-cloud/cs-go/cli/cmd/generate"
+	listcmd "github.com/codesphere-cloud/cs-go/cli/cmd/list"
+	startcmd "github.com/codesphere-cloud/cs-go/cli/cmd/start"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/google/uuid"
 	"github.com/spf13/cobra"
@@ -20,6 +26,14 @@ type GlobalOptions struct {
 	OrgId       string
 	Env         Env
 	Verbose     bool
+}
+
+func (o GlobalOptions) GetApiToken() (string, error) {
+	return o.Env.GetApiToken()
+}
+
+func (o GlobalOptions) GetVerbose() bool {
+	return o.Verbose
 }
 
 type Env interface {
@@ -83,15 +97,6 @@ func (o GlobalOptions) GetOrgId() (string, error) {
 	return orgId, nil
 }
 
-// AddCmd adds a command, inheriting the parent's Args validator if not explicitly set.
-// Individual commands that need different argument rules can override this by setting their own Args validator.
-func AddCmd(parent *cobra.Command, cmd *cobra.Command) {
-	if cmd.Args == nil {
-		cmd.Args = parent.Args
-	}
-	parent.AddCommand(cmd)
-}
-
 func GetRootCmd() *cobra.Command {
 	var rootCmd = &cobra.Command{
 		Use:               "cs",
@@ -110,17 +115,16 @@ func GetRootCmd() *cobra.Command {
 	rootCmd.PersistentFlags().StringVarP(&opts.OrgId, "org", "O", "", "Organization ID (relevant for some commands)")
 
 	AddExecCmd(rootCmd, &opts)
-	AddLogCmd(rootCmd, &opts)
-	AddListCmd(rootCmd, &opts)
-	AddSetEnvVarCmd(rootCmd, &opts)
+	listcmd.AddListCmd(rootCmd, &opts)
 	AddVersionCmd(rootCmd)
 	AddLicensesCmd(rootCmd)
 	AddOpenCmd(rootCmd, &opts)
-	AddGenerateCmd(rootCmd, &opts)
-	AddCreateCmd(rootCmd, &opts)
-	AddDeleteCmd(rootCmd, &opts)
+	generatecmd.AddGenerateCmd(rootCmd, &opts)
+	createcmd.AddCreateCmd(rootCmd, &opts)
+	deletecmd.AddDeleteCmd(rootCmd, &opts)
+	addcmd.AddAddCmd(rootCmd, &opts)
 	AddMonitorCmd(rootCmd, &opts)
-	AddStartCmd(rootCmd, &opts)
+	startcmd.AddStartCmd(rootCmd, &opts)
 	AddStopCmd(rootCmd, &opts)
 	AddGitCmd(rootCmd, &opts)
 	AddSyncCmd(rootCmd, &opts)
@@ -130,8 +134,8 @@ func GetRootCmd() *cobra.Command {
 	AddCurlCmd(rootCmd, &opts)
 	AddScaleCmd(rootCmd, &opts)
 	AddMcpCmd(rootCmd)
+	AddLegacyCmds(rootCmd, &opts)
 
-	AddTeamManageCmd(rootCmd, &opts)
 	return rootCmd
 }
 

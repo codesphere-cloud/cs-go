@@ -6,6 +6,7 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
+	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 )
 
@@ -21,7 +22,7 @@ func AddSyncCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 			Long:  io.Long(`Synchronize Codesphere resources, like infrastructure required to run services.`),
 		},
 	}
-	AddCmd(rootCmd, sync.cmd)
+	shared.AddCmd(rootCmd, sync.cmd)
 
 	AddSyncLandscapeCmd(sync.cmd, opts)
 }
