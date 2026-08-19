@@ -4,6 +4,7 @@
 package cmd
 
 import (
+	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	"github.com/spf13/cobra"
 )
 
@@ -19,6 +20,6 @@ func AddStopCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 			Long:  `Stop pipeline of a workspace using the pipeline subcommand`,
 		},
 	}
-	AddCmd(rootCmd, stop.cmd)
+	shared.AddCmd(rootCmd, stop.cmd)
 	AddStopPipelineCmd(stop.cmd, opts)
 }
