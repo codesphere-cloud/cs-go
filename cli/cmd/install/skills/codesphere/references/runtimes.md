@@ -70,6 +70,10 @@ run:
         - port: 3000
           path: /
           stripPath: false
+    volumeMounts:
+      - name: _workspace
+        mountPath: /home/user/app
+        workspacePath: ""
 ```
 
 - **Example — Nix (persists across stages automatically):**
@@ -99,6 +103,10 @@ run:
         - port: 3000
           path: /
           stripPath: false
+    volumeMounts:
+      - name: _workspace
+        mountPath: /home/user/app
+        workspacePath: ""
 ```
 
 ### Python (Pipenv)
@@ -130,6 +138,10 @@ run:
         - port: 3000
           path: /
           stripPath: false
+    volumeMounts:
+      - name: _workspace
+        mountPath: /home/user/app
+        workspacePath: ""
 ```
 
 ### Python (pip, target dir) / pinning a Python version via Nix
@@ -162,6 +174,10 @@ run:
         - port: 3000
           path: /
           stripPath: false
+    volumeMounts:
+      - name: _workspace
+        mountPath: /home/user/app
+        workspacePath: ""
 ```
 
 ### Go
@@ -193,6 +209,10 @@ run:
         - port: 3000
           path: /
           stripPath: false
+    volumeMounts:
+      - name: _workspace
+        mountPath: /home/user/app
+        workspacePath: ""
 ```
 
 If Go isn't preinstalled at the version you need, add `nix-env -iA nixpkgs.go` (or a versioned attribute, e.g. `nixpkgs.go_1_22`) as the first `prepare` step.
@@ -228,6 +248,10 @@ run:
         - port: 3000
           path: /
           stripPath: false
+    volumeMounts:
+      - name: _workspace
+        mountPath: /home/user/app
+        workspacePath: ""
 ```
 
 If Ruby needs to be installed/pinned first, add `nix-env -iA nixpkgs.ruby_3_3` (or the matching nixpkgs attribute) as the first `prepare` step.
@@ -259,6 +283,10 @@ run:
         - port: 3000
           path: /
           stripPath: false
+    volumeMounts:
+      - name: _workspace
+        mountPath: /home/user/app
+        workspacePath: ""
 ```
 
 If PHP itself (or Composer) needs to be installed/pinned first, add `nix-env -iA nixpkgs.php83` (or the matching nixpkgs attribute, e.g. `php82`) as the first `prepare` step.
@@ -292,6 +320,10 @@ run:
         - port: 3000
           path: /
           stripPath: false
+    volumeMounts:
+      - name: _workspace
+        mountPath: /home/user/app
+        workspacePath: ""
 ```
 
 ### Java and Rust (via Nix — general pattern, no dedicated framework example in current docs)
@@ -330,6 +362,10 @@ run:
         - port: 3000
           path: /
           stripPath: false
+    volumeMounts:
+      - name: _workspace
+        mountPath: /home/user/app
+        workspacePath: ""
 ```
 
 - **Example — Rust (Cargo):**
@@ -361,6 +397,10 @@ run:
         - port: 3000
           path: /
           stripPath: false
+    volumeMounts:
+      - name: _workspace
+        mountPath: /home/user/app
+        workspacePath: ""
 ```
 
 Since Rust/Java compile to a standalone binary/artifact and (unlike Node's `n`) the Nix-installed toolchain persists in the shared `/nix/store`, re-running the JDK install in `run` is only strictly required if the `run` step invokes `java`/`mvn` directly (as in the Java example above); a Rust binary launched directly (`./target/release/app`) needs no runtime toolchain present at all in `run`.
@@ -395,6 +435,10 @@ run:
         - port: 3000
           path: /
           stripPath: false
+    volumeMounts:
+      - name: _workspace
+        mountPath: /home/user/app
+        workspacePath: ""
 ```
 
 ## Common Pitfalls

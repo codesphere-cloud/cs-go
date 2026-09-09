@@ -115,6 +115,8 @@ Match each component against the recipes in `references/runtimes.md`: Node/Next.
 
 **Action:**
 - For each component: decide public vs. internal — a component the end user reaches directly (typically the frontend) gets a `network.paths` entry; a component only reached internally gets `isPublic: false` and its own path prefix, or no public route if truly internal-only. Every service still needs at least one `network.paths` entry or `isPublic: true`.
+- **Always include both `network.ports` and `network.paths` as keys, never just one.** A `network` block with only `paths` (no `ports` key at all) parses fine but has been confirmed to fail real-platform validation with a garbled union-type error — see `references/ci-pipeline.md`'s safe-default example and Common Pitfalls. Populate `ports` (with `isPublic: false` if no direct port URL is wanted) even for a component reached only via path routing; set `paths: []` explicitly, not omitted, for a component with no path routing.
+- **Always include a `volumeMounts` entry for `_workspace`** (`mountPath: /home/user/app`, `workspacePath: ""`) — confirmed necessary in practice on the real platform even though the field is documented as optional. Omitting it is the other confirmed contributor to the same union-type validation failure above.
 - **`stripPath` depends on whether the component's own routes already include the path prefix — check its actual route definitions, don't default to either value.** `stripPath: true` forwards `/api/users` to the app as `/users`; `stripPath: false` forwards it unchanged. Picking the wrong one for how the app itself is written produces a working-looking `ci.yml` that 404s at runtime.
 - `schemaVersion: v0.4` (current — not `v0.2`).
 - One `run.<serviceName>` per component: `steps:` built from Step 4's findings (Nix install for any Dockerfile-pinned version, then build, then start — including repeating any non-Nix version pin like `sudo n <version>` in **both** `prepare` and `run`), `network` per above, `env:` for plain config, and any Step 5 managed-service connection details wired in as `${{ vault.NAME }}` references directly in `env:`.
@@ -128,6 +130,7 @@ Match each component against the recipes in `references/runtimes.md`: Node/Next.
 2. Every component whose `Dockerfile` pinned a runtime version has a matching Nix install in `prepare`.
 3. Every template reference uses `${{ ... }}` — never bare `{{ ... }}`.
 4. Every template reference uses a real, documented field — no invented cross-service accessor.
+5. Every service's `network` block has both `ports` and `paths` present as keys (never one omitted), and every service has a `_workspace` `volumeMounts` entry — the confirmed real-platform failure mode from `references/ci-pipeline.md`'s Common Pitfalls.
 
 If any of the 4 points turned up a problem, fix it now — do not proceed to Step 7 with a known issue still in the draft.
 

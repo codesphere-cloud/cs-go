@@ -69,11 +69,11 @@ steps:
 | `plan`                                          | integer                    | No       | Resource tier id — resolve via `GET /metadata/workspace-plans` or the IDE's plan picker.                     |
 | `replicas`                                      | integer                    | No       | Horizontal scaling, default `1`, max `10` (more on enterprise).                                              |
 | `isPublic`                                      | boolean                    | No       | Shorthand; ignored if the advanced `network` block is present.                                               |
-| `network.ports[].port` / `.isPublic`            | integer / boolean          | No       | Raw exposed ports; `isPublic: true` also gets a direct public port URL (rarely needed, prefer path routing). |
-| `network.paths[].port` / `.path` / `.stripPath` | integer / string / boolean | No       | Workspace Router: map URL path prefixes to ports. `stripPath: true` removes the prefix before forwarding.    |
+| `network.ports[].port` / `.isPublic`            | integer / boolean          | No       | Raw exposed ports; `isPublic: true` also gets a direct public port URL (rarely needed, prefer path routing). **Include the `ports` key even when only using path routing** (populated, with `isPublic: false` if no direct port URL is wanted) — see the safe-default example and Common Pitfalls below. |
+| `network.paths[].port` / `.path` / `.stripPath` | integer / string / boolean | No       | Workspace Router: map URL path prefixes to ports. `stripPath: true` removes the prefix before forwarding. **Set `paths: []` explicitly rather than omitting the key** when not using path routing — see below. |
 | `env`                                           | map                        | No       | Key-value env vars, injected at runtime.                                                                     |
 | `runAsUser` / `runAsGroup`                      | integer                    | No       | Optional UID/GID.                                                                                            |
-| `volumeMounts[].name`                           | string                     | No       | Currently only `_workspace` is supported.                                                                    |
+| `volumeMounts[].name`                           | string                     | No       | Currently only `_workspace` is supported. **The only confirmed-working real-platform example includes this mount** (see safe-default example below) — treat it as effectively required in practice even though it's optional per the documented schema. |
 | `volumeMounts[].mountPath`                      | string                     | No       | Destination path inside the runtime.                                                                         |
 | `volumeMounts[].workspacePath`                  | string                     | No       | Subdirectory of `/home/user/app` to mount; `""` = whole workspace.                                           |
 
@@ -109,6 +109,30 @@ run:
 ```
 
 - **Note:** every service needs at least one route (`network.paths` entry, or `isPublic: true`) or the Workspace Router never considers it healthy/reachable.
+
+- **Safe-default shape (confirmed working against the real Codesphere platform, not just schema-valid YAML):**
+
+```yaml
+run:
+  <serviceName>:
+    steps:
+      - name: <string>
+        command: <string>
+    plan: <integer>
+    replicas: <integer>
+    network:
+      ports:
+        - port: 3000
+          isPublic: <boolean>
+      paths: []
+    env: {}
+    volumeMounts:
+      - name: _workspace
+        mountPath: /home/user/app
+        workspacePath: ""
+```
+
+  A real generation had `network: { paths: [...] }` only (no `ports` key at all) and no `volumeMounts` entry; it was accepted as valid YAML/JSON by tooling but **rejected by the real platform's validator**, and only fixed by trial and error into the shape above (`ports` present and populated, `paths` present — even as `[]` — rather than either key being absent, plus a `volumeMounts` entry). This isn't fully isolated to one specific field — treat "always include both `network.ports` and `network.paths` as keys (never omit one), and always include a `_workspace` `volumeMounts` entry" as the safe default to generate from, not as two independently-confirmed hard rules. See Common Pitfalls below for what to check first if a generated `ci.yml` fails real-platform validation despite parsing fine.
 
 ### Managed Container — Field Reference
 
@@ -273,6 +297,7 @@ run:
 - Renaming a service (Reactive, Managed Container, or Managed Service) after deploy — forces recreation, can mean data loss for stateful services.
 - Assuming `plan:` integers map to a fixed CPU/RAM table — the mapping is cluster-specific; resolve via `GET /metadata/workspace-plans`.
 - Forgetting a `network.paths` entry (or `isPublic: true`) — the service is never marked healthy/reachable by the Workspace Router.
+- **Confirmed live:** a `ci.yml` that's well-formed YAML/JSON and matches every field in this reference can still be **rejected by the real Codesphere platform** (not caught by `cs-go` or a generic schema/YAML parser) with a garbled, unhelpful validation error — a Superstruct-style union-type failure that doesn't clearly name which field is actually wrong. Based on a confirmed repro, the first two things to check when this happens: (1) a Reactive's `network` block missing `ports` or `paths` **as a key** (as opposed to present-but-empty, e.g. `paths: []`) — include both keys per the Reactive field reference above; (2) a missing `volumeMounts` entry — include the `_workspace` mount from the safe-default example above even though the schema marks it optional. Neither is confirmed as the sole/exact cause in isolation — check both together first, since the union-type error itself doesn't point at either specifically.
 
 ## Known Documentation Discrepancies
 
