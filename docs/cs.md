@@ -26,6 +26,7 @@ Manage and debug resources deployed in Codesphere via command line.
 * [cs exec](cs_exec.md)	 - Run a command in Codesphere workspace
 * [cs generate](cs_generate.md)	 - Generate codesphere artifacts
 * [cs git](cs_git.md)	 - Interacting with the git repository of the workspace
+* [cs install](cs_install.md)	 - Install optional Codesphere CLI extensions
 * [cs licenses](cs_licenses.md)	 - Print license information
 * [cs list](cs_list.md)	 - List resources
 * [cs mcp](cs_mcp.md)	 - Runs the MCP server for Codesphere
