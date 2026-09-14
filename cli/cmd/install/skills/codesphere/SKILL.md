@@ -37,7 +37,7 @@ Codesphere is a cloud IDE/PaaS. A **workspace** runs a `ci.yml` pipeline (`prepa
 | Multi-service Landscape networking (internal DNS, path routing, headless/internal-only services), shared vs. independent resources, multi-service examples | `references/landscape.md` |
 | Deployment modes (always-on vs. off-when-unused), custom domains, zero-downtime releases, horizontal scaling/replicas, troubleshooting table | `references/deployment-guide.md` |
 | Moving a `docker-compose.yml`, bare Dockerfile, Helm chart, or raw k8s manifests onto Codesphere | `references/migration-guide.md` |
-| Plain workspace environment variables | `references/environment-variables.md` |
+| Plain workspace environment variables; the built-ins (`WORKSPACE_ID`, `CODESPHERE_APP_ID`, `WORKSPACE_DEV_DOMAIN`) and where they're actually readable | `references/environment-variables.md` |
 | Vault secrets (`${{ vault.NAME }}`), shared vaults — **preview feature** | `references/secret-management.md` |
 | `cs-go` CLI commands, what the CLI does *not* cover, the full public API endpoint catalog, GitHub Actions/GitLab CI/Bitbucket integration | `references/cli-and-api.md` |
 | Managed Services architecture, lifecycle (deploy/pause/delete/backups), the provider catalog, publishing a custom provider | `references/providers.md` |
@@ -79,6 +79,7 @@ These are points where earlier drafts of this reference set were wrong or where 
 - **Every Reactive/Managed Container needs at least one route** (`network.paths` entry or `isPublic: true`), or the Workspace Router never marks it healthy/reachable.
 - **Renaming a service key (Reactive, Managed Container, or Managed Service) in `ci.yml` forces recreation** — can mean data loss for stateful services. Treat names as fixed post-deploy.
 - **A Landscape-embedded Managed Service is destroyed when the Landscape is torn down.** Use a standalone Managed Service (created via UI/API, not `ci.yml`) for anything that must outlive the Landscape.
+- **The built-in workspace variables live in the tmux session environment, not the container environment.** `WORKSPACE_ID`, `CODESPHERE_APP_ID` and `WORKSPACE_DEV_DOMAIN` are absent from `printenv` over `workspace-ssh` or in a VS Code Remote / editor-extension terminal. An agent running inside a workspace resolves its own ID with `tmux show-environment -g WORKSPACE_ID` — never by guessing a row out of `cs list workspaces`, which lists other people's workspaces too. See `references/environment-variables.md`.
 - **Vault secrets (`${{ vault.NAME }}`) are referenced, never inlined** in `ci.yml`. A Landscape sync fails if a referenced key was never initialized. This is a **preview** feature.
 
 ## Related
