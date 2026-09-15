@@ -28,7 +28,7 @@ Reference files:
 
 - `cli/cmd/list_organizations.go` shows the full split between `Add...Cmd`, `RunE`, and the method that performs the actual work.
 - `cli/cmd/list_organizations_test.go` shows the current external test style with `cmd_test`, `Ginkgo`, `Gomega`, `MockEnv`, `MockClient`, stdout capture, and Cobra registration checks.
-- `cli/cmd/start.go` and `cli/cmd/start_pipeline.go` show the current parent/subcommand split that should be moved into a shared folder in the new layout.
+- `cli/cmd/start/start.go` and `cli/cmd/start/pipeline.go` already show this folder-based parent/subcommand split in practice.
 
 ## Function Responsibilities
 

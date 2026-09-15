@@ -89,3 +89,7 @@ These are points where earlier drafts of this reference set were wrong or where 
 - `codesphere-create-cluster-deployment` — migrates an existing Helm chart onto Codesphere; decomposes it into a Landscape (Reactive/Managed Container/Managed Service per component) by default, falling back to a Cloud Native Deployment (Virtual Kubernetes Cluster) only for the part of a chart that genuinely needs Kubernetes semantics
 - `codesphere-create-container-deployment` — generates a `ci.yml` for a Managed Container deployment from existing Dockerfiles/`docker-compose.yml`
 - `codesphere-create-reactive-deployment` — generates a `ci.yml` with genuine Reactive services from application source
+- `codesphere-add-managed-service` — adds or edits a single Managed Service block (PostgreSQL, Valkey, RabbitMQ, ...) in an existing `ci.yml`, or creates a minimal one if none exists
+- `codesphere-create-provider` — wraps an existing Landscape's `ci.yml` into a publishable `provider.yml` catalog entry
+- `codesphere-run-deployment` — deploys an existing `ci.yml`, checking/configuring its vault secrets and env vars first, then reporting pipeline/health status
+- `codesphere-landscape` — reference for hand-authoring/debugging a Landscape's `ci.yml`, including the full annotated schema fixture and known traps
