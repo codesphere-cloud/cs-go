@@ -160,8 +160,8 @@ func (_c *MockClient_CreateOrganization_Call) Run(run func(name string, adminEma
 	return _c
 }
 
-func (_c *MockClient_CreateOrganization_Call) Return(v *api.Organization, err error) *MockClient_CreateOrganization_Call {
-	_c.Call.Return(v, err)
+func (_c *MockClient_CreateOrganization_Call) Return(organization *api.Organization, err error) *MockClient_CreateOrganization_Call {
+	_c.Call.Return(organization, err)
 	return _c
 }
 
@@ -455,8 +455,8 @@ func (_c *MockClient_DeployWorkspace_Call) Run(run func(args api.DeployWorkspace
 	return _c
 }
 
-func (_c *MockClient_DeployWorkspace_Call) Return(v *api.Workspace, err error) *MockClient_DeployWorkspace_Call {
-	_c.Call.Return(v, err)
+func (_c *MockClient_DeployWorkspace_Call) Return(workspace *api.Workspace, err error) *MockClient_DeployWorkspace_Call {
+	_c.Call.Return(workspace, err)
 	return _c
 }
 
@@ -607,8 +607,8 @@ func (_c *MockClient_GetPipelineState_Call) Run(run func(wsId int, stage string)
 	return _c
 }
 
-func (_c *MockClient_GetPipelineState_Call) Return(vs []api.PipelineStatus, err error) *MockClient_GetPipelineState_Call {
-	_c.Call.Return(vs, err)
+func (_c *MockClient_GetPipelineState_Call) Return(pipelineStatuss []api.PipelineStatus, err error) *MockClient_GetPipelineState_Call {
+	_c.Call.Return(pipelineStatuss, err)
 	return _c
 }
 
@@ -667,8 +667,8 @@ func (_c *MockClient_GetWorkspace_Call) Run(run func(workspaceId int)) *MockClie
 	return _c
 }
 
-func (_c *MockClient_GetWorkspace_Call) Return(v api.Workspace, err error) *MockClient_GetWorkspace_Call {
-	_c.Call.Return(v, err)
+func (_c *MockClient_GetWorkspace_Call) Return(workspace api.Workspace, err error) *MockClient_GetWorkspace_Call {
+	_c.Call.Return(workspace, err)
 	return _c
 }
 
@@ -785,8 +785,8 @@ func (_c *MockClient_ListBaseimages_Call) Run(run func()) *MockClient_ListBaseim
 	return _c
 }
 
-func (_c *MockClient_ListBaseimages_Call) Return(vs []api.Baseimage, err error) *MockClient_ListBaseimages_Call {
-	_c.Call.Return(vs, err)
+func (_c *MockClient_ListBaseimages_Call) Return(baseimages []api.Baseimage, err error) *MockClient_ListBaseimages_Call {
+	_c.Call.Return(baseimages, err)
 	return _c
 }
 
@@ -840,8 +840,8 @@ func (_c *MockClient_ListOrganizations_Call) Run(run func()) *MockClient_ListOrg
 	return _c
 }
 
-func (_c *MockClient_ListOrganizations_Call) Return(vs []api.Organization, err error) *MockClient_ListOrganizations_Call {
-	_c.Call.Return(vs, err)
+func (_c *MockClient_ListOrganizations_Call) Return(organizations []api.Organization, err error) *MockClient_ListOrganizations_Call {
+	_c.Call.Return(organizations, err)
 	return _c
 }
 
@@ -1019,8 +1019,8 @@ func (_c *MockClient_ListWorkspacePlans_Call) Run(run func()) *MockClient_ListWo
 	return _c
 }
 
-func (_c *MockClient_ListWorkspacePlans_Call) Return(vs []api.WorkspacePlan, err error) *MockClient_ListWorkspacePlans_Call {
-	_c.Call.Return(vs, err)
+func (_c *MockClient_ListWorkspacePlans_Call) Return(workspacePlans []api.WorkspacePlan, err error) *MockClient_ListWorkspacePlans_Call {
+	_c.Call.Return(workspacePlans, err)
 	return _c
 }
 
@@ -1081,8 +1081,8 @@ func (_c *MockClient_ListWorkspaces_Call) Run(run func(teamId int)) *MockClient_
 	return _c
 }
 
-func (_c *MockClient_ListWorkspaces_Call) Return(vs []api.Workspace, err error) *MockClient_ListWorkspaces_Call {
-	_c.Call.Return(vs, err)
+func (_c *MockClient_ListWorkspaces_Call) Return(workspaces []api.Workspace, err error) *MockClient_ListWorkspaces_Call {
+	_c.Call.Return(workspaces, err)
 	return _c
 }
 
@@ -1548,8 +1548,8 @@ func (_c *MockClient_WorkspaceStatus_Call) Run(run func(workspaceId int)) *MockC
 	return _c
 }
 
-func (_c *MockClient_WorkspaceStatus_Call) Return(v *api.WorkspaceStatus, err error) *MockClient_WorkspaceStatus_Call {
-	_c.Call.Return(v, err)
+func (_c *MockClient_WorkspaceStatus_Call) Return(workspaceStatus *api.WorkspaceStatus, err error) *MockClient_WorkspaceStatus_Call {
+	_c.Call.Return(workspaceStatus, err)
 	return _c
 }
 

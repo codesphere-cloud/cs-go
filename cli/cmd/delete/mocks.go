@@ -188,8 +188,8 @@ func (_c *MockClient_GetWorkspace_Call) Run(run func(workspaceId int)) *MockClie
 	return _c
 }
 
-func (_c *MockClient_GetWorkspace_Call) Return(v api.Workspace, err error) *MockClient_GetWorkspace_Call {
-	_c.Call.Return(v, err)
+func (_c *MockClient_GetWorkspace_Call) Return(workspace api.Workspace, err error) *MockClient_GetWorkspace_Call {
+	_c.Call.Return(workspace, err)
 	return _c
 }
 

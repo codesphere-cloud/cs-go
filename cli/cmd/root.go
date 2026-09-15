@@ -12,6 +12,7 @@ import (
 	createcmd "github.com/codesphere-cloud/cs-go/cli/cmd/create"
 	deletecmd "github.com/codesphere-cloud/cs-go/cli/cmd/delete"
 	generatecmd "github.com/codesphere-cloud/cs-go/cli/cmd/generate"
+	installcmd "github.com/codesphere-cloud/cs-go/cli/cmd/install"
 	listcmd "github.com/codesphere-cloud/cs-go/cli/cmd/list"
 	startcmd "github.com/codesphere-cloud/cs-go/cli/cmd/start"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
@@ -114,17 +115,18 @@ func GetRootCmd() *cobra.Command {
 	rootCmd.PersistentFlags().BoolVarP(&opts.Verbose, "verbose", "v", false, "Verbose output")
 	rootCmd.PersistentFlags().StringVarP(&opts.OrgId, "org", "O", "", "Organization ID (relevant for some commands)")
 
-	AddExecCmd(rootCmd, &opts)
 	listcmd.AddListCmd(rootCmd, &opts)
-	AddVersionCmd(rootCmd)
-	AddLicensesCmd(rootCmd)
-	AddOpenCmd(rootCmd, &opts)
 	generatecmd.AddGenerateCmd(rootCmd, &opts)
 	createcmd.AddCreateCmd(rootCmd, &opts)
 	deletecmd.AddDeleteCmd(rootCmd, &opts)
 	addcmd.AddAddCmd(rootCmd, &opts)
-	AddMonitorCmd(rootCmd, &opts)
 	startcmd.AddStartCmd(rootCmd, &opts)
+	installcmd.AddInstallCmd(rootCmd)
+	AddExecCmd(rootCmd, &opts)
+	AddVersionCmd(rootCmd)
+	AddLicensesCmd(rootCmd)
+	AddOpenCmd(rootCmd, &opts)
+	AddMonitorCmd(rootCmd, &opts)
 	AddStopCmd(rootCmd, &opts)
 	AddGitCmd(rootCmd, &opts)
 	AddSyncCmd(rootCmd, &opts)
@@ -134,6 +136,7 @@ func GetRootCmd() *cobra.Command {
 	AddCurlCmd(rootCmd, &opts)
 	AddScaleCmd(rootCmd, &opts)
 	AddMcpCmd(rootCmd)
+
 	AddLegacyCmds(rootCmd, &opts)
 
 	return rootCmd
