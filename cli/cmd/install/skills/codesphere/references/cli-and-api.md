@@ -48,6 +48,18 @@ Or download the platform binary directly from the GitHub Releases page.
 
 If team/workspace aren't passed as flags, the CLI reads them from the env vars; commands that need them fail without either.
 
+### Targeting the Current Workspace From Inside It
+
+An agent running inside a Codesphere workspace must resolve that workspace's own numeric ID before it can use `-w` / `CS_WORKSPACE_ID`. **Confirmed live** (`cloud.codesphere.com`, `cs` 1.38.0, `workspace-ssh` enabled): the `WORKSPACE_ID` built-in is injected into the workspace's **tmux session environment**, not the container environment, so over `workspace-ssh` or in a VS Code Remote / editor-extension terminal `printenv WORKSPACE_ID` is empty. Read the tmux global environment instead:
+
+```bash
+export CS_WORKSPACE_ID=$(tmux show-environment -g WORKSPACE_ID | cut -d= -f2)
+```
+
+`-g` is required (`tmux show-environment -t <session> WORKSPACE_ID` returns `unknown variable`), and `HOSTNAME` is not a substitute — it holds a workspace UUID, not the numeric ID `-w` takes. Full detail, including which shells see which variables: [environment-variables.md](./environment-variables.md).
+
+**Do not fall back to picking a row out of `cs list workspaces`.** API tokens are usually team- or org-wide, so that listing includes workspaces belonging to other people; a wrong guess targets someone else's workspace, and `cs start pipeline ... run` restarts whatever is running there.
+
 ### `cs-go` — Commands
 
 | Command      | Description                                    |
@@ -369,6 +381,7 @@ pipelines:
 - Looking for a `cs secret`/`cs managed-service`/`cs domain` CLI subcommand — none exist; go straight to the Public API for these areas.
 - Confusing `cs start --stage run` (single pipeline stage on the current workspace) with the Landscape lifecycle endpoints (`/workspaces/{id}/landscape/deploy|scale|teardown`) — they operate at different levels.
 - Hardcoding a `plan:` integer without checking `GET /metadata/workspace-plans` first.
+- Guessing which `cs list workspaces` row is "this" workspace when running inside one, because `printenv WORKSPACE_ID` came back empty — the ID is in the tmux global environment (`tmux show-environment -g WORKSPACE_ID`), and a wrong guess operates on another team member's workspace. See "Targeting the Current Workspace From Inside It" above.
 - Assuming the CLI's command list in this file is exhaustive — it's open source and can add commands between releases; run `cs --help` for the live list.
 - **Confirmed live:** `nix`/`nix-env` is not on `PATH` for a command run via `POST /workspaces/{workspaceId}/execute` (and therefore `cs exec`) — that endpoint invokes a plain non-login shell, which never sources `/home/user/.nix-profile/etc/profile.d/nix.sh` the way an interactive IDE terminal does. A `nix-env -iA nixpkgs.<pkg>` command that works fine as a `ci.yml` `prepare`/`run` step (confirmed to have Nix on `PATH` there) fails with "command not found" when run ad hoc via `cs exec`/`/execute` unless prefixed with `source /home/user/.nix-profile/etc/profile.d/nix.sh &&`.
 

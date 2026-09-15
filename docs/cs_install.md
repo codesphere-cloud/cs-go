@@ -25,5 +25,5 @@ Install optional resources for use alongside the Codesphere CLI, such as the bun
 ### SEE ALSO
 
 * [cs](cs.md)	 - The Codesphere CLI
-* [cs install skills](cs_install_skills.md)	 - Install the Codesphere skills bundled with this CLI
+* [cs install skills](cs_install_skills.md)	 - Install the Codesphere skills bundled with this CLI to the local device
 

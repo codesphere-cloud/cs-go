@@ -59,11 +59,15 @@ Trigger when the user wants an already-generated `ci.yml` actually deployed on C
 
 **Blocker risk:** Multiple workspaces plausibly match the repo; none do; the user has no workspace at all yet.
 
-**Action:** Check for a local tracking file (e.g. `.codesphere/codesphere-deploy.json`) with a remembered `workspaceId` from a prior run of this skill — reuse it if present rather than re-asking. If not present, list the team's workspaces (`GET /workspaces/team/{teamId}`) and try to match by repo name (derived from `git remote get-url origin`).
+**Action:** If this skill is running *inside* a Codesphere workspace and the target is that same workspace, resolve its ID directly instead of matching or asking: `tmux show-environment -g WORKSPACE_ID | cut -d= -f2`. **Confirmed live:** `WORKSPACE_ID` is injected into the tmux session environment, not the container environment, so `printenv WORKSPACE_ID` is empty over `workspace-ssh` or in a VS Code Remote / editor-extension terminal — an empty `printenv` is not evidence that there's no current workspace. `-g` is required, and `HOSTNAME` is a workspace UUID, not the numeric ID. See `references/environment-variables.md`.
+
+Otherwise, check for a local tracking file (e.g. `.codesphere/codesphere-deploy.json`) with a remembered `workspaceId` from a prior run of this skill — reuse it if present rather than re-asking. If not present, list the team's workspaces (`GET /workspaces/team/{teamId}`) and try to match by repo name (derived from `git remote get-url origin`).
 
 - **Exactly one match** → use it.
 - **No match** → ask the user directly for the workspace ID or name; this skill does not provision a new workspace itself.
 - **Multiple matches** → list them and ask the user to pick.
+
+**Never guess a workspace out of the listing.** API tokens are usually team- or org-wide, so `GET /workspaces/team/{teamId}` returns other people's workspaces; a wrong pick deploys to one of them, and Phase 5's `run` stage restarts whatever is running there. Ambiguity is resolved by the user or by the in-workspace `WORKSPACE_ID` lookup above, never by picking the most plausible-looking row.
 
 Store the resolved `workspaceId` in the local tracking file for next time.
 

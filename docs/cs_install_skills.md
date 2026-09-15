@@ -1,6 +1,6 @@
 ## cs install skills
 
-Install the Codesphere skills bundled with this CLI
+Install the Codesphere skills bundled with this CLI to the local device
 
 ### Synopsis
 
