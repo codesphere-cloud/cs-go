@@ -25,5 +25,5 @@ Install optional extensions for the Codesphere CLI, such as the bundled AI agent
 ### SEE ALSO
 
 * [cs](cs.md)	 - The Codesphere CLI
-* [cs install skills](cs_install_skills.md)	 - Install the Codesphere skills bundled with this CLI
+* [cs install skills](cs_install_skills.md)	 - Install the Codesphere skills bundled with this CLI to the local device
 
