@@ -5,7 +5,7 @@ Install the Codesphere skills bundled with this CLI
 ### Synopsis
 
 Installs the Codesphere skill package(s) bundled with this cs CLI release
-into a local skills folder (".agent/skills" by default), for use by AI coding
+into a local skills folder (".agents/skills" by default), for use by AI coding
 agents that support the Agent Skills format.
 
 Every installed skill folder gets a version.json recording which cs CLI version
@@ -21,10 +21,10 @@ cs install skills [flags]
 ### Examples
 
 ```
-# Install/update all bundled skills into ./.agent/skills
+# Install/update all bundled skills into ./.agents/skills
 $ cs install skills 
 
-# Install/update into ~/.agent/skills instead
+# Install/update into ~/.agents/skills instead
 $ cs install skills --global
 
 # Install/update into a custom directory
@@ -37,7 +37,7 @@ $ cs install skills --force
 ### Options
 
 ```
-      --dir string   Target skills directory (defaults to ".agent/skills", or "~/.agent/skills" with --global)
+      --dir string   Target skills directory (defaults to ".agents/skills", or "~/.agents/skills" with --global)
       --dry-run      Show what would be installed without writing any files
       --force        Reinstall every skill even if it's already up to date
       --global       Install into the user's home directory instead of the current directory
@@ -56,5 +56,5 @@ $ cs install skills --force
 
 ### SEE ALSO
 
-* [cs install](cs_install.md)	 - Install optional Codesphere CLI extensions
+* [cs install](cs_install.md)	 - Install optional Codesphere resources
 

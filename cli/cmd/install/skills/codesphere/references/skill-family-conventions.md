@@ -9,10 +9,13 @@
 
 ## Locating and reading `codesphere`'s `references/*.md` files
 
-Only the `codesphere` skill ships a `references/` folder. Every other skill in this family has
-none of its own — every `references/<file>.md` path mentioned anywhere in this family's skills
-lives inside the sibling `codesphere` skill's own directory. Resolving such a path relative to
-the *calling* skill's own installed location fails, or silently looks in the wrong place.
+The `codesphere` skill ships a `references/` folder, and `codesphere-add-managed-service` ships
+its own (the per-provider interview scripts under `references/interview-*.md`, used only by that
+skill). Every other skill in this family has none of its own — every other `references/<file>.md`
+path mentioned anywhere in this family's skills lives inside the sibling `codesphere` skill's own
+directory, not the calling skill's. Resolving such a path relative to the *calling* skill's own
+installed location fails, or silently looks in the wrong place, unless the calling skill is
+`codesphere-add-managed-service` referencing one of its own `interview-*.md` files.
 
 - **Locate it first.** If `codesphere`'s exact install path isn't already known, `Glob` for
   `**/codesphere/references/*.md` to find it, then read `<codesphere-path>/references/<file>.md`

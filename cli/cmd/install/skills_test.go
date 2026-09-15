@@ -10,6 +10,7 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/spf13/cobra"
 
 	installcmd "github.com/codesphere-cloud/cs-go/cli/cmd/install"
 )
@@ -84,10 +85,22 @@ var _ = Describe("InstallSkillsCmd", func() {
 		Expect(string(data)).To(Equal("from the future"))
 	})
 
-	It("always reinstalls when the cli version does not parse as semver", func() {
+	It("does not overwrite an installed skill when the cli version does not parse as semver", func() {
 		Expect(c.InstallSkills("1.2.0")).To(Succeed())
 		Expect(os.WriteFile(skillPath("codesphere", "SKILL.md"), []byte("local edits"), 0o644)).To(Succeed())
 
+		Expect(c.InstallSkills("dev")).To(Succeed())
+
+		data, err := os.ReadFile(skillPath("codesphere", "SKILL.md"))
+		Expect(err).NotTo(HaveOccurred())
+		Expect(string(data)).To(Equal("local edits"))
+	})
+
+	It("reinstalls an unparseable-version cli build when --force is set", func() {
+		Expect(c.InstallSkills("1.2.0")).To(Succeed())
+		Expect(os.WriteFile(skillPath("codesphere", "SKILL.md"), []byte("local edits"), 0o644)).To(Succeed())
+
+		c.Opts.Force = true
 		Expect(c.InstallSkills("dev")).To(Succeed())
 
 		data, err := os.ReadFile(skillPath("codesphere", "SKILL.md"))
@@ -115,7 +128,7 @@ var _ = Describe("InstallSkillsCmd", func() {
 		Expect(os.IsNotExist(err)).To(BeTrue())
 	})
 
-	It("defaults to .agent/skills under the current directory", func() {
+	It("defaults to .agents/skills under the current directory", func() {
 		cwd, err := os.Getwd()
 		Expect(err).NotTo(HaveOccurred())
 		tmp := GinkgoT().TempDir()
@@ -125,6 +138,17 @@ var _ = Describe("InstallSkillsCmd", func() {
 		defaultCmd := &installcmd.InstallSkillsCmd{}
 		Expect(defaultCmd.InstallSkills("1.0.0")).To(Succeed())
 
-		Expect(filepath.Join(tmp, ".agent", "skills", "codesphere", "SKILL.md")).To(BeAnExistingFile())
+		Expect(filepath.Join(tmp, ".agents", "skills", "codesphere", "SKILL.md")).To(BeAnExistingFile())
+	})
+
+	It("rejects --dir and --global together", func() {
+		parent := &cobra.Command{Use: "install"}
+		installcmd.AddInstallSkillsCmd(parent)
+
+		parent.SetArgs([]string{"skills", "--dir", dir, "--global"})
+		parent.SetOut(GinkgoWriter)
+		parent.SetErr(GinkgoWriter)
+
+		Expect(parent.Execute()).To(MatchError(ContainSubstring("dir")))
 	})
 })

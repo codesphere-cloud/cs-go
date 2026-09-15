@@ -1,6 +1,6 @@
 ---
 name: codesphere-create-reactive-deployment
-description: Generates a ci.yml with genuine Codesphere Reactive services (steps:, native prepare/run, Nix-installed toolchains where needed — never a helm/docker/kubectl command) from a repository's application source. Runs on explicit invocation. Detects each component's language/framework and maps it to the matching runtime recipe. Also checks whether components map to a Codesphere Managed Service (Postgres, Redis/Valkey, RabbitMQ, ...) instead of being deployed at all. Note: a Helm chart migration is handled by codesphere-create-cluster-deployment directly (it decides Reactive vs. Managed Container per component itself); this skill is for a repo with application source and no Helm chart involved.
+description: 'Generates a ci.yml with genuine Codesphere Reactive services (steps:, native prepare/run, Nix-installed toolchains where needed — never a helm/docker/kubectl command) from a repository''s application source. Runs on explicit invocation. Detects each component''s language/framework and maps it to the matching runtime recipe. Also checks whether components map to a Codesphere Managed Service (Postgres, Redis/Valkey, RabbitMQ, ...) instead of being deployed at all. Note: a Helm chart migration is handled by codesphere-create-cluster-deployment directly (it decides Reactive vs. Managed Container per component itself); this skill is for a repo with application source and no Helm chart involved.'
 license: none
 allowed-tools: Bash Read Write Glob Grep
 metadata:

@@ -16,8 +16,8 @@ func AddInstallCmd(rootCmd *cobra.Command) {
 	install := InstallCmd{
 		cmd: &cobra.Command{
 			Use:   "install",
-			Short: "Install optional Codesphere CLI extensions",
-			Long:  `Install optional extensions for the Codesphere CLI, such as the bundled AI agent skills.`,
+			Short: "Install optional Codesphere resources",
+			Long:  `Install optional resources for use alongside the Codesphere CLI, such as the bundled AI agent skills.`,
 		},
 	}
 	shared.AddCmd(rootCmd, install.cmd)

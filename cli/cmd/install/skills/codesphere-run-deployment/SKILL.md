@@ -1,6 +1,6 @@
 ---
 name: codesphere-run-deployment
-description: Deploys an existing ci.yml on Codesphere — checks whether every ${{ vault.NAME }} secret and ${{ workspace.env[...] }} plain env var the file actually references is set, offers to configure whatever's missing (auto-generating vault secrets where safely possible, asking for values the platform can't invent), then triggers the deployment via Codesphere's public API (or the confirmed cs-go CLI equivalent) and reports pipeline/health status. Trigger for "jetzt deployen", "ci.yml ausrollen", "landscape syncen", "auf Codesphere deployen", or any request to actually run/publish a Codesphere deployment rather than just generate its ci.yml.
+description: 'Deploys an existing ci.yml on Codesphere — checks whether every ${{ vault.NAME }} secret and ${{ workspace.env[...] }} plain env var the file actually references is set, offers to configure whatever''s missing (auto-generating vault secrets where safely possible, asking for values the platform can''t invent), then triggers the deployment via Codesphere''s public API (or the confirmed cs-go CLI equivalent) and reports pipeline/health status. Trigger for "jetzt deployen", "ci.yml ausrollen", "landscape syncen", "auf Codesphere deployen", or any request to actually run/publish a Codesphere deployment rather than just generate its ci.yml.'
 allowed-tools: Bash Read Write Glob Grep
 metadata:
   version: "1.0.0"

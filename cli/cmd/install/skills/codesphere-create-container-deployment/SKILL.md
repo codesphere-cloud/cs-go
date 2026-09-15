@@ -1,6 +1,6 @@
 ---
 name: codesphere-create-container-deployment
-description: Generates a ci.yml for a Codesphere Managed Container deployment (image: field, one per component) from a repository with existing Dockerfile(s) or a docker-compose.yml. Runs on explicit invocation. Flags clearly that Codesphere does not build Dockerfiles itself — the images need to already be built and pushed to a registry. Also checks whether components map to a Codesphere Managed Service (Postgres, Redis/Valkey, RabbitMQ, ...) instead of staying containers. Note: a Helm chart migration is handled by codesphere-create-cluster-deployment directly (it decides Reactive vs. Managed Container per component itself); this skill is for a repo with Dockerfiles/docker-compose.yml and no Helm chart involved.
+description: 'Generates a ci.yml for a Codesphere Managed Container deployment (image: field, one per component) from a repository with existing Dockerfile(s) or a docker-compose.yml. Runs on explicit invocation. Flags clearly that Codesphere does not build Dockerfiles itself — the images need to already be built and pushed to a registry. Also checks whether components map to a Codesphere Managed Service (Postgres, Redis/Valkey, RabbitMQ, ...) instead of staying containers. Note: a Helm chart migration is handled by codesphere-create-cluster-deployment directly (it decides Reactive vs. Managed Container per component itself); this skill is for a repo with Dockerfiles/docker-compose.yml and no Helm chart involved.'
 license: none
 allowed-tools: Bash Read Write Glob Grep
 metadata:

@@ -1,10 +1,10 @@
 ## cs install
 
-Install optional Codesphere CLI extensions
+Install optional Codesphere resources
 
 ### Synopsis
 
-Install optional extensions for the Codesphere CLI, such as the bundled AI agent skills.
+Install optional resources for use alongside the Codesphere CLI, such as the bundled AI agent skills.
 
 ### Options
 
