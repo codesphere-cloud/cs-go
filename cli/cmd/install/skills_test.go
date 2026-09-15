@@ -85,27 +85,43 @@ var _ = Describe("InstallSkillsCmd", func() {
 		Expect(string(data)).To(Equal("from the future"))
 	})
 
-	It("does not overwrite an installed skill when the cli version does not parse as semver", func() {
+	It("updates an installed skill when the cli version does not parse as semver", func() {
 		Expect(c.InstallSkills("1.2.0")).To(Succeed())
 		Expect(os.WriteFile(skillPath("codesphere", "SKILL.md"), []byte("local edits"), 0o644)).To(Succeed())
 
-		Expect(c.InstallSkills("dev")).To(Succeed())
-
-		data, err := os.ReadFile(skillPath("codesphere", "SKILL.md"))
-		Expect(err).NotTo(HaveOccurred())
-		Expect(string(data)).To(Equal("local edits"))
-	})
-
-	It("reinstalls an unparseable-version cli build when --force is set", func() {
-		Expect(c.InstallSkills("1.2.0")).To(Succeed())
-		Expect(os.WriteFile(skillPath("codesphere", "SKILL.md"), []byte("local edits"), 0o644)).To(Succeed())
-
-		c.Opts.Force = true
 		Expect(c.InstallSkills("dev")).To(Succeed())
 
 		data, err := os.ReadFile(skillPath("codesphere", "SKILL.md"))
 		Expect(err).NotTo(HaveOccurred())
 		Expect(string(data)).NotTo(Equal("local edits"))
+	})
+
+	It("keeps updating across repeated runs of an unparseable-version cli build", func() {
+		// A local dev build's cliVersion (e.g. "dev") stays unparseable across
+		// every run, so this must not get permanently stuck after the first
+		// install - otherwise iterating on skill content during development
+		// would always require --force.
+		Expect(c.InstallSkills("dev")).To(Succeed())
+		Expect(os.WriteFile(skillPath("codesphere", "SKILL.md"), []byte("local edits"), 0o644)).To(Succeed())
+
+		Expect(c.InstallSkills("dev")).To(Succeed())
+
+		data, err := os.ReadFile(skillPath("codesphere", "SKILL.md"))
+		Expect(err).NotTo(HaveOccurred())
+		Expect(string(data)).NotTo(Equal("local edits"))
+	})
+
+	It("updates a skill whose installed version.json doesn't parse as semver", func() {
+		Expect(c.InstallSkills("1.2.0")).To(Succeed())
+		Expect(os.WriteFile(skillPath("codesphere", "version.json"), []byte(`{"version":"not-a-semver"}`), 0o644)).To(Succeed())
+		Expect(os.WriteFile(skillPath("codesphere", "SKILL.md"), []byte("local edits"), 0o644)).To(Succeed())
+
+		Expect(c.InstallSkills("1.3.0")).To(Succeed())
+
+		data, err := os.ReadFile(skillPath("codesphere", "SKILL.md"))
+		Expect(err).NotTo(HaveOccurred())
+		Expect(string(data)).NotTo(Equal("local edits"))
+		Expect(readVersion("codesphere")).To(Equal("1.3.0"))
 	})
 
 	It("reinstalls an up to date skill when --force is set", func() {

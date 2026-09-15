@@ -151,8 +151,8 @@ func installSkill(bundled fs.FS, fsys *cs.FileSystem, name, cliVersion string, f
 	if !needsUpdate {
 		newer, err := isNewer(cliVersion, installed)
 		if err != nil {
-			log.Printf("%s: %v; leaving the installed copy as-is, use --force to reinstall anyway\n", name, err)
-			return nil
+			log.Printf("%s: %v; updating since it can't be compared to the installed version\n", name, err)
+			newer = true
 		}
 		needsUpdate = newer
 	}
