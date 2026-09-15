@@ -50,7 +50,7 @@ func AddInstallSkillsCmd(parent *cobra.Command) {
 	c := InstallSkillsCmd{
 		cmd: &cobra.Command{
 			Use:   "skills",
-			Short: "Install the Codesphere skills bundled with this CLI",
+			Short: "Install the Codesphere skills bundled with this CLI to the local device",
 			Long: csio.Long(`Installs the Codesphere skill package(s) bundled with this cs CLI release
 				into a local skills folder (".agent/skills" by default), for use by AI coding
 				agents that support the Agent Skills format.
