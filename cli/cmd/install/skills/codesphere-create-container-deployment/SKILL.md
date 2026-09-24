@@ -1,153 +1,45 @@
 ---
 name: codesphere-create-container-deployment
-description: 'Generates a ci.yml for a Codesphere Managed Container deployment (image: field, one per component) from a repository with existing Dockerfile(s) or a docker-compose.yml. Runs on explicit invocation. Flags clearly that Codesphere does not build Dockerfiles itself — the images need to already be built and pushed to a registry. Also checks whether components map to a Codesphere Managed Service (Postgres, Redis/Valkey, RabbitMQ, ...) instead of staying containers. Note: a Helm chart migration is handled by codesphere-create-cluster-deployment directly (it decides Reactive vs. Managed Container per component itself); this skill is for a repo with Dockerfiles/docker-compose.yml and no Helm chart involved.'
+description: 'Generates a ci.yml for a Codesphere Managed Container deployment (one image: per component) from a repository''s Dockerfile(s) and/or docker-compose.yml. Codesphere only pulls pre-built images — it never builds or pushes them, so the referenced images must already exist in a registry. Also checks whether components map onto a Codesphere Managed Service (Postgres, Redis/Valkey, RabbitMQ, ...) instead of staying containers. Only run on explicit invocation; a repo with a Helm chart is codesphere-create-cluster-deployment''s job instead, and a repo with only application source (no Dockerfile/compose) is codesphere-create-reactive-deployment''s.'
 license: none
 allowed-tools: Bash Read Write Glob Grep
 metadata:
-  version: "1.0.0"
-  updated: "2026-07-28"
+  version: "2.0.0"
+  updated: "2026-09-23"
   cost-tier: medium
 ---
 
-> **Process:** When this skill is explicitly/directly invoked by name, execute it immediately — don't ask the user what they want done with it. Proceed straight to Step 0. The only prompts are the Decision Points defined within each Step below.
+> **Process:** When this skill is explicitly/directly invoked by name, execute it immediately — don't ask the user what they want done with it.
 
 ## When to use this
 
-Trigger when the user wants a `ci.yml` generated using existing Docker images/Dockerfiles rather than Helm or a native rebuild — e.g. "Container Deployment aus meinen Dockerfiles erstellen", "ci.yml für die vorhandenen Docker-Images bauen", "codesphere-create-container-deployment ausführen". If the repository has a Helm chart, `codesphere-create-cluster-deployment` is the right entry point instead — it decides Reactive vs. Managed Container per component itself rather than handing off here. If the user names only the SBOM/publiccode.yml equivalent for a *different* skill family, that's out of scope here.
+Trigger when the user wants a `ci.yml` generated from existing Docker images/Dockerfiles rather than Helm or a native rebuild — e.g. "Container Deployment aus meinen Dockerfiles erstellen", "ci.yml für die vorhandenen Docker-Images bauen", "codesphere-create-container-deployment ausführen". If the repository has a Helm chart, use `codesphere-create-cluster-deployment` instead — it decides Reactive vs. Managed Container per component itself rather than handing off here. If there's no Dockerfile/compose file but there is application source, use `codesphere-create-reactive-deployment`.
 
-## Hard Gate
+## Reference
 
-- **Shared family conventions apply — see `references/skill-family-conventions.md`** (inside `codesphere`'s directory; this skill has no `references/` folder of its own — `Glob` for `**/codesphere/references/*.md` if the install path isn't already known). Covers locating/reading `codesphere`'s other `references/*.md` files (never requires `codesphere` itself to be loaded as an active skill) and the repo-root-only `ci.yml` placement used below.
-- **MUST NOT build, push, or run anything.** No `docker build`, no `docker push`, no `cs start`, no `POST /workspaces/{id}/landscape/deploy`. Building and pushing the images referenced in the generated `ci.yml` remains the user's own responsibility (their existing CI, or a manual step) — Codesphere pulls a pre-built image, it never builds one from a Dockerfile. Do not let the presence of a `Dockerfile` in the repo create the impression this skill will build it.
-- **MUST search both Dockerfiles and `docker-compose.yml`/`.yaml` in Step 2, not just whichever is found first**, and merge the results into one component list rather than treating them as alternatives.
-- **MUST NOT contain a `helm` or `kubectl` command anywhere in the generated `ci.yml`** — verify this explicitly before finishing Step 6, even if a Helm chart exists in the same repository.
-- **MUST include `prepare:` and `test:` explicitly** in the generated `ci.yml`, even as `steps: []`, matching every worked example in the `codesphere` reference set — don't drop keys just because they'd be empty.
+This skill has no `references/` folder of its own. Read `references/skill-family-conventions.md` (inside `codesphere`'s directory — `Glob` for `**/codesphere/references/*.md` if the install path isn't already known) for how to locate/read `codesphere`'s other reference files without loading `codesphere` itself, and for the repo-root-only `ci.yml` placement convention. For managed-service matches, read the matching `references/provider-*.md` for its exact `ci.yml` schema. This skill doesn't repeat their content.
 
-## Process: 8-Step Workflow
+## Process
 
-### Step 0: Determine repo root
+1. `ci.yml` always goes at the repo root, even in a monorepo with multiple components. If one already exists, ask whether to **update** (keep existing services, add/replace this one) or **overwrite** (rebuild from scratch) — don't proceed without an answer.
+2. Find deployable components by searching **both** Dockerfiles (per-component, or a single root one) and `docker-compose.yml`/`.yaml`/`compose.yml`, merging results into one list rather than treating them as alternatives. A component described in both sources is one component, not two. A compose service defined only with `image:` (no `build:`) is still a real component even with no Dockerfile anywhere in the repo, and its `image:` value already answers step 3's question for it. Neither source found anywhere → abort, tell the user there's nothing to containerize, and suggest `codesphere-create-reactive-deployment` if recognizable application source exists instead.
+3. For every component with a Dockerfile+`build:` and no known `image:` yet, ask whether an existing CI pipeline (GitHub Actions, GitLab CI, etc.) already builds and pushes it, and get the registry reference if so. If no such pipeline exists, don't invent one — still generate the `image:` reference, but flag it in the step 8 summary as not yet backed by a real build.
+4. Detect managed-service candidates: a component running its own DB/cache/queue image, or implied by another component's env vars (`DATABASE_URL`, `REDIS_URL`, etc.). Match against `references/providers.md`/`references/provider-*.md`: PostgreSQL → provider-postgresql.md (`postgres`); MongoDB-compatible → provider-documentdb.md (`ferretdb`); Redis/Valkey → provider-valkey.md (`valkey`); RabbitMQ → provider-rabbitmq.md (`rabbitmq`); Elasticsearch/OpenSearch → provider-opensearch.md (`opensearch`); S3-compatible/MinIO → provider-object-storage.md (`s3`); SQL Server-compatible → provider-babelfish.md (`babelfish`). Present each match individually — component, proposed service, what changes (existing data needs migration, not performed by this skill) — and let the user decide replace-or-keep per candidate. Nothing swaps silently.
+5. For each component that isn't a managed service, work out networking: read the Dockerfile's `EXPOSE` (and compose `ports:`) for the port it actually listens on; decide public vs. internal (end-user-facing, typically the frontend → a `network.paths` entry at `/`; internal-only, typically the backend → `isPublic: false` plus its own path prefix, or no public route at all). Translate a Dockerfile `HEALTHCHECK` into `healthEndpoint` if present, otherwise leave the platform default and flag if it doesn't match the real port. `stripPath` must match the component's actual route definitions, not a default guess — the wrong value produces a `ci.yml` that looks right but 404s at runtime.
+6. Generate `ci.yml` at `schemaVersion: v0.4`, with `prepare:` and `test:` present explicitly — even as `steps: []` — never omitted. One `run.<serviceName>` per component: `image:` from step 3, `command:` only if it needs to override the image's default `CMD`, `network` from step 5, `env:` for plain config, and any managed-service connection details wired in as `${{ vault.NAME }}` references directly in `env:` — no Helm, no `--set`. Each confirmed step 4 replacement gets its own `run.<serviceName>` Managed Service block per its `references/provider-*.md` schema, with secrets as `${{ vault.NAME }}` references, never plaintext. Before finishing, scan the draft for `helm`/`kubectl`/`virtual-k8s` and remove/reconsider anything found — their presence is a sign step 2 went wrong.
+7. Write `ci.yml` to the repo root per the step 1 decision. Nothing else changes — Dockerfiles and compose files are only ever read, never edited.
+8. Summarize: every component and where its image is expected to come from (explicitly flag any whose build/push pipeline doesn't exist yet), which managed-service replacements were made vs. declined, the networking decision per component, and which `${{ vault.* }}` references still need real values before the first sync.
 
-**Prerequisite:** Skill invoked.
+## Keep in mind
 
-**Action:** `ci.yml` always belongs at the repository root — never in a subdirectory, even in a monorepo with multiple components.
-
-**Output:** Confirmed target path for `ci.yml` (repo root).
-
-**Blocking conditions:** None.
-
-### Step 1: Check for an existing `ci.yml`
-
-**Prerequisite:** Step 0 completed.
-
-**Action:** Check whether a `ci.yml` already exists at the root.
-
-- **No** → continue to Step 2.
-- **Yes** → **Decision Point**: ask the user whether the existing `ci.yml` should be overwritten or updated. "Update" means preserving the existing services/structure as much as possible and only adding/replacing the containerized service(s). "Overwrite" means rebuilding it from scratch.
-
-**Output:** Overwrite-vs-update decision recorded.
-
-**Blocking conditions:** Do not proceed without an answer when a `ci.yml` already exists.
-
-### Step 2: Identify the deployable components
-
-**Prerequisite:** Step 1 completed.
-
-**Action:** Search **both** of the following sources — not just whichever is found first — and merge the results into one component list:
-
-1. **Dockerfiles**: every component with its own `Dockerfile` (e.g. `apps/backend/Dockerfile`, `apps/frontend/Dockerfile`), or a single root-level `Dockerfile` for a non-monorepo.
-2. **`docker-compose.yml`** (or `docker-compose.yaml`, `compose.yml`): every service it declares, whether via `build:` (a local Dockerfile context — cross-reference against source 1, likely the same component) or `image:` (an already-published image, which may have no local `Dockerfile` at all).
-
-When both sources describe the same component, treat it as one component, not two. A compose service defined purely with `image:` and no `build:` is still a real component even without a `Dockerfile` anywhere in the repo. A compose service's `image:` value already answers Step 3's "where does this image come from" question — don't ask the user again for that component.
-
-**Output:** Merged component list, each tagged with its known image source (`Dockerfile`+`build:`, or a compose `image:` value already known).
-
-**Blocking conditions:**
-- **Neither a Dockerfile nor a compose file found anywhere** → **Blocker, abort.** Tell the user there's nothing to containerize here and this skill can't proceed. If the repository has recognizable application source instead (e.g. `package.json`, `requirements.txt`, `go.mod`), suggest `codesphere-create-reactive-deployment` instead.
-
-### Step 3: Determine where each image actually lives
-
-**Prerequisite:** Step 2 produced a component list.
-
-**Action:** For every component with a `Dockerfile` and a `build:` context (no known `image:` yet), this skill needs to know where its **built** image will come from — Codesphere only pulls, it never builds. Skip this for any component whose `docker-compose.yml` entry already has an `image:` value — use that value directly instead of asking.
-
-**Decision Point:** for the remaining components, ask the user, per component (or once, if the answer is the same for all): is there already a CI pipeline (GitHub Actions, GitLab CI, etc.) that builds and pushes this image to a registry? If yes, get the registry/image reference (e.g. `registry.example.com/myorg/backend:latest`). If no such pipeline exists yet, say so plainly in the Step 8 summary rather than silently generating an `image:` reference that has nothing behind it.
-
-**Output:** A resolved `image:` reference for every component.
-
-**Blocking conditions:** None — a component without an existing pipeline still gets an `image:` reference, just flagged as not-yet-backed in the summary.
-
-### Step 4: Detect managed-service candidates
-
-**Prerequisite:** Step 3 completed.
-
-**Action:** Look for database/cache/queue components — either their own `Dockerfile`/image (e.g. an official `postgres`/`redis`/`rabbitmq` image referenced in `docker-compose.yml`) or a dependency implied by another component's env vars (`DATABASE_URL`, `REDIS_URL`, etc.). Check `references/providers.md` and the individual `references/provider-*.md` files for a match:
-
-| Component runs | Possible replacement | Provider |
-|---|---|---|
-| PostgreSQL | `references/provider-postgresql.md` | `postgres` |
-| MongoDB-compatible | `references/provider-documentdb.md` | `ferretdb` |
-| Redis/Valkey | `references/provider-valkey.md` | `valkey` |
-| RabbitMQ | `references/provider-rabbitmq.md` | `rabbitmq` |
-| Elasticsearch/OpenSearch | `references/provider-opensearch.md` | `opensearch` |
-| S3-compatible object storage/MinIO | `references/provider-object-storage.md` | `s3` |
-| SQL Server-compatible | `references/provider-babelfish.md` | `babelfish` |
-
-**Decision Point:** present each match individually — component, proposed managed service, and what it means (existing data would need migration, not performed by this skill). The user decides per candidate: replace with a Managed Service, or keep it as its own container.
-
-**Output:** Per-component replace/keep decisions.
-
-**Blocking conditions:** None.
-
-### Step 5: Work out networking for each component
-
-**Prerequisite:** Step 4 completed.
-
-**Action:** For each component that isn't a managed service: read its `Dockerfile`'s `EXPOSE` (and `docker-compose.yml`'s `ports:` if present) to find the port it actually listens on. Decide public vs. internal: a component the end user is meant to reach directly (typically the frontend) gets a `network.paths` entry at `/`; a component only other services should reach (typically the backend) gets `isPublic: false` and its own `path` prefix, or no public route if truly internal-only. If the Dockerfile has a `HEALTHCHECK` instruction, translate its target into `healthEndpoint` — otherwise leave the platform default (`http://localhost:3000/`) and flag if that doesn't match the actual listening port. **`stripPath` depends on whether the component's own routes already include the path prefix** — check the app's actual route definitions (or its source if available) rather than defaulting to either value; the wrong choice produces a `ci.yml` that looks right but 404s at runtime.
-
-**Output:** Networking configuration per component.
-
-**Blocking conditions:** None.
-
-### Step 6: Generate `ci.yml`
-
-**Prerequisite:** Step 5 completed.
-
-**Action:**
-- `schemaVersion: v0.4` (current — not `v0.2`).
-- Include `prepare:` and `test:` explicitly, even as `steps: []` — a pure Managed Container Landscape usually has nothing to put in either stage, but that's still `steps: []`, not omitting the key.
-- One `run.<serviceName>` per component: `image:` (Step 3), `command:` only if it needs to override the image's default `CMD` (rare), `network` per Step 5, `env:` for plain config, and any Step 4 managed-service connection details wired in as `${{ vault.NAME }}` references directly in `env:` — no Helm, no `--set` overrides.
-- For each replacement confirmed in Step 4: an additional `run.<serviceName>` Managed Service block following the schema in the matching `references/provider-*.md`, with `secrets` as `${{ vault.NAME }}` references (never plaintext).
-
-**Output:** Draft `ci.yml`.
-
-**Blocking conditions:** Before finishing this step, scan the draft `ci.yml` for `helm`/`kubectl`/`virtual-k8s` — their presence is a sign Step 2 went wrong. Remove/reconsider anything found.
-
-### Step 7: Write the file
-
-**Prerequisite:** Step 6 produced a validated draft `ci.yml`.
-
-**Action:** Place `ci.yml` at the repository root (overwrite/update per the Step 1 decision). No other file needs to change — the Dockerfiles themselves stay as-is, this skill only ever reads them.
-
-**Output:** `ci.yml` written.
-
-**Blocking conditions:** None.
-
-### Step 8: Summary
-
-**Prerequisite:** Step 7 completed.
-
-**Action:** Briefly summarize for the user:
-- Every component containerized, and where its image is expected to come from — explicitly flag any component whose build/push pipeline doesn't exist yet.
-- Which managed-service replacements were made vs. declined in Step 4.
-- The networking decision made per component in Step 5.
-- Which `${{ vault.* }}` references still need real values populated before the first sync.
-
-**Output:** One consolidated status message the user can act on.
-
-**Blocking conditions:** None.
+- Never build, push, or run anything — no `docker build`, no `docker push`, no `cs start`, no `POST /workspaces/{id}/landscape/deploy`. Building and pushing the images referenced in the generated `ci.yml` stays the user's own responsibility (their existing CI, or a manual step); Codesphere pulls a pre-built image, it never builds one from a Dockerfile. Don't let a Dockerfile's presence in the repo imply this skill will build it.
+- No `helm`/`kubectl` anywhere in the generated `ci.yml` — verify this explicitly before finishing (step 6), even if a Helm chart happens to exist in the same repository.
+- Step 2 must search both Dockerfiles and compose files and merge the results — never just whichever is found first, and never treat the two sources as alternatives.
+- `prepare:` and `test:` must always be present explicitly, even as `steps: []` — don't drop keys just because they'd be empty.
+- Renaming a service key in `ci.yml` after deploy forces recreation — treat a name as fixed once chosen.
 
 ## Related
 
 - `codesphere` — reference knowledge this skill reads from (loose coupling, read-only, never auto-invoked)
-- `codesphere-create-cluster-deployment` — handles a Helm-chart migration itself (including any Managed Container components); not a hand-off source into this skill
+- `codesphere-create-cluster-deployment` — handles a Helm-chart migration itself, including any Managed Container components; not a hand-off source into this skill
 - `codesphere-create-reactive-deployment` — alternative when no Dockerfile exists but application source does
