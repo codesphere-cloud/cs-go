@@ -11,7 +11,7 @@ require (
 	github.com/jedib0t/go-pretty/v6 v6.8.3
 	github.com/modelcontextprotocol/go-sdk v1.8.0
 	github.com/onsi/ginkgo/v2 v2.33.0
-	github.com/onsi/gomega v1.43.1
+	github.com/onsi/gomega v1.44.0
 	github.com/prometheus/client_golang v1.24.1
 	github.com/spf13/cobra v1.10.2
 	github.com/stretchr/testify v1.12.1
