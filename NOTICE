@@ -125,9 +125,9 @@ License URL: https://github.com/go-git/go-git/blob/v5.19.2/LICENSE
  
 ----------
 Module: github.com/go-logr/logr
-Version: v1.4.3
+Version: v1.4.4
 License: Apache-2.0
-License URL: https://github.com/go-logr/logr/blob/v1.4.3/LICENSE
+License URL: https://github.com/go-logr/logr/blob/v1.4.4/LICENSE
  
 ----------
 Module: github.com/golang/groupcache/lru
@@ -257,15 +257,15 @@ License URL: https://github.com/munnerz/goautoneg/blob/a7dc8b61c822/LICENSE
  
 ----------
 Module: github.com/onsi/ginkgo/v2
-Version: v2.32.2
+Version: v2.33.0
 License: MIT
-License URL: https://github.com/onsi/ginkgo/blob/v2.32.2/LICENSE
+License URL: https://github.com/onsi/ginkgo/blob/v2.33.0/LICENSE
  
 ----------
 Module: github.com/onsi/gomega
-Version: v1.43.0
+Version: v1.44.0
 License: MIT
-License URL: https://github.com/onsi/gomega/blob/v1.43.0/LICENSE
+License URL: https://github.com/onsi/gomega/blob/v1.44.0/LICENSE
  
 ----------
 Module: github.com/pjbgf/sha1cd
@@ -545,39 +545,39 @@ License URL: https://github.com/go-yaml/yaml/blob/v3.0.1/LICENSE
  
 ----------
 Module: k8s.io/api
-Version: v0.37.0
+Version: v0.37.1
 License: Apache-2.0
-License URL: https://github.com/kubernetes/api/blob/v0.37.0/LICENSE
+License URL: https://github.com/kubernetes/api/blob/v0.37.1/LICENSE
  
 ----------
 Module: k8s.io/apimachinery/pkg
-Version: v0.37.0
+Version: v0.37.1
 License: Apache-2.0
-License URL: https://github.com/kubernetes/apimachinery/blob/v0.37.0/LICENSE
+License URL: https://github.com/kubernetes/apimachinery/blob/v0.37.1/LICENSE
  
 ----------
 Module: k8s.io/apimachinery/third_party/forked/golang/reflect
-Version: v0.37.0
+Version: v0.37.1
 License: BSD-3-Clause
-License URL: https://github.com/kubernetes/apimachinery/blob/v0.37.0/third_party/forked/golang/LICENSE
+License URL: https://github.com/kubernetes/apimachinery/blob/v0.37.1/third_party/forked/golang/LICENSE
  
 ----------
 Module: k8s.io/cli-runtime/pkg/printers
-Version: v0.37.0
+Version: v0.37.1
 License: Apache-2.0
-License URL: https://github.com/kubernetes/cli-runtime/blob/v0.37.0/LICENSE
+License URL: https://github.com/kubernetes/cli-runtime/blob/v0.37.1/LICENSE
  
 ----------
 Module: k8s.io/client-go/third_party/forked/golang/template
-Version: v0.37.0
+Version: v0.37.1
 License: BSD-3-Clause
-License URL: https://github.com/kubernetes/client-go/blob/v0.37.0/third_party/forked/golang/LICENSE
+License URL: https://github.com/kubernetes/client-go/blob/v0.37.1/third_party/forked/golang/LICENSE
  
 ----------
 Module: k8s.io/client-go/util/jsonpath
-Version: v0.37.0
+Version: v0.37.1
 License: Apache-2.0
-License URL: https://github.com/kubernetes/client-go/blob/v0.37.0/LICENSE
+License URL: https://github.com/kubernetes/client-go/blob/v0.37.1/LICENSE
  
 ----------
 Module: k8s.io/klog/v2

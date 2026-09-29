@@ -9,7 +9,6 @@ import (
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
 	addcmd "github.com/codesphere-cloud/cs-go/cli/cmd/add"
 	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
-	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
@@ -21,7 +20,7 @@ var _ = Describe("AddTeamMember", func() {
 		globalOpts *cmd.GlobalOptions
 		c          *addcmd.AddTeamMemberCmd
 		teamId     int
-		role       cs.TeamRole
+		role       string
 		email      string
 	)
 
@@ -30,7 +29,7 @@ var _ = Describe("AddTeamMember", func() {
 		mockEnv = cmd.NewMockEnv(GinkgoT())
 		teamId = 42
 		email = "test@test.com"
-		role = cs.RoleMember
+		role = "member"
 		globalOpts = &cmd.GlobalOptions{
 			Env:    mockEnv,
 			TeamId: teamId,
@@ -40,7 +39,7 @@ var _ = Describe("AddTeamMember", func() {
 				RootOptions: globalOpts,
 				Email:       email,
 				TeamId:      teamId,
-				Role:        -1,
+				Role:        "admin",
 			},
 			ClientFactory: func(opts shared.RootOptions) (addcmd.Client, error) {
 				return mockClient, nil
@@ -52,6 +51,45 @@ var _ = Describe("AddTeamMember", func() {
 	AfterEach(func() {
 		mockEnv.AssertExpectations(GinkgoT())
 		mockClient.AssertExpectations(GinkgoT())
+	})
+
+	Context("Role flag", func() {
+		It("defaults to member", func() {
+			leaf, _, err := cmd.GetRootCmd().Find([]string{"add", "team-member"})
+			Expect(err).NotTo(HaveOccurred())
+			role, err := leaf.Flags().GetString("role")
+			Expect(err).NotTo(HaveOccurred())
+			Expect(role).To(Equal("member"))
+			c.Opts.Role = role
+			mockClient.EXPECT().AddTeamMember(teamId, email, 1).Return(nil).Once()
+			Expect(c.RunE(nil, nil)).To(Succeed())
+		})
+
+		It("accepts admin through the short flag", func() {
+			leaf, _, err := cmd.GetRootCmd().Find([]string{"add", "team-member"})
+			Expect(err).NotTo(HaveOccurred())
+			Expect(leaf.ParseFlags([]string{"-r", "admin"})).To(Succeed())
+			c.Opts.Role, err = leaf.Flags().GetString("role")
+			Expect(err).NotTo(HaveOccurred())
+			mockClient.EXPECT().AddTeamMember(teamId, email, 0).Return(nil).Once()
+			Expect(c.RunE(nil, nil)).To(Succeed())
+		})
+
+		It("accepts member through the long flag", func() {
+			leaf, _, err := cmd.GetRootCmd().Find([]string{"add", "team-member"})
+			Expect(err).NotTo(HaveOccurred())
+			Expect(leaf.ParseFlags([]string{"--role", "member"})).To(Succeed())
+			c.Opts.Role, err = leaf.Flags().GetString("role")
+			Expect(err).NotTo(HaveOccurred())
+			mockClient.EXPECT().AddTeamMember(teamId, email, 1).Return(nil).Once()
+			Expect(c.RunE(nil, nil)).To(Succeed())
+		})
+
+		It("requires a value after the role flag", func() {
+			leaf, _, err := cmd.GetRootCmd().Find([]string{"add", "team-member"})
+			Expect(err).NotTo(HaveOccurred())
+			Expect(leaf.ParseFlags([]string{"-r"})).To(MatchError(ContainSubstring("flag needs an argument")))
+		})
 	})
 
 	Context("Validation", func() {
@@ -71,32 +109,40 @@ var _ = Describe("AddTeamMember", func() {
 			Expect(err.Error()).To(ContainSubstring("invalid email address"))
 		})
 
-		It("should fail if the role is invalid (e.g. 3)", func() {
-			err := c.AddTeamMember(mockClient, teamId, "user@example.com", 3)
+		It("should fail if the role is unknown", func() {
+			err := c.AddTeamMember(mockClient, teamId, "user@example.com", "owner")
 
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(Equal("invalid role: must be 1 for member or -1 for admin"))
+			Expect(err.Error()).To(Equal("invalid role: must be member or admin"))
 		})
 
-		It("should fail if the role is 0", func() {
-			err := c.AddTeamMember(mockClient, teamId, "user@example.com", 0)
+		It("should fail if the role is empty", func() {
+			err := c.AddTeamMember(mockClient, teamId, "user@example.com", "")
 
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(Equal("invalid role: must be 1 for member or -1 for admin"))
+			Expect(err.Error()).To(Equal("invalid role: must be member or admin"))
 		})
 	})
 
+	It("rejects the old numeric member role", func() {
+		Expect(c.AddTeamMember(mockClient, teamId, email, "1")).To(MatchError("invalid role: must be member or admin"))
+	})
+
+	It("rejects the old numeric admin role", func() {
+		Expect(c.AddTeamMember(mockClient, teamId, email, "-1")).To(MatchError("invalid role: must be member or admin"))
+	})
+
 	Context("RunE execution flow", func() {
-		It("should successfully add a member to a team with role -1 (admin)", func() {
-			c.Opts.Role = -1
-			mockClient.EXPECT().AddTeamMember(teamId, email, -1).Return(nil).Once()
+		It("should successfully add a member to a team with role admin", func() {
+			c.Opts.Role = "admin"
+			mockClient.EXPECT().AddTeamMember(teamId, email, 0).Return(nil).Once()
 
 			err := c.RunE(nil, []string{})
 			Expect(err).ToNot(HaveOccurred())
 		})
 
-		It("should successfully add a member to a team with role 1 (member)", func() {
-			c.Opts.Role = 1
+		It("should successfully add a member to a team with role member", func() {
+			c.Opts.Role = "member"
 			mockClient.EXPECT().AddTeamMember(teamId, email, 1).Return(nil).Once()
 
 			err := c.RunE(nil, []string{})
@@ -104,7 +150,7 @@ var _ = Describe("AddTeamMember", func() {
 		})
 
 		It("should fail when the token is not allowed to add a member", func() {
-			mockClient.EXPECT().AddTeamMember(teamId, email, -1).Return(errors.New("failed")).Once()
+			mockClient.EXPECT().AddTeamMember(teamId, email, 0).Return(errors.New("failed")).Once()
 
 			err := c.RunE(nil, []string{})
 			Expect(err).To(HaveOccurred())
@@ -144,18 +190,18 @@ var _ = Describe("AddTeamMember", func() {
 			Expect(err.Error()).To(ContainSubstring("invalid email address"))
 		})
 
-		It("should fail when role is invalid (e.g. 3)", func() {
-			c.Opts.Role = 3
+		It("should fail when role is unknown", func() {
+			c.Opts.Role = "owner"
 			err := c.RunE(nil, []string{})
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(Equal("invalid role: must be 1 for member or -1 for admin"))
+			Expect(err.Error()).To(Equal("invalid role: must be member or admin"))
 		})
 
-		It("should fail when role is 0", func() {
-			c.Opts.Role = 0
+		It("should fail when role is empty", func() {
+			c.Opts.Role = ""
 			err := c.RunE(nil, []string{})
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(Equal("invalid role: must be 1 for member or -1 for admin"))
+			Expect(err.Error()).To(Equal("invalid role: must be member or admin"))
 		})
 	})
 
