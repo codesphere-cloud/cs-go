@@ -24,14 +24,9 @@ type StartPipelineCmd struct {
 
 type StartPipelineOpts struct {
 	shared.RootOptions
-	ClientFactory func() (Client, error)
+	ClientFactory func() (shared.Client, error)
 	Profile       *string
 	Timeout       *time.Duration
-}
-
-type Client interface {
-	StartPipelineStage(workspaceId int, profile string, stage string) error
-	GetPipelineState(workspaceId int, stage string) ([]api.PipelineStatus, error)
 }
 
 const IdeServer string = "codesphere-ide"
@@ -44,7 +39,7 @@ func (c *StartPipelineCmd) RunE(_ *cobra.Command, args []string) error {
 
 	clientFactory := c.Opts.ClientFactory
 	if clientFactory == nil {
-		clientFactory = func() (Client, error) {
+		clientFactory = func() (shared.Client, error) {
 			return c.Opts.NewClient()
 		}
 	}
@@ -86,7 +81,7 @@ func AddStartPipelineCmd(start *cobra.Command, opts shared.RootOptions) {
 	}
 
 	if pipeline.Opts.ClientFactory == nil {
-		pipeline.Opts.ClientFactory = func() (Client, error) {
+		pipeline.Opts.ClientFactory = func() (shared.Client, error) {
 			return opts.NewClient()
 		}
 	}
@@ -98,7 +93,7 @@ func AddStartPipelineCmd(start *cobra.Command, opts shared.RootOptions) {
 	pipeline.cmd.RunE = pipeline.RunE
 }
 
-func (c *StartPipelineCmd) StartPipelineStages(client Client, wsId int, stages []string) error {
+func (c *StartPipelineCmd) StartPipelineStages(client shared.Client, wsId int, stages []string) error {
 	for _, stage := range stages {
 		if !isValidStage(stage) {
 			return fmt.Errorf("invalid pipeline stage: %s", stage)
@@ -117,7 +112,7 @@ func isValidStage(stage string) bool {
 	return slices.Contains([]string{"prepare", "test", "run"}, stage)
 }
 
-func (c *StartPipelineCmd) startStage(client Client, wsId int, stage string) error {
+func (c *StartPipelineCmd) startStage(client shared.Client, wsId int, stage string) error {
 	log.Printf("starting %s stage on workspace %d...", stage, wsId)
 
 	err := client.StartPipelineStage(wsId, *c.Opts.Profile, stage)
@@ -134,7 +129,7 @@ func (c *StartPipelineCmd) startStage(client Client, wsId int, stage string) err
 	return nil
 }
 
-func (c *StartPipelineCmd) waitForPipelineStage(client Client, wsId int, stage string) error {
+func (c *StartPipelineCmd) waitForPipelineStage(client shared.Client, wsId int, stage string) error {
 	delay := 5 * time.Second
 
 	maxWaitTime := c.Time.Now().Add(*c.Opts.Timeout)

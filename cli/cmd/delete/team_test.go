@@ -34,7 +34,7 @@ var _ = Describe("DeleteTeam", func() {
 			Opts: deletecmd.DeleteTeamOpts{
 				RootOptions: globalOpts,
 			},
-			ClientFactory: func(opts shared.RootOptions) (deletecmd.Client, error) {
+			ClientFactory: func(opts shared.RootOptions) (cmd.Client, error) {
 				return mockClient, nil
 			},
 		}
@@ -62,7 +62,7 @@ var _ = Describe("DeleteTeam", func() {
 		})
 
 		It("should fail when client creation fails", func() {
-			c.ClientFactory = func(opts shared.RootOptions) (deletecmd.Client, error) {
+			c.ClientFactory = func(opts shared.RootOptions) (cmd.Client, error) {
 				return nil, errors.New("client init failed")
 			}
 

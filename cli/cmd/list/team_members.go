@@ -16,7 +16,7 @@ import (
 type ListTeamMembersCmd struct {
 	cmd           *cobra.Command
 	Opts          *ListOptions
-	ClientFactory func(shared.RootOptions) (Client, error)
+	ClientFactory func(shared.RootOptions) (shared.Client, error)
 }
 
 func AddListTeamMembersCmd(p *cobra.Command, opts *ListOptions) {
@@ -31,7 +31,7 @@ func AddListTeamMembersCmd(p *cobra.Command, opts *ListOptions) {
 			}),
 		},
 		Opts:          opts,
-		ClientFactory: func(opts shared.RootOptions) (Client, error) { return opts.NewClient() },
+		ClientFactory: func(opts shared.RootOptions) (shared.Client, error) { return opts.NewClient() },
 	}
 	l.cmd.RunE = l.RunE
 	shared.AddCmd(p, l.cmd)
@@ -51,7 +51,7 @@ func (l *ListTeamMembersCmd) RunE(_ *cobra.Command, args []string) error {
 	return l.ListTeamMembers(client, teamId)
 }
 
-func (l *ListTeamMembersCmd) ListTeamMembers(client Client, teamId int) error {
+func (l *ListTeamMembersCmd) ListTeamMembers(client shared.Client, teamId int) error {
 	members, err := client.ListTeamMembers(teamId)
 	if err != nil {
 		return fmt.Errorf("failed to list team members: %w", err)

@@ -63,7 +63,7 @@ func (c *CreateOrganizationCmd) RunE(_ *cobra.Command, args []string) error {
 	return nil
 }
 
-func (c *CreateOrganizationCmd) CreateOrganization(client Client, name string, adminEmail string) (*api.Organization, error) {
+func (c *CreateOrganizationCmd) CreateOrganization(client shared.Client, name string, adminEmail string) (*api.Organization, error) {
 	if name == "" {
 		return nil, errors.New("organization name cannot be empty")
 	}

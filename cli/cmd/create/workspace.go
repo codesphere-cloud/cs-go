@@ -119,7 +119,7 @@ func AddCreateWorkspaceCmd(create *cobra.Command, opts shared.RootOptions) {
 	workspace.cmd.RunE = workspace.RunE
 }
 
-func (c *CreateWorkspaceCmd) CreateWorkspace(client Client, teamId int, wsName string) (*api.Workspace, error) {
+func (c *CreateWorkspaceCmd) CreateWorkspace(client shared.Client, teamId int, wsName string) (*api.Workspace, error) {
 	envVars, err := cs.ArgToEnvVarMap(*c.Opts.Env)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse environment variables: %w", err)

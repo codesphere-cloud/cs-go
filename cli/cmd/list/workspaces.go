@@ -71,7 +71,7 @@ func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	return nil
 }
 
-func (l *ListWorkspacesCmd) ListWorkspaces(client Client) ([]api.Workspace, error) {
+func (l *ListWorkspacesCmd) ListWorkspaces(client shared.Client) ([]api.Workspace, error) {
 	teams, err := l.getTeamIds(client)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get teams: %w", err)
@@ -87,7 +87,7 @@ func (l *ListWorkspacesCmd) ListWorkspaces(client Client) ([]api.Workspace, erro
 	return workspaces, nil
 }
 
-func (l *ListWorkspacesCmd) getTeamIds(client Client) (teams []int, err error) {
+func (l *ListWorkspacesCmd) getTeamIds(client shared.Client) (teams []int, err error) {
 	teamIdEnv, err := l.Opts.GetTeamId()
 	if err != nil {
 		log.Println("No team ID provided via flag or environment variable, listing workspaces of all teams")

@@ -46,7 +46,7 @@ var _ = Describe("CreateTeam", func() {
 				Name:        teamName,
 				DcId:        dcId,
 			},
-			ClientFactory: func(opts shared.RootOptions) (createcmd.Client, error) {
+			ClientFactory: func(opts shared.RootOptions) (cmd.Client, error) {
 				return mockClient, nil
 			},
 		}

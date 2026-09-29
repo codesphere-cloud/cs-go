@@ -15,7 +15,7 @@ import (
 type DeleteTeamMemberCmd struct {
 	cmd           *cobra.Command
 	Opts          DeleteTeamMemberOpts
-	ClientFactory func(shared.RootOptions) (Client, error)
+	ClientFactory func(shared.RootOptions) (shared.Client, error)
 }
 
 type DeleteTeamMemberOpts struct {
@@ -39,7 +39,7 @@ func AddDeleteTeamMemberCmd(delete *cobra.Command, opts shared.RootOptions) {
 		Opts: DeleteTeamMemberOpts{
 			RootOptions: opts,
 		},
-		ClientFactory: func(opts shared.RootOptions) (Client, error) { return opts.NewClient() },
+		ClientFactory: func(opts shared.RootOptions) (shared.Client, error) { return opts.NewClient() },
 	}
 	res.cmd.Flags().IntVarP(&res.Opts.UserId, "user", "u", 0, "Team member user ID")
 	_ = res.cmd.MarkFlagRequired("user")
@@ -61,7 +61,7 @@ func (c *DeleteTeamMemberCmd) RunE(_ *cobra.Command, args []string) error {
 	return c.DeleteTeamMember(client, teamId, c.Opts.UserId)
 }
 
-func (c *DeleteTeamMemberCmd) DeleteTeamMember(client Client, teamId int, userId int) error {
+func (c *DeleteTeamMemberCmd) DeleteTeamMember(client shared.Client, teamId int, userId int) error {
 	if userId <= 0 {
 		return errors.New("user ID has to be set")
 	}

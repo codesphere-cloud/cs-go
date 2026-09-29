@@ -54,7 +54,7 @@ func (l *CreateEnvCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	return l.SetEnvironmentVariables(client)
 }
 
-func (l *CreateEnvCmd) SetEnvironmentVariables(client Client) (err error) {
+func (l *CreateEnvCmd) SetEnvironmentVariables(client shared.Client) (err error) {
 	envVarMap, err := cs.ArgToEnvVarMap(*l.Opts.EnvVar)
 	if err != nil {
 		return fmt.Errorf("failed to parse environment variables: %w", err)
