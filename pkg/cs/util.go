@@ -75,7 +75,7 @@ type TeamRole int
 
 const (
 	RoleMember TeamRole = 1
-	RoleAdmin  TeamRole = -1
+	RoleAdmin  TeamRole = 0
 )
 
 func (r TeamRole) IsValid() bool {
@@ -86,7 +86,7 @@ func (r TeamRole) String() string {
 	switch r {
 	case RoleMember:
 		return "Member"
-	case RoleAdmin, 0:
+	case RoleAdmin, -1:
 		return "Admin"
 	default:
 		return "Unknown"

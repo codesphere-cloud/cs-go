@@ -16,10 +16,10 @@ cs add team-member [flags]
 
 ```
 # Add a user to a team as a member
-$ cs add team-member -t <teamId> -e user@example.com -r 1
+$ cs add team-member -t <teamId> -e user@example.com -r member
 
 # Add a user to a team as an admin
-$ cs add team-member -t <teamId> -e admin@example.com -r -1
+$ cs add team-member -t <teamId> -e admin@example.com -r admin
 ```
 
 ### Options
@@ -27,7 +27,7 @@ $ cs add team-member -t <teamId> -e admin@example.com -r -1
 ```
   -e, --email string   Team member email
   -h, --help           help for team-member
-  -r, --role int       Team member role 1=member, -1=admin (default 1)
+  -r, --role string    Team member role (member, admin) (default "member")
 ```
 
 ### Options inherited from parent commands
