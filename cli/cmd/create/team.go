@@ -16,7 +16,7 @@ import (
 type CreateTeamCmd struct {
 	cmd           *cobra.Command
 	Opts          CreateTeamOpts
-	ClientFactory func(shared.RootOptions) (Client, error)
+	ClientFactory func(shared.RootOptions) (shared.Client, error)
 }
 
 type CreateTeamOpts struct {
@@ -33,13 +33,13 @@ func AddCreateTeamCmd(create *cobra.Command, opts shared.RootOptions) {
 			Long:  `Create a team in Codesphere or an Organization`,
 			Example: io.FormatExampleCommands("create team", []io.Example{
 				{Cmd: "-d <datacenterId> -n <teamName>", Desc: "Create a team in a specific datacenter"},
-				{Cmd: "-d <datacenterId> -n <teamName> -O <orgId>", Desc: "Create a team in a specific datacenter within an organization"},
+				{Cmd: "-d <datacenterId> -n <teamName> -g <orgId>", Desc: "Create a team in a specific datacenter within an organization"},
 			}),
 		},
 		Opts: CreateTeamOpts{
 			RootOptions: opts,
 		},
-		ClientFactory: func(opts shared.RootOptions) (Client, error) { return opts.NewClient() },
+		ClientFactory: func(opts shared.RootOptions) (shared.Client, error) { return opts.NewClient() },
 	}
 	t.cmd.RunE = t.RunE
 	t.cmd.Flags().StringVarP(&t.Opts.Name, "name", "n", "", "Team name")
@@ -72,7 +72,7 @@ func (c *CreateTeamCmd) RunE(_ *cobra.Command, args []string) error {
 	return nil
 }
 
-func (c *CreateTeamCmd) CreateTeam(client Client, orgId string, teamName string, dcId int) (*api.Team, error) {
+func (c *CreateTeamCmd) CreateTeam(client shared.Client, orgId string, teamName string, dcId int) (*api.Team, error) {
 	if teamName == "" {
 		return nil, errors.New("team name cannot be empty")
 	}

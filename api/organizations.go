@@ -28,3 +28,25 @@ func (c *Client) CreateOrganization(name string, adminEmail string) (*Organizati
 
 	return org, nil
 }
+
+func (c *Client) ListOrganizationMembers(orgId string) ([]OrganizationMember, error) {
+	members, r, err := c.api.OrganizationsAPI.OrganizationsListOrgMembers(c.ctx, orgId).Execute()
+	return members, cserrors.FormatAPIError(r, err)
+}
+
+func (c *Client) AddOrganizationMember(orgId, email, role string) error {
+	req := openapi.NewOrganizationsAddOrgMemberRequest(email, role)
+	r, err := c.api.OrganizationsAPI.OrganizationsAddOrgMember(c.ctx, orgId).OrganizationsAddOrgMemberRequest(*req).Execute()
+	return cserrors.FormatAPIError(r, err)
+}
+
+func (c *Client) RemoveOrganizationMember(orgId string, userId int) error {
+	r, err := c.api.OrganizationsAPI.OrganizationsRemoveOrgMember(c.ctx, orgId, userId).Execute()
+	return cserrors.FormatAPIError(r, err)
+}
+
+func (c *Client) ChangeOrganizationMemberRole(orgId string, userId int, role string) error {
+	req := openapi.NewOrganizationsChangeOrgRoleRequest(role)
+	r, err := c.api.OrganizationsAPI.OrganizationsChangeOrgRole(c.ctx, orgId, userId).OrganizationsChangeOrgRoleRequest(*req).Execute()
+	return cserrors.FormatAPIError(r, err)
+}

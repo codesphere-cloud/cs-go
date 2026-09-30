@@ -15,7 +15,7 @@ import (
 type DeleteTeamCmd struct {
 	cmd           *cobra.Command
 	Opts          DeleteTeamOpts
-	ClientFactory func(shared.RootOptions) (Client, error)
+	ClientFactory func(shared.RootOptions) (shared.Client, error)
 }
 
 type DeleteTeamOpts struct {
@@ -35,7 +35,7 @@ func AddDeleteTeamCmd(delete *cobra.Command, opts shared.RootOptions) {
 		Opts: DeleteTeamOpts{
 			RootOptions: opts,
 		},
-		ClientFactory: func(opts shared.RootOptions) (Client, error) { return opts.NewClient() },
+		ClientFactory: func(opts shared.RootOptions) (shared.Client, error) { return opts.NewClient() },
 	}
 	t.cmd.RunE = t.RunE
 	shared.AddCmd(delete, t.cmd)

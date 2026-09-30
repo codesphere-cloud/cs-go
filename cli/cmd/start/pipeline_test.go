@@ -43,7 +43,7 @@ var _ = Describe("StartPipeline", func() {
 					WorkspaceId: wsId,
 					Verbose:     verbose,
 				},
-				ClientFactory: func() (startcmd.Client, error) {
+				ClientFactory: func() (cmd.Client, error) {
 					return mockClient, nil
 				},
 				Profile: &profile,

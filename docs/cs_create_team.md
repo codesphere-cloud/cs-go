@@ -17,7 +17,7 @@ cs create team [flags]
 $ cs create team -d <datacenterId> -n <teamName>
 
 # Create a team in a specific datacenter within an organization
-$ cs create team -d <datacenterId> -n <teamName> -O <orgId>
+$ cs create team -d <datacenterId> -n <teamName> -g <orgId>
 ```
 
 ### Options
@@ -32,7 +32,7 @@ $ cs create team -d <datacenterId> -n <teamName> -O <orgId>
 
 ```
   -a, --api string      URL of Codesphere API (can also be CS_API)
-  -O, --org string      Organization ID (relevant for some commands)
+  -g, --org string      Organization ID (relevant for some commands)
   -t, --team int        Team ID (relevant for some commands, can also be CS_TEAM_ID) (default -1)
   -v, --verbose         Verbose output
   -w, --workspace int   Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)

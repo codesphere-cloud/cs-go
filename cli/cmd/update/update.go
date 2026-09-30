@@ -1,7 +1,7 @@
 // Copyright (c) Codesphere Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-package cmd
+package update
 
 import (
 	"context"
@@ -24,7 +24,7 @@ func (c *UpdateCmd) RunE(_ *cobra.Command, args []string) error {
 	return SelfUpdate()
 }
 
-func AddUpdateCmd(rootCmd *cobra.Command) {
+func AddUpdateCmd(rootCmd *cobra.Command, opts shared.RootOptions) {
 	update := UpdateCmd{
 		cmd: &cobra.Command{
 			Use:   "update",
@@ -34,6 +34,7 @@ func AddUpdateCmd(rootCmd *cobra.Command) {
 	}
 	shared.AddCmd(rootCmd, update.cmd)
 	update.cmd.RunE = update.RunE
+	AddUpdateOrganizationMemberCmd(update.cmd, opts)
 }
 
 func SelfUpdate() error {

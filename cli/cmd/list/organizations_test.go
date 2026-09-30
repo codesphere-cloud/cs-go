@@ -38,7 +38,7 @@ var _ = Describe("Organization", func() {
 					OrgId: "", // force using the env mock to get a org ID
 				},
 			},
-			ClientFactory: func(opts shared.RootOptions) (listcmd.Client, error) { return opts.NewClient() },
+			ClientFactory: func(opts shared.RootOptions) (cmd.Client, error) { return opts.NewClient() },
 		}
 	})
 
@@ -53,7 +53,7 @@ var _ = Describe("Organization", func() {
 			mockEnv.EXPECT().GetApiUrl().Return("https://cloud.codesphere.com/api").Maybe()
 
 			// Override the ClientFactory to return our mockClient
-			l.ClientFactory = func(opts shared.RootOptions) (listcmd.Client, error) {
+			l.ClientFactory = func(opts shared.RootOptions) (cmd.Client, error) {
 				return mockClient, nil
 			}
 
@@ -85,7 +85,7 @@ var _ = Describe("Organization", func() {
 			mockEnv.EXPECT().GetApiUrl().Return("https://cloud.codesphere.com/api").Maybe()
 
 			// We should also use the mock factory here to simulate an API failure deterministically
-			l.ClientFactory = func(opts shared.RootOptions) (listcmd.Client, error) {
+			l.ClientFactory = func(opts shared.RootOptions) (cmd.Client, error) {
 				return mockClient, nil
 			}
 			mockClient.EXPECT().ListOrganizations().Return(nil, errors.New("API error")).Once()

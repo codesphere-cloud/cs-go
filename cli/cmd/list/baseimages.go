@@ -48,7 +48,7 @@ func (l *ListBaseimagesCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	return nil
 }
 
-func (l *ListBaseimagesCmd) ListBaseimages(client Client) error {
+func (l *ListBaseimagesCmd) ListBaseimages(client shared.Client) error {
 	baseimages, err := client.ListBaseimages()
 	if err != nil {
 		return fmt.Errorf("failed to list baseimages: %w", err)

@@ -17,7 +17,7 @@ import (
 type AddTeamMemberCmd struct {
 	cmd           *cobra.Command
 	Opts          AddTeamMemberOpts
-	ClientFactory func(shared.RootOptions) (Client, error)
+	ClientFactory func(shared.RootOptions) (shared.Client, error)
 }
 
 type AddTeamMemberOpts struct {
@@ -43,7 +43,7 @@ func AddAddTeamMemberCmd(add *cobra.Command, opts shared.RootOptions) {
 		Opts: AddTeamMemberOpts{
 			RootOptions: opts,
 		},
-		ClientFactory: func(opts shared.RootOptions) (Client, error) { return opts.NewClient() },
+		ClientFactory: func(opts shared.RootOptions) (shared.Client, error) { return opts.NewClient() },
 	}
 	t.cmd.RunE = t.RunE
 	t.cmd.Flags().StringVarP(&t.Opts.Email, "email", "e", "", "Team member email")
@@ -68,7 +68,7 @@ func (c *AddTeamMemberCmd) RunE(_ *cobra.Command, args []string) error {
 
 }
 
-func (c *AddTeamMemberCmd) AddTeamMember(client Client, teamId int, email string, role string) error {
+func (c *AddTeamMemberCmd) AddTeamMember(client shared.Client, teamId int, email string, role string) error {
 	if email == "" {
 		return errors.New("email cannot be empty")
 	}

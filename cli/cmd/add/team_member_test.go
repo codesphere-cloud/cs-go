@@ -41,7 +41,7 @@ var _ = Describe("AddTeamMember", func() {
 				TeamId:      teamId,
 				Role:        "admin",
 			},
-			ClientFactory: func(opts shared.RootOptions) (addcmd.Client, error) {
+			ClientFactory: func(opts shared.RootOptions) (cmd.Client, error) {
 				return mockClient, nil
 			},
 		}
@@ -158,7 +158,7 @@ var _ = Describe("AddTeamMember", func() {
 		})
 
 		It("should fail when client creation fails", func() {
-			c.ClientFactory = func(opts shared.RootOptions) (addcmd.Client, error) {
+			c.ClientFactory = func(opts shared.RootOptions) (cmd.Client, error) {
 				return nil, errors.New("client init failed")
 			}
 

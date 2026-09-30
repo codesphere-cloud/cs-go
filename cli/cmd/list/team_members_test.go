@@ -36,7 +36,7 @@ var _ = Describe("ListTeamMembers", func() {
 			Opts: &listcmd.ListOptions{
 				RootOptions: globalOpts,
 			},
-			ClientFactory: func(opts shared.RootOptions) (listcmd.Client, error) {
+			ClientFactory: func(opts shared.RootOptions) (cmd.Client, error) {
 				return mockClient, nil
 			},
 		}
@@ -86,7 +86,7 @@ var _ = Describe("ListTeamMembers", func() {
 		})
 
 		It("should fail when client creation fails", func() {
-			l.ClientFactory = func(opts shared.RootOptions) (listcmd.Client, error) {
+			l.ClientFactory = func(opts shared.RootOptions) (cmd.Client, error) {
 				return nil, errors.New("client init failed")
 			}
 

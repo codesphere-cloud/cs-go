@@ -30,6 +30,7 @@ type Domain = openapi.DomainsGetDomain200Response
 type DomainVerificationStatus = openapi.DomainsGetDomain200ResponseDomainVerificationStatus
 type UpdateDomainArgs = openapi.DomainsUpdateDomainRequest
 type PathToWorkspaces = map[string][]*Workspace
+type OrganizationMember = openapi.OrganizationsListOrgMembers200ResponseInner
 type Organization = openapi.ClustersListAllOrganizations200ResponseInner
 type Workspace = openapi.WorkspacesGetWorkspace200Response
 type Baseimage = openapi.MetadataGetWorkspaceBaseImages200ResponseInner

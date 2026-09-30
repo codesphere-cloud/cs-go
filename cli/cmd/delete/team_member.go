@@ -4,7 +4,6 @@
 package delete
 
 import (
-	"errors"
 	"fmt"
 
 	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
@@ -15,7 +14,7 @@ import (
 type DeleteTeamMemberCmd struct {
 	cmd           *cobra.Command
 	Opts          DeleteTeamMemberOpts
-	ClientFactory func(shared.RootOptions) (Client, error)
+	ClientFactory func(shared.RootOptions) (shared.Client, error)
 }
 
 type DeleteTeamMemberOpts struct {
@@ -30,18 +29,18 @@ func AddDeleteTeamMemberCmd(delete *cobra.Command, opts shared.RootOptions) {
 			Short: "Delete team member",
 			Long: io.Long(`Delete a member from a team.
 
-				To delete a member from a team within an organization, the CS_ORG_ID environment variable or the -O/--org flag must be set.`),
+				To delete a member from a team within an organization, the CS_ORG_ID environment variable or the -g/--org flag must be set.`),
 			Example: io.FormatExampleCommands("delete team-member", []io.Example{
 				{Cmd: "-t <teamId> -u <userId>", Desc: "Delete a user from a team"},
-				{Cmd: "-O <org-id> -t <teamId> -u <userId>", Desc: "Delete a user from a team within an organization"},
+				{Cmd: "-g <org-id> -t <teamId> -u <userId>", Desc: "Delete a user from a team within an organization"},
 			}),
 		},
 		Opts: DeleteTeamMemberOpts{
 			RootOptions: opts,
 		},
-		ClientFactory: func(opts shared.RootOptions) (Client, error) { return opts.NewClient() },
+		ClientFactory: func(opts shared.RootOptions) (shared.Client, error) { return opts.NewClient() },
 	}
-	res.cmd.Flags().IntVarP(&res.Opts.UserId, "user", "u", 0, "Team member user ID")
+	res.cmd.Flags().IntVarP(&res.Opts.UserId, "user", "u", -1, "Team member user ID")
 	_ = res.cmd.MarkFlagRequired("user")
 	res.cmd.RunE = res.RunE
 	shared.AddCmd(delete, res.cmd)
@@ -61,9 +60,9 @@ func (c *DeleteTeamMemberCmd) RunE(_ *cobra.Command, args []string) error {
 	return c.DeleteTeamMember(client, teamId, c.Opts.UserId)
 }
 
-func (c *DeleteTeamMemberCmd) DeleteTeamMember(client Client, teamId int, userId int) error {
-	if userId <= 0 {
-		return errors.New("user ID has to be set")
+func (c *DeleteTeamMemberCmd) DeleteTeamMember(client shared.Client, teamId int, userId int) error {
+	if err := shared.ValidateUserID(userId); err != nil {
+		return err
 	}
 
 	err := client.RemoveTeamMember(teamId, userId)

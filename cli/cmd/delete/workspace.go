@@ -21,7 +21,7 @@ type DeleteWorkspaceCmd struct {
 	cmd           *cobra.Command
 	Opts          DeleteWorkspaceOpts
 	Prompt        Prompt
-	ClientFactory func(shared.RootOptions) (Client, error)
+	ClientFactory func(shared.RootOptions) (shared.Client, error)
 }
 
 type DeleteWorkspaceOpts struct {
@@ -54,14 +54,14 @@ func AddDeleteWorkspaceCmd(delete *cobra.Command, opts shared.RootOptions) {
 		},
 		Opts:          DeleteWorkspaceOpts{RootOptions: opts},
 		Prompt:        &io.Prompt{},
-		ClientFactory: func(opts shared.RootOptions) (Client, error) { return opts.NewClient() },
+		ClientFactory: func(opts shared.RootOptions) (shared.Client, error) { return opts.NewClient() },
 	}
 	workspace.Opts.Confirmed = workspace.cmd.Flags().Bool("yes", false, "Confirm deletion of workspace")
 	shared.AddCmd(delete, workspace.cmd)
 	workspace.cmd.RunE = workspace.RunE
 }
 
-func (c *DeleteWorkspaceCmd) DeleteWorkspace(client Client, wsId int) error {
+func (c *DeleteWorkspaceCmd) DeleteWorkspace(client shared.Client, wsId int) error {
 
 	workspace, err := client.GetWorkspace(wsId)
 	if err != nil {

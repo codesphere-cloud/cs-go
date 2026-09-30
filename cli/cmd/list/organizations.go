@@ -16,7 +16,7 @@ import (
 type ListOrgCmd struct {
 	cmd           *cobra.Command
 	Opts          *ListOptions
-	ClientFactory func(shared.RootOptions) (Client, error)
+	ClientFactory func(shared.RootOptions) (shared.Client, error)
 }
 
 func AddListOrgCmd(p *cobra.Command, opts *ListOptions,
@@ -24,7 +24,7 @@ func AddListOrgCmd(p *cobra.Command, opts *ListOptions,
 	l := ListOrgCmd{
 		cmd: &cobra.Command{
 			Use:     "organization",
-			Aliases: []string{"organization", "org", "orgs"},
+			Aliases: []string{"organizations", "org", "orgs"},
 			Short:   "List organizations",
 			Long:    `List organizations available in Codesphere`,
 			Example: io.FormatExampleCommands("list org", []io.Example{
@@ -32,7 +32,7 @@ func AddListOrgCmd(p *cobra.Command, opts *ListOptions,
 			}),
 		},
 		Opts:          opts,
-		ClientFactory: func(opts shared.RootOptions) (Client, error) { return opts.NewClient() },
+		ClientFactory: func(opts shared.RootOptions) (shared.Client, error) { return opts.NewClient() },
 	}
 	l.cmd.RunE = l.RunE
 	shared.AddCmd(p, l.cmd)
@@ -52,7 +52,7 @@ func (l *ListOrgCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	return nil
 }
 
-func (l *ListOrgCmd) ListOrganizations(client Client) ([]api.Organization, error) {
+func (l *ListOrgCmd) ListOrganizations(client shared.Client) ([]api.Organization, error) {
 	orgs, err := client.ListOrganizations()
 	if err != nil {
 		return nil, fmt.Errorf("failed to list organizations: %w", err)
