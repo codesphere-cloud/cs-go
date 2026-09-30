@@ -24,7 +24,7 @@ func AddListOrgCmd(p *cobra.Command, opts *ListOptions,
 	l := ListOrgCmd{
 		cmd: &cobra.Command{
 			Use:     "organization",
-			Aliases: []string{"organization", "org", "orgs"},
+			Aliases: []string{"organizations", "org", "orgs"},
 			Short:   "List organizations",
 			Long:    `List organizations available in Codesphere`,
 			Example: io.FormatExampleCommands("list org", []io.Example{

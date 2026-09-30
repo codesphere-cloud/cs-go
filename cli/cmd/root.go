@@ -15,6 +15,7 @@ import (
 	installcmd "github.com/codesphere-cloud/cs-go/cli/cmd/install"
 	listcmd "github.com/codesphere-cloud/cs-go/cli/cmd/list"
 	startcmd "github.com/codesphere-cloud/cs-go/cli/cmd/start"
+	updatecmd "github.com/codesphere-cloud/cs-go/cli/cmd/update"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/google/uuid"
 	"github.com/spf13/cobra"
@@ -113,7 +114,10 @@ func GetRootCmd() *cobra.Command {
 	rootCmd.PersistentFlags().IntVarP(&opts.TeamId, "team", "t", -1, "Team ID (relevant for some commands, can also be CS_TEAM_ID)")
 	rootCmd.PersistentFlags().IntVarP(&opts.WorkspaceId, "workspace", "w", -1, "Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID)")
 	rootCmd.PersistentFlags().BoolVarP(&opts.Verbose, "verbose", "v", false, "Verbose output")
-	rootCmd.PersistentFlags().StringVarP(&opts.OrgId, "org", "O", "", "Organization ID (relevant for some commands)")
+	rootCmd.PersistentFlags().StringVarP(&opts.OrgId, "org", "g", "", "Organization ID (relevant for some commands)")
+	// Keep the previous shorthand bound to the same value for existing scripts.
+	rootCmd.PersistentFlags().StringVarP(&opts.OrgId, "org-legacy", "O", "", "Alias for --org")
+	_ = rootCmd.PersistentFlags().MarkHidden("org-legacy")
 
 	listcmd.AddListCmd(rootCmd, &opts)
 	generatecmd.AddGenerateCmd(rootCmd, &opts)
@@ -130,7 +134,7 @@ func GetRootCmd() *cobra.Command {
 	AddStopCmd(rootCmd, &opts)
 	AddGitCmd(rootCmd, &opts)
 	AddSyncCmd(rootCmd, &opts)
-	AddUpdateCmd(rootCmd)
+	updatecmd.AddUpdateCmd(rootCmd, &opts)
 	AddGoCmd(rootCmd)
 	AddWakeUpCmd(rootCmd, &opts)
 	AddCurlCmd(rootCmd, &opts)

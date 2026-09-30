@@ -15,10 +15,11 @@
 
 ## CLI conventions
 
-- Generally use verb-first commands, such as `list organization-members`, `add organization-member`, `delete organization-member`, and `update org-member`.
+- Generally use verb-first commands, such as `list organization-members`, `add organization-member`, `delete organization-member`, and `update organization-member`.
 - Command families live under `cli/cmd/<verb>/`, with registration, leaf commands, and tests colocated.
 - Use `shared.RootOptions` for global options and injectable `ClientFactory` functions for command tests. Register commands with `shared.AddCmd` to inherit argument validation.
-- Organization-scoped commands use `--org`/`-O` or `CS_ORG_ID`. Require a scope for member operations. Organization roles are strings (`admin`, `member`), unlike numeric team roles.
+- Organization-scoped commands use `--org`/`-g` or `CS_ORG_ID`; `-O` remains a compatibility alias. Require a scope for member operations. Organization roles are strings (`admin`, `member`), while the team API uses numeric roles (the CLI accepts text roles).
+- Member commands use `shared.ValidateUserID`: the public API accepts non-negative integer user IDs, including zero. Existence and permissions are checked by the API.
 - List commands support table, JSON, and YAML output through `pkg/io`. Keep presentation in the command layer.
 - Include the existing copyright/SPDX header in Go files and format changes with `gofmt`.
 

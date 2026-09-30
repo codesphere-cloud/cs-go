@@ -39,6 +39,69 @@ func (_m *MockClient) EXPECT() *MockClient_Expecter {
 	return &MockClient_Expecter{mock: &_m.Mock}
 }
 
+// AddOrganizationMember provides a mock function for the type MockClient
+func (_mock *MockClient) AddOrganizationMember(orgId string, email string, role string) error {
+	ret := _mock.Called(orgId, email, role)
+
+	if len(ret) == 0 {
+		panic("no return value specified for AddOrganizationMember")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(string, string, string) error); ok {
+		r0 = returnFunc(orgId, email, role)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockClient_AddOrganizationMember_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'AddOrganizationMember'
+type MockClient_AddOrganizationMember_Call struct {
+	*mock.Call
+}
+
+// AddOrganizationMember is a helper method to define mock.On call
+//   - orgId string
+//   - email string
+//   - role string
+func (_e *MockClient_Expecter) AddOrganizationMember(orgId any, email any, role any) *MockClient_AddOrganizationMember_Call {
+	return &MockClient_AddOrganizationMember_Call{Call: _e.mock.On("AddOrganizationMember", orgId, email, role)}
+}
+
+func (_c *MockClient_AddOrganizationMember_Call) Run(run func(orgId string, email string, role string)) *MockClient_AddOrganizationMember_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 string
+		if args[0] != nil {
+			arg0 = args[0].(string)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *MockClient_AddOrganizationMember_Call) Return(err error) *MockClient_AddOrganizationMember_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockClient_AddOrganizationMember_Call) RunAndReturn(run func(orgId string, email string, role string) error) *MockClient_AddOrganizationMember_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // AddTeamMember provides a mock function for the type MockClient
 func (_mock *MockClient) AddTeamMember(teamId int, email string, role int) error {
 	ret := _mock.Called(teamId, email, role)
@@ -98,6 +161,69 @@ func (_c *MockClient_AddTeamMember_Call) Return(err error) *MockClient_AddTeamMe
 }
 
 func (_c *MockClient_AddTeamMember_Call) RunAndReturn(run func(teamId int, email string, role int) error) *MockClient_AddTeamMember_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ChangeOrganizationMemberRole provides a mock function for the type MockClient
+func (_mock *MockClient) ChangeOrganizationMemberRole(orgId string, userId int, role string) error {
+	ret := _mock.Called(orgId, userId, role)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ChangeOrganizationMemberRole")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(string, int, string) error); ok {
+		r0 = returnFunc(orgId, userId, role)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockClient_ChangeOrganizationMemberRole_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ChangeOrganizationMemberRole'
+type MockClient_ChangeOrganizationMemberRole_Call struct {
+	*mock.Call
+}
+
+// ChangeOrganizationMemberRole is a helper method to define mock.On call
+//   - orgId string
+//   - userId int
+//   - role string
+func (_e *MockClient_Expecter) ChangeOrganizationMemberRole(orgId any, userId any, role any) *MockClient_ChangeOrganizationMemberRole_Call {
+	return &MockClient_ChangeOrganizationMemberRole_Call{Call: _e.mock.On("ChangeOrganizationMemberRole", orgId, userId, role)}
+}
+
+func (_c *MockClient_ChangeOrganizationMemberRole_Call) Run(run func(orgId string, userId int, role string)) *MockClient_ChangeOrganizationMemberRole_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 string
+		if args[0] != nil {
+			arg0 = args[0].(string)
+		}
+		var arg1 int
+		if args[1] != nil {
+			arg1 = args[1].(int)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *MockClient_ChangeOrganizationMemberRole_Call) Return(err error) *MockClient_ChangeOrganizationMemberRole_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockClient_ChangeOrganizationMemberRole_Call) RunAndReturn(run func(orgId string, userId int, role string) error) *MockClient_ChangeOrganizationMemberRole_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -795,6 +921,68 @@ func (_c *MockClient_ListBaseimages_Call) RunAndReturn(run func() ([]api.Baseima
 	return _c
 }
 
+// ListOrganizationMembers provides a mock function for the type MockClient
+func (_mock *MockClient) ListOrganizationMembers(orgId string) ([]api.OrganizationMember, error) {
+	ret := _mock.Called(orgId)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ListOrganizationMembers")
+	}
+
+	var r0 []api.OrganizationMember
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(string) ([]api.OrganizationMember, error)); ok {
+		return returnFunc(orgId)
+	}
+	if returnFunc, ok := ret.Get(0).(func(string) []api.OrganizationMember); ok {
+		r0 = returnFunc(orgId)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]api.OrganizationMember)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(string) error); ok {
+		r1 = returnFunc(orgId)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockClient_ListOrganizationMembers_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListOrganizationMembers'
+type MockClient_ListOrganizationMembers_Call struct {
+	*mock.Call
+}
+
+// ListOrganizationMembers is a helper method to define mock.On call
+//   - orgId string
+func (_e *MockClient_Expecter) ListOrganizationMembers(orgId any) *MockClient_ListOrganizationMembers_Call {
+	return &MockClient_ListOrganizationMembers_Call{Call: _e.mock.On("ListOrganizationMembers", orgId)}
+}
+
+func (_c *MockClient_ListOrganizationMembers_Call) Run(run func(orgId string)) *MockClient_ListOrganizationMembers_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 string
+		if args[0] != nil {
+			arg0 = args[0].(string)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockClient_ListOrganizationMembers_Call) Return(organizationMembers []api.OrganizationMember, err error) *MockClient_ListOrganizationMembers_Call {
+	_c.Call.Return(organizationMembers, err)
+	return _c
+}
+
+func (_c *MockClient_ListOrganizationMembers_Call) RunAndReturn(run func(orgId string) ([]api.OrganizationMember, error)) *MockClient_ListOrganizationMembers_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // ListOrganizations provides a mock function for the type MockClient
 func (_mock *MockClient) ListOrganizations() ([]api.Organization, error) {
 	ret := _mock.Called()
@@ -1087,6 +1275,63 @@ func (_c *MockClient_ListWorkspaces_Call) Return(workspaces []api.Workspace, err
 }
 
 func (_c *MockClient_ListWorkspaces_Call) RunAndReturn(run func(teamId int) ([]api.Workspace, error)) *MockClient_ListWorkspaces_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// RemoveOrganizationMember provides a mock function for the type MockClient
+func (_mock *MockClient) RemoveOrganizationMember(orgId string, userId int) error {
+	ret := _mock.Called(orgId, userId)
+
+	if len(ret) == 0 {
+		panic("no return value specified for RemoveOrganizationMember")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(string, int) error); ok {
+		r0 = returnFunc(orgId, userId)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockClient_RemoveOrganizationMember_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RemoveOrganizationMember'
+type MockClient_RemoveOrganizationMember_Call struct {
+	*mock.Call
+}
+
+// RemoveOrganizationMember is a helper method to define mock.On call
+//   - orgId string
+//   - userId int
+func (_e *MockClient_Expecter) RemoveOrganizationMember(orgId any, userId any) *MockClient_RemoveOrganizationMember_Call {
+	return &MockClient_RemoveOrganizationMember_Call{Call: _e.mock.On("RemoveOrganizationMember", orgId, userId)}
+}
+
+func (_c *MockClient_RemoveOrganizationMember_Call) Run(run func(orgId string, userId int)) *MockClient_RemoveOrganizationMember_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 string
+		if args[0] != nil {
+			arg0 = args[0].(string)
+		}
+		var arg1 int
+		if args[1] != nil {
+			arg1 = args[1].(int)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockClient_RemoveOrganizationMember_Call) Return(err error) *MockClient_RemoveOrganizationMember_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockClient_RemoveOrganizationMember_Call) RunAndReturn(run func(orgId string, userId int) error) *MockClient_RemoveOrganizationMember_Call {
 	_c.Call.Return(run)
 	return _c
 }

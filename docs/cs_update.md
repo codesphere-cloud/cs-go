@@ -20,7 +20,7 @@ cs update [flags]
 
 ```
   -a, --api string      URL of Codesphere API (can also be CS_API)
-  -O, --org string      Organization ID (relevant for some commands)
+  -g, --org string      Organization ID (relevant for some commands)
   -t, --team int        Team ID (relevant for some commands, can also be CS_TEAM_ID) (default -1)
   -v, --verbose         Verbose output
   -w, --workspace int   Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)
@@ -29,4 +29,5 @@ cs update [flags]
 ### SEE ALSO
 
 * [cs](cs.md)	 - The Codesphere CLI
+* [cs update organization-member](cs_update_organization-member.md)	 - Change organization member role
 

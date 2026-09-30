@@ -10,6 +10,10 @@ import (
 
 // Client is the common API contract consumed by all CLI commands.
 type Client interface {
+	ChangeOrganizationMemberRole(orgId string, userId int, role string) error
+	ListOrganizationMembers(orgId string) ([]api.OrganizationMember, error)
+	RemoveOrganizationMember(orgId string, userId int) error
+	AddOrganizationMember(orgId, email, role string) error
 	ListTeams(orgId string) ([]api.Team, error)
 	ListWorkspaces(teamId int) ([]api.Workspace, error)
 	ListBaseimages() ([]api.Baseimage, error)

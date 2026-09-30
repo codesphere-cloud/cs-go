@@ -27,6 +27,7 @@ func addListTeamsCmd(p *cobra.Command, opts *ListOptions) {
 			Long:  `List teams available in Codesphere`,
 			Example: io.FormatExampleCommands("list teams", []io.Example{
 				{Desc: "List all teams"},
+				{Cmd: "--org <orgId>", Desc: "List teams in an organization"},
 			}),
 		},
 		opts: opts,

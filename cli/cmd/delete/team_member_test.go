@@ -49,12 +49,18 @@ var _ = Describe("DeleteTeamMember", func() {
 	})
 
 	Context("Validation", func() {
-		It("should fail if the user ID is empty", func() {
-			err := c.DeleteTeamMember(mockClient, teamId, 0)
+		It("should fail if the user ID is negative", func() {
+			err := c.DeleteTeamMember(mockClient, teamId, -1)
 
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(Equal("user ID has to be set"))
+			Expect(err.Error()).To(Equal("user ID must be non-negative"))
 		})
+	})
+
+	It("accepts user ID zero as allowed by the API", func() {
+		c.Opts.UserId = 0
+		mockClient.EXPECT().RemoveTeamMember(teamId, 0).Return(nil).Once()
+		Expect(c.RunE(nil, nil)).To(Succeed())
 	})
 
 	Context("RunE execution flow", func() {
@@ -92,12 +98,12 @@ var _ = Describe("DeleteTeamMember", func() {
 			Expect(err.Error()).To(Equal("CS_TEAM_ID env var required, but not set"))
 		})
 
-		It("should fail when user ID is empty", func() {
-			c.Opts.UserId = 0
+		It("should fail when user ID is negative", func() {
+			c.Opts.UserId = -1
 			err := c.RunE(nil, []string{})
 
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(Equal("user ID has to be set"))
+			Expect(err.Error()).To(Equal("user ID must be non-negative"))
 		})
 	})
 })

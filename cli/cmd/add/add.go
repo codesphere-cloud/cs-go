@@ -23,4 +23,5 @@ func AddAddCmd(rootCmd *cobra.Command, opts shared.RootOptions) {
 	shared.AddCmd(rootCmd, add.cmd)
 
 	AddAddTeamMemberCmd(add.cmd, opts)
+	AddAddOrganizationMemberCmd(add.cmd, opts)
 }
