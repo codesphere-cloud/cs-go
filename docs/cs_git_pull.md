@@ -25,9 +25,10 @@ $ cs git pull --remote origin --branch staging
 ### Options
 
 ```
-      --branch string   Branch to pull
-  -h, --help            help for pull
-      --remote string   Remote to pull from
+      --branch string      Branch to pull
+  -h, --help               help for pull
+      --remote string      Remote to pull from
+      --timeout duration   Timeout for waking up the workspace (default 2m0s)
 ```
 
 ### Options inherited from parent commands
