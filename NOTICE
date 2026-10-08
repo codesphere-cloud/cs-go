@@ -113,15 +113,15 @@ License URL: https://github.com/go-git/gcfg/blob/3a3c6141e376/LICENSE
  
 ----------
 Module: github.com/go-git/go-billy/v5
-Version: v5.9.1
+Version: v5.9.2
 License: Apache-2.0
-License URL: https://github.com/go-git/go-billy/blob/v5.9.1/LICENSE
+License URL: https://github.com/go-git/go-billy/blob/v5.9.2/LICENSE
  
 ----------
 Module: github.com/go-git/go-git/v5
-Version: v5.19.2
+Version: v5.19.3
 License: Apache-2.0
-License URL: https://github.com/go-git/go-git/blob/v5.19.2/LICENSE
+License URL: https://github.com/go-git/go-git/blob/v5.19.3/LICENSE
  
 ----------
 Module: github.com/go-logr/logr
@@ -208,12 +208,6 @@ License: MIT
 License URL: https://github.com/kevinburke/ssh_config/blob/v1.6.0/LICENSE
  
 ----------
-Module: github.com/klauspost/cpuid/v2
-Version: v2.3.0
-License: MIT
-License URL: https://github.com/klauspost/cpuid/blob/v2.3.0/LICENSE
- 
-----------
 Module: github.com/liggitt/tabwriter
 Version: v0.0.0-20181228230101-89fcab3d43de
 License: BSD-3-Clause
@@ -269,9 +263,9 @@ License URL: https://github.com/onsi/gomega/blob/v1.44.0/LICENSE
  
 ----------
 Module: github.com/pjbgf/sha1cd
-Version: v0.6.0
+Version: v0.7.0
 License: Apache-2.0
-License URL: https://github.com/pjbgf/sha1cd/blob/v0.6.0/LICENSE
+License URL: https://github.com/pjbgf/sha1cd/blob/v0.7.0/LICENSE
  
 ----------
 Module: github.com/prometheus/client_golang/internal/github.com/golang/gddo/httputil
@@ -461,9 +455,9 @@ License URL: https://github.com/yaml/go-yaml/blob/v3.0.5/LICENSE
  
 ----------
 Module: golang.org/x/crypto
-Version: v0.55.0
+Version: v0.56.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/crypto/+/v0.55.0:LICENSE
+License URL: https://cs.opensource.google/go/x/crypto/+/v0.56.0:LICENSE
  
 ----------
 Module: golang.org/x/mod/semver
