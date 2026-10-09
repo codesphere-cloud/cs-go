@@ -42,7 +42,7 @@ Or download the platform binary directly from the GitHub Releases page.
 | Flag                 | Env var           | Description                                                 |
 | -------------------- | ----------------- | ----------------------------------------------------------- |
 | `--api` / `-a`       | `CS_API`          | API URL, default `https://codesphere.com/api`               |
-| `--team` / `-t`      | `CS_TEAM_ID`      | Team ID                                                     |
+| `--team` / `-t`      | `CS_TEAM_ID`      | Resource group (team) ID; alias `--resource-group` / `CS_RESOURCE_GROUP_ID` |
 | `--workspace` / `-w` | `CS_WORKSPACE_ID` | Workspace ID                                                |
 | _(token)_            | `CS_TOKEN`        | API token from Codesphere user settings — required for auth |
 

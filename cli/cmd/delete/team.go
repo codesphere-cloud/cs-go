@@ -25,9 +25,10 @@ type DeleteTeamOpts struct {
 func AddDeleteTeamCmd(delete *cobra.Command, opts shared.RootOptions) {
 	t := DeleteTeamCmd{
 		cmd: &cobra.Command{
-			Use:   "team",
-			Short: "Delete team",
-			Long:  `Delete a team from Codesphere or an Organization`,
+			Use:     "team",
+			Aliases: []string{"resource-group"},
+			Short:   "Delete resource group (team)",
+			Long:    `Delete a resource group (team) from Codesphere or an Organization`,
 			Example: io.FormatExampleCommands("delete team", []io.Example{
 				{Cmd: "-t <teamId>", Desc: "Delete a team"},
 			}),

@@ -25,8 +25,9 @@ type DeleteTeamMemberOpts struct {
 func AddDeleteTeamMemberCmd(delete *cobra.Command, opts shared.RootOptions) {
 	res := DeleteTeamMemberCmd{
 		cmd: &cobra.Command{
-			Use:   "team-member",
-			Short: "Delete team member",
+			Use:     "team-member",
+			Aliases: []string{"resource-group-member"},
+			Short:   "Delete resource group (team) member",
 			Long: io.Long(`Delete a member from a team.
 
 				To delete a member from a team within an organization, the CS_ORG_ID environment variable or the -g/--org flag must be set.`),

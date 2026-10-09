@@ -28,9 +28,10 @@ type CreateTeamOpts struct {
 func AddCreateTeamCmd(create *cobra.Command, opts shared.RootOptions) {
 	t := CreateTeamCmd{
 		cmd: &cobra.Command{
-			Use:   "team",
-			Short: "Create team",
-			Long:  `Create a team in Codesphere or an Organization`,
+			Use:     "team",
+			Aliases: []string{"resource-group"},
+			Short:   "Create resource group (team)",
+			Long:    `Create a resource group (team) in Codesphere or an Organization`,
 			Example: io.FormatExampleCommands("create team", []io.Example{
 				{Cmd: "-d <datacenterId> -n <teamName>", Desc: "Create a team in a specific datacenter"},
 				{Cmd: "-d <datacenterId> -n <teamName> -g <orgId>", Desc: "Create a team in a specific datacenter within an organization"},

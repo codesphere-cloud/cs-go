@@ -42,6 +42,7 @@ func relocate(oldUse, newPath string, build func(scratch *cobra.Command)) *cobra
 	scratch.RemoveCommand(real)
 
 	real.Use = oldUse
+	real.Aliases = nil
 	real.Deprecated = fmt.Sprintf("moved, use '%s' instead", newPath)
 	return real
 }

@@ -22,9 +22,10 @@ type ListTeamMembersCmd struct {
 func AddListTeamMembersCmd(p *cobra.Command, opts *ListOptions) {
 	l := ListTeamMembersCmd{
 		cmd: &cobra.Command{
-			Use:   "team-members",
-			Short: "List team members",
-			Long:  `List all members of a team`,
+			Use:     "team-members",
+			Aliases: []string{"resource-group-members"},
+			Short:   "List resource group (team) members",
+			Long:    `List all members of a resource group (team)`,
 			Example: io.FormatExampleCommands("list team-members", []io.Example{
 				{Cmd: "-t <teamId>", Desc: "List all members of a team"},
 				{Cmd: "-t <teamId> -o json", Desc: "List all members of a team in JSON format"},

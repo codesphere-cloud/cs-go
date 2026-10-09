@@ -19,6 +19,7 @@ import (
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/google/uuid"
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
 type GlobalOptions struct {
@@ -111,13 +112,14 @@ func GetRootCmd() *cobra.Command {
 	opts := GlobalOptions{Env: cs.NewEnv()}
 
 	rootCmd.PersistentFlags().StringVarP(&opts.ApiUrl, "api", "a", "", "URL of Codesphere API (can also be CS_API)")
-	rootCmd.PersistentFlags().IntVarP(&opts.TeamId, "team", "t", -1, "Team ID (relevant for some commands, can also be CS_TEAM_ID)")
+	rootCmd.PersistentFlags().IntVarP(&opts.TeamId, "team", "t", -1, "Resource group (team) ID (relevant for some commands, alias --resource-group, can also be CS_RESOURCE_GROUP_ID or CS_TEAM_ID)")
 	rootCmd.PersistentFlags().IntVarP(&opts.WorkspaceId, "workspace", "w", -1, "Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID)")
 	rootCmd.PersistentFlags().BoolVarP(&opts.Verbose, "verbose", "v", false, "Verbose output")
 	rootCmd.PersistentFlags().StringVarP(&opts.OrgId, "org", "g", "", "Organization ID (relevant for some commands)")
 	// Keep the previous shorthand bound to the same value for existing scripts.
 	rootCmd.PersistentFlags().StringVarP(&opts.OrgId, "org-legacy", "O", "", "Alias for --org")
 	_ = rootCmd.PersistentFlags().MarkHidden("org-legacy")
+	rootCmd.SetGlobalNormalizationFunc(normalizeFlagAliases)
 
 	listcmd.AddListCmd(rootCmd, &opts)
 	generatecmd.AddGenerateCmd(rootCmd, &opts)
@@ -144,6 +146,14 @@ func GetRootCmd() *cobra.Command {
 	AddLegacyCmds(rootCmd, &opts)
 
 	return rootCmd
+}
+
+// normalizeFlagAliases makes --resource-group resolve to the --team flag, so both names share one value.
+func normalizeFlagAliases(_ *pflag.FlagSet, name string) pflag.NormalizedName {
+	if name == "resource-group" {
+		return "team"
+	}
+	return pflag.NormalizedName(name)
 }
 
 func Execute() {

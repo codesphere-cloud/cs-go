@@ -30,8 +30,9 @@ type AddTeamMemberOpts struct {
 func AddAddTeamMemberCmd(add *cobra.Command, opts shared.RootOptions) {
 	t := AddTeamMemberCmd{
 		cmd: &cobra.Command{
-			Use:   "team-member",
-			Short: "Add team member",
+			Use:     "team-member",
+			Aliases: []string{"resource-group-member"},
+			Short:   "Add resource group (team) member",
 			Long: io.Long(`Add team member to a team.
 
 				To add a member to a team within an organization or a standalone team`),
