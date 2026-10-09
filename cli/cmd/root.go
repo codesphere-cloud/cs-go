@@ -19,6 +19,7 @@ import (
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/google/uuid"
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
 type GlobalOptions struct {
@@ -62,7 +63,7 @@ func (o GlobalOptions) GetTeamId() (int, error) {
 		return -1, err
 	}
 	if wsId < 0 {
-		return -1, errors.New("team ID not set, use -t or CS_TEAM_ID to set it")
+		return -1, errors.New("resource group ID not set, use --resource-group or CS_RESOURCE_GROUP_ID to set it")
 	}
 	return wsId, nil
 }
@@ -111,13 +112,14 @@ func GetRootCmd() *cobra.Command {
 	opts := GlobalOptions{Env: cs.NewEnv()}
 
 	rootCmd.PersistentFlags().StringVarP(&opts.ApiUrl, "api", "a", "", "URL of Codesphere API (can also be CS_API)")
-	rootCmd.PersistentFlags().IntVarP(&opts.TeamId, "team", "t", -1, "Team ID (relevant for some commands, can also be CS_TEAM_ID)")
+	rootCmd.PersistentFlags().IntVarP(&opts.TeamId, "resource-group", "t", -1, "Resource group ID (relevant for some commands, can also be CS_RESOURCE_GROUP_ID; --team and CS_TEAM_ID still work)")
 	rootCmd.PersistentFlags().IntVarP(&opts.WorkspaceId, "workspace", "w", -1, "Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID)")
 	rootCmd.PersistentFlags().BoolVarP(&opts.Verbose, "verbose", "v", false, "Verbose output")
 	rootCmd.PersistentFlags().StringVarP(&opts.OrgId, "org", "g", "", "Organization ID (relevant for some commands)")
 	// Keep the previous shorthand bound to the same value for existing scripts.
 	rootCmd.PersistentFlags().StringVarP(&opts.OrgId, "org-legacy", "O", "", "Alias for --org")
 	_ = rootCmd.PersistentFlags().MarkHidden("org-legacy")
+	rootCmd.SetGlobalNormalizationFunc(normalizeFlagAliases)
 
 	listcmd.AddListCmd(rootCmd, &opts)
 	generatecmd.AddGenerateCmd(rootCmd, &opts)
@@ -144,6 +146,14 @@ func GetRootCmd() *cobra.Command {
 	AddLegacyCmds(rootCmd, &opts)
 
 	return rootCmd
+}
+
+// normalizeFlagAliases keeps --team working as an alias of --resource-group.
+func normalizeFlagAliases(_ *pflag.FlagSet, name string) pflag.NormalizedName {
+	if name == "team" {
+		return "resource-group"
+	}
+	return pflag.NormalizedName(name)
 }
 
 func Execute() {

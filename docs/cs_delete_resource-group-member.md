@@ -1,27 +1,32 @@
-## cs delete organization-member
+## cs delete resource-group-member
 
-Remove organization member
+Delete resource group member
 
 ### Synopsis
 
-Remove organization member. Select the organization using --org or CS_ORG_ID.
+Delete a member from a resource group.
+
+To delete a member from a resource group within an organization, the CS_ORG_ID environment variable or the -g/--org flag must be set.
 
 ```
-cs delete organization-member [flags]
+cs delete resource-group-member [flags]
 ```
 
 ### Examples
 
 ```
-# Remove organization member
-$ cs delete organization-member --org <orgId> -u <userId>
+# Delete a user from a resource group
+$ cs delete resource-group-member -t <resourceGroupId> -u <userId>
+
+# Delete a user from a resource group within an organization
+$ cs delete resource-group-member -g <org-id> -t <resourceGroupId> -u <userId>
 ```
 
 ### Options
 
 ```
-  -h, --help       help for organization-member
-  -u, --user int   Organization member user ID (default -1)
+  -h, --help       help for resource-group-member
+  -u, --user int   Resource group member user ID (default -1)
 ```
 
 ### Options inherited from parent commands

@@ -30,14 +30,15 @@ type AddTeamMemberOpts struct {
 func AddAddTeamMemberCmd(add *cobra.Command, opts shared.RootOptions) {
 	t := AddTeamMemberCmd{
 		cmd: &cobra.Command{
-			Use:   "team-member",
-			Short: "Add team member",
-			Long: io.Long(`Add team member to a team.
+			Use:     "resource-group-member",
+			Aliases: []string{"team-member"},
+			Short:   "Add resource group member",
+			Long: io.Long(`Add a member to a resource group.
 
-				To add a member to a team within an organization or a standalone team`),
-			Example: io.FormatExampleCommands("add team-member", []io.Example{
-				{Cmd: "-t <teamId> -e user@example.com -r member", Desc: "Add a user to a team as a member"},
-				{Cmd: "-t <teamId> -e admin@example.com -r admin", Desc: "Add a user to a team as an admin"},
+				To add a member to a resource group within an organization or a standalone resource group`),
+			Example: io.FormatExampleCommands("add resource-group-member", []io.Example{
+				{Cmd: "-t <resourceGroupId> -e user@example.com -r member", Desc: "Add a user to a resource group as a member"},
+				{Cmd: "-t <resourceGroupId> -e admin@example.com -r admin", Desc: "Add a user to a resource group as an admin"},
 			}),
 		},
 		Opts: AddTeamMemberOpts{
@@ -46,9 +47,9 @@ func AddAddTeamMemberCmd(add *cobra.Command, opts shared.RootOptions) {
 		ClientFactory: func(opts shared.RootOptions) (shared.Client, error) { return opts.NewClient() },
 	}
 	t.cmd.RunE = t.RunE
-	t.cmd.Flags().StringVarP(&t.Opts.Email, "email", "e", "", "Team member email")
+	t.cmd.Flags().StringVarP(&t.Opts.Email, "email", "e", "", "Resource group member email")
 	_ = t.cmd.MarkFlagRequired("email")
-	t.cmd.Flags().StringVarP(&t.Opts.Role, "role", "r", "member", "Team member role (member, admin)")
+	t.cmd.Flags().StringVarP(&t.Opts.Role, "role", "r", "member", "Resource group member role (member, admin)")
 	shared.AddCmd(add, t.cmd)
 }
 

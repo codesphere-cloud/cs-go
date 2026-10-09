@@ -25,11 +25,12 @@ type DeleteTeamOpts struct {
 func AddDeleteTeamCmd(delete *cobra.Command, opts shared.RootOptions) {
 	t := DeleteTeamCmd{
 		cmd: &cobra.Command{
-			Use:   "team",
-			Short: "Delete team",
-			Long:  `Delete a team from Codesphere or an Organization`,
-			Example: io.FormatExampleCommands("delete team", []io.Example{
-				{Cmd: "-t <teamId>", Desc: "Delete a team"},
+			Use:     "resource-group",
+			Aliases: []string{"team"},
+			Short:   "Delete resource group",
+			Long:    `Delete a resource group from Codesphere or an Organization`,
+			Example: io.FormatExampleCommands("delete resource-group", []io.Example{
+				{Cmd: "-t <resourceGroupId>", Desc: "Delete a resource group"},
 			}),
 		},
 		Opts: DeleteTeamOpts{
@@ -49,7 +50,7 @@ func (c *DeleteTeamCmd) RunE(_ *cobra.Command, args []string) error {
 
 	teamId, err := c.Opts.GetTeamId()
 	if err != nil {
-		return errors.New("team ID not set, use -t or CS_TEAM_ID to set it")
+		return errors.New("resource group ID not set, use --resource-group or CS_RESOURCE_GROUP_ID to set it")
 	}
 
 	err = client.DeleteTeam(teamId)

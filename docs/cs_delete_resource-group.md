@@ -1,19 +1,26 @@
-## cs version
+## cs delete resource-group
 
-Print version
+Delete resource group
 
 ### Synopsis
 
-Print current version of Codesphere CLI.
+Delete a resource group from Codesphere or an Organization
 
 ```
-cs version [flags]
+cs delete resource-group [flags]
+```
+
+### Examples
+
+```
+# Delete a resource group
+$ cs delete resource-group -t <resourceGroupId>
 ```
 
 ### Options
 
 ```
-  -h, --help   help for version
+  -h, --help   help for resource-group
 ```
 
 ### Options inherited from parent commands
@@ -28,5 +35,5 @@ cs version [flags]
 
 ### SEE ALSO
 
-* [cs](cs.md)	 - The Codesphere CLI
+* [cs delete](cs_delete.md)	 - Delete Codesphere resources
 

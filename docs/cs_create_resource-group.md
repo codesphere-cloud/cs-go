@@ -1,28 +1,31 @@
-## cs update organization-member
+## cs create resource-group
 
-Change organization member role
+Create resource group
 
 ### Synopsis
 
-Change organization member role. Select the organization using --org or CS_ORG_ID.
+Create a resource group in Codesphere or an Organization
 
 ```
-cs update organization-member [flags]
+cs create resource-group [flags]
 ```
 
 ### Examples
 
 ```
-# Change organization member role
-$ cs update organization-member --org <orgId> -u <userId> -r admin
+# Create a resource group in a specific datacenter
+$ cs create resource-group -d <datacenterId> -n <resourceGroupName>
+
+# Create a resource group in a specific datacenter within an organization
+$ cs create resource-group -d <datacenterId> -n <resourceGroupName> -g <orgId>
 ```
 
 ### Options
 
 ```
-  -h, --help          help for organization-member
-  -r, --role string   Organization role (admin, member)
-  -u, --user int      Organization member user ID (default -1)
+  -d, --dc-id int     Data center ID
+  -h, --help          help for resource-group
+  -n, --name string   Resource group name
 ```
 
 ### Options inherited from parent commands
@@ -37,5 +40,5 @@ $ cs update organization-member --org <orgId> -u <userId> -r admin
 
 ### SEE ALSO
 
-* [cs update](cs_update.md)	 - Update Codesphere CLI
+* [cs create](cs_create.md)	 - Create codesphere resource
 

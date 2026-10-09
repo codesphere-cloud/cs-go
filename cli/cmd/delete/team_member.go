@@ -25,14 +25,15 @@ type DeleteTeamMemberOpts struct {
 func AddDeleteTeamMemberCmd(delete *cobra.Command, opts shared.RootOptions) {
 	res := DeleteTeamMemberCmd{
 		cmd: &cobra.Command{
-			Use:   "team-member",
-			Short: "Delete team member",
-			Long: io.Long(`Delete a member from a team.
+			Use:     "resource-group-member",
+			Aliases: []string{"team-member"},
+			Short:   "Delete resource group member",
+			Long: io.Long(`Delete a member from a resource group.
 
-				To delete a member from a team within an organization, the CS_ORG_ID environment variable or the -g/--org flag must be set.`),
-			Example: io.FormatExampleCommands("delete team-member", []io.Example{
-				{Cmd: "-t <teamId> -u <userId>", Desc: "Delete a user from a team"},
-				{Cmd: "-g <org-id> -t <teamId> -u <userId>", Desc: "Delete a user from a team within an organization"},
+				To delete a member from a resource group within an organization, the CS_ORG_ID environment variable or the -g/--org flag must be set.`),
+			Example: io.FormatExampleCommands("delete resource-group-member", []io.Example{
+				{Cmd: "-t <resourceGroupId> -u <userId>", Desc: "Delete a user from a resource group"},
+				{Cmd: "-g <org-id> -t <resourceGroupId> -u <userId>", Desc: "Delete a user from a resource group within an organization"},
 			}),
 		},
 		Opts: DeleteTeamMemberOpts{
@@ -40,7 +41,7 @@ func AddDeleteTeamMemberCmd(delete *cobra.Command, opts shared.RootOptions) {
 		},
 		ClientFactory: func(opts shared.RootOptions) (shared.Client, error) { return opts.NewClient() },
 	}
-	res.cmd.Flags().IntVarP(&res.Opts.UserId, "user", "u", -1, "Team member user ID")
+	res.cmd.Flags().IntVarP(&res.Opts.UserId, "user", "u", -1, "Resource group member user ID")
 	_ = res.cmd.MarkFlagRequired("user")
 	res.cmd.RunE = res.RunE
 	shared.AddCmd(delete, res.cmd)
