@@ -17,7 +17,7 @@ Add resources to existing Codesphere resources, e.g. team members.
 ```
   -a, --api string      URL of Codesphere API (can also be CS_API)
   -g, --org string      Organization ID (relevant for some commands)
-  -t, --team int        Team ID (relevant for some commands, can also be CS_TEAM_ID) (default -1)
+  -t, --team int        Resource group (team) ID (relevant for some commands, alias --resource-group, can also be CS_RESOURCE_GROUP_ID or CS_TEAM_ID) (default -1)
   -v, --verbose         Verbose output
   -w, --workspace int   Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)
 ```
@@ -26,5 +26,5 @@ Add resources to existing Codesphere resources, e.g. team members.
 
 * [cs](cs.md)	 - The Codesphere CLI
 * [cs add organization-member](cs_add_organization-member.md)	 - Add organization member
-* [cs add team-member](cs_add_team-member.md)	 - Add team member
+* [cs add team-member](cs_add_team-member.md)	 - Add resource group (team) member
 

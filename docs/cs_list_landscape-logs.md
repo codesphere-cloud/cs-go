@@ -45,7 +45,7 @@ $ cs list landscape-logs -w 637128 -r workspace-213d7a8c-48b4-42e2-8f70-c905ab04
   -a, --api string      URL of Codesphere API (can also be CS_API)
   -g, --org string      Organization ID (relevant for some commands)
   -o, --output string   Output format (table, json, yaml) (default "table")
-  -t, --team int        Team ID (relevant for some commands, can also be CS_TEAM_ID) (default -1)
+  -t, --team int        Resource group (team) ID (relevant for some commands, alias --resource-group, can also be CS_RESOURCE_GROUP_ID or CS_TEAM_ID) (default -1)
   -v, --verbose         Verbose output
   -w, --workspace int   Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)
 ```
