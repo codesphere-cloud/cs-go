@@ -42,11 +42,11 @@ Or download the platform binary directly from the GitHub Releases page.
 | Flag                 | Env var           | Description                                                 |
 | -------------------- | ----------------- | ----------------------------------------------------------- |
 | `--api` / `-a`       | `CS_API`          | API URL, default `https://codesphere.com/api`               |
-| `--team` / `-t`      | `CS_TEAM_ID`      | Resource group (team) ID; alias `--resource-group` / `CS_RESOURCE_GROUP_ID` |
+| `--resource-group` / `-t` | `CS_RESOURCE_GROUP_ID` | Resource group ID; `--team` / `CS_TEAM_ID` still work |
 | `--workspace` / `-w` | `CS_WORKSPACE_ID` | Workspace ID                                                |
 | _(token)_            | `CS_TOKEN`        | API token from Codesphere user settings — required for auth |
 
-If team/workspace aren't passed as flags, the CLI reads them from the env vars; commands that need them fail without either.
+If resource group/workspace aren't passed as flags, the CLI reads them from the env vars; commands that need them fail without either.
 
 ### Targeting the Current Workspace From Inside It
 
@@ -67,7 +67,7 @@ export CS_WORKSPACE_ID=$(tmux show-environment -g WORKSPACE_ID | cut -d= -f2)
 | `cs create`  | Create a Codesphere resource (workspace, etc.) |
 | `cs delete`  | Delete resources                               |
 | `cs exec`    | Run a command in a workspace                   |
-| `cs list`    | List resources (workspaces, teams)             |
+| `cs list`    | List resources (workspaces, resource groups)   |
 | `cs log`     | Retrieve run logs from services                |
 | `cs monitor` | Monitor a command and report health            |
 | `cs open`    | Open the IDE in a browser                      |
@@ -80,7 +80,7 @@ export CS_WORKSPACE_ID=$(tmux show-environment -g WORKSPACE_ID | cut -d= -f2)
 
 ```bash
 export CS_TOKEN="your-api-token"
-export CS_TEAM_ID="your-team-id"
+export CS_RESOURCE_GROUP_ID="your-resource-group-id"
 export CS_WORKSPACE_ID="your-workspace-id"
 
 cs start --stage prepare

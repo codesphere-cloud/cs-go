@@ -9,64 +9,77 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("Resource group aliases", func() {
-	It("resolves list resource-groups to list teams", func() {
-		leaf, rest, err := cmd.GetRootCmd().Find([]string{"list", "resource-groups"})
+var _ = Describe("Team aliases for resource groups", func() {
+	It("resolves list teams to list resource-groups", func() {
+		leaf, rest, err := cmd.GetRootCmd().Find([]string{"list", "teams"})
 		Expect(err).NotTo(HaveOccurred())
 		Expect(rest).To(BeEmpty())
-		Expect(leaf.Name()).To(Equal("teams"))
+		Expect(leaf.Name()).To(Equal("resource-groups"))
 	})
-	It("resolves create resource-group to create team", func() {
-		leaf, _, err := cmd.GetRootCmd().Find([]string{"create", "resource-group"})
+	It("resolves create team to create resource-group", func() {
+		leaf, _, err := cmd.GetRootCmd().Find([]string{"create", "team"})
 		Expect(err).NotTo(HaveOccurred())
-		Expect(leaf.Name()).To(Equal("team"))
+		Expect(leaf.Name()).To(Equal("resource-group"))
 	})
-	It("resolves delete resource-group to delete team", func() {
-		leaf, _, err := cmd.GetRootCmd().Find([]string{"delete", "resource-group"})
+	It("resolves delete team to delete resource-group", func() {
+		leaf, _, err := cmd.GetRootCmd().Find([]string{"delete", "team"})
 		Expect(err).NotTo(HaveOccurred())
-		Expect(leaf.Name()).To(Equal("team"))
+		Expect(leaf.Name()).To(Equal("resource-group"))
 	})
-	It("resolves add resource-group-member to add team-member", func() {
-		leaf, _, err := cmd.GetRootCmd().Find([]string{"add", "resource-group-member"})
+	It("resolves add team-member to add resource-group-member", func() {
+		leaf, _, err := cmd.GetRootCmd().Find([]string{"add", "team-member"})
 		Expect(err).NotTo(HaveOccurred())
-		Expect(leaf.Name()).To(Equal("team-member"))
+		Expect(leaf.Name()).To(Equal("resource-group-member"))
 	})
-	It("resolves delete resource-group-member to delete team-member", func() {
-		leaf, _, err := cmd.GetRootCmd().Find([]string{"delete", "resource-group-member"})
+	It("resolves delete team-member to delete resource-group-member", func() {
+		leaf, _, err := cmd.GetRootCmd().Find([]string{"delete", "team-member"})
 		Expect(err).NotTo(HaveOccurred())
-		Expect(leaf.Name()).To(Equal("team-member"))
+		Expect(leaf.Name()).To(Equal("resource-group-member"))
 	})
-	It("resolves list resource-group-members to list team-members", func() {
-		leaf, _, err := cmd.GetRootCmd().Find([]string{"list", "resource-group-members"})
-		Expect(err).NotTo(HaveOccurred())
-		Expect(leaf.Name()).To(Equal("team-members"))
-	})
-	It("sets the team flag via --resource-group on child commands", func() {
+	It("resolves list team-members to list resource-group-members", func() {
 		leaf, _, err := cmd.GetRootCmd().Find([]string{"list", "team-members"})
 		Expect(err).NotTo(HaveOccurred())
-		Expect(leaf.ParseFlags([]string{"--resource-group", "42"})).To(Succeed())
-		teamID, err := leaf.Flags().GetInt("team")
-		Expect(err).NotTo(HaveOccurred())
-		Expect(teamID).To(Equal(42))
+		Expect(leaf.Name()).To(Equal("resource-group-members"))
 	})
-	It("uses the last value when both --team and --resource-group are set", func() {
+	It("sets the resource group flag via --team on child commands", func() {
+		leaf, _, err := cmd.GetRootCmd().Find([]string{"list", "resource-group-members"})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(leaf.ParseFlags([]string{"--team", "42"})).To(Succeed())
+		id, err := leaf.Flags().GetInt("resource-group")
+		Expect(err).NotTo(HaveOccurred())
+		Expect(id).To(Equal(42))
+	})
+	It("uses the last value when both --resource-group and --team are set", func() {
 		root := cmd.GetRootCmd()
-		Expect(root.ParseFlags([]string{"--team", "1", "--resource-group", "2"})).To(Succeed())
-		teamID, err := root.PersistentFlags().GetInt("team")
+		Expect(root.ParseFlags([]string{"--resource-group", "1", "--team", "2"})).To(Succeed())
+		id, err := root.PersistentFlags().GetInt("resource-group")
 		Expect(err).NotTo(HaveOccurred())
-		Expect(teamID).To(Equal(2))
+		Expect(id).To(Equal(2))
 	})
-	It("keeps -t working", func() {
+	It("keeps -t as the shorthand", func() {
 		root := cmd.GetRootCmd()
 		Expect(root.ParseFlags([]string{"-t", "7"})).To(Succeed())
-		teamID, err := root.PersistentFlags().GetInt("resource-group")
+		id, err := root.PersistentFlags().GetInt("resource-group")
 		Expect(err).NotTo(HaveOccurred())
-		Expect(teamID).To(Equal(7))
+		Expect(id).To(Equal(7))
 	})
-	It("does not add resource group aliases to deprecated legacy commands", func() {
-		leaf, rest, err := cmd.GetRootCmd().Find([]string{"team", "resource-group"})
+	It("shows --resource-group in the global flag help", func() {
+		flag := cmd.GetRootCmd().PersistentFlags().Lookup("team")
+		Expect(flag).NotTo(BeNil())
+		Expect(flag.Name).To(Equal("resource-group"))
+		Expect(flag.Shorthand).To(Equal("t"))
+	})
+	It("keeps the deprecated team create path", func() {
+		leaf, rest, err := cmd.GetRootCmd().Find([]string{"team", "create"})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(rest).To(BeEmpty())
+		Expect(leaf.Name()).To(Equal("create"))
+		Expect(leaf.Deprecated).NotTo(BeEmpty())
+	})
+	It("does not add aliases to deprecated legacy commands", func() {
+		leaf, rest, err := cmd.GetRootCmd().Find([]string{"team", "team"})
 		Expect(err).NotTo(HaveOccurred())
 		Expect(leaf.Name()).To(Equal("team"))
-		Expect(rest).To(Equal([]string{"resource-group"}))
+		Expect(rest).To(Equal([]string{"team"}))
 	})
 })

@@ -28,13 +28,13 @@ type CreateTeamOpts struct {
 func AddCreateTeamCmd(create *cobra.Command, opts shared.RootOptions) {
 	t := CreateTeamCmd{
 		cmd: &cobra.Command{
-			Use:     "team",
-			Aliases: []string{"resource-group"},
-			Short:   "Create resource group (team)",
-			Long:    `Create a resource group (team) in Codesphere or an Organization`,
-			Example: io.FormatExampleCommands("create team", []io.Example{
-				{Cmd: "-d <datacenterId> -n <teamName>", Desc: "Create a team in a specific datacenter"},
-				{Cmd: "-d <datacenterId> -n <teamName> -g <orgId>", Desc: "Create a team in a specific datacenter within an organization"},
+			Use:     "resource-group",
+			Aliases: []string{"team"},
+			Short:   "Create resource group",
+			Long:    `Create a resource group in Codesphere or an Organization`,
+			Example: io.FormatExampleCommands("create resource-group", []io.Example{
+				{Cmd: "-d <datacenterId> -n <resourceGroupName>", Desc: "Create a resource group in a specific datacenter"},
+				{Cmd: "-d <datacenterId> -n <resourceGroupName> -g <orgId>", Desc: "Create a resource group in a specific datacenter within an organization"},
 			}),
 		},
 		Opts: CreateTeamOpts{
@@ -43,7 +43,7 @@ func AddCreateTeamCmd(create *cobra.Command, opts shared.RootOptions) {
 		ClientFactory: func(opts shared.RootOptions) (shared.Client, error) { return opts.NewClient() },
 	}
 	t.cmd.RunE = t.RunE
-	t.cmd.Flags().StringVarP(&t.Opts.Name, "name", "n", "", "Team name")
+	t.cmd.Flags().StringVarP(&t.Opts.Name, "name", "n", "", "Resource group name")
 	_ = t.cmd.MarkFlagRequired("name")
 	t.cmd.Flags().IntVarP(&t.Opts.DcId, "dc-id", "d", 0, "Data center ID")
 	shared.AddCmd(create, t.cmd)

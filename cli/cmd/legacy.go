@@ -58,22 +58,22 @@ func AddLegacyCmds(rootCmd *cobra.Command, opts shared.RootOptions) {
 	team := &cobra.Command{
 		Use:        "team",
 		Short:      "Manage Team",
-		Deprecated: "moved, use 'create team' / 'delete team' / 'add team-member' / 'delete team-member' / 'list team-members' instead",
+		Deprecated: "moved, use 'create resource-group' / 'delete resource-group' / 'add resource-group-member' / 'delete resource-group-member' / 'list resource-group-members' instead",
 	}
 	shared.AddCmd(rootCmd, team)
-	shared.AddCmd(team, relocate("create", "create team", func(s *cobra.Command) { createcmd.AddCreateTeamCmd(s, opts) }))
-	shared.AddCmd(team, relocate("remove", "delete team", func(s *cobra.Command) { deletecmd.AddDeleteTeamCmd(s, opts) }))
+	shared.AddCmd(team, relocate("create", "create resource-group", func(s *cobra.Command) { createcmd.AddCreateTeamCmd(s, opts) }))
+	shared.AddCmd(team, relocate("remove", "delete resource-group", func(s *cobra.Command) { deletecmd.AddDeleteTeamCmd(s, opts) }))
 
 	member := &cobra.Command{
 		Use:        "member",
 		Short:      "Manage team members",
-		Deprecated: "moved, use 'add team-member' / 'delete team-member' / 'list team-members' instead",
+		Deprecated: "moved, use 'add resource-group-member' / 'delete resource-group-member' / 'list resource-group-members' instead",
 	}
 	shared.AddCmd(team, member)
-	shared.AddCmd(member, relocate("add", "add team-member", func(s *cobra.Command) { addcmd.AddAddTeamMemberCmd(s, opts) }))
-	shared.AddCmd(member, relocate("remove", "delete team-member", func(s *cobra.Command) { deletecmd.AddDeleteTeamMemberCmd(s, opts) }))
+	shared.AddCmd(member, relocate("add", "add resource-group-member", func(s *cobra.Command) { addcmd.AddAddTeamMemberCmd(s, opts) }))
+	shared.AddCmd(member, relocate("remove", "delete resource-group-member", func(s *cobra.Command) { deletecmd.AddDeleteTeamMemberCmd(s, opts) }))
 
-	list := relocate("list", "list team-members", func(s *cobra.Command) { listcmd.AddListTeamMembersCmd(s, listOpts) })
+	list := relocate("list", "list resource-group-members", func(s *cobra.Command) { listcmd.AddListTeamMembersCmd(s, listOpts) })
 	list.Flags().StringVarP((*string)(&listOpts.OutputFormat), "output", "o", "table", "Output format (table, json, yaml)")
 	shared.AddCmd(member, list)
 

@@ -22,13 +22,13 @@ type ListTeamsCmd struct {
 func addListTeamsCmd(p *cobra.Command, opts *ListOptions) {
 	l := ListTeamsCmd{
 		cmd: &cobra.Command{
-			Use:     "teams",
-			Aliases: []string{"resource-groups"},
-			Short:   "List resource groups (teams)",
-			Long:    `List resource groups (teams) available in Codesphere`,
-			Example: io.FormatExampleCommands("list teams", []io.Example{
-				{Desc: "List all teams"},
-				{Cmd: "--org <orgId>", Desc: "List teams in an organization"},
+			Use:     "resource-groups",
+			Aliases: []string{"teams"},
+			Short:   "List resource groups",
+			Long:    `List resource groups available in Codesphere`,
+			Example: io.FormatExampleCommands("list resource-groups", []io.Example{
+				{Desc: "List all resource groups"},
+				{Cmd: "--org <orgId>", Desc: "List resource groups in an organization"},
 			}),
 		},
 		opts: opts,
