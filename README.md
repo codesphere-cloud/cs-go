@@ -102,6 +102,26 @@ The `cs` CLI organizes its functionality into several top-level commands, each w
 
 See our [Usage Documentation](docs) for usage information about the specific subcommands.
 
+## Codesphere MCP Server
+
+The CLI includes the official Codesphere MCP server. It lets AI assistants such as Claude, Cursor or VS Code manage your Codesphere workspaces, pipelines, domains and teams via the [Model Context Protocol](https://modelcontextprotocol.io). Add it to your MCP client configuration:
+
+```json
+{
+  "mcpServers": {
+    "codesphere": {
+      "command": "cs",
+      "args": ["mcp"],
+      "env": {
+        "CS_TOKEN": "your-api-token-here"
+      }
+    }
+  }
+}
+```
+
+See the [Codesphere MCP Server documentation](https://docs.codesphere.com/apis-and-automations/mcp-server) for setup instructions per client and the full list of available tools.
+
 ## Development
 
 ### Running Tests
