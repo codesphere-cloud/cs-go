@@ -4,7 +4,10 @@
 package create_test
 
 import (
+	"bytes"
 	"errors"
+	"io"
+	"os"
 	"time"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -14,6 +17,7 @@ import (
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
 	createcmd "github.com/codesphere-cloud/cs-go/cli/cmd/create"
+	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 )
 
@@ -67,6 +71,9 @@ var _ = Describe("CreateWorkspace", func() {
 				Timeout:   &timeout,
 				Branch:    branch,
 				Baseimage: baseimage,
+			},
+			ClientFactory: func(opts shared.RootOptions) (cmd.Client, error) {
+				return mockClient, nil
 			},
 		}
 		envMap, err := cs.ArgToEnvVarMap(env)
@@ -376,4 +383,36 @@ var _ = Describe("CreateWorkspace", func() {
 			Expect(ws).To(BeNil())
 		})
 	})
+
+	Context("RunE output", func() {
+		It("prints the created workspace ID on stdout", func() {
+			mockClient.EXPECT().DeployWorkspace(deployArgs).Return(&api.Workspace{Id: 4242, Name: wsName, TeamId: teamId}, nil)
+
+			stdout, err := captureStdout(func() error { return c.RunE(nil, []string{wsName}) })
+			Expect(err).ToNot(HaveOccurred())
+			Expect(stdout).To(ContainSubstring("\nID: 4242\n"))
+		})
+
+		It("prints nothing on stdout when the workspace cannot be created", func() {
+			mockClient.EXPECT().DeployWorkspace(deployArgs).Return(nil, errors.New("deployment failed"))
+
+			stdout, err := captureStdout(func() error { return c.RunE(nil, []string{wsName}) })
+			Expect(err).To(HaveOccurred())
+			Expect(stdout).To(BeEmpty())
+		})
+	})
 })
+
+func captureStdout(run func() error) (string, error) {
+	oldStdout := os.Stdout
+	r, w, _ := os.Pipe()
+	os.Stdout = w
+
+	err := run()
+
+	_ = w.Close()
+	var buf bytes.Buffer
+	_, _ = io.Copy(&buf, r)
+	os.Stdout = oldStdout
+	return buf.String(), err
+}
