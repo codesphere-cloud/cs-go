@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
 )
@@ -65,39 +66,9 @@ func AddWakeUpCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 }
 
 func (c *WakeUpCmd) WakeUpWorkspace(client Client, wsId int) error {
-	workspace, err := client.GetWorkspace(wsId)
+	workspace, err := cs.WakeUpWorkspace(client, wsId, c.Opts.Timeout)
 	if err != nil {
-		return fmt.Errorf("failed to get workspace: %w", err)
-	}
-
-	// Check if workspace is already running
-	status, err := client.WorkspaceStatus(wsId)
-	if err != nil {
-		return fmt.Errorf("failed to get workspace status: %w", err)
-	}
-
-	if !status.IsRunning {
-		log.Printf("Waking up workspace %d (%s)...\n", wsId, workspace.Name)
-
-		// Scale workspace to at least 1 replica to wake it up
-		// If workspace already has replicas configured (but not running), preserve that count
-		targetReplicas := 1
-		if workspace.Replicas > 1 {
-			targetReplicas = workspace.Replicas
-		}
-
-		err = client.ScaleWorkspace(wsId, targetReplicas)
-		if err != nil {
-			return fmt.Errorf("failed to scale workspace: %w", err)
-		}
-
-		log.Printf("Waiting for workspace %d to be running...\n", wsId)
-		err = client.WaitForWorkspaceRunning(&workspace, c.Opts.Timeout)
-		if err != nil {
-			return fmt.Errorf("workspace did not become running: %w", err)
-		}
-	} else {
-		log.Printf("Workspace %d (%s) is already running\n", wsId, workspace.Name)
+		return err
 	}
 
 	if c.Opts.SyncLandscape {
