@@ -34,7 +34,12 @@ func (e *Environment) GetWorkspaceId() (int, error) {
 	return e.ReadNumericEnv("WORKSPACE_ID")
 }
 
+// GetTeamId reads CS_RESOURCE_GROUP_ID and falls back to CS_TEAM_ID.
 func (e *Environment) GetTeamId() (int, error) {
+	id, err := e.ReadNumericEnv("CS_RESOURCE_GROUP_ID")
+	if err != nil || id != -1 {
+		return id, err
+	}
 	return e.ReadNumericEnv("CS_TEAM_ID")
 }
 
