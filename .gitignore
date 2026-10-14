@@ -32,3 +32,4 @@ openapitools.json
 
 # goreleaser builds
 dist
+docs-docusaurus/
