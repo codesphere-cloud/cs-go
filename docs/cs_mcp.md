@@ -17,12 +17,13 @@ Example configuration:
 "mcp"
 ],
 "env": {
-"CS_TOKEN": "your-api-token-here",
-"CS_API": "https://codesphere.com/api"
+"CS_TOKEN": "your-api-token-here"
 }
 }
 }
 }
+Set CS_API to use a Codesphere instance other than the default https://cloud.codesphere.com/api.
+Documentation: https://docs.codesphere.com/apis-and-automations/mcp-server
 
 
 ```
