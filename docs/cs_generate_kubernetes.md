@@ -60,7 +60,7 @@ $ cs generate kubernetes -w 1234 -i ci.prod.yml
   -g, --org string           Organization ID (relevant for some commands)
   -o, --output string        Output path of the folder including generated artifacts, relative to repository root (default "export")
       --reporoot string      root directory of the workspace repository to export. Will be used to clone the repository if it doesn't exist. (default "./workspace-repo")
-  -G, --resource-group int   Resource group ID (relevant for some commands, can also be CS_RESOURCE_GROUP_ID; --team, -t and CS_TEAM_ID still work) (default -1)
+  -G, --resource-group int   Resource group ID (relevant for some commands, can also be CS_RESOURCE_GROUP_ID; legacy --team, -t and CS_TEAM_ID still work) (default -1)
   -v, --verbose              Verbose output
   -w, --workspace int        Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)
 ```
