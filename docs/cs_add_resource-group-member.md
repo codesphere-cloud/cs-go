@@ -16,10 +16,10 @@ cs add resource-group-member [flags]
 
 ```
 # Add a user to a resource group as a member
-$ cs add resource-group-member -t <resourceGroupId> -e user@example.com -r member
+$ cs add resource-group-member -G <resourceGroupId> -e user@example.com -r member
 
 # Add a user to a resource group as an admin
-$ cs add resource-group-member -t <resourceGroupId> -e admin@example.com -r admin
+$ cs add resource-group-member -G <resourceGroupId> -e admin@example.com -r admin
 ```
 
 ### Options
@@ -35,7 +35,7 @@ $ cs add resource-group-member -t <resourceGroupId> -e admin@example.com -r admi
 ```
   -a, --api string           URL of Codesphere API (can also be CS_API)
   -g, --org string           Organization ID (relevant for some commands)
-  -t, --resource-group int   Resource group ID (relevant for some commands, can also be CS_RESOURCE_GROUP_ID; --team and CS_TEAM_ID still work) (default -1)
+  -G, --resource-group int   Resource group ID (relevant for some commands, can also be CS_RESOURCE_GROUP_ID; --team, -t and CS_TEAM_ID still work) (default -1)
   -v, --verbose              Verbose output
   -w, --workspace int        Workspace ID (relevant for some commands, can also be CS_WORKSPACE_ID) (default -1)
 ```

@@ -27,8 +27,8 @@ func AddListTeamMembersCmd(p *cobra.Command, opts *ListOptions) {
 			Short:   "List resource group members",
 			Long:    `List all members of a resource group`,
 			Example: io.FormatExampleCommands("list resource-group-members", []io.Example{
-				{Cmd: "-t <resourceGroupId>", Desc: "List all members of a resource group"},
-				{Cmd: "-t <resourceGroupId> -o json", Desc: "List all members of a resource group in JSON format"},
+				{Cmd: "-G <resourceGroupId>", Desc: "List all members of a resource group"},
+				{Cmd: "-G <resourceGroupId> -o json", Desc: "List all members of a resource group in JSON format"},
 			}),
 		},
 		Opts:          opts,

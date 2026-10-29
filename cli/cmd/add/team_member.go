@@ -37,8 +37,8 @@ func AddAddTeamMemberCmd(add *cobra.Command, opts shared.RootOptions) {
 
 				To add a member to a resource group within an organization or a standalone resource group`),
 			Example: io.FormatExampleCommands("add resource-group-member", []io.Example{
-				{Cmd: "-t <resourceGroupId> -e user@example.com -r member", Desc: "Add a user to a resource group as a member"},
-				{Cmd: "-t <resourceGroupId> -e admin@example.com -r admin", Desc: "Add a user to a resource group as an admin"},
+				{Cmd: "-G <resourceGroupId> -e user@example.com -r member", Desc: "Add a user to a resource group as a member"},
+				{Cmd: "-G <resourceGroupId> -e admin@example.com -r admin", Desc: "Add a user to a resource group as an admin"},
 			}),
 		},
 		Opts: AddTeamMemberOpts{

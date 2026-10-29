@@ -30,7 +30,7 @@ func AddDeleteTeamCmd(delete *cobra.Command, opts shared.RootOptions) {
 			Short:   "Delete resource group",
 			Long:    `Delete a resource group from Codesphere or an Organization`,
 			Example: io.FormatExampleCommands("delete resource-group", []io.Example{
-				{Cmd: "-t <resourceGroupId>", Desc: "Delete a resource group"},
+				{Cmd: "-G <resourceGroupId>", Desc: "Delete a resource group"},
 			}),
 		},
 		Opts: DeleteTeamOpts{

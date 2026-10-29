@@ -56,7 +56,14 @@ var _ = Describe("Team aliases for resource groups", func() {
 		Expect(err).NotTo(HaveOccurred())
 		Expect(id).To(Equal(2))
 	})
-	It("keeps -t as the shorthand", func() {
+	It("sets the resource group flag via -G", func() {
+		root := cmd.GetRootCmd()
+		Expect(root.ParseFlags([]string{"-G", "5"})).To(Succeed())
+		id, err := root.PersistentFlags().GetInt("resource-group")
+		Expect(err).NotTo(HaveOccurred())
+		Expect(id).To(Equal(5))
+	})
+	It("keeps -t working for existing scripts", func() {
 		root := cmd.GetRootCmd()
 		Expect(root.ParseFlags([]string{"-t", "7"})).To(Succeed())
 		id, err := root.PersistentFlags().GetInt("resource-group")
@@ -67,7 +74,7 @@ var _ = Describe("Team aliases for resource groups", func() {
 		flag := cmd.GetRootCmd().PersistentFlags().Lookup("team")
 		Expect(flag).NotTo(BeNil())
 		Expect(flag.Name).To(Equal("resource-group"))
-		Expect(flag.Shorthand).To(Equal("t"))
+		Expect(flag.Shorthand).To(Equal("G"))
 	})
 	It("keeps the deprecated team create path", func() {
 		leaf, rest, err := cmd.GetRootCmd().Find([]string{"team", "create"})

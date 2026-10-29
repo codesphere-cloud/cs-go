@@ -32,8 +32,8 @@ func AddDeleteTeamMemberCmd(delete *cobra.Command, opts shared.RootOptions) {
 
 				To delete a member from a resource group within an organization, the CS_ORG_ID environment variable or the -g/--org flag must be set.`),
 			Example: io.FormatExampleCommands("delete resource-group-member", []io.Example{
-				{Cmd: "-t <resourceGroupId> -u <userId>", Desc: "Delete a user from a resource group"},
-				{Cmd: "-g <org-id> -t <resourceGroupId> -u <userId>", Desc: "Delete a user from a resource group within an organization"},
+				{Cmd: "-G <resourceGroupId> -u <userId>", Desc: "Delete a user from a resource group"},
+				{Cmd: "-g <org-id> -G <resourceGroupId> -u <userId>", Desc: "Delete a user from a resource group within an organization"},
 			}),
 		},
 		Opts: DeleteTeamMemberOpts{
