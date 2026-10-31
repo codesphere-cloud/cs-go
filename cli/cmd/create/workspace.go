@@ -6,7 +6,6 @@ package create
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"slices"
 	"strings"
@@ -20,8 +19,9 @@ import (
 )
 
 type CreateWorkspaceCmd struct {
-	cmd  *cobra.Command
-	Opts CreateWorkspaceOpts
+	cmd           *cobra.Command
+	Opts          CreateWorkspaceOpts
+	ClientFactory func(shared.RootOptions) (shared.Client, error)
 }
 
 type CreateWorkspaceOpts struct {
@@ -38,7 +38,7 @@ type CreateWorkspaceOpts struct {
 }
 
 func (c *CreateWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
-	client, err := c.Opts.NewClient()
+	client, err := c.ClientFactory(c.Opts.RootOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -67,13 +67,13 @@ func (c *CreateWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
 		branch = *ws.InitialBranch.Get()
 	}
 
-	log.Println("Workspace created:")
-	log.Printf("\nID: %d\n", ws.Id)
-	log.Printf("Name: %s\n", ws.Name)
-	log.Printf("Team ID: %d\n", ws.TeamId)
-	log.Printf("Git Repository: %s\n", giturl)
-	log.Printf("Branch: %s\n", branch)
-	log.Printf("To open it in the Codesphere IDE run '%s open workspace -w %d'", os.Args[0], ws.Id)
+	fmt.Println("Workspace created:")
+	fmt.Printf("\nID: %d\n", ws.Id)
+	fmt.Printf("Name: %s\n", ws.Name)
+	fmt.Printf("Team ID: %d\n", ws.TeamId)
+	fmt.Printf("Git Repository: %s\n", giturl)
+	fmt.Printf("Branch: %s\n", branch)
+	fmt.Printf("To open it in the Codesphere IDE run '%s open workspace -w %d'\n", os.Args[0], ws.Id)
 
 	return nil
 }
@@ -103,7 +103,8 @@ func AddCreateWorkspaceCmd(create *cobra.Command, opts shared.RootOptions) {
 				{Cmd: "-r https://github.com/my-org/my-private-project.git -P", Desc: "Create a workspace from a private git repository"},
 			}),
 		},
-		Opts: CreateWorkspaceOpts{RootOptions: opts},
+		Opts:          CreateWorkspaceOpts{RootOptions: opts},
+		ClientFactory: func(opts shared.RootOptions) (shared.Client, error) { return opts.NewClient() },
 	}
 	workspace.Opts.Repo = workspace.cmd.Flags().StringP("repository", "r", "", "Git repository to create the workspace from")
 	workspace.Opts.Vpn = workspace.cmd.Flags().String("vpn", "", "Vpn config to use")
