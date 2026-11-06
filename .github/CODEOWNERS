@@ -6,5 +6,4 @@
 # IMPORTANT: only add groups as owners (below); never individual users.
 
 # Global owners.
-* @codesphere-cloud/architects
-* @codesphere-cloud/cs-go
+* @codesphere-cloud/architects @codesphere-cloud/cs-go @codesphere-cloud/platform
