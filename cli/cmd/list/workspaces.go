@@ -27,7 +27,7 @@ func addListWorkspacesCmd(p *cobra.Command, opts *ListOptions) {
 			Short: "List workspaces",
 			Long:  `List workspaces available in Codesphere`,
 			Example: io.FormatExampleCommands("list workspaces", []io.Example{
-				{Cmd: "-t <team-id>", Desc: "List all workspaces"},
+				{Cmd: "-G <resourceGroupId>", Desc: "List all workspaces"},
 			}),
 		},
 		Opts: opts,
