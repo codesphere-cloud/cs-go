@@ -10,10 +10,7 @@ import (
 
 // ListManagedServices lists managed services of a team.
 func (c *Client) ListManagedServices(teamId int, includeDeleted bool) ([]ManagedService, error) {
-	req := c.api.ManagedServicesAPI.ManagedServicesList(c.ctx).Team(teamId)
-	if includeDeleted {
-		req = req.IncludeDeleted(true)
-	}
+	req := c.api.ManagedServicesAPI.ManagedServicesList(c.ctx).Team(teamId).IncludeDeleted(includeDeleted)
 	services, r, err := req.Execute()
 	if err != nil {
 		return nil, cserrors.FormatAPIError(r, err)
