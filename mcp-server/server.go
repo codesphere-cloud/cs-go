@@ -39,11 +39,10 @@ func Run() error {
 	RegisterDomainTools(server, client)
 	RegisterWorkspaceTools(server, client)
 	RegisterUsageTools(server, client)
+	RegisterAccessTools(server, Deps{Client: client, DefaultWorkspaceId: opts.GetWorkspaceId})
 
 	if err := server.Run(context.Background(), &mcp.StdioTransport{}); err != nil {
 		return err
 	}
 	return nil
 }
-
-// adding usage tools to main
