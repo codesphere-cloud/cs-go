@@ -68,6 +68,13 @@ docs:
 	go run -ldflags="-X 'github.com/codesphere-cloud/cs-go/pkg/io.binName=cs'" hack/gendocs/main.go 
 	cp docs/cs.md docs/README.md
 
+DOCS_OUTPUT ?= docs-docusaurus
+DOCS_VERSION ?= development
+.PHONY: docs-docusaurus
+docs-docusaurus:
+	rm -rf "$(DOCS_OUTPUT)"
+	go run -ldflags="-X 'github.com/codesphere-cloud/cs-go/pkg/io.binName=cs'" hack/gendocs/main.go --docusaurus --output "$(DOCS_OUTPUT)" --version "$(DOCS_VERSION)"
+
 generate-license: generate
 	go-licenses report --template .NOTICE.template  ./... > NOTICE
 	copywrite headers apply
@@ -79,4 +86,3 @@ endif
 ifeq (, $(shell which copywrite))
 	go install github.com/hashicorp/copywrite@v0.22.0
 endif
-
