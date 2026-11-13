@@ -126,6 +126,16 @@ func (c *Client) ScaleWorkspace(wsId int, replicas int) error {
 	return errors.FormatAPIError(r, err)
 }
 
+// UpdateWorkspace changes workspace settings such as name, plan or access restriction.
+// The API answers with an empty body, so callers that need the result have to
+// read the workspace again.
+func (c *Client) UpdateWorkspace(wsId int, args UpdateWorkspaceArgs) error {
+	r, err := c.api.WorkspacesAPI.WorkspacesUpdateWorkspace(c.ctx, wsId).
+		WorkspacesUpdateWorkspaceRequest(args).
+		Execute()
+	return errors.FormatAPIError(r, err)
+}
+
 // ScaleLandscapeServices scales landscape services by name.
 // The services map contains service name -> replica count.
 func (c *Client) ScaleLandscapeServices(wsId int, services map[string]int) error {

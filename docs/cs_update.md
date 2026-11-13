@@ -30,4 +30,5 @@ cs update [flags]
 
 * [cs](cs.md)	 - The Codesphere CLI
 * [cs update organization-member](cs_update_organization-member.md)	 - Change organization member role
+* [cs update workspace](cs_update_workspace.md)	 - Change workspace access, name or plan
 
