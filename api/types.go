@@ -131,3 +131,10 @@ func (r *RealTime) Now() time.Time {
 func (r *RealTime) Sleep(t time.Duration) {
 	time.Sleep(t)
 }
+
+type ManagedService = openapi.ManagedServicesList200ResponseInner
+type ManagedServiceProvider = openapi.ManagedServicesListProviders200ResponseInner
+type ManagedServiceBackup = openapi.ManagedServicesList200ResponseInnerBackupsAnyOfEntriesInner
+type ManagedServicePlan = openapi.ManagedServicesList200ResponseInnerPlan
+type CreateManagedServiceArgs = openapi.ManagedServicesCreateRequest
+type UpdateManagedServiceArgs = openapi.ManagedServicesUpdateRequest
