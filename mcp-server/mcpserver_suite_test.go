@@ -19,7 +19,8 @@ func TestMcpServer(t *testing.T) {
 }
 
 // connect registers tools on a fresh server and returns a connected client session.
-func connect(register func(*mcp.Server)) *mcp.ClientSession {
+// clientOpts configures the client, e.g. its ElicitationHandler; nil gives a client without elicitation.
+func connect(register func(*mcp.Server), clientOpts *mcp.ClientOptions) *mcp.ClientSession {
 	ctx := context.Background()
 	server := mcp.NewServer(&mcp.Implementation{Name: "test-server", Version: "v0"}, nil)
 	register(server)
@@ -28,7 +29,7 @@ func connect(register func(*mcp.Server)) *mcp.ClientSession {
 	Expect(err).NotTo(HaveOccurred())
 	DeferCleanup(func() { _ = serverSession.Close() })
 
-	client := mcp.NewClient(&mcp.Implementation{Name: "test-client", Version: "v0"}, nil)
+	client := mcp.NewClient(&mcp.Implementation{Name: "test-client", Version: "v0"}, clientOpts)
 	session, err := client.Connect(ctx, clientTransport, nil)
 	Expect(err).NotTo(HaveOccurred())
 	DeferCleanup(func() { _ = session.Close() })

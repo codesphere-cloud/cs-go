@@ -4,6 +4,7 @@
 package mcpserver_test
 
 import (
+	"context"
 	"errors"
 
 	"github.com/codesphere-cloud/cs-go/api"
@@ -17,21 +18,32 @@ import (
 var _ = Describe("update_workspace", func() {
 	const wsId = 1057556
 	var (
-		client    *cmd.MockClient
-		session   *mcp.ClientSession
-		defaultWs int
-		devDomain string
+		client      *cmd.MockClient
+		session     *mcp.ClientSession
+		defaultWs   int
+		devDomain   string
+		userAction  string
+		elicitCalls []*mcp.ElicitParams
 	)
+
+	register := func(s *mcp.Server) {
+		mcpserver.RegisterAccessTools(s, mcpserver.Deps{
+			Client:             client,
+			DefaultWorkspaceId: func() (int, error) { return defaultWs, nil },
+		})
+	}
 
 	BeforeEach(func() {
 		client = cmd.NewMockClient(GinkgoT())
 		defaultWs = wsId
 		devDomain = "1057556.7.ws.dev-codesphere.com"
-		session = connect(func(s *mcp.Server) {
-			mcpserver.RegisterAccessTools(s, mcpserver.Deps{
-				Client:             client,
-				DefaultWorkspaceId: func() (int, error) { return defaultWs, nil },
-			})
+		userAction = "accept"
+		elicitCalls = nil
+		session = connect(register, &mcp.ClientOptions{
+			ElicitationHandler: func(_ context.Context, req *mcp.ElicitRequest) (*mcp.ElicitResult, error) {
+				elicitCalls = append(elicitCalls, req.Params)
+				return &mcp.ElicitResult{Action: userAction}, nil
+			},
 		})
 	})
 
@@ -55,6 +67,65 @@ var _ = Describe("update_workspace", func() {
 		Expect(out["devDomainUrl"]).To(Equal("https://1057556.7.ws.dev-codesphere.com/"))
 		Expect(out["access"]).To(Equal("public: reachable without sign-in"))
 		Expect(out["workspace"]).To(HaveKeyWithValue("name", "docs"))
+	})
+
+	It("asks the user to approve the change before applying it", func() {
+		client.EXPECT().UpdateWorkspace(wsId, api.UpdateWorkspaceArgs{Restricted: new(false)}).Return(nil).Once()
+		client.EXPECT().GetWorkspace(wsId).Return(api.Workspace{Id: wsId, Restricted: false}, nil).Once()
+
+		callTool(session, "update_workspace", map[string]any{"restricted": false})
+
+		Expect(elicitCalls).To(HaveLen(1))
+		Expect(elicitCalls[0].Message).To(ContainSubstring("Approve these changes to Codesphere workspace 1057556?"))
+		Expect(elicitCalls[0].Message).To(ContainSubstring("Make it public: anyone on the internet can open"))
+	})
+
+	It("names every requested change in the approval prompt", func() {
+		client.EXPECT().UpdateWorkspace(42, api.UpdateWorkspaceArgs{Restricted: new(true), Name: new("docs"), PlanId: new(21)}).Return(nil).Once()
+		client.EXPECT().GetWorkspace(42).Return(api.Workspace{Id: 42, Restricted: true}, nil).Once()
+
+		callTool(session, "update_workspace", map[string]any{"workspaceId": 42, "restricted": true, "name": "docs", "planId": 21})
+
+		Expect(elicitCalls).To(HaveLen(1))
+		Expect(elicitCalls[0].Message).To(ContainSubstring("workspace 42?"))
+		Expect(elicitCalls[0].Message).To(ContainSubstring("Restrict access"))
+		Expect(elicitCalls[0].Message).To(ContainSubstring(`Rename it to "docs".`))
+		Expect(elicitCalls[0].Message).To(ContainSubstring("Change its plan to plan 21"))
+	})
+
+	It("changes nothing when the user declines", func() {
+		userAction = "decline"
+
+		res := callTool(session, "update_workspace", map[string]any{"restricted": false})
+
+		Expect(res.IsError).To(BeTrue())
+		Expect(text(res)).To(Equal("the user did not approve the change (decline); nothing was changed"))
+	})
+
+	It("changes nothing when the user dismisses the prompt", func() {
+		userAction = "cancel"
+
+		res := callTool(session, "update_workspace", map[string]any{"restricted": false})
+
+		Expect(res.IsError).To(BeTrue())
+		Expect(text(res)).To(Equal("the user did not approve the change (cancel); nothing was changed"))
+	})
+
+	It("changes nothing when the client cannot ask the user", func() {
+		session = connect(register, nil)
+
+		res := callTool(session, "update_workspace", map[string]any{"restricted": false})
+
+		Expect(res.IsError).To(BeTrue())
+		Expect(text(res)).To(HavePrefix("update_workspace needs the user's approval, but this MCP client cannot ask the user (no elicitation support); nothing was changed."))
+	})
+
+	It("does not ask the user about an invalid call", func() {
+		res := callTool(session, "update_workspace", map[string]any{"planId": -1})
+
+		Expect(res.IsError).To(BeTrue())
+		Expect(text(res)).To(Equal("planId must be non-negative"))
+		Expect(elicitCalls).To(BeEmpty())
 	})
 
 	It("uses an explicit workspace ID and changes name and plan", func() {
