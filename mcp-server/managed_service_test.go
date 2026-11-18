@@ -234,6 +234,17 @@ var _ = Describe("ManagedServiceTools", func() {
 			Expect(requestField(plan, "Id").Int()).To(BeEquivalentTo(3))
 			Expect(requestField(plan, "Parameters").MapIndex(reflect.ValueOf("storage")).Int()).To(BeEquivalentTo(20))
 		})
+
+		// The backend replaces config as a whole, so an explicit empty object must reach it rather than
+		// being dropped like an omitted field.
+		It("forwards an empty config object instead of dropping it", func() {
+			res := callTool("update_managed_service", map[string]any{"serviceId": "id-1", "config": map[string]any{}})
+
+			Expect(res.IsError).To(BeFalse())
+			config := requestField(req, "managedServicesUpdateRequest", "Config")
+			Expect(config.IsNil()).To(BeFalse())
+			Expect(config.Len()).To(BeZero())
+		})
 	})
 
 	Context("delete_managed_service", func() {
