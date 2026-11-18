@@ -274,6 +274,47 @@ var _ = Describe("ManagedServiceTools", func() {
 			Expect(res.StructuredContent).To(HaveKeyWithValue("id", "backup-1"))
 		})
 	})
+
+	Context("tool annotations", func() {
+		var annotations map[string]*mcp.ToolAnnotations
+
+		BeforeEach(func() {
+			res, err := session.ListTools(context.Background(), nil)
+			Expect(err).NotTo(HaveOccurred())
+			annotations = map[string]*mcp.ToolAnnotations{}
+			for _, tool := range res.Tools {
+				annotations[tool.Name] = tool.Annotations
+			}
+		})
+
+		It("marks list_managed_services as read-only", func() {
+			Expect(annotations["list_managed_services"]).To(HaveField("ReadOnlyHint", BeTrue()))
+		})
+
+		It("marks get_managed_service as read-only", func() {
+			Expect(annotations["get_managed_service"]).To(HaveField("ReadOnlyHint", BeTrue()))
+		})
+
+		It("marks list_managed_service_providers as read-only", func() {
+			Expect(annotations["list_managed_service_providers"]).To(HaveField("ReadOnlyHint", BeTrue()))
+		})
+
+		It("marks delete_managed_service as destructive", func() {
+			Expect(annotations["delete_managed_service"]).To(HaveField("DestructiveHint", HaveValue(BeTrue())))
+		})
+
+		It("marks update_managed_service as destructive because it replaces config and secrets", func() {
+			Expect(annotations["update_managed_service"]).To(HaveField("DestructiveHint", HaveValue(BeTrue())))
+		})
+
+		It("marks create_managed_service as non-destructive", func() {
+			Expect(annotations["create_managed_service"]).To(HaveField("DestructiveHint", HaveValue(BeFalse())))
+		})
+
+		It("marks schedule_managed_service_backup as non-destructive", func() {
+			Expect(annotations["schedule_managed_service_backup"]).To(HaveField("DestructiveHint", HaveValue(BeFalse())))
+		})
+	})
 })
 
 // managedService builds a managed service the way the API returns it. Status and backups are

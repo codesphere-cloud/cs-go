@@ -53,6 +53,7 @@ func RegisterManagedServiceTools(server *mcp.Server, client *api.Client) {
 	mcp.AddTool(server, &mcp.Tool{
 		Name:        "list_managed_services",
 		Description: "List managed services (e.g. databases, queues) of a team",
+		Annotations: &mcp.ToolAnnotations{ReadOnlyHint: true},
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args ListManagedServicesArgs) (*mcp.CallToolResult, any, error) {
 		services, err := client.ListManagedServices(args.TeamId, args.IncludeDeleted)
 		if err != nil {
@@ -64,6 +65,7 @@ func RegisterManagedServiceTools(server *mcp.Server, client *api.Client) {
 	mcp.AddTool(server, &mcp.Tool{
 		Name:        "get_managed_service",
 		Description: "Get details of a single managed service",
+		Annotations: &mcp.ToolAnnotations{ReadOnlyHint: true},
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args ManagedServiceIdArgs) (*mcp.CallToolResult, any, error) {
 		details, err := client.GetManagedService(args.ServiceId)
 		if err != nil {
@@ -75,6 +77,7 @@ func RegisterManagedServiceTools(server *mcp.Server, client *api.Client) {
 	mcp.AddTool(server, &mcp.Tool{
 		Name:        "list_managed_service_providers",
 		Description: "List available managed service providers and their versions",
+		Annotations: &mcp.ToolAnnotations{ReadOnlyHint: true},
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args struct{}) (*mcp.CallToolResult, any, error) {
 		providers, err := client.ListManagedServiceProviders()
 		if err != nil {
@@ -86,6 +89,7 @@ func RegisterManagedServiceTools(server *mcp.Server, client *api.Client) {
 	mcp.AddTool(server, &mcp.Tool{
 		Name:        "create_managed_service",
 		Description: "Create a new managed service. May incur costs.",
+		Annotations: &mcp.ToolAnnotations{DestructiveHint: new(false)},
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args CreateManagedServiceArgs) (*mcp.CallToolResult, any, error) {
 		create := api.CreateManagedServiceArgs{
 			TeamId:   args.TeamId,
@@ -106,6 +110,7 @@ func RegisterManagedServiceTools(server *mcp.Server, client *api.Client) {
 	mcp.AddTool(server, &mcp.Tool{
 		Name:        "update_managed_service",
 		Description: "Update a managed service (rename, pause/resume, change plan, config, secrets or version)",
+		Annotations: &mcp.ToolAnnotations{DestructiveHint: new(true)},
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args UpdateManagedServiceArgs) (*mcp.CallToolResult, any, error) {
 		update := api.UpdateManagedServiceArgs{
 			Name:    args.Name,
@@ -128,6 +133,7 @@ func RegisterManagedServiceTools(server *mcp.Server, client *api.Client) {
 	mcp.AddTool(server, &mcp.Tool{
 		Name:        "delete_managed_service",
 		Description: "Delete a managed service by ID. This is destructive.",
+		Annotations: &mcp.ToolAnnotations{DestructiveHint: new(true)},
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args ManagedServiceIdArgs) (*mcp.CallToolResult, any, error) {
 		if err := client.DeleteManagedService(args.ServiceId); err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
@@ -138,6 +144,7 @@ func RegisterManagedServiceTools(server *mcp.Server, client *api.Client) {
 	mcp.AddTool(server, &mcp.Tool{
 		Name:        "schedule_managed_service_backup",
 		Description: "Schedule a backup of a managed service",
+		Annotations: &mcp.ToolAnnotations{DestructiveHint: new(false)},
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args ManagedServiceIdArgs) (*mcp.CallToolResult, any, error) {
 		backup, err := client.ScheduleManagedServiceBackup(args.ServiceId)
 		if err != nil {
