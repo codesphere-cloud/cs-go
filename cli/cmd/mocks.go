@@ -1684,6 +1684,63 @@ func (_c *MockClient_StopPipelineStage_Call) RunAndReturn(run func(wsId int, sta
 	return _c
 }
 
+// UpdateWorkspace provides a mock function for the type MockClient
+func (_mock *MockClient) UpdateWorkspace(wsId int, args api.UpdateWorkspaceArgs) error {
+	ret := _mock.Called(wsId, args)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateWorkspace")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(int, api.UpdateWorkspaceArgs) error); ok {
+		r0 = returnFunc(wsId, args)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockClient_UpdateWorkspace_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateWorkspace'
+type MockClient_UpdateWorkspace_Call struct {
+	*mock.Call
+}
+
+// UpdateWorkspace is a helper method to define mock.On call
+//   - wsId int
+//   - args api.UpdateWorkspaceArgs
+func (_e *MockClient_Expecter) UpdateWorkspace(wsId any, args any) *MockClient_UpdateWorkspace_Call {
+	return &MockClient_UpdateWorkspace_Call{Call: _e.mock.On("UpdateWorkspace", wsId, args)}
+}
+
+func (_c *MockClient_UpdateWorkspace_Call) Run(run func(wsId int, args api.UpdateWorkspaceArgs)) *MockClient_UpdateWorkspace_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 int
+		if args[0] != nil {
+			arg0 = args[0].(int)
+		}
+		var arg1 api.UpdateWorkspaceArgs
+		if args[1] != nil {
+			arg1 = args[1].(api.UpdateWorkspaceArgs)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockClient_UpdateWorkspace_Call) Return(err error) *MockClient_UpdateWorkspace_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockClient_UpdateWorkspace_Call) RunAndReturn(run func(wsId int, args api.UpdateWorkspaceArgs) error) *MockClient_UpdateWorkspace_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // WaitForWorkspaceRunning provides a mock function for the type MockClient
 func (_mock *MockClient) WaitForWorkspaceRunning(workspace *api.Workspace, timeout time.Duration) error {
 	ret := _mock.Called(workspace, timeout)

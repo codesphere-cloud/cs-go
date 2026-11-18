@@ -36,6 +36,7 @@ type Workspace = openapi.WorkspacesGetWorkspace200Response
 type Baseimage = openapi.MetadataGetWorkspaceBaseImages200ResponseInner
 type WorkspaceStatus = openapi.WorkspacesGetWorkspaceStatus200Response
 type CreateWorkspaceArgs = openapi.WorkspacesCreateWorkspaceRequest
+type UpdateWorkspaceArgs = openapi.WorkspacesUpdateWorkspaceRequest
 type WorkspacePlan = openapi.MetadataGetWorkspacePlans200ResponseInner
 
 type PipelineStatus = openapi.WorkspacesPipelineStatus200ResponseInner

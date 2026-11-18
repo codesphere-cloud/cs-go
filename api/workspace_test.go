@@ -5,7 +5,11 @@ package api_test
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"net/url"
 	"time"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -269,5 +273,66 @@ var _ = Describe("Workspace", func() {
 				Expect(newWs.Name).To(Equal(ws.Name))
 			})
 		})
+	})
+})
+
+var _ = Describe("UpdateWorkspace", func() {
+	var (
+		server    *httptest.Server
+		client    *api.Client
+		method    string
+		path      string
+		body      map[string]any
+		status    int
+		replyBody string
+	)
+
+	BeforeEach(func() {
+		status = http.StatusOK
+		replyBody = ""
+		server = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			method = r.Method
+			path = r.URL.Path
+			body = map[string]any{}
+			_ = json.NewDecoder(r.Body).Decode(&body)
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(status)
+			_, _ = w.Write([]byte(replyBody))
+		}))
+		baseUrl, err := url.Parse(server.URL + "/api")
+		Expect(err).NotTo(HaveOccurred())
+		client = api.NewClient(context.TODO(), api.Configuration{BaseUrl: baseUrl, Token: "token"})
+	})
+
+	AfterEach(func() {
+		server.Close()
+	})
+
+	It("sends a PATCH with only the restricted flag", func() {
+		restricted := false
+		err := client.UpdateWorkspace(42, api.UpdateWorkspaceArgs{Restricted: &restricted})
+
+		Expect(err).NotTo(HaveOccurred())
+		Expect(method).To(Equal(http.MethodPatch))
+		Expect(path).To(Equal("/api/workspaces/42"))
+		Expect(body).To(Equal(map[string]any{"restricted": false}))
+	})
+
+	It("sends name and plan changes", func() {
+		name := "docs"
+		plan := 8
+		err := client.UpdateWorkspace(42, api.UpdateWorkspaceArgs{Name: &name, PlanId: &plan})
+
+		Expect(err).NotTo(HaveOccurred())
+		Expect(body).To(Equal(map[string]any{"name": "docs", "planId": float64(8)}))
+	})
+
+	It("returns the formatted API error", func() {
+		status = http.StatusNotFound
+		replyBody = `{"status":404,"title":"Workspace is not found.","traceId":"abc"}`
+		restricted := true
+		err := client.UpdateWorkspace(42, api.UpdateWorkspaceArgs{Restricted: &restricted})
+
+		Expect(err).To(MatchError(ContainSubstring("error 404 (Workspace is not found.)")))
 	})
 })

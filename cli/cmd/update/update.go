@@ -35,6 +35,7 @@ func AddUpdateCmd(rootCmd *cobra.Command, opts shared.RootOptions) {
 	shared.AddCmd(rootCmd, update.cmd)
 	update.cmd.RunE = update.RunE
 	AddUpdateOrganizationMemberCmd(update.cmd, opts)
+	AddUpdateWorkspaceCmd(update.cmd, opts)
 }
 
 func SelfUpdate() error {
