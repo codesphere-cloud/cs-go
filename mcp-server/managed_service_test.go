@@ -151,13 +151,13 @@ var _ = Describe("ManagedServiceTools", func() {
 				Return(managedService("id-1", "db1"), nil, nil)
 
 			res := callTool("create_managed_service", map[string]any{
-				"teamId":          7,
-				"name":            "db1",
-				"providerName":    "postgres",
-				"providerVersion": "v1",
-				"plan":            map[string]any{"id": 2, "parameters": map[string]any{"storage": 10}},
-				"config":          map[string]any{"database": "app"},
-				"secrets":         map[string]any{"password": "s3cret"},
+				"teamId":                7,
+				"name":                  "db1",
+				"providerName":          "postgres",
+				"providerSchemaVersion": "v1",
+				"plan":                  map[string]any{"id": 2, "parameters": map[string]any{"storage": 10}},
+				"config":                map[string]any{"database": "app"},
+				"secrets":               map[string]any{"password": "s3cret"},
 			})
 
 			Expect(res.IsError).To(BeFalse())
@@ -166,18 +166,16 @@ var _ = Describe("ManagedServiceTools", func() {
 			Expect(requestField(body, "TeamId").Int()).To(BeEquivalentTo(7))
 			Expect(requestField(body, "Name").String()).To(Equal("db1"))
 			Expect(requestField(body, "Provider", "Name").String()).To(Equal("postgres"))
-			Expect(requestField(body, "Provider", "Version").Elem().String()).To(Equal("v1"))
+			Expect(requestField(body, "Provider", "SchemaVersion").Elem().String()).To(Equal("v1"))
+			Expect(requestField(body, "Provider", "Version").IsNil()).To(BeTrue())
 			Expect(requestField(body, "Plan", "Id").Int()).To(BeEquivalentTo(2))
 			Expect(requestField(body, "Plan", "Parameters").MapIndex(reflect.ValueOf("storage")).Int()).To(BeEquivalentTo(10))
 			Expect(requestField(body, "Config").MapIndex(reflect.ValueOf("database")).Elem().String()).To(Equal("app"))
 			Expect(requestField(body, "Secrets").MapIndex(reflect.ValueOf("password")).Elem().String()).To(Equal("s3cret"))
 		})
 
-		It("leaves the provider version unset when none is given", func() {
-			msApiMock.EXPECT().ManagedServicesCreateExecute(mock.Anything).
-				Run(func(r openapi_client.ApiManagedServicesCreateRequest) { req = r }).
-				Return(managedService("id-1", "db1"), nil, nil)
-
+		// The backend requires provider.schemaVersion, so the tool must not send a create without it.
+		It("rejects calls without a provider schema version", func() {
 			res := callTool("create_managed_service", map[string]any{
 				"teamId":       7,
 				"name":         "db1",
@@ -187,8 +185,8 @@ var _ = Describe("ManagedServiceTools", func() {
 				"secrets":      map[string]any{},
 			})
 
-			Expect(res.IsError).To(BeFalse())
-			Expect(requestField(req, "managedServicesCreateRequest", "Provider", "Version").IsNil()).To(BeTrue())
+			Expect(res.IsError).To(BeTrue())
+			Expect(res.Content).To(ContainElement(HaveField("Text", ContainSubstring("providerSchemaVersion"))))
 		})
 
 		It("rejects calls without the required arguments", func() {

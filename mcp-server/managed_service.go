@@ -25,14 +25,14 @@ type ManagedServicePlanArg struct {
 }
 
 type CreateManagedServiceArgs struct {
-	TeamId          int                    `json:"teamId" jsonschema:"ID of the team to create the managed service in"`
-	Name            string                 `json:"name" jsonschema:"Name of the managed service"`
-	ProviderName    string                 `json:"providerName" jsonschema:"Provider name, e.g. postgres (see list_managed_service_providers)"`
-	ProviderVersion *string                `json:"providerVersion,omitempty" jsonschema:"Optional provider version, e.g. v1"`
-	Plan            ManagedServicePlanArg  `json:"plan" jsonschema:"Plan of the managed service"`
-	Config          map[string]interface{} `json:"config" jsonschema:"Provider specific configuration object"`
-	Secrets         map[string]interface{} `json:"secrets" jsonschema:"Provider specific secrets object"`
-	Version         *string                `json:"version,omitempty" jsonschema:"Optional semantic version of the service"`
+	TeamId                int                    `json:"teamId" jsonschema:"ID of the team to create the managed service in"`
+	Name                  string                 `json:"name" jsonschema:"Name of the managed service"`
+	ProviderName          string                 `json:"providerName" jsonschema:"Provider name, e.g. postgres (see list_managed_service_providers)"`
+	ProviderSchemaVersion string                 `json:"providerSchemaVersion" jsonschema:"Provider schema version, e.g. v1 (schemaVersion from list_managed_service_providers)"`
+	Plan                  ManagedServicePlanArg  `json:"plan" jsonschema:"Plan of the managed service"`
+	Config                map[string]interface{} `json:"config" jsonschema:"Provider specific configuration object"`
+	Secrets               map[string]interface{} `json:"secrets" jsonschema:"Provider specific secrets object"`
+	Version               *string                `json:"version,omitempty" jsonschema:"Optional semantic version of the service"`
 }
 
 type UpdateManagedServiceArgs struct {
@@ -87,11 +87,10 @@ func RegisterManagedServiceTools(server *mcp.Server, client *api.Client) {
 		Name:        "create_managed_service",
 		Description: "Create a new managed service. May incur costs.",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args CreateManagedServiceArgs) (*mcp.CallToolResult, any, error) {
-		provider := api.NewManagedServiceProviderRef(args.ProviderName, args.ProviderVersion)
 		create := api.CreateManagedServiceArgs{
 			TeamId:   args.TeamId,
 			Name:     args.Name,
-			Provider: provider,
+			Provider: api.NewManagedServiceProviderRef(args.ProviderName, args.ProviderSchemaVersion),
 			Plan:     args.Plan.toAPI(),
 			Config:   args.Config,
 			Secrets:  args.Secrets,

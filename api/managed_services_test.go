@@ -238,17 +238,16 @@ var _ = Describe("ManagedServices", func() {
 	})
 
 	Context("NewManagedServiceProviderRef", func() {
-		It("builds a provider reference from name and version", func() {
-			version := "v1"
-
-			ref := api.NewManagedServiceProviderRef("postgres", &version)
+		It("builds a provider reference from name and schema version", func() {
+			ref := api.NewManagedServiceProviderRef("postgres", "v1")
 
 			Expect(ref.Name).To(Equal("postgres"))
-			Expect(ref.Version).To(HaveValue(Equal("v1")))
+			Expect(ref.SchemaVersion).To(HaveValue(Equal("v1")))
 		})
 
-		It("leaves the version unset when none is given", func() {
-			ref := api.NewManagedServiceProviderRef("postgres", nil)
+		// The backend dropped the deprecated provider.version alias for schemaVersion.
+		It("does not set the deprecated version alias", func() {
+			ref := api.NewManagedServiceProviderRef("postgres", "v1")
 
 			Expect(ref.Version).To(BeNil())
 		})

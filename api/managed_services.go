@@ -5,7 +5,6 @@ package api
 
 import (
 	cserrors "github.com/codesphere-cloud/cs-go/api/errors"
-	openapi "github.com/codesphere-cloud/cs-go/api/openapi_client"
 )
 
 // ListManagedServices lists managed services of a team.
@@ -72,7 +71,8 @@ func (c *Client) ScheduleManagedServiceBackup(id string) (*ManagedServiceBackup,
 	return backup, nil
 }
 
-// NewManagedServiceProviderRef builds the provider reference for a create request.
-func NewManagedServiceProviderRef(name string, version *string) openapi.ManagedServicesCreateRequestProvider {
-	return openapi.ManagedServicesCreateRequestProvider{Name: name, Version: version}
+// NewManagedServiceProviderRef builds the provider reference for a create request. The backend
+// requires schemaVersion; the deprecated version alias is no longer accepted.
+func NewManagedServiceProviderRef(name, schemaVersion string) ManagedServiceProviderRef {
+	return ManagedServiceProviderRef{Name: name, SchemaVersion: &schemaVersion}
 }

@@ -137,4 +137,5 @@ type ManagedServiceProvider = openapi.ManagedServicesListProviders200ResponseInn
 type ManagedServiceBackup = openapi.ManagedServicesList200ResponseInnerBackupsAnyOfEntriesInner
 type ManagedServicePlan = openapi.ManagedServicesList200ResponseInnerPlan
 type CreateManagedServiceArgs = openapi.ManagedServicesCreateRequest
+type ManagedServiceProviderRef = openapi.ManagedServicesCreateRequestProvider
 type UpdateManagedServiceArgs = openapi.ManagedServicesUpdateRequest
