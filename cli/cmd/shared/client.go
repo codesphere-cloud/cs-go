@@ -10,6 +10,9 @@ import (
 
 // Client is the common API contract consumed by all CLI commands.
 type Client interface {
+	UploadSSHPublicKey(publicKey string) error
+	ListSSHPublicKeys() ([]api.SSHPublicKey, error)
+	DeleteSSHPublicKey(fingerprint string) error
 	ChangeOrganizationMemberRole(orgId string, userId int, role string) error
 	ListOrganizationMembers(orgId string) ([]api.OrganizationMember, error)
 	RemoveOrganizationMember(orgId string, userId int) error

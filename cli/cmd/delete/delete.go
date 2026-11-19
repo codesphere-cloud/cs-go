@@ -26,4 +26,5 @@ func AddDeleteCmd(rootCmd *cobra.Command, opts shared.RootOptions) {
 	AddDeleteTeamCmd(delete.cmd, opts)
 	AddDeleteTeamMemberCmd(delete.cmd, opts)
 	AddDeleteOrganizationMemberCmd(delete.cmd, opts)
+	AddDeleteSSHKeyCmd(delete.cmd, opts)
 }

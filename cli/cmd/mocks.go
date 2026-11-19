@@ -370,6 +370,57 @@ func (_c *MockClient_CreateTeam_Call) RunAndReturn(run func(orgId string, name s
 	return _c
 }
 
+// DeleteSSHPublicKey provides a mock function for the type MockClient
+func (_mock *MockClient) DeleteSSHPublicKey(fingerprint string) error {
+	ret := _mock.Called(fingerprint)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteSSHPublicKey")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(string) error); ok {
+		r0 = returnFunc(fingerprint)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockClient_DeleteSSHPublicKey_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteSSHPublicKey'
+type MockClient_DeleteSSHPublicKey_Call struct {
+	*mock.Call
+}
+
+// DeleteSSHPublicKey is a helper method to define mock.On call
+//   - fingerprint string
+func (_e *MockClient_Expecter) DeleteSSHPublicKey(fingerprint any) *MockClient_DeleteSSHPublicKey_Call {
+	return &MockClient_DeleteSSHPublicKey_Call{Call: _e.mock.On("DeleteSSHPublicKey", fingerprint)}
+}
+
+func (_c *MockClient_DeleteSSHPublicKey_Call) Run(run func(fingerprint string)) *MockClient_DeleteSSHPublicKey_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 string
+		if args[0] != nil {
+			arg0 = args[0].(string)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockClient_DeleteSSHPublicKey_Call) Return(err error) *MockClient_DeleteSSHPublicKey_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockClient_DeleteSSHPublicKey_Call) RunAndReturn(run func(fingerprint string) error) *MockClient_DeleteSSHPublicKey_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // DeleteTeam provides a mock function for the type MockClient
 func (_mock *MockClient) DeleteTeam(teamId int) error {
 	ret := _mock.Called(teamId)
@@ -1038,6 +1089,61 @@ func (_c *MockClient_ListOrganizations_Call) RunAndReturn(run func() ([]api.Orga
 	return _c
 }
 
+// ListSSHPublicKeys provides a mock function for the type MockClient
+func (_mock *MockClient) ListSSHPublicKeys() ([]api.SSHPublicKey, error) {
+	ret := _mock.Called()
+
+	if len(ret) == 0 {
+		panic("no return value specified for ListSSHPublicKeys")
+	}
+
+	var r0 []api.SSHPublicKey
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func() ([]api.SSHPublicKey, error)); ok {
+		return returnFunc()
+	}
+	if returnFunc, ok := ret.Get(0).(func() []api.SSHPublicKey); ok {
+		r0 = returnFunc()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]api.SSHPublicKey)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func() error); ok {
+		r1 = returnFunc()
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockClient_ListSSHPublicKeys_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListSSHPublicKeys'
+type MockClient_ListSSHPublicKeys_Call struct {
+	*mock.Call
+}
+
+// ListSSHPublicKeys is a helper method to define mock.On call
+func (_e *MockClient_Expecter) ListSSHPublicKeys() *MockClient_ListSSHPublicKeys_Call {
+	return &MockClient_ListSSHPublicKeys_Call{Call: _e.mock.On("ListSSHPublicKeys")}
+}
+
+func (_c *MockClient_ListSSHPublicKeys_Call) Run(run func()) *MockClient_ListSSHPublicKeys_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run()
+	})
+	return _c
+}
+
+func (_c *MockClient_ListSSHPublicKeys_Call) Return(sSHPublicKeys []api.SSHPublicKey, err error) *MockClient_ListSSHPublicKeys_Call {
+	_c.Call.Return(sSHPublicKeys, err)
+	return _c
+}
+
+func (_c *MockClient_ListSSHPublicKeys_Call) RunAndReturn(run func() ([]api.SSHPublicKey, error)) *MockClient_ListSSHPublicKeys_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // ListTeamMembers provides a mock function for the type MockClient
 func (_mock *MockClient) ListTeamMembers(teamId int) ([]api.TeamMember, error) {
 	ret := _mock.Called(teamId)
@@ -1680,6 +1786,57 @@ func (_c *MockClient_StopPipelineStage_Call) Return(err error) *MockClient_StopP
 }
 
 func (_c *MockClient_StopPipelineStage_Call) RunAndReturn(run func(wsId int, stage string) error) *MockClient_StopPipelineStage_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UploadSSHPublicKey provides a mock function for the type MockClient
+func (_mock *MockClient) UploadSSHPublicKey(publicKey string) error {
+	ret := _mock.Called(publicKey)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UploadSSHPublicKey")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(string) error); ok {
+		r0 = returnFunc(publicKey)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockClient_UploadSSHPublicKey_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UploadSSHPublicKey'
+type MockClient_UploadSSHPublicKey_Call struct {
+	*mock.Call
+}
+
+// UploadSSHPublicKey is a helper method to define mock.On call
+//   - publicKey string
+func (_e *MockClient_Expecter) UploadSSHPublicKey(publicKey any) *MockClient_UploadSSHPublicKey_Call {
+	return &MockClient_UploadSSHPublicKey_Call{Call: _e.mock.On("UploadSSHPublicKey", publicKey)}
+}
+
+func (_c *MockClient_UploadSSHPublicKey_Call) Run(run func(publicKey string)) *MockClient_UploadSSHPublicKey_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 string
+		if args[0] != nil {
+			arg0 = args[0].(string)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockClient_UploadSSHPublicKey_Call) Return(err error) *MockClient_UploadSSHPublicKey_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockClient_UploadSSHPublicKey_Call) RunAndReturn(run func(publicKey string) error) *MockClient_UploadSSHPublicKey_Call {
 	_c.Call.Return(run)
 	return _c
 }
