@@ -28,5 +28,6 @@ Delete Codesphere resources, e.g. workspaces or teams.
 * [cs delete organization-member](cs_delete_organization-member.md)	 - Remove organization member
 * [cs delete resource-group](cs_delete_resource-group.md)	 - Delete resource group
 * [cs delete resource-group-member](cs_delete_resource-group-member.md)	 - Delete resource group member
+* [cs delete ssh-key](cs_delete_ssh-key.md)	 - Delete a public SSH key from your account
 * [cs delete workspace](cs_delete_workspace.md)	 - Delete workspace
 
