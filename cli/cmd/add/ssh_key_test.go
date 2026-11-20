@@ -41,6 +41,14 @@ var _ = Describe("Add SSH key", func() {
 		Expect(command.RunE(nil, []string{path})).To(MatchError(ContainSubstring("must contain a single OpenSSH public key")))
 	})
 
+	It("uploads the public key and comment without authorized_keys directives", func() {
+		keyWithOptions := `from="192.0.2.10,192.0.2.11",no-port-forwarding ` + publicKey
+		Expect(os.WriteFile(path, []byte(keyWithOptions+"\n"), 0o600)).To(Succeed())
+		client.EXPECT().UploadSSHPublicKey(publicKey).Return(nil).Once()
+
+		Expect(command.RunE(nil, []string{path})).To(Succeed())
+	})
+
 	It("rejects files containing multiple keys", func() {
 		Expect(os.WriteFile(path, []byte(publicKey+"\n"+publicKey+"\n"), 0o600)).To(Succeed())
 
