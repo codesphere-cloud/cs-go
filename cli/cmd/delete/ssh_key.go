@@ -16,11 +16,11 @@ import (
 )
 
 type DeleteSSHKeyCmd struct {
-	ClientProvider shared.ClientProvider
+	Opts shared.RootOptions
 }
 
 func AddDeleteSSHKeyCmd(parent *cobra.Command, opts shared.RootOptions) {
-	deleteKey := DeleteSSHKeyCmd{ClientProvider: opts}
+	deleteKey := DeleteSSHKeyCmd{Opts: opts}
 	command := &cobra.Command{
 		Use:   "ssh-key [fingerprint]",
 		Short: "Delete a public SSH key from your account",
@@ -36,22 +36,25 @@ func AddDeleteSSHKeyCmd(parent *cobra.Command, opts shared.RootOptions) {
 }
 
 func (c *DeleteSSHKeyCmd) RunE(cmd *cobra.Command, args []string) error {
-	client, err := c.ClientProvider.NewClient()
+	client, err := c.Opts.NewClient()
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
-	if len(args) == 1 {
-		return c.DeleteSSHKey(client, args[0])
-	}
-
-	fingerprint, err := selectSSHKey(client, cmd.InOrStdin(), cmd.ErrOrStderr())
-	if err != nil || fingerprint == "" {
-		return err
-	}
-	return c.DeleteSSHKey(client, fingerprint)
+	return c.DeleteSSHKey(client, cmd.InOrStdin(), cmd.ErrOrStderr(), args)
 }
 
-func (c *DeleteSSHKeyCmd) DeleteSSHKey(client shared.Client, fingerprint string) error {
+func (c *DeleteSSHKeyCmd) DeleteSSHKey(client shared.Client, input io.Reader, output io.Writer, args []string) error {
+	var fingerprint string
+	if len(args) == 0 {
+		selected, err := selectSSHKey(client, input, output)
+		if err != nil || selected == "" {
+			return err
+		}
+		fingerprint = selected
+	} else {
+		fingerprint = args[0]
+	}
+
 	if strings.TrimSpace(fingerprint) == "" {
 		return errors.New("SSH key fingerprint cannot be empty")
 	}

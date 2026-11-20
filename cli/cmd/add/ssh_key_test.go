@@ -9,7 +9,6 @@ import (
 
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
 	"github.com/codesphere-cloud/cs-go/cli/cmd/add"
-	"github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
@@ -22,9 +21,6 @@ var _ = Describe("Add SSH key", func() {
 
 	BeforeEach(func() {
 		client = cmd.NewMockClient(GinkgoT())
-		provider := shared.NewMockClientProvider(GinkgoT())
-		provider.EXPECT().NewClient().Return(client, nil).Once()
-		command = add.AddSSHKeyCmd{ClientProvider: provider}
 		path = filepath.Join(GinkgoT().TempDir(), "id_ed25519.pub")
 	})
 
@@ -32,13 +28,13 @@ var _ = Describe("Add SSH key", func() {
 		Expect(os.WriteFile(path, []byte(publicKey+"\r\n"), 0o600)).To(Succeed())
 		client.EXPECT().UploadSSHPublicKey(publicKey).Return(nil).Once()
 
-		Expect(command.RunE(nil, []string{path})).To(Succeed())
+		Expect(command.AddSSHKey(client, path)).To(Succeed())
 	})
 
 	It("rejects private key files before uploading", func() {
 		Expect(os.WriteFile(path, []byte("-----BEGIN OPENSSH PRIVATE KEY-----\nexample\n-----END OPENSSH PRIVATE KEY-----\n"), 0o600)).To(Succeed())
 
-		Expect(command.RunE(nil, []string{path})).To(MatchError(ContainSubstring("must contain a single OpenSSH public key")))
+		Expect(command.AddSSHKey(client, path)).To(MatchError(ContainSubstring("must contain a single OpenSSH public key")))
 	})
 
 	It("uploads the public key and comment without authorized_keys directives", func() {
@@ -46,18 +42,18 @@ var _ = Describe("Add SSH key", func() {
 		Expect(os.WriteFile(path, []byte(keyWithOptions+"\n"), 0o600)).To(Succeed())
 		client.EXPECT().UploadSSHPublicKey(publicKey).Return(nil).Once()
 
-		Expect(command.RunE(nil, []string{path})).To(Succeed())
+		Expect(command.AddSSHKey(client, path)).To(Succeed())
 	})
 
 	It("rejects files containing multiple keys", func() {
 		Expect(os.WriteFile(path, []byte(publicKey+"\n"+publicKey+"\n"), 0o600)).To(Succeed())
 
-		Expect(command.RunE(nil, []string{path})).To(MatchError(ContainSubstring("must contain a single OpenSSH public key")))
+		Expect(command.AddSSHKey(client, path)).To(MatchError(ContainSubstring("must contain a single OpenSSH public key")))
 	})
 
 	It("reports the parser error for a malformed single-line key", func() {
 		Expect(os.WriteFile(path, []byte("ssh-ed25519 !invalid!\n"), 0o600)).To(Succeed())
 
-		Expect(command.RunE(nil, []string{path})).To(MatchError(ContainSubstring("ssh: no key found")))
+		Expect(command.AddSSHKey(client, path)).To(MatchError(ContainSubstring("ssh: no key found")))
 	})
 })

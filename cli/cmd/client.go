@@ -29,7 +29,7 @@ func NewClient(opts GlobalOptions) (Client, error) {
 	return opts.NewClient()
 }
 
-func (o GlobalOptions) NewClient() (Client, error) {
+func (o GlobalOptions) NewClient() (*api.Client, error) {
 	token, err := o.Env.GetApiToken()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get API token: %w", err)

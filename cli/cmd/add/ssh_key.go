@@ -16,11 +16,11 @@ import (
 )
 
 type AddSSHKeyCmd struct {
-	ClientProvider shared.ClientProvider
+	Opts shared.RootOptions
 }
 
 func AddAddSSHKeyCmd(parent *cobra.Command, opts shared.RootOptions) {
-	addKey := AddSSHKeyCmd{ClientProvider: opts}
+	addKey := AddSSHKeyCmd{Opts: opts}
 	command := &cobra.Command{
 		Use:   "ssh-key <public-key-file>",
 		Short: "Add a public SSH key to your account",
@@ -35,7 +35,7 @@ func AddAddSSHKeyCmd(parent *cobra.Command, opts shared.RootOptions) {
 }
 
 func (c *AddSSHKeyCmd) RunE(_ *cobra.Command, args []string) error {
-	client, err := c.ClientProvider.NewClient()
+	client, err := c.Opts.NewClient()
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
