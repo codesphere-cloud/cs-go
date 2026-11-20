@@ -8,8 +8,6 @@ import (
 	"github.com/codesphere-cloud/cs-go/api/openapi_client"
 )
 
-type SSHPublicKey = openapi_client.SshListPublicKeys200ResponseInner
-
 // UploadSSHPublicKey registers a public SSH key for the authenticated user.
 func (c *Client) UploadSSHPublicKey(publicKey string) error {
 	response, err := c.api.SshAPI.SshUploadPublicKey(c.ctx).

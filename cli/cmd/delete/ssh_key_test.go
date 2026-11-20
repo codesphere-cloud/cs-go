@@ -28,9 +28,9 @@ var _ = Describe("Delete SSH key", func() {
 
 	BeforeEach(func() {
 		client = cmd.NewMockClient(GinkgoT())
-		command = delete.DeleteSSHKeyCmd{
-			ClientFactory: func(shared.RootOptions) (shared.Client, error) { return client, nil },
-		}
+		provider := shared.NewMockClientProvider(GinkgoT())
+		provider.EXPECT().NewClient().Return(client, nil).Once()
+		command = delete.DeleteSSHKeyCmd{ClientProvider: provider}
 		leaf = &cobra.Command{}
 		output = &bytes.Buffer{}
 		leaf.SetErr(output)

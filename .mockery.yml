@@ -22,6 +22,9 @@ packages:
     config:
       all: true
     interfaces:
+  github.com/codesphere-cloud/cs-go/cli/cmd/shared:
+    interfaces:
+      ClientProvider:
   github.com/codesphere-cloud/cs-go/pkg/exporter:
     config:
       all: true

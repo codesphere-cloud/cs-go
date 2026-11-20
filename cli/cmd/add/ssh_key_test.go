@@ -22,9 +22,9 @@ var _ = Describe("Add SSH key", func() {
 
 	BeforeEach(func() {
 		client = cmd.NewMockClient(GinkgoT())
-		command = add.AddSSHKeyCmd{
-			ClientFactory: func(shared.RootOptions) (shared.Client, error) { return client, nil },
-		}
+		provider := shared.NewMockClientProvider(GinkgoT())
+		provider.EXPECT().NewClient().Return(client, nil).Once()
+		command = add.AddSSHKeyCmd{ClientProvider: provider}
 		path = filepath.Join(GinkgoT().TempDir(), "id_ed25519.pub")
 	})
 

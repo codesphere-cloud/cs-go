@@ -14,15 +14,11 @@ import (
 )
 
 type ListSSHKeysCmd struct {
-	Opts          *ListOptions
-	ClientFactory func(shared.RootOptions) (shared.Client, error)
+	Opts *ListOptions
 }
 
 func AddListSSHKeysCmd(parent *cobra.Command, opts *ListOptions) {
-	listKeys := ListSSHKeysCmd{
-		Opts:          opts,
-		ClientFactory: func(opts shared.RootOptions) (shared.Client, error) { return opts.NewClient() },
-	}
+	listKeys := ListSSHKeysCmd{Opts: opts}
 	command := &cobra.Command{
 		Use:   "ssh-keys",
 		Short: "List the public SSH keys on your account",
@@ -35,7 +31,7 @@ func AddListSSHKeysCmd(parent *cobra.Command, opts *ListOptions) {
 }
 
 func (c *ListSSHKeysCmd) RunE(_ *cobra.Command, _ []string) error {
-	client, err := c.ClientFactory(c.Opts.RootOptions)
+	client, err := c.Opts.NewClient()
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}

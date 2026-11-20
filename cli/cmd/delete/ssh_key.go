@@ -4,11 +4,9 @@
 package delete
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
 	"io"
-	"strconv"
 	"strings"
 
 	"github.com/codesphere-cloud/cs-go/cli/cmd/shared"
@@ -17,15 +15,11 @@ import (
 )
 
 type DeleteSSHKeyCmd struct {
-	Opts          shared.RootOptions
-	ClientFactory func(shared.RootOptions) (shared.Client, error)
+	ClientProvider shared.ClientProvider
 }
 
 func AddDeleteSSHKeyCmd(parent *cobra.Command, opts shared.RootOptions) {
-	deleteKey := DeleteSSHKeyCmd{
-		Opts:          opts,
-		ClientFactory: func(opts shared.RootOptions) (shared.Client, error) { return opts.NewClient() },
-	}
+	deleteKey := DeleteSSHKeyCmd{ClientProvider: opts}
 	command := &cobra.Command{
 		Use:   "ssh-key [fingerprint]",
 		Short: "Delete a public SSH key from your account",
@@ -41,7 +35,7 @@ func AddDeleteSSHKeyCmd(parent *cobra.Command, opts shared.RootOptions) {
 }
 
 func (c *DeleteSSHKeyCmd) RunE(cmd *cobra.Command, args []string) error {
-	client, err := c.ClientFactory(c.Opts)
+	client, err := c.ClientProvider.NewClient()
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
@@ -76,28 +70,13 @@ func selectSSHKey(client shared.Client, input io.Reader, output io.Writer) (stri
 		return "", err
 	}
 
-	var prompt strings.Builder
+	options := make([]string, len(keys))
 	for i, key := range keys {
-		fmt.Fprintf(&prompt, "%d. %q (%s)\n", i+1, key.Title, key.PublicKeyFingerprint)
+		options[i] = fmt.Sprintf("%q (%s)", key.Title, key.PublicKeyFingerprint)
 	}
-	prompt.WriteString("Enter the number of the SSH key to delete, or press Enter to cancel: ")
-	if _, err := io.WriteString(output, prompt.String()); err != nil {
-		return "", fmt.Errorf("failed to display SSH key selection: %w", err)
+	index, selected, err := csio.SelectOption(input, output, options, "Enter the number of the SSH key to delete")
+	if err != nil || !selected {
+		return "", err
 	}
-	scanner := bufio.NewScanner(input)
-	if !scanner.Scan() {
-		if err := scanner.Err(); err != nil {
-			return "", fmt.Errorf("failed to read SSH key selection: %w", err)
-		}
-		return "", nil
-	}
-	selection := strings.TrimSpace(scanner.Text())
-	if selection == "" {
-		return "", nil
-	}
-	index, err := strconv.Atoi(selection)
-	if err != nil || index < 1 || index > len(keys) {
-		return "", fmt.Errorf("invalid SSH key selection, enter a number from 1 to %d", len(keys))
-	}
-	return keys[index-1].PublicKeyFingerprint, nil
+	return keys[index].PublicKeyFingerprint, nil
 }

@@ -3,10 +3,7 @@
 
 package shared
 
-import (
-	"github.com/codesphere-cloud/cs-go/api"
-	"github.com/spf13/cobra"
-)
+import "github.com/spf13/cobra"
 
 type OutputFormat string
 
@@ -16,14 +13,18 @@ const (
 	OutputFormatYAML  OutputFormat = "yaml"
 )
 
+type ClientProvider interface {
+	NewClient() (Client, error)
+}
+
 type RootOptions interface {
+	ClientProvider
 	GetTeamId() (int, error)
 	GetOrgId() (string, error)
 	GetWorkspaceId() (int, error)
 	GetApiUrl() string
 	GetApiToken() (string, error)
 	GetVerbose() bool
-	NewClient() (*api.Client, error)
 }
 
 // AddCmd adds a command, inheriting the parent's Args validator if not explicitly set.
