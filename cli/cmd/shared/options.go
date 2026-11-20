@@ -13,6 +13,7 @@ const (
 	OutputFormatYAML  OutputFormat = "yaml"
 )
 
+// ClientProvider lets commands register before credentials are needed.
 type ClientProvider interface {
 	NewClient() (Client, error)
 }

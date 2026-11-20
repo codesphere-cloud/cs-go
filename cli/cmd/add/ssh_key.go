@@ -48,6 +48,7 @@ func (c *AddSSHKeyCmd) AddSSHKey(client shared.Client, path string) error {
 		return fmt.Errorf("failed to read SSH public key: %w", err)
 	}
 	data = bytes.TrimSpace(data)
+	// ParseAuthorizedKey reads one entry at a time and skips invalid lines.
 	if bytes.ContainsAny(data, "\r\n") {
 		return fmt.Errorf("%q must contain a single OpenSSH public key", path)
 	}
@@ -55,7 +56,7 @@ func (c *AddSSHKeyCmd) AddSSHKey(client shared.Client, path string) error {
 	// configure sshd on the host that owns the authorized_keys file.
 	key, comment, _, _, err := ssh.ParseAuthorizedKey(data)
 	if err != nil {
-		return fmt.Errorf("%q must contain a single OpenSSH public key", path)
+		return fmt.Errorf("failed to parse SSH public key in %q: %w", path, err)
 	}
 	publicKey := strings.TrimSuffix(string(ssh.MarshalAuthorizedKey(key)), "\n")
 	if comment != "" {

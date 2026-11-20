@@ -13,14 +13,14 @@ import (
 
 // SelectOption prints a numbered list and returns the zero-based index of the
 // selected option. An empty list, a blank answer, and EOF cancel the selection.
-func SelectOption(input io.Reader, output io.Writer, options []string, prompt string) (index int, selected bool, err error) {
+func SelectOption[T any](input io.Reader, output io.Writer, options []T, label func(T) string, prompt string) (index int, selected bool, err error) {
 	if len(options) == 0 {
 		return 0, false, nil
 	}
 
 	var menu strings.Builder
 	for i, option := range options {
-		fmt.Fprintf(&menu, "%d. %s\n", i+1, option)
+		fmt.Fprintf(&menu, "%d. %s\n", i+1, label(option))
 	}
 	fmt.Fprintf(&menu, "%s, or press Enter to cancel: ", prompt)
 	if _, err := io.WriteString(output, menu.String()); err != nil {

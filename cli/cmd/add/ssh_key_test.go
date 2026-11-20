@@ -54,4 +54,10 @@ var _ = Describe("Add SSH key", func() {
 
 		Expect(command.RunE(nil, []string{path})).To(MatchError(ContainSubstring("must contain a single OpenSSH public key")))
 	})
+
+	It("reports the parser error for a malformed single-line key", func() {
+		Expect(os.WriteFile(path, []byte("ssh-ed25519 !invalid!\n"), 0o600)).To(Succeed())
+
+		Expect(command.RunE(nil, []string{path})).To(MatchError(ContainSubstring("ssh: no key found")))
+	})
 })

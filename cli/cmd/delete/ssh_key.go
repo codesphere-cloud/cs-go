@@ -9,6 +9,7 @@ import (
 	"io"
 	"strings"
 
+	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	csio "github.com/codesphere-cloud/cs-go/pkg/io"
 	"github.com/spf13/cobra"
@@ -70,11 +71,9 @@ func selectSSHKey(client shared.Client, input io.Reader, output io.Writer) (stri
 		return "", err
 	}
 
-	options := make([]string, len(keys))
-	for i, key := range keys {
-		options[i] = fmt.Sprintf("%q (%s)", key.Title, key.PublicKeyFingerprint)
-	}
-	index, selected, err := csio.SelectOption(input, output, options, "Enter the number of the SSH key to delete")
+	index, selected, err := csio.SelectOption(input, output, keys, func(key api.SSHPublicKey) string {
+		return fmt.Sprintf("%q (%s)", key.Title, key.PublicKeyFingerprint)
+	}, "Enter the number of the SSH key to delete")
 	if err != nil || !selected {
 		return "", err
 	}
