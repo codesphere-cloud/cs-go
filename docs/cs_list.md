@@ -40,5 +40,6 @@ $ cs list workspaces
 * [cs list plans](cs_list_plans.md)	 - List available plans
 * [cs list resource-group-members](cs_list_resource-group-members.md)	 - List resource group members
 * [cs list resource-groups](cs_list_resource-groups.md)	 - List resource groups
+* [cs list ssh-keys](cs_list_ssh-keys.md)	 - List the public SSH keys on your account
 * [cs list workspaces](cs_list_workspaces.md)	 - List workspaces
 

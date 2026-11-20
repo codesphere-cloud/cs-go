@@ -32,6 +32,7 @@ type UpdateDomainArgs = openapi.DomainsUpdateDomainRequest
 type PathToWorkspaces = map[string][]*Workspace
 type OrganizationMember = openapi.OrganizationsListOrgMembers200ResponseInner
 type Organization = openapi.ClustersListAllOrganizations200ResponseInner
+type SSHPublicKey = openapi.SshListPublicKeys200ResponseInner
 type Workspace = openapi.WorkspacesGetWorkspace200Response
 type Baseimage = openapi.MetadataGetWorkspaceBaseImages200ResponseInner
 type WorkspaceStatus = openapi.WorkspacesGetWorkspaceStatus200Response

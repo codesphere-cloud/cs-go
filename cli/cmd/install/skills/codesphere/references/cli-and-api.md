@@ -12,7 +12,7 @@ Two ways to drive Codesphere programmatically: the open-source `cs-go` CLI (pre-
 ## Core Concepts
 
 - **`cs-go`**: open-source Go CLI/SDK (`codesphere-cloud/cs-go`), covers workspace/pipeline day-to-day use only — not the full API surface.
-- **The CLI is not a complete API client** — vault/secrets, managed services, domains, teams/organizations, explicit Landscape lifecycle (deploy/scale/teardown as a unit), usage/metrics, cluster/org admin, SSH keys, and metadata lookups all require going straight to the Public API.
+- **The CLI is not a complete API client** — vault/secrets, managed services, domains, teams/organizations, explicit Landscape lifecycle (deploy/scale/teardown as a unit), usage/metrics, cluster/org admin, and metadata lookups all require going straight to the Public API.
 - **Auth**: bearer token from Settings > API Keys (`CS_TOKEN` for the CLI).
 
 ## API / Syntax
@@ -93,6 +93,10 @@ cs set-env --key "DATABASE_URL" --value "postgres://..."
 
 - **Note:** run `cs --help` for the live, authoritative command list — it's open source and can add commands between releases.
 
+### SSH Key Management
+
+Use `cs add ssh-key ~/.ssh/id_ed25519.pub` to register a public key with the account associated with `CS_TOKEN`. Run `cs list ssh-keys` to see your keys and their fingerprints. Use `cs delete ssh-key <fingerprint>` to delete a specific key, or omit the fingerprint to choose a key from a numbered list.
+
 ### What the CLI Does NOT Cover
 
 | Area                                                                          | Use instead                                                                           |
@@ -104,7 +108,6 @@ cs set-env --key "DATABASE_URL" --value "postgres://..."
 | Landscape lifecycle (explicit deploy/scale/teardown as a unit)                | `/workspaces/{id}/landscape/...`                                                      |
 | Usage/metrics                                                                 | `/usage/...`                                                                          |
 | Cluster/org admin (private cloud / enterprise)                                | `/clusters/...`                                                                       |
-| SSH keys                                                                      | `/ssh/keys`                                                                           |
 | Metadata lookups (datacenters, base images, plan→resource mapping)            | `/metadata/...` — useful for resolving a `plan:` integer id before writing a `ci.yml` |
 
 ### Public API — Base URL & Auth

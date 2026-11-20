@@ -27,4 +27,5 @@ Add resources to existing Codesphere resources, e.g. team members.
 * [cs](cs.md)	 - The Codesphere CLI
 * [cs add organization-member](cs_add_organization-member.md)	 - Add organization member
 * [cs add resource-group-member](cs_add_resource-group-member.md)	 - Add resource group member
+* [cs add ssh-key](cs_add_ssh-key.md)	 - Add a public SSH key to your account
 
