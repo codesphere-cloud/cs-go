@@ -47,6 +47,9 @@ func (c *AddSSHKeyCmd) AddSSHKey(client shared.Client, path string) error {
 		return fmt.Errorf("failed to read SSH public key: %w", err)
 	}
 	data = bytes.TrimSpace(data)
+	// options contains directives such as no-port-forwarding that precede the
+	// key type in authorized_keys. Uploads accept the key and its optional
+	// trailing comment.
 	_, _, options, _, err := ssh.ParseAuthorizedKey(data)
 	if err != nil || len(options) != 0 || bytes.ContainsAny(data, "\r\n") {
 		return fmt.Errorf("%q must contain a single OpenSSH public key", path)
