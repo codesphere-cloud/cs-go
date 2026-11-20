@@ -7,7 +7,11 @@ on:
 
 jobs:
   tag:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
+    outputs:
+      release_tag: ${{ steps.release.outputs.release_tag }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -21,10 +25,10 @@ jobs:
           go-version-file: 'go.mod'
 
       - name: Tag
+        id: release
         run: hack/tag-release.sh
         env:
-          # PAT-published releases trigger the CS CLI reference workflow.
-          GITHUB_TOKEN: ${{ secrets.PAT_UPDATE_DOCS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Slack Notification on Failure
         if: ${{ failure() }}
@@ -37,3 +41,14 @@ jobs:
               "text": "🚨 Release Job Failure 🚨\nRepository: ${{ github.repository }}\nBranch/Ref: `${{ github.ref }}`\nRun url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             }' \
             ${{ secrets.PACKAGE_JOB_SLACK_WEBHOOK }}
+
+  publish-cli-docs:
+    needs: tag
+    if: needs.tag.outputs.release_tag != ''
+    permissions:
+      contents: read
+    uses: ./.github/workflows/publish-cli-docs.yml
+    with:
+      release_tag: ${{ needs.tag.outputs.release_tag }}
+    secrets:
+      CODESPHERE_DOCS_TOKEN: ${{ secrets.CODESPHERE_DOCS_TOKEN }}

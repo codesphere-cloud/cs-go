@@ -45,3 +45,7 @@ git push origin "$NEWTAG"
 
 echo "Triggering release of version $NEWTAG"
 go tool goreleaser release --clean
+
+if [[ -n ${GITHUB_OUTPUT:-} ]]; then
+  printf 'release_tag=%s\n' "$NEWTAG" >> "$GITHUB_OUTPUT"
+fi
