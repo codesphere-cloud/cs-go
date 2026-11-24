@@ -855,16 +855,16 @@ func (_c *MockClient_GetWorkspace_Call) RunAndReturn(run func(workspaceId int) (
 }
 
 // GitPull provides a mock function for the type MockClient
-func (_mock *MockClient) GitPull(wsId int, remote string, branch string) error {
-	ret := _mock.Called(wsId, remote, branch)
+func (_mock *MockClient) GitPull(wsId int, remote string, branch string, opts api.GitPullOptions) error {
+	ret := _mock.Called(wsId, remote, branch, opts)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GitPull")
 	}
 
 	var r0 error
-	if returnFunc, ok := ret.Get(0).(func(int, string, string) error); ok {
-		r0 = returnFunc(wsId, remote, branch)
+	if returnFunc, ok := ret.Get(0).(func(int, string, string, api.GitPullOptions) error); ok {
+		r0 = returnFunc(wsId, remote, branch, opts)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -880,11 +880,12 @@ type MockClient_GitPull_Call struct {
 //   - wsId int
 //   - remote string
 //   - branch string
-func (_e *MockClient_Expecter) GitPull(wsId any, remote any, branch any) *MockClient_GitPull_Call {
-	return &MockClient_GitPull_Call{Call: _e.mock.On("GitPull", wsId, remote, branch)}
+//   - opts api.GitPullOptions
+func (_e *MockClient_Expecter) GitPull(wsId any, remote any, branch any, opts any) *MockClient_GitPull_Call {
+	return &MockClient_GitPull_Call{Call: _e.mock.On("GitPull", wsId, remote, branch, opts)}
 }
 
-func (_c *MockClient_GitPull_Call) Run(run func(wsId int, remote string, branch string)) *MockClient_GitPull_Call {
+func (_c *MockClient_GitPull_Call) Run(run func(wsId int, remote string, branch string, opts api.GitPullOptions)) *MockClient_GitPull_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 int
 		if args[0] != nil {
@@ -898,10 +899,15 @@ func (_c *MockClient_GitPull_Call) Run(run func(wsId int, remote string, branch 
 		if args[2] != nil {
 			arg2 = args[2].(string)
 		}
+		var arg3 api.GitPullOptions
+		if args[3] != nil {
+			arg3 = args[3].(api.GitPullOptions)
+		}
 		run(
 			arg0,
 			arg1,
 			arg2,
+			arg3,
 		)
 	})
 	return _c
@@ -912,7 +918,7 @@ func (_c *MockClient_GitPull_Call) Return(err error) *MockClient_GitPull_Call {
 	return _c
 }
 
-func (_c *MockClient_GitPull_Call) RunAndReturn(run func(wsId int, remote string, branch string) error) *MockClient_GitPull_Call {
+func (_c *MockClient_GitPull_Call) RunAndReturn(run func(wsId int, remote string, branch string, opts api.GitPullOptions) error) *MockClient_GitPull_Call {
 	_c.Call.Return(run)
 	return _c
 }

@@ -228,14 +228,29 @@ func (client Client) DeployWorkspace(args DeployWorkspaceArgs) (*Workspace, erro
 	return workspace, nil
 }
 
-func (c Client) GitPull(workspaceId int, remote string, branch string) error {
+// GitPullOptions are the optional settings of a git pull in a workspace.
+type GitPullOptions struct {
+	// Also initializes and updates all submodules after the pull.
+	RecurseSubmodules bool
+	// Keeps Git LFS from downloading objects, so that their pointer files stay
+	// in the working tree.
+	SkipLfs bool
+}
+
+func (c Client) GitPull(workspaceId int, remote string, branch string, opts GitPullOptions) error {
+	// The body is always set. Without it the generated client sends the JSON
+	// value null as the body.
+	body := openapi_client.WorkspacesGitPull2Request{
+		RecurseSubmodules: &opts.RecurseSubmodules,
+		SkipLfs:           &opts.SkipLfs,
+	}
 	if remote == "" {
-		req := c.api.WorkspacesAPI.WorkspacesGitPull(c.ctx, workspaceId)
+		req := c.api.WorkspacesAPI.WorkspacesGitPull(c.ctx, workspaceId).WorkspacesGitPull2Request(body)
 		r, err := req.Execute()
 		return errors.FormatAPIError(r, err)
 	}
 
-	req := c.api.WorkspacesAPI.WorkspacesGitPull2(c.ctx, workspaceId, remote, branch)
+	req := c.api.WorkspacesAPI.WorkspacesGitPull2(c.ctx, workspaceId, remote, branch).WorkspacesGitPull2Request(body)
 	r, err := req.Execute()
 	return errors.FormatAPIError(r, err)
 }

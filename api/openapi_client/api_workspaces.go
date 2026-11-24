@@ -140,6 +140,8 @@ type WorkspacesAPI interface {
 	/*
 		WorkspacesGitPull gitPull
 
+		Pulls from the remote into the repository of the workspace. Both options default to false. Set recurseSubmodules to true to also initialize and update all submodules recursively after the pull, like "git submodule update --init --recursive". A submodule update that fails does not undo the pull. A private submodule has to be hosted at the git provider of the remote. Set skipLfs to true to keep the pointer files of Git LFS instead of downloading the files, in submodules as well.
+
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 		@param workspaceId
 		@return ApiWorkspacesGitPullRequest
@@ -151,6 +153,8 @@ type WorkspacesAPI interface {
 
 	/*
 		WorkspacesGitPull1 gitPull
+
+		Pulls from the remote into the repository of the workspace. Both options default to false. Set recurseSubmodules to true to also initialize and update all submodules recursively after the pull, like "git submodule update --init --recursive". A submodule update that fails does not undo the pull. A private submodule has to be hosted at the git provider of the remote. Set skipLfs to true to keep the pointer files of Git LFS instead of downloading the files, in submodules as well.
 
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 		@param workspaceId
@@ -164,6 +168,8 @@ type WorkspacesAPI interface {
 
 	/*
 		WorkspacesGitPull2 gitPull
+
+		Pulls from the remote into the repository of the workspace. Both options default to false. Set recurseSubmodules to true to also initialize and update all submodules recursively after the pull, like "git submodule update --init --recursive". A submodule update that fails does not undo the pull. A private submodule has to be hosted at the git provider of the remote. Set skipLfs to true to keep the pointer files of Git LFS instead of downloading the files, in submodules as well.
 
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 		@param workspaceId
@@ -1553,9 +1559,15 @@ func (a *WorkspacesAPIService) WorkspacesGitHeadExecute(r ApiWorkspacesGitHeadRe
 }
 
 type ApiWorkspacesGitPullRequest struct {
-	ctx         context.Context
-	ApiService  WorkspacesAPI
-	workspaceId int
+	ctx                       context.Context
+	ApiService                WorkspacesAPI
+	workspaceId               int
+	workspacesGitPull2Request *WorkspacesGitPull2Request
+}
+
+func (r ApiWorkspacesGitPullRequest) WorkspacesGitPull2Request(workspacesGitPull2Request WorkspacesGitPull2Request) ApiWorkspacesGitPullRequest {
+	r.workspacesGitPull2Request = &workspacesGitPull2Request
+	return r
 }
 
 func (r ApiWorkspacesGitPullRequest) Execute() (*http.Response, error) {
@@ -1564,6 +1576,8 @@ func (r ApiWorkspacesGitPullRequest) Execute() (*http.Response, error) {
 
 /*
 WorkspacesGitPull gitPull
+
+Pulls from the remote into the repository of the workspace. Both options default to false. Set recurseSubmodules to true to also initialize and update all submodules recursively after the pull, like "git submodule update --init --recursive". A submodule update that fails does not undo the pull. A private submodule has to be hosted at the git provider of the remote. Set skipLfs to true to keep the pointer files of Git LFS instead of downloading the files, in submodules as well.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param workspaceId
@@ -1601,7 +1615,7 @@ func (a *WorkspacesAPIService) WorkspacesGitPullExecute(r ApiWorkspacesGitPullRe
 	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -1617,6 +1631,8 @@ func (a *WorkspacesAPIService) WorkspacesGitPullExecute(r ApiWorkspacesGitPullRe
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	// body params
+	localVarPostBody = r.workspacesGitPull2Request
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
@@ -1678,10 +1694,16 @@ func (a *WorkspacesAPIService) WorkspacesGitPullExecute(r ApiWorkspacesGitPullRe
 }
 
 type ApiWorkspacesGitPull1Request struct {
-	ctx         context.Context
-	ApiService  WorkspacesAPI
-	workspaceId int
-	remote      string
+	ctx                       context.Context
+	ApiService                WorkspacesAPI
+	workspaceId               int
+	remote                    string
+	workspacesGitPull2Request *WorkspacesGitPull2Request
+}
+
+func (r ApiWorkspacesGitPull1Request) WorkspacesGitPull2Request(workspacesGitPull2Request WorkspacesGitPull2Request) ApiWorkspacesGitPull1Request {
+	r.workspacesGitPull2Request = &workspacesGitPull2Request
+	return r
 }
 
 func (r ApiWorkspacesGitPull1Request) Execute() (*http.Response, error) {
@@ -1690,6 +1712,8 @@ func (r ApiWorkspacesGitPull1Request) Execute() (*http.Response, error) {
 
 /*
 WorkspacesGitPull1 gitPull
+
+Pulls from the remote into the repository of the workspace. Both options default to false. Set recurseSubmodules to true to also initialize and update all submodules recursively after the pull, like "git submodule update --init --recursive". A submodule update that fails does not undo the pull. A private submodule has to be hosted at the git provider of the remote. Set skipLfs to true to keep the pointer files of Git LFS instead of downloading the files, in submodules as well.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param workspaceId
@@ -1730,7 +1754,7 @@ func (a *WorkspacesAPIService) WorkspacesGitPull1Execute(r ApiWorkspacesGitPull1
 	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -1746,6 +1770,8 @@ func (a *WorkspacesAPIService) WorkspacesGitPull1Execute(r ApiWorkspacesGitPull1
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	// body params
+	localVarPostBody = r.workspacesGitPull2Request
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
@@ -1807,11 +1833,17 @@ func (a *WorkspacesAPIService) WorkspacesGitPull1Execute(r ApiWorkspacesGitPull1
 }
 
 type ApiWorkspacesGitPull2Request struct {
-	ctx         context.Context
-	ApiService  WorkspacesAPI
-	workspaceId int
-	remote      string
-	branch      string
+	ctx                       context.Context
+	ApiService                WorkspacesAPI
+	workspaceId               int
+	remote                    string
+	branch                    string
+	workspacesGitPull2Request *WorkspacesGitPull2Request
+}
+
+func (r ApiWorkspacesGitPull2Request) WorkspacesGitPull2Request(workspacesGitPull2Request WorkspacesGitPull2Request) ApiWorkspacesGitPull2Request {
+	r.workspacesGitPull2Request = &workspacesGitPull2Request
+	return r
 }
 
 func (r ApiWorkspacesGitPull2Request) Execute() (*http.Response, error) {
@@ -1820,6 +1852,8 @@ func (r ApiWorkspacesGitPull2Request) Execute() (*http.Response, error) {
 
 /*
 WorkspacesGitPull2 gitPull
+
+Pulls from the remote into the repository of the workspace. Both options default to false. Set recurseSubmodules to true to also initialize and update all submodules recursively after the pull, like "git submodule update --init --recursive". A submodule update that fails does not undo the pull. A private submodule has to be hosted at the git provider of the remote. Set skipLfs to true to keep the pointer files of Git LFS instead of downloading the files, in submodules as well.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param workspaceId
@@ -1863,7 +1897,7 @@ func (a *WorkspacesAPIService) WorkspacesGitPull2Execute(r ApiWorkspacesGitPull2
 	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -1879,6 +1913,8 @@ func (a *WorkspacesAPIService) WorkspacesGitPull2Execute(r ApiWorkspacesGitPull2
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	// body params
+	localVarPostBody = r.workspacesGitPull2Request
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err

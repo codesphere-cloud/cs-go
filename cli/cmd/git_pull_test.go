@@ -11,6 +11,7 @@ import (
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -42,7 +43,7 @@ var _ = Describe("GitPull", func() {
 		client.EXPECT().WaitForWorkspaceRunning(mock.Anything, mock.Anything).Run(func(_ *api.Workspace, _ time.Duration) {
 			awake = true
 		}).Return(nil)
-		client.EXPECT().GitPull(42, "origin", "main").Run(func(int, string, string) {
+		client.EXPECT().GitPull(42, "origin", "main", api.GitPullOptions{}).Run(func(int, string, string, api.GitPullOptions) {
 			Expect(awake).To(BeTrue())
 		}).Return(nil)
 
@@ -53,9 +54,34 @@ var _ = Describe("GitPull", func() {
 		workspace := api.Workspace{Id: 42, Name: "test-workspace"}
 		client.EXPECT().GetWorkspace(42).Return(workspace, nil)
 		client.EXPECT().WorkspaceStatus(42).Return(&api.WorkspaceStatus{IsRunning: true}, nil)
-		client.EXPECT().GitPull(42, "origin", "main").Return(nil)
+		client.EXPECT().GitPull(42, "origin", "main", api.GitPullOptions{}).Return(nil)
 
 		Expect(pull.PullWorkspace(client, 42)).To(Succeed())
+	})
+
+	It("passes the submodule and Git LFS options to the pull", func() {
+		pull.Opts.RecurseSubmodules = true
+		pull.Opts.SkipLfs = true
+		workspace := api.Workspace{Id: 42, Name: "test-workspace"}
+		client.EXPECT().GetWorkspace(42).Return(workspace, nil)
+		client.EXPECT().WorkspaceStatus(42).Return(&api.WorkspaceStatus{IsRunning: true}, nil)
+		client.EXPECT().GitPull(42, "origin", "main", api.GitPullOptions{RecurseSubmodules: true, SkipLfs: true}).Return(nil)
+
+		Expect(pull.PullWorkspace(client, 42)).To(Succeed())
+	})
+
+	It("offers the submodule and Git LFS flags, both off by default", func() {
+		git := &cobra.Command{Use: "git"}
+		cmd.AddGitPullCmd(git, &cmd.GlobalOptions{})
+		pullCmd, _, err := git.Find([]string{"pull"})
+		Expect(err).NotTo(HaveOccurred())
+
+		recurseSubmodules, err := pullCmd.Flags().GetBool("recurse-submodules")
+		Expect(err).NotTo(HaveOccurred())
+		Expect(recurseSubmodules).To(BeFalse())
+		skipLfs, err := pullCmd.Flags().GetBool("skip-lfs")
+		Expect(err).NotTo(HaveOccurred())
+		Expect(skipLfs).To(BeFalse())
 	})
 
 	It("does not pull when waking the workspace fails", func() {
