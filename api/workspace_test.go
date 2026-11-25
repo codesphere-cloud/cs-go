@@ -105,17 +105,18 @@ var _ = Describe("Workspace", func() {
 		})
 	})
 	Context("GitPull", func() {
-		// Whether a pull request carries exactly the given options in its body.
+		// Whether the body of a pull request states both options, with the given
+		// values. An option that the body leaves out does not count as false.
 		carries := func(request any, opts api.GitPullOptions) bool {
 			body := reflect.ValueOf(request).FieldByName("workspacesGitPull2Request")
 			if body.IsNil() {
 				return false
 			}
-			isSet := func(name string) bool {
+			states := func(name string, value bool) bool {
 				option := body.Elem().FieldByName(name)
-				return !option.IsNil() && option.Elem().Bool()
+				return !option.IsNil() && option.Elem().Bool() == value
 			}
-			return isSet("RecurseSubmodules") == opts.RecurseSubmodules && isSet("SkipLfs") == opts.SkipLfs
+			return states("RecurseSubmodules", opts.RecurseSubmodules) && states("SkipLfs", opts.SkipLfs)
 		}
 
 		It("sends request to pull without remote and origin", func() {
