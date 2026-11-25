@@ -4,6 +4,7 @@
 package list
 
 import (
+	"context"
 	"fmt"
 	"log"
 
@@ -36,13 +37,13 @@ func addListWorkspacesCmd(p *cobra.Command, opts *ListOptions) {
 	shared.AddCmd(p, l.cmd)
 }
 
-func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {
+func (l *ListWorkspacesCmd) RunE(cmd *cobra.Command, args []string) (err error) {
 	client, err := l.Opts.NewClient()
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
-	workspaces, err := l.ListWorkspaces(client)
+	workspaces, err := l.ListWorkspaces(cmd.Context(), client)
 	if err != nil {
 		return fmt.Errorf("failed to list workspaces: %w", err)
 	}
@@ -71,14 +72,14 @@ func (l *ListWorkspacesCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	return nil
 }
 
-func (l *ListWorkspacesCmd) ListWorkspaces(client shared.Client) ([]api.Workspace, error) {
-	teams, err := l.getTeamIds(client)
+func (l *ListWorkspacesCmd) ListWorkspaces(ctx context.Context, client shared.Client) ([]api.Workspace, error) {
+	teams, err := l.getTeamIds(ctx, client)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get teams: %w", err)
 	}
 	workspaces := []api.Workspace{}
 	for _, team := range teams {
-		teamWorkspaces, err := client.ListWorkspaces(team)
+		teamWorkspaces, err := client.ListWorkspaces(ctx, team)
 		if err != nil {
 			return nil, fmt.Errorf("failed to list workspaces: %w", err)
 		}
@@ -87,7 +88,7 @@ func (l *ListWorkspacesCmd) ListWorkspaces(client shared.Client) ([]api.Workspac
 	return workspaces, nil
 }
 
-func (l *ListWorkspacesCmd) getTeamIds(client shared.Client) (teams []int, err error) {
+func (l *ListWorkspacesCmd) getTeamIds(ctx context.Context, client shared.Client) (teams []int, err error) {
 	teamIdEnv, err := l.Opts.GetTeamId()
 	if err != nil {
 		log.Println("No team ID provided via flag or environment variable, listing workspaces of all teams")
@@ -102,7 +103,7 @@ func (l *ListWorkspacesCmd) getTeamIds(client shared.Client) (teams []int, err e
 		err = orgErr
 		return
 	}
-	allTeams, err = client.ListTeams(orgId)
+	allTeams, err = client.ListTeams(ctx, orgId)
 	if err != nil {
 		return
 	}

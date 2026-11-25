@@ -4,6 +4,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"log"
 
@@ -24,7 +25,7 @@ type SyncLandscapeOpts struct {
 	Profile string
 }
 
-func (c *SyncLandscapeCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *SyncLandscapeCmd) RunE(cmd *cobra.Command, args []string) error {
 	workspaceId, err := c.Opts.GetWorkspaceId()
 	if err != nil {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
@@ -35,7 +36,7 @@ func (c *SyncLandscapeCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
-	return c.SyncLandscape(client, workspaceId)
+	return c.SyncLandscape(cmd.Context(), client, workspaceId)
 }
 
 func AddSyncLandscapeCmd(sync *cobra.Command, opts *GlobalOptions) {
@@ -55,8 +56,8 @@ func AddSyncLandscapeCmd(sync *cobra.Command, opts *GlobalOptions) {
 	shared.AddCmd(sync, workspace.cmd)
 }
 
-func (c *SyncLandscapeCmd) SyncLandscape(client Client, wsId int) error {
-	err := client.DeployLandscape(wsId, c.Opts.Profile)
+func (c *SyncLandscapeCmd) SyncLandscape(ctx context.Context, client Client, wsId int) error {
+	err := client.DeployLandscape(ctx, wsId, c.Opts.Profile)
 	if err != nil {
 		return err
 	}

@@ -4,6 +4,7 @@
 package list
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -30,16 +31,16 @@ func AddListSSHKeysCmd(parent *cobra.Command, opts *ListOptions) {
 	shared.AddCmd(parent, command)
 }
 
-func (c *ListSSHKeysCmd) RunE(_ *cobra.Command, _ []string) error {
+func (c *ListSSHKeysCmd) RunE(cmd *cobra.Command, _ []string) error {
 	client, err := c.Opts.NewClient()
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
-	return c.ListSSHKeys(client)
+	return c.ListSSHKeys(cmd.Context(), client)
 }
 
-func (c *ListSSHKeysCmd) ListSSHKeys(client shared.Client) error {
-	keys, err := client.ListSSHPublicKeys()
+func (c *ListSSHKeysCmd) ListSSHKeys(ctx context.Context, client shared.Client) error {
+	keys, err := client.ListSSHPublicKeys(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to list SSH public keys: %w", err)
 	}

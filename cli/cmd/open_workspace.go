@@ -4,6 +4,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"log"
 
@@ -22,7 +23,7 @@ type Browser interface {
 	OpenIde(path string) error
 }
 
-func (c *OpenWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *OpenWorkspaceCmd) RunE(cmd *cobra.Command, args []string) error {
 	client, err := NewClient(*c.Opts)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
@@ -33,7 +34,7 @@ func (c *OpenWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
 	}
 
-	return c.OpenWorkspace(cs.NewBrowser(), client, wsId)
+	return c.OpenWorkspace(cmd.Context(), cs.NewBrowser(), client, wsId)
 }
 
 func AddOpenWorkspaceCmd(open *cobra.Command, opts *GlobalOptions) {
@@ -53,8 +54,8 @@ func AddOpenWorkspaceCmd(open *cobra.Command, opts *GlobalOptions) {
 	workspace.cmd.RunE = workspace.RunE
 }
 
-func (cmd *OpenWorkspaceCmd) OpenWorkspace(browser Browser, client Client, wsId int) error {
-	workspace, err := client.GetWorkspace(wsId)
+func (cmd *OpenWorkspaceCmd) OpenWorkspace(ctx context.Context, browser Browser, client Client, wsId int) error {
+	workspace, err := client.GetWorkspace(ctx, wsId)
 	if err != nil {
 		return fmt.Errorf("failed to get workspace: %w", err)
 	}

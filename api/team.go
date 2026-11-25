@@ -4,6 +4,7 @@
 package api
 
 import (
+	"context"
 	"fmt"
 
 	cserrors "github.com/codesphere-cloud/cs-go/api/errors"
@@ -15,8 +16,8 @@ import (
 //
 // Returns [NotFound] if no team with the given Id could be found
 // Returns [Duplicated] if no team with the given Id could be found
-func (client *Client) TeamIdByName(name string, orgId string) (Team, error) {
-	teams, err := client.ListTeams(orgId)
+func (client *Client) TeamIdByName(ctx context.Context, name string, orgId string) (Team, error) {
+	teams, err := client.ListTeams(ctx, orgId)
 	if err != nil {
 		return Team{}, err
 	}
@@ -39,9 +40,9 @@ func (client *Client) TeamIdByName(name string, orgId string) (Team, error) {
 	return matchingTeams[0], nil
 }
 
-func (c *Client) ListTeams(orgId string) ([]Team, error) {
+func (c *Client) ListTeams(ctx context.Context, orgId string) ([]Team, error) {
 	if orgId != "" {
-		teams, r, err := c.api.OrganizationsAPI.OrganizationsListOrgTeams(c.ctx, orgId).Execute()
+		teams, r, err := c.api.OrganizationsAPI.OrganizationsListOrgTeams(c.withAuth(ctx), orgId).Execute()
 		if err != nil {
 			return nil, cserrors.FormatAPIError(r, err)
 		}
@@ -53,7 +54,7 @@ func (c *Client) ListTeams(orgId string) ([]Team, error) {
 		return res, nil
 	}
 
-	apiTeams, r, err := c.api.TeamsAPI.TeamsListTeams(c.ctx).Execute()
+	apiTeams, r, err := c.api.TeamsAPI.TeamsListTeams(c.withAuth(ctx)).Execute()
 	if err != nil {
 		return nil, cserrors.FormatAPIError(r, err)
 	}
@@ -64,8 +65,8 @@ func (c *Client) ListTeams(orgId string) ([]Team, error) {
 	return res, nil
 }
 
-func (c *Client) GetTeam(teamId int) (*Team, error) {
-	team, r, err := c.api.TeamsAPI.TeamsGetTeam(c.ctx, teamId).Execute()
+func (c *Client) GetTeam(ctx context.Context, teamId int) (*Team, error) {
+	team, r, err := c.api.TeamsAPI.TeamsGetTeam(c.withAuth(ctx), teamId).Execute()
 	if err != nil {
 		return nil, cserrors.FormatAPIError(r, err)
 	}
@@ -75,16 +76,16 @@ func (c *Client) GetTeam(teamId int) (*Team, error) {
 	return ConvertToTeam(team), nil
 }
 
-func (c *Client) CreateTeam(orgId string, name string, dc int) (*Team, error) {
+func (c *Client) CreateTeam(ctx context.Context, orgId string, name string, dc int) (*Team, error) {
 	if orgId == "" {
-		return c.createTeam(name, dc)
+		return c.createTeam(ctx, name, dc)
 	}
-	return c.createOrgTeam(orgId, name, dc)
+	return c.createOrgTeam(ctx, orgId, name, dc)
 
 }
 
-func (c *Client) createTeam(name string, dc int) (*Team, error) {
-	team, r, err := c.api.TeamsAPI.TeamsCreateTeam(c.ctx).
+func (c *Client) createTeam(ctx context.Context, name string, dc int) (*Team, error) {
+	team, r, err := c.api.TeamsAPI.TeamsCreateTeam(c.withAuth(ctx)).
 		TeamsCreateTeamRequest(openapi_client.TeamsCreateTeamRequest{
 			Name: name,
 			Dc:   dc,
@@ -96,8 +97,8 @@ func (c *Client) createTeam(name string, dc int) (*Team, error) {
 	return ConvertToTeam(team), nil
 }
 
-func (c *Client) createOrgTeam(orgId string, name string, dc int) (*Team, error) {
-	team, r, err := c.api.TeamsAPI.TeamsCreateTeam(c.ctx).
+func (c *Client) createOrgTeam(ctx context.Context, orgId string, name string, dc int) (*Team, error) {
+	team, r, err := c.api.TeamsAPI.TeamsCreateTeam(c.withAuth(ctx)).
 		TeamsCreateTeamRequest(openapi_client.TeamsCreateTeamRequest{
 			Name:           name,
 			Dc:             dc,
@@ -110,13 +111,13 @@ func (c *Client) createOrgTeam(orgId string, name string, dc int) (*Team, error)
 	return ConvertToTeam(team), nil
 }
 
-func (c *Client) DeleteTeam(teamId int) error {
-	r, err := c.api.TeamsAPI.TeamsDeleteTeam(c.ctx, teamId).Execute()
+func (c *Client) DeleteTeam(ctx context.Context, teamId int) error {
+	r, err := c.api.TeamsAPI.TeamsDeleteTeam(c.withAuth(ctx), teamId).Execute()
 	return cserrors.FormatAPIError(r, err)
 }
 
-func (c *Client) AddTeamMember(teamId int, email string, role int) error {
-	r, err := c.api.TeamsAPI.TeamsInviteMember(c.ctx, teamId).
+func (c *Client) AddTeamMember(ctx context.Context, teamId int, email string, role int) error {
+	r, err := c.api.TeamsAPI.TeamsInviteMember(c.withAuth(ctx), teamId).
 		TeamsInviteMemberRequest(openapi_client.TeamsInviteMemberRequest{
 			UserEmail: email,
 			Role:      role,
@@ -127,16 +128,16 @@ func (c *Client) AddTeamMember(teamId int, email string, role int) error {
 	return nil
 }
 
-func (c *Client) RemoveTeamMember(teamId int, userId int) error {
-	r, err := c.api.TeamsAPI.TeamsRemoveMember(c.ctx, teamId, userId).Execute()
+func (c *Client) RemoveTeamMember(ctx context.Context, teamId int, userId int) error {
+	r, err := c.api.TeamsAPI.TeamsRemoveMember(c.withAuth(ctx), teamId, userId).Execute()
 	if err != nil {
 		return cserrors.FormatAPIError(r, err)
 	}
 	return nil
 }
 
-func (c *Client) ListTeamMembers(teamId int) ([]TeamMember, error) {
-	members, r, err := c.api.TeamsAPI.TeamsListMembers(c.ctx, teamId).Execute()
+func (c *Client) ListTeamMembers(ctx context.Context, teamId int) ([]TeamMember, error) {
+	members, r, err := c.api.TeamsAPI.TeamsListMembers(c.withAuth(ctx), teamId).Execute()
 	if err != nil {
 		return nil, cserrors.FormatAPIError(r, err)
 	}

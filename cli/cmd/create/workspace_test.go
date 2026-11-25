@@ -4,6 +4,7 @@
 package create_test
 
 import (
+	"context"
 	"errors"
 	"time"
 
@@ -15,6 +16,7 @@ import (
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
 	createcmd "github.com/codesphere-cloud/cs-go/cli/cmd/create"
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
+	"github.com/stretchr/testify/mock"
 )
 
 var _ = Describe("CreateWorkspace", func() {
@@ -87,8 +89,8 @@ var _ = Describe("CreateWorkspace", func() {
 
 	Context("Minimal values are set", func() {
 		It("Creates the workspace", func() {
-			mockClient.EXPECT().DeployWorkspace(deployArgs).Return(&api.Workspace{Name: wsName}, nil)
-			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			mockClient.EXPECT().DeployWorkspace(mock.Anything, deployArgs).Return(&api.Workspace{Name: wsName}, nil)
+			ws, err := c.CreateWorkspace(context.Background(), mockClient, teamId, wsName)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(ws.Name).To(Equal(wsName))
 		})
@@ -138,10 +140,10 @@ var _ = Describe("CreateWorkspace", func() {
 				{Id: "ubuntu-24.04", Name: "Ubuntu 24.04", SupportedUntil: supportedUntil},
 				{Id: "node-18", Name: "Node.js 18", SupportedUntil: supportedUntil},
 			}
-			mockClient.EXPECT().ListBaseimages().Return(availableBaseimages, nil)
-			mockClient.EXPECT().DeployWorkspace(deployArgs).Return(&api.Workspace{Name: wsName}, nil)
+			mockClient.EXPECT().ListBaseimages(mock.Anything).Return(availableBaseimages, nil)
+			mockClient.EXPECT().DeployWorkspace(mock.Anything, deployArgs).Return(&api.Workspace{Name: wsName}, nil)
 
-			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			ws, err := c.CreateWorkspace(context.Background(), mockClient, teamId, wsName)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(ws.Name).To(Equal(wsName))
 		})
@@ -152,9 +154,9 @@ var _ = Describe("CreateWorkspace", func() {
 				{Id: "ubuntu-20.04", Name: "Ubuntu 20.04", SupportedUntil: supportedUntil},
 				{Id: "node-18", Name: "Node.js 18", SupportedUntil: supportedUntil},
 			}
-			mockClient.EXPECT().ListBaseimages().Return(availableBaseimages, nil)
+			mockClient.EXPECT().ListBaseimages(mock.Anything).Return(availableBaseimages, nil)
 
-			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			ws, err := c.CreateWorkspace(context.Background(), mockClient, teamId, wsName)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("base image 'ubuntu-24.04' not found"))
 			Expect(err.Error()).To(ContainSubstring("available options are: ubuntu-20.04, node-18"))
@@ -162,9 +164,9 @@ var _ = Describe("CreateWorkspace", func() {
 		})
 
 		It("fails when ListBaseimages returns error", func() {
-			mockClient.EXPECT().ListBaseimages().Return([]api.Baseimage{}, errors.New("API error"))
+			mockClient.EXPECT().ListBaseimages(mock.Anything).Return([]api.Baseimage{}, errors.New("API error"))
 
-			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			ws, err := c.CreateWorkspace(context.Background(), mockClient, teamId, wsName)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to list base images: API error"))
 			Expect(ws).To(BeNil())
@@ -189,9 +191,9 @@ var _ = Describe("CreateWorkspace", func() {
 				BaseImage:     nil,
 			}
 
-			mockClient.EXPECT().DeployWorkspace(expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
+			mockClient.EXPECT().DeployWorkspace(mock.Anything, expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
 
-			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			ws, err := c.CreateWorkspace(context.Background(), mockClient, teamId, wsName)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(ws.Name).To(Equal(wsName))
 		})
@@ -200,7 +202,7 @@ var _ = Describe("CreateWorkspace", func() {
 			invalidUrl := "not-a-valid-url"
 			c.Opts.Repo = &invalidUrl
 
-			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			ws, err := c.CreateWorkspace(context.Background(), mockClient, teamId, wsName)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("validation of repository URL failed"))
 			Expect(ws).To(BeNil())
@@ -223,9 +225,9 @@ var _ = Describe("CreateWorkspace", func() {
 				BaseImage:     nil,
 			}
 
-			mockClient.EXPECT().DeployWorkspace(expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
+			mockClient.EXPECT().DeployWorkspace(mock.Anything, expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
 
-			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			ws, err := c.CreateWorkspace(context.Background(), mockClient, teamId, wsName)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(ws.Name).To(Equal(wsName))
 		})
@@ -249,9 +251,9 @@ var _ = Describe("CreateWorkspace", func() {
 				BaseImage:     nil,
 			}
 
-			mockClient.EXPECT().DeployWorkspace(expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
+			mockClient.EXPECT().DeployWorkspace(mock.Anything, expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
 
-			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			ws, err := c.CreateWorkspace(context.Background(), mockClient, teamId, wsName)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(ws.Name).To(Equal(wsName))
 		})
@@ -273,9 +275,9 @@ var _ = Describe("CreateWorkspace", func() {
 				BaseImage:     nil,
 			}
 
-			mockClient.EXPECT().DeployWorkspace(expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
+			mockClient.EXPECT().DeployWorkspace(mock.Anything, expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
 
-			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			ws, err := c.CreateWorkspace(context.Background(), mockClient, teamId, wsName)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(ws.Name).To(Equal(wsName))
 		})
@@ -299,9 +301,9 @@ var _ = Describe("CreateWorkspace", func() {
 				BaseImage:     nil,
 			}
 
-			mockClient.EXPECT().DeployWorkspace(expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
+			mockClient.EXPECT().DeployWorkspace(mock.Anything, expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
 
-			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			ws, err := c.CreateWorkspace(context.Background(), mockClient, teamId, wsName)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(ws.Name).To(Equal(wsName))
 		})
@@ -323,9 +325,9 @@ var _ = Describe("CreateWorkspace", func() {
 				BaseImage:     nil,
 			}
 
-			mockClient.EXPECT().DeployWorkspace(expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
+			mockClient.EXPECT().DeployWorkspace(mock.Anything, expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
 
-			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			ws, err := c.CreateWorkspace(context.Background(), mockClient, teamId, wsName)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(ws.Name).To(Equal(wsName))
 		})
@@ -349,9 +351,9 @@ var _ = Describe("CreateWorkspace", func() {
 				Restricted:    nil,
 			}
 
-			mockClient.EXPECT().DeployWorkspace(expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
+			mockClient.EXPECT().DeployWorkspace(mock.Anything, expectedArgs).Return(&api.Workspace{Name: wsName}, nil)
 
-			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			ws, err := c.CreateWorkspace(context.Background(), mockClient, teamId, wsName)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(ws.Name).To(Equal(wsName))
 		})
@@ -361,16 +363,16 @@ var _ = Describe("CreateWorkspace", func() {
 		It("fails when environment variables are malformed", func() {
 			env = []string{"invalid-env-var"}
 
-			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			ws, err := c.CreateWorkspace(context.Background(), mockClient, teamId, wsName)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to parse environment variables"))
 			Expect(ws).To(BeNil())
 		})
 
 		It("fails when DeployWorkspace returns error", func() {
-			mockClient.EXPECT().DeployWorkspace(deployArgs).Return(nil, errors.New("deployment failed"))
+			mockClient.EXPECT().DeployWorkspace(mock.Anything, deployArgs).Return(nil, errors.New("deployment failed"))
 
-			ws, err := c.CreateWorkspace(mockClient, teamId, wsName)
+			ws, err := c.CreateWorkspace(context.Background(), mockClient, teamId, wsName)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to create workspace: deployment failed"))
 			Expect(ws).To(BeNil())

@@ -4,6 +4,7 @@
 package generate
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"log"
@@ -37,7 +38,7 @@ func (c *GenerateDockerCmd) RunE(cc *cobra.Command, args []string) error {
 		return c.Opts.NewClient()
 	}
 
-	if err := c.GenerateDocker(fs, exporter, gitSvc, clientFactory); err != nil {
+	if err := c.GenerateDocker(cc.Context(), fs, exporter, gitSvc, clientFactory); err != nil {
 		return fmt.Errorf("failed to generate docker: %w", err)
 	}
 
@@ -94,7 +95,7 @@ func AddGenerateDockerCmd(generate *cobra.Command, opts *GenerateOpts) {
 	docker.cmd.RunE = docker.RunE
 }
 
-func (c *GenerateDockerCmd) GenerateDocker(fs *cs.FileSystem, exp exporter.Exporter, git git.Git, clientFactory func() (shared.Client, error)) error {
+func (c *GenerateDockerCmd) GenerateDocker(ctx context.Context, fs *cs.FileSystem, exp exporter.Exporter, git git.Git, clientFactory func() (shared.Client, error)) error {
 	if c.Opts.BaseImage == "" {
 		return errors.New("baseimage is required")
 	}
@@ -108,7 +109,7 @@ func (c *GenerateDockerCmd) GenerateDocker(fs *cs.FileSystem, exp exporter.Expor
 			return fmt.Errorf("failed to create Codesphere client: %w", err)
 		}
 
-		if err := c.CloneRepository(client, fs, git, c.Opts.RepoRoot); err != nil {
+		if err := c.CloneRepository(ctx, client, fs, git, c.Opts.RepoRoot); err != nil {
 			return fmt.Errorf("failed to clone repository: %w", err)
 		}
 		if !fs.FileExists(ciInput) {
@@ -129,14 +130,14 @@ func (c *GenerateDockerCmd) GenerateDocker(fs *cs.FileSystem, exp exporter.Expor
 	return nil
 }
 
-func (c *GenerateDockerCmd) CloneRepository(client shared.Client, fs *cs.FileSystem, git git.Git, clonedir string) error {
+func (c *GenerateDockerCmd) CloneRepository(ctx context.Context, client shared.Client, fs *cs.FileSystem, git git.Git, clonedir string) error {
 	log.Printf("Cloning repository into %s...\n", clonedir)
 
 	wsId, err := c.Opts.GetWorkspaceId()
 	if err != nil {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
 	}
-	ws, err := client.GetWorkspace(wsId)
+	ws, err := client.GetWorkspace(ctx, wsId)
 	if err != nil {
 		return fmt.Errorf("failed to get workspace: %w", err)
 	}

@@ -4,6 +4,7 @@
 package start
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"slices"
@@ -31,7 +32,7 @@ type StartPipelineOpts struct {
 
 const IdeServer string = "codesphere-ide"
 
-func (c *StartPipelineCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *StartPipelineCmd) RunE(cmd *cobra.Command, args []string) error {
 	workspaceId, err := c.Opts.GetWorkspaceId()
 	if err != nil {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
@@ -49,7 +50,7 @@ func (c *StartPipelineCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
-	return c.StartPipelineStages(client, workspaceId, args)
+	return c.StartPipelineStages(cmd.Context(), client, workspaceId, args)
 }
 
 func AddStartPipelineCmd(start *cobra.Command, opts shared.RootOptions) {
@@ -93,14 +94,14 @@ func AddStartPipelineCmd(start *cobra.Command, opts shared.RootOptions) {
 	pipeline.cmd.RunE = pipeline.RunE
 }
 
-func (c *StartPipelineCmd) StartPipelineStages(client shared.Client, wsId int, stages []string) error {
+func (c *StartPipelineCmd) StartPipelineStages(ctx context.Context, client shared.Client, wsId int, stages []string) error {
 	for _, stage := range stages {
 		if !isValidStage(stage) {
 			return fmt.Errorf("invalid pipeline stage: %s", stage)
 		}
 	}
 	for _, stage := range stages {
-		err := c.startStage(client, wsId, stage)
+		err := c.startStage(ctx, client, wsId, stage)
 		if err != nil {
 			return err
 		}
@@ -112,16 +113,16 @@ func isValidStage(stage string) bool {
 	return slices.Contains([]string{"prepare", "test", "run"}, stage)
 }
 
-func (c *StartPipelineCmd) startStage(client shared.Client, wsId int, stage string) error {
+func (c *StartPipelineCmd) startStage(ctx context.Context, client shared.Client, wsId int, stage string) error {
 	log.Printf("starting %s stage on workspace %d...", stage, wsId)
 
-	err := client.StartPipelineStage(wsId, *c.Opts.Profile, stage)
+	err := client.StartPipelineStage(ctx, wsId, *c.Opts.Profile, stage)
 	if err != nil {
 		log.Println()
 		return fmt.Errorf("failed to start pipeline stage %s: %w", stage, err)
 	}
 
-	err = c.waitForPipelineStage(client, wsId, stage)
+	err = c.waitForPipelineStage(ctx, client, wsId, stage)
 	if err != nil {
 		return fmt.Errorf("failed waiting for stage %s to finish: %w", stage, err)
 
@@ -129,12 +130,15 @@ func (c *StartPipelineCmd) startStage(client shared.Client, wsId int, stage stri
 	return nil
 }
 
-func (c *StartPipelineCmd) waitForPipelineStage(client shared.Client, wsId int, stage string) error {
+func (c *StartPipelineCmd) waitForPipelineStage(ctx context.Context, client shared.Client, wsId int, stage string) error {
 	delay := 5 * time.Second
 
 	maxWaitTime := c.Time.Now().Add(*c.Opts.Timeout)
 	for {
-		status, err := client.GetPipelineState(wsId, stage)
+		if err := ctx.Err(); err != nil {
+			return err
+		}
+		status, err := client.GetPipelineState(ctx, wsId, stage)
 		if err != nil {
 			log.Printf("\nError getting pipeline status: %s, trying again...", err.Error())
 			c.Time.Sleep(delay)

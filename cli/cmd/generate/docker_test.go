@@ -4,6 +4,7 @@
 package generate_test
 
 import (
+	"context"
 	"errors"
 	"path"
 
@@ -18,6 +19,7 @@ import (
 	"github.com/codesphere-cloud/cs-go/pkg/cs"
 	"github.com/codesphere-cloud/cs-go/pkg/exporter"
 	"github.com/codesphere-cloud/cs-go/pkg/git"
+	"github.com/stretchr/testify/mock"
 )
 
 var _ = Describe("GenerateDocker", func() {
@@ -58,7 +60,7 @@ var _ = Describe("GenerateDocker", func() {
 	Context("the baseimage is not provided", func() {
 		It("should return an error", func() {
 			clientFactory := func() (cmd.Client, error) { return mockClient, nil }
-			err := c.GenerateDocker(memoryFs, mockExporter, mockGit, clientFactory)
+			err := c.GenerateDocker(context.Background(), memoryFs, mockExporter, mockGit, clientFactory)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("baseimage is required"))
 		})
@@ -82,7 +84,7 @@ var _ = Describe("GenerateDocker", func() {
 				mockExporter.EXPECT().ReadYmlFile(ciYmlPath).Return(&ci.CiYml{}, nil)
 				mockExporter.EXPECT().ExportDockerArtifacts().Return(nil)
 				clientFactory := func() (cmd.Client, error) { return mockClient, nil }
-				err := c.GenerateDocker(memoryFs, mockExporter, mockGit, clientFactory)
+				err := c.GenerateDocker(context.Background(), memoryFs, mockExporter, mockGit, clientFactory)
 				Expect(err).To(Not(HaveOccurred()))
 			})
 		})
@@ -106,7 +108,7 @@ var _ = Describe("GenerateDocker", func() {
 			It("should return an error", func() {
 				mockEnv.EXPECT().GetWorkspaceId().Return(0, errors.New("workspace ID not found"))
 
-				err := c.CloneRepository(mockClient, memoryFs, mockGit, clonedir)
+				err := c.CloneRepository(context.Background(), mockClient, memoryFs, mockGit, clonedir)
 				Expect(err).To(HaveOccurred())
 				Expect(err.Error()).To(ContainSubstring("failed to get workspace ID"))
 			})
@@ -134,10 +136,10 @@ var _ = Describe("GenerateDocker", func() {
 					GitUrl: *openapi_client.NewNullableString(&repoUrl),
 				}
 				mockEnv.EXPECT().GetWorkspaceId().Return(wsId, nil)
-				mockClient.EXPECT().GetWorkspace(99).Return(ws, nil)
+				mockClient.EXPECT().GetWorkspace(mock.Anything, 99).Return(ws, nil)
 				mockGit.EXPECT().CloneRepository(memoryFs, repoUrl, branch, clonedir).Return(nil, nil)
 
-				err := cmd.CloneRepository(mockClient, memoryFs, mockGit, clonedir)
+				err := cmd.CloneRepository(context.Background(), mockClient, memoryFs, mockGit, clonedir)
 				Expect(err).To(Not(HaveOccurred()))
 			})
 		})
@@ -160,10 +162,10 @@ var _ = Describe("GenerateDocker", func() {
 				ws := api.Workspace{
 					GitUrl: *openapi_client.NewNullableString(&repoUrl),
 				}
-				mockClient.EXPECT().GetWorkspace(flagWsId).Return(ws, nil)
+				mockClient.EXPECT().GetWorkspace(mock.Anything, flagWsId).Return(ws, nil)
 				mockGit.EXPECT().CloneRepository(memoryFs, repoUrl, branch, clonedir).Return(nil, nil)
 
-				err := cmd.CloneRepository(mockClient, memoryFs, mockGit, clonedir)
+				err := cmd.CloneRepository(context.Background(), mockClient, memoryFs, mockGit, clonedir)
 				Expect(err).To(Not(HaveOccurred()))
 			})
 		})
@@ -171,9 +173,9 @@ var _ = Describe("GenerateDocker", func() {
 		Context("when workspace cannot be retrieved", func() {
 			It("should return an error", func() {
 				mockEnv.EXPECT().GetWorkspaceId().Return(wsId, nil)
-				mockClient.EXPECT().GetWorkspace(wsId).Return(api.Workspace{}, errors.New("workspace not found"))
+				mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(api.Workspace{}, errors.New("workspace not found"))
 
-				err := c.CloneRepository(mockClient, memoryFs, mockGit, clonedir)
+				err := c.CloneRepository(context.Background(), mockClient, memoryFs, mockGit, clonedir)
 				Expect(err).To(HaveOccurred())
 				Expect(err.Error()).To(ContainSubstring("failed to get workspace"))
 			})
@@ -183,9 +185,9 @@ var _ = Describe("GenerateDocker", func() {
 			It("should return an error", func() {
 				ws := api.Workspace{}
 				mockEnv.EXPECT().GetWorkspaceId().Return(wsId, nil)
-				mockClient.EXPECT().GetWorkspace(wsId).Return(ws, nil)
+				mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(ws, nil)
 
-				err := c.CloneRepository(mockClient, memoryFs, mockGit, clonedir)
+				err := c.CloneRepository(context.Background(), mockClient, memoryFs, mockGit, clonedir)
 				Expect(err).To(HaveOccurred())
 				Expect(err.Error()).To(ContainSubstring("workspace does not have a git repository"))
 			})
@@ -197,10 +199,10 @@ var _ = Describe("GenerateDocker", func() {
 					GitUrl: *openapi_client.NewNullableString(&repoUrl),
 				}
 				mockEnv.EXPECT().GetWorkspaceId().Return(wsId, nil)
-				mockClient.EXPECT().GetWorkspace(wsId).Return(ws, nil)
+				mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(ws, nil)
 				mockGit.EXPECT().CloneRepository(memoryFs, repoUrl, branch, clonedir).Return(nil, errors.New("clone failed"))
 
-				err := c.CloneRepository(mockClient, memoryFs, mockGit, clonedir)
+				err := c.CloneRepository(context.Background(), mockClient, memoryFs, mockGit, clonedir)
 				Expect(err).To(HaveOccurred())
 				Expect(err.Error()).To(ContainSubstring("failed to clone repository"))
 			})
@@ -212,10 +214,10 @@ var _ = Describe("GenerateDocker", func() {
 					GitUrl: *openapi_client.NewNullableString(&repoUrl),
 				}
 				mockEnv.EXPECT().GetWorkspaceId().Return(wsId, nil)
-				mockClient.EXPECT().GetWorkspace(wsId).Return(ws, nil)
+				mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(ws, nil)
 				mockGit.EXPECT().CloneRepository(memoryFs, repoUrl, branch, clonedir).Return(nil, nil)
 
-				err := c.CloneRepository(mockClient, memoryFs, mockGit, clonedir)
+				err := c.CloneRepository(context.Background(), mockClient, memoryFs, mockGit, clonedir)
 				Expect(err).To(Not(HaveOccurred()))
 			})
 		})
@@ -228,10 +230,10 @@ var _ = Describe("GenerateDocker", func() {
 					InitialBranch: *openapi_client.NewNullableString(&customBranch),
 				}
 				mockEnv.EXPECT().GetWorkspaceId().Return(wsId, nil)
-				mockClient.EXPECT().GetWorkspace(wsId).Return(ws, nil)
+				mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(ws, nil)
 				mockGit.EXPECT().CloneRepository(memoryFs, repoUrl, customBranch, clonedir).Return(nil, nil)
 
-				err := c.CloneRepository(mockClient, memoryFs, mockGit, clonedir)
+				err := c.CloneRepository(context.Background(), mockClient, memoryFs, mockGit, clonedir)
 				Expect(err).To(Not(HaveOccurred()))
 			})
 		})
@@ -246,10 +248,10 @@ var _ = Describe("GenerateDocker", func() {
 					InitialBranch: *openapi_client.NewNullableString(&workspaceBranch),
 				}
 				mockEnv.EXPECT().GetWorkspaceId().Return(wsId, nil)
-				mockClient.EXPECT().GetWorkspace(wsId).Return(ws, nil)
+				mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(ws, nil)
 				mockGit.EXPECT().CloneRepository(memoryFs, repoUrl, customBranch, clonedir).Return(nil, nil)
 
-				err := c.CloneRepository(mockClient, memoryFs, mockGit, clonedir)
+				err := c.CloneRepository(context.Background(), mockClient, memoryFs, mockGit, clonedir)
 				Expect(err).To(Not(HaveOccurred()))
 			})
 		})

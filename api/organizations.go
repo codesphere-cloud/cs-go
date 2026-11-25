@@ -4,12 +4,14 @@
 package api
 
 import (
+	"context"
+
 	cserrors "github.com/codesphere-cloud/cs-go/api/errors"
 	openapi "github.com/codesphere-cloud/cs-go/api/openapi_client"
 )
 
-func (c *Client) ListOrganizations() ([]Organization, error) {
-	orgs, r, err := c.api.OrganizationsAPI.OrganizationsListOrganizations(c.ctx).Execute()
+func (c *Client) ListOrganizations(ctx context.Context) ([]Organization, error) {
+	orgs, r, err := c.api.OrganizationsAPI.OrganizationsListOrganizations(c.withAuth(ctx)).Execute()
 	if err != nil {
 		return nil, cserrors.FormatAPIError(r, err)
 	}
@@ -19,9 +21,9 @@ func (c *Client) ListOrganizations() ([]Organization, error) {
 	return res, nil
 }
 
-func (c *Client) CreateOrganization(name string, adminEmail string) (*Organization, error) {
+func (c *Client) CreateOrganization(ctx context.Context, name string, adminEmail string) (*Organization, error) {
 	req := openapi.NewClustersCreateOrganizationRequest(name, adminEmail)
-	org, r, err := c.api.ClustersAPI.ClustersCreateOrganization(c.ctx).ClustersCreateOrganizationRequest(*req).Execute()
+	org, r, err := c.api.ClustersAPI.ClustersCreateOrganization(c.withAuth(ctx)).ClustersCreateOrganizationRequest(*req).Execute()
 	if err != nil {
 		return nil, cserrors.FormatAPIError(r, err)
 	}
@@ -29,24 +31,24 @@ func (c *Client) CreateOrganization(name string, adminEmail string) (*Organizati
 	return org, nil
 }
 
-func (c *Client) ListOrganizationMembers(orgId string) ([]OrganizationMember, error) {
-	members, r, err := c.api.OrganizationsAPI.OrganizationsListOrgMembers(c.ctx, orgId).Execute()
+func (c *Client) ListOrganizationMembers(ctx context.Context, orgId string) ([]OrganizationMember, error) {
+	members, r, err := c.api.OrganizationsAPI.OrganizationsListOrgMembers(c.withAuth(ctx), orgId).Execute()
 	return members, cserrors.FormatAPIError(r, err)
 }
 
-func (c *Client) AddOrganizationMember(orgId, email, role string) error {
+func (c *Client) AddOrganizationMember(ctx context.Context, orgId, email, role string) error {
 	req := openapi.NewOrganizationsAddOrgMemberRequest(email, role)
-	r, err := c.api.OrganizationsAPI.OrganizationsAddOrgMember(c.ctx, orgId).OrganizationsAddOrgMemberRequest(*req).Execute()
+	r, err := c.api.OrganizationsAPI.OrganizationsAddOrgMember(c.withAuth(ctx), orgId).OrganizationsAddOrgMemberRequest(*req).Execute()
 	return cserrors.FormatAPIError(r, err)
 }
 
-func (c *Client) RemoveOrganizationMember(orgId string, userId int) error {
-	r, err := c.api.OrganizationsAPI.OrganizationsRemoveOrgMember(c.ctx, orgId, userId).Execute()
+func (c *Client) RemoveOrganizationMember(ctx context.Context, orgId string, userId int) error {
+	r, err := c.api.OrganizationsAPI.OrganizationsRemoveOrgMember(c.withAuth(ctx), orgId, userId).Execute()
 	return cserrors.FormatAPIError(r, err)
 }
 
-func (c *Client) ChangeOrganizationMemberRole(orgId string, userId int, role string) error {
+func (c *Client) ChangeOrganizationMemberRole(ctx context.Context, orgId string, userId int, role string) error {
 	req := openapi.NewOrganizationsChangeOrgRoleRequest(role)
-	r, err := c.api.OrganizationsAPI.OrganizationsChangeOrgRole(c.ctx, orgId, userId).OrganizationsChangeOrgRoleRequest(*req).Execute()
+	r, err := c.api.OrganizationsAPI.OrganizationsChangeOrgRole(c.withAuth(ctx), orgId, userId).OrganizationsChangeOrgRoleRequest(*req).Execute()
 	return cserrors.FormatAPIError(r, err)
 }

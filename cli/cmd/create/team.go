@@ -4,6 +4,7 @@
 package create
 
 import (
+	"context"
 	"errors"
 	"fmt"
 
@@ -49,7 +50,7 @@ func AddCreateTeamCmd(create *cobra.Command, opts shared.RootOptions) {
 	shared.AddCmd(create, t.cmd)
 }
 
-func (c *CreateTeamCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *CreateTeamCmd) RunE(cmd *cobra.Command, args []string) error {
 	client, err := c.ClientFactory(c.Opts.RootOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
@@ -60,7 +61,7 @@ func (c *CreateTeamCmd) RunE(_ *cobra.Command, args []string) error {
 		return errors.Join(err, errors.New("failed to get organization ID"))
 	}
 
-	createdTeam, err := c.CreateTeam(client, orgId, c.Opts.Name, c.Opts.DcId)
+	createdTeam, err := c.CreateTeam(cmd.Context(), client, orgId, c.Opts.Name, c.Opts.DcId)
 	if err != nil {
 		return err
 	}
@@ -73,12 +74,12 @@ func (c *CreateTeamCmd) RunE(_ *cobra.Command, args []string) error {
 	return nil
 }
 
-func (c *CreateTeamCmd) CreateTeam(client shared.Client, orgId string, teamName string, dcId int) (*api.Team, error) {
+func (c *CreateTeamCmd) CreateTeam(ctx context.Context, client shared.Client, orgId string, teamName string, dcId int) (*api.Team, error) {
 	if teamName == "" {
 		return nil, errors.New("team name cannot be empty")
 	}
 
-	createdTeam, err := client.CreateTeam(orgId, teamName, dcId)
+	createdTeam, err := client.CreateTeam(ctx, orgId, teamName, dcId)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create team: %w", err)
 	}

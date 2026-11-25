@@ -4,6 +4,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"time"
@@ -28,7 +29,7 @@ type GitPullOpts struct {
 	Timeout time.Duration
 }
 
-func (c *GitPullCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *GitPullCmd) RunE(cmd *cobra.Command, args []string) error {
 	wsId, err := c.Opts.GetWorkspaceId()
 	if err != nil {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
@@ -39,15 +40,15 @@ func (c *GitPullCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
-	return c.PullWorkspace(client, wsId)
+	return c.PullWorkspace(cmd.Context(), client, wsId)
 }
 
-func (c *GitPullCmd) PullWorkspace(client Client, wsId int) error {
-	if _, err := cs.WakeUpWorkspace(client, wsId, c.Opts.Timeout); err != nil {
+func (c *GitPullCmd) PullWorkspace(ctx context.Context, client Client, wsId int) error {
+	if _, err := cs.WakeUpWorkspace(ctx, client, wsId, c.Opts.Timeout); err != nil {
 		return fmt.Errorf("failed to wake up workspace before git pull: %w", err)
 	}
 
-	if err := client.GitPull(wsId, *c.Opts.Remote, *c.Opts.Branch); err != nil {
+	if err := client.GitPull(ctx, wsId, *c.Opts.Remote, *c.Opts.Branch); err != nil {
 		return fmt.Errorf("failed to pull git repository: %w", err)
 	}
 

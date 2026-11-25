@@ -4,6 +4,7 @@
 package cmd_test
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -48,12 +49,12 @@ var _ = Describe("WakeUp", func() {
 				Name:   "test-workspace",
 			}
 
-			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
-			mockClient.EXPECT().WorkspaceStatus(wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)
-			mockClient.EXPECT().ScaleWorkspace(wsId, 1).Return(nil)
-			mockClient.EXPECT().WaitForWorkspaceRunning(mock.Anything, mock.Anything).Return(nil)
+			mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(workspace, nil)
+			mockClient.EXPECT().WorkspaceStatus(mock.Anything, wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)
+			mockClient.EXPECT().ScaleWorkspace(mock.Anything, wsId, 1).Return(nil)
+			mockClient.EXPECT().WaitForWorkspaceRunning(mock.Anything, mock.Anything, mock.Anything).Return(nil)
 
-			err := c.WakeUpWorkspace(mockClient, wsId)
+			err := c.WakeUpWorkspace(context.Background(), mockClient, wsId)
 
 			Expect(err).ToNot(HaveOccurred())
 		})
@@ -65,18 +66,18 @@ var _ = Describe("WakeUp", func() {
 				Name:   "test-workspace",
 			}
 
-			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
-			mockClient.EXPECT().WorkspaceStatus(wsId).Return(&api.WorkspaceStatus{IsRunning: true}, nil)
+			mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(workspace, nil)
+			mockClient.EXPECT().WorkspaceStatus(mock.Anything, wsId).Return(&api.WorkspaceStatus{IsRunning: true}, nil)
 
-			err := c.WakeUpWorkspace(mockClient, wsId)
+			err := c.WakeUpWorkspace(context.Background(), mockClient, wsId)
 
 			Expect(err).ToNot(HaveOccurred())
 		})
 
 		It("should return error if GetWorkspace fails", func() {
-			mockClient.EXPECT().GetWorkspace(wsId).Return(api.Workspace{}, fmt.Errorf("api error"))
+			mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(api.Workspace{}, fmt.Errorf("api error"))
 
-			err := c.WakeUpWorkspace(mockClient, wsId)
+			err := c.WakeUpWorkspace(context.Background(), mockClient, wsId)
 
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to get workspace"))
@@ -89,11 +90,11 @@ var _ = Describe("WakeUp", func() {
 				Name:   "test-workspace",
 			}
 
-			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
-			mockClient.EXPECT().WorkspaceStatus(wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)
-			mockClient.EXPECT().ScaleWorkspace(wsId, 1).Return(fmt.Errorf("scale error"))
+			mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(workspace, nil)
+			mockClient.EXPECT().WorkspaceStatus(mock.Anything, wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)
+			mockClient.EXPECT().ScaleWorkspace(mock.Anything, wsId, 1).Return(fmt.Errorf("scale error"))
 
-			err := c.WakeUpWorkspace(mockClient, wsId)
+			err := c.WakeUpWorkspace(context.Background(), mockClient, wsId)
 
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to scale workspace"))
@@ -107,13 +108,13 @@ var _ = Describe("WakeUp", func() {
 			}
 			c.Opts.SyncLandscape = true
 
-			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
-			mockClient.EXPECT().WorkspaceStatus(wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)
-			mockClient.EXPECT().ScaleWorkspace(wsId, 1).Return(nil)
-			mockClient.EXPECT().WaitForWorkspaceRunning(mock.Anything, mock.Anything).Return(nil)
-			mockClient.EXPECT().DeployLandscape(wsId, "").Return(nil)
+			mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(workspace, nil)
+			mockClient.EXPECT().WorkspaceStatus(mock.Anything, wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)
+			mockClient.EXPECT().ScaleWorkspace(mock.Anything, wsId, 1).Return(nil)
+			mockClient.EXPECT().WaitForWorkspaceRunning(mock.Anything, mock.Anything, mock.Anything).Return(nil)
+			mockClient.EXPECT().DeployLandscape(mock.Anything, wsId, "").Return(nil)
 
-			err := c.WakeUpWorkspace(mockClient, wsId)
+			err := c.WakeUpWorkspace(context.Background(), mockClient, wsId)
 
 			Expect(err).ToNot(HaveOccurred())
 		})
@@ -127,13 +128,13 @@ var _ = Describe("WakeUp", func() {
 			c.Opts.SyncLandscape = true
 			c.Opts.Profile = "prod"
 
-			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
-			mockClient.EXPECT().WorkspaceStatus(wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)
-			mockClient.EXPECT().ScaleWorkspace(wsId, 1).Return(nil)
-			mockClient.EXPECT().WaitForWorkspaceRunning(mock.Anything, mock.Anything).Return(nil)
-			mockClient.EXPECT().DeployLandscape(wsId, "prod").Return(nil)
+			mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(workspace, nil)
+			mockClient.EXPECT().WorkspaceStatus(mock.Anything, wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)
+			mockClient.EXPECT().ScaleWorkspace(mock.Anything, wsId, 1).Return(nil)
+			mockClient.EXPECT().WaitForWorkspaceRunning(mock.Anything, mock.Anything, mock.Anything).Return(nil)
+			mockClient.EXPECT().DeployLandscape(mock.Anything, wsId, "prod").Return(nil)
 
-			err := c.WakeUpWorkspace(mockClient, wsId)
+			err := c.WakeUpWorkspace(context.Background(), mockClient, wsId)
 
 			Expect(err).ToNot(HaveOccurred())
 		})
@@ -146,13 +147,13 @@ var _ = Describe("WakeUp", func() {
 			}
 			c.Opts.SyncLandscape = true
 
-			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
-			mockClient.EXPECT().WorkspaceStatus(wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)
-			mockClient.EXPECT().ScaleWorkspace(wsId, 1).Return(nil)
-			mockClient.EXPECT().WaitForWorkspaceRunning(mock.Anything, mock.Anything).Return(nil)
-			mockClient.EXPECT().DeployLandscape(wsId, "").Return(fmt.Errorf("deploy error"))
+			mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(workspace, nil)
+			mockClient.EXPECT().WorkspaceStatus(mock.Anything, wsId).Return(&api.WorkspaceStatus{IsRunning: false}, nil)
+			mockClient.EXPECT().ScaleWorkspace(mock.Anything, wsId, 1).Return(nil)
+			mockClient.EXPECT().WaitForWorkspaceRunning(mock.Anything, mock.Anything, mock.Anything).Return(nil)
+			mockClient.EXPECT().DeployLandscape(mock.Anything, wsId, "").Return(fmt.Errorf("deploy error"))
 
-			err := c.WakeUpWorkspace(mockClient, wsId)
+			err := c.WakeUpWorkspace(context.Background(), mockClient, wsId)
 
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to deploy landscape"))
@@ -166,11 +167,11 @@ var _ = Describe("WakeUp", func() {
 			}
 			c.Opts.SyncLandscape = true
 
-			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
-			mockClient.EXPECT().WorkspaceStatus(wsId).Return(&api.WorkspaceStatus{IsRunning: true}, nil)
-			mockClient.EXPECT().DeployLandscape(wsId, "").Return(nil)
+			mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(workspace, nil)
+			mockClient.EXPECT().WorkspaceStatus(mock.Anything, wsId).Return(&api.WorkspaceStatus{IsRunning: true}, nil)
+			mockClient.EXPECT().DeployLandscape(mock.Anything, wsId, "").Return(nil)
 
-			err := c.WakeUpWorkspace(mockClient, wsId)
+			err := c.WakeUpWorkspace(context.Background(), mockClient, wsId)
 
 			Expect(err).ToNot(HaveOccurred())
 		})

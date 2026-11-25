@@ -19,14 +19,14 @@ type ListPlansCmd struct {
 	Opts *ListOptions
 }
 
-func (c *ListPlansCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *ListPlansCmd) RunE(cmd *cobra.Command, args []string) error {
 
 	client, err := c.Opts.NewClient()
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
-	plans, err := client.ListWorkspacePlans()
+	plans, err := client.ListWorkspacePlans(cmd.Context())
 	if err != nil {
 		return fmt.Errorf("failed to list plans: %s", err)
 	}

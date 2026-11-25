@@ -4,6 +4,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -26,7 +27,7 @@ type WakeUpCmd struct {
 	Opts WakeUpOptions
 }
 
-func (c *WakeUpCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *WakeUpCmd) RunE(cmd *cobra.Command, args []string) error {
 	client, err := NewClient(*c.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
@@ -37,7 +38,7 @@ func (c *WakeUpCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
 	}
 
-	return c.WakeUpWorkspace(client, wsId)
+	return c.WakeUpWorkspace(cmd.Context(), client, wsId)
 }
 
 func AddWakeUpCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
@@ -65,15 +66,15 @@ func AddWakeUpCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	wakeup.cmd.RunE = wakeup.RunE
 }
 
-func (c *WakeUpCmd) WakeUpWorkspace(client Client, wsId int) error {
-	workspace, err := cs.WakeUpWorkspace(client, wsId, c.Opts.Timeout)
+func (c *WakeUpCmd) WakeUpWorkspace(ctx context.Context, client Client, wsId int) error {
+	workspace, err := cs.WakeUpWorkspace(ctx, client, wsId, c.Opts.Timeout)
 	if err != nil {
 		return err
 	}
 
 	if c.Opts.SyncLandscape {
 		log.Printf("Deploying landscape for workspace %d...\n", wsId)
-		err = client.DeployLandscape(wsId, c.Opts.Profile)
+		err = client.DeployLandscape(ctx, wsId, c.Opts.Profile)
 		if err != nil {
 			return fmt.Errorf("failed to deploy landscape: %w", err)
 		}

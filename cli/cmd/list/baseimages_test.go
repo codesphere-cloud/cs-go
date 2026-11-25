@@ -4,6 +4,7 @@
 package list_test
 
 import (
+	"context"
 	"errors"
 	"time"
 
@@ -14,6 +15,7 @@ import (
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
 	listcmd "github.com/codesphere-cloud/cs-go/cli/cmd/list"
+	"github.com/stretchr/testify/mock"
 )
 
 var _ = Describe("ListBaseimagesCmd", func() {
@@ -49,7 +51,7 @@ var _ = Describe("ListBaseimagesCmd", func() {
 			// Mock failure to get API token
 			mockEnv.EXPECT().GetApiToken().Return("", errors.New("CS_TOKEN env var required, but not set"))
 
-			err := c.RunE(nil, []string{})
+			err := c.RunE(newTestCommand(), []string{})
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to create Codesphere client"))
 		})
@@ -59,7 +61,7 @@ var _ = Describe("ListBaseimagesCmd", func() {
 			mockEnv.EXPECT().GetApiToken().Return("test-token", nil)
 			mockEnv.EXPECT().GetApiUrl().Return("ht tp://invalid url with spaces")
 
-			err := c.RunE(nil, []string{})
+			err := c.RunE(newTestCommand(), []string{})
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to create Codesphere client"))
 		})
@@ -69,7 +71,7 @@ var _ = Describe("ListBaseimagesCmd", func() {
 			mockEnv.EXPECT().GetApiToken().Return("test-token", nil)
 			mockEnv.EXPECT().GetApiUrl().Return("https://api.codesphere.com")
 
-			err := c.RunE(nil, []string{})
+			err := c.RunE(newTestCommand(), []string{})
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to list baseimages"))
 		})
@@ -83,24 +85,24 @@ var _ = Describe("ListBaseimagesCmd", func() {
 				{Id: "node-18", Name: "Node.js 18", SupportedUntil: supportedUntil},
 			}
 
-			mockClient.EXPECT().ListBaseimages().Return(expectedBaseimages, nil)
+			mockClient.EXPECT().ListBaseimages(mock.Anything).Return(expectedBaseimages, nil)
 
-			err := c.ListBaseimages(mockClient)
+			err := c.ListBaseimages(context.Background(), mockClient)
 			Expect(err).To(BeNil())
 		})
 
 		It("returns error when no baseimages available but client fails", func() {
-			mockClient.EXPECT().ListBaseimages().Return([]api.Baseimage{}, errors.New("API error"))
+			mockClient.EXPECT().ListBaseimages(mock.Anything).Return([]api.Baseimage{}, errors.New("API error"))
 
-			err := c.ListBaseimages(mockClient)
+			err := c.ListBaseimages(context.Background(), mockClient)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to list baseimages: API error"))
 		})
 
 		It("succeeds when empty list is returned", func() {
-			mockClient.EXPECT().ListBaseimages().Return([]api.Baseimage{}, nil)
+			mockClient.EXPECT().ListBaseimages(mock.Anything).Return([]api.Baseimage{}, nil)
 
-			err := c.ListBaseimages(mockClient)
+			err := c.ListBaseimages(context.Background(), mockClient)
 			Expect(err).To(BeNil())
 		})
 	})

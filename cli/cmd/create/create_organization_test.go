@@ -4,6 +4,7 @@
 package create_test
 
 import (
+	"context"
 	"fmt"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -12,6 +13,7 @@ import (
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
 	createcmd "github.com/codesphere-cloud/cs-go/cli/cmd/create"
+	"github.com/stretchr/testify/mock"
 )
 
 var _ = Describe("CreateOrganization", func() {
@@ -48,21 +50,21 @@ var _ = Describe("CreateOrganization", func() {
 
 	Context("Validation", func() {
 		It("should fail if the organization name is empty", func() {
-			org, err := c.CreateOrganization(mockClient, "", adminEmail)
+			org, err := c.CreateOrganization(context.Background(), mockClient, "", adminEmail)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal("organization name cannot be empty"))
 			Expect(org).To(BeNil())
 		})
 
 		It("should fail if the admin email is empty", func() {
-			org, err := c.CreateOrganization(mockClient, orgName, "")
+			org, err := c.CreateOrganization(context.Background(), mockClient, orgName, "")
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal("admin email cannot be empty"))
 			Expect(org).To(BeNil())
 		})
 
 		It("should fail if the admin email is invalid", func() {
-			org, err := c.CreateOrganization(mockClient, orgName, "not-an-email")
+			org, err := c.CreateOrganization(context.Background(), mockClient, orgName, "not-an-email")
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal("admin email is invalid"))
 			Expect(org).To(BeNil())
@@ -74,17 +76,17 @@ var _ = Describe("CreateOrganization", func() {
 			expectedOrg := api.Organization{
 				Id: orgId,
 			}
-			mockClient.EXPECT().CreateOrganization(orgName, adminEmail).Return(&expectedOrg, nil).Once()
+			mockClient.EXPECT().CreateOrganization(mock.Anything, orgName, adminEmail).Return(&expectedOrg, nil).Once()
 
-			org, err := c.CreateOrganization(mockClient, orgName, adminEmail)
+			org, err := c.CreateOrganization(context.Background(), mockClient, orgName, adminEmail)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(org.Id).To(Equal(orgId))
 		})
 
 		It("should return error if API call fails", func() {
-			mockClient.EXPECT().CreateOrganization(orgName, adminEmail).Return(nil, fmt.Errorf("api error")).Once()
+			mockClient.EXPECT().CreateOrganization(mock.Anything, orgName, adminEmail).Return(nil, fmt.Errorf("api error")).Once()
 
-			org, err := c.CreateOrganization(mockClient, orgName, adminEmail)
+			org, err := c.CreateOrganization(context.Background(), mockClient, orgName, adminEmail)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to create organization: api error"))
 			Expect(org).To(BeNil())

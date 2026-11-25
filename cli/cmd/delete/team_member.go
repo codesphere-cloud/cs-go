@@ -4,6 +4,7 @@
 package delete
 
 import (
+	"context"
 	"fmt"
 
 	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
@@ -47,7 +48,7 @@ func AddDeleteTeamMemberCmd(delete *cobra.Command, opts shared.RootOptions) {
 	shared.AddCmd(delete, res.cmd)
 }
 
-func (c *DeleteTeamMemberCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *DeleteTeamMemberCmd) RunE(cmd *cobra.Command, args []string) error {
 	client, err := c.ClientFactory(c.Opts.RootOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
@@ -58,15 +59,15 @@ func (c *DeleteTeamMemberCmd) RunE(_ *cobra.Command, args []string) error {
 		return err
 	}
 
-	return c.DeleteTeamMember(client, teamId, c.Opts.UserId)
+	return c.DeleteTeamMember(cmd.Context(), client, teamId, c.Opts.UserId)
 }
 
-func (c *DeleteTeamMemberCmd) DeleteTeamMember(client shared.Client, teamId int, userId int) error {
+func (c *DeleteTeamMemberCmd) DeleteTeamMember(ctx context.Context, client shared.Client, teamId int, userId int) error {
 	if err := shared.ValidateUserID(userId); err != nil {
 		return err
 	}
 
-	err := client.RemoveTeamMember(teamId, userId)
+	err := client.RemoveTeamMember(ctx, teamId, userId)
 	if err != nil {
 		return fmt.Errorf("failed to remove member from team: %w", err)
 	}

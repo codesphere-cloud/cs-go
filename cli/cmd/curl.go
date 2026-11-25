@@ -47,7 +47,7 @@ type CurlCmd struct {
 	Opts CurlOptions
 }
 
-func (c *CurlCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *CurlCmd) RunE(cmd *cobra.Command, args []string) error {
 	client, err := NewClient(*c.Opts.GlobalOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
@@ -71,7 +71,7 @@ func (c *CurlCmd) RunE(_ *cobra.Command, args []string) error {
 		curlArgs = args[1:]
 	}
 
-	return c.CurlWorkspace(client, wsId, token, path, curlArgs)
+	return c.CurlWorkspace(cmd.Context(), client, wsId, token, path, curlArgs)
 }
 
 func AddCurlCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
@@ -101,8 +101,8 @@ func AddCurlCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	curl.cmd.RunE = curl.RunE
 }
 
-func (c *CurlCmd) CurlWorkspace(client Client, wsId int, token string, path string, curlArgs []string) error {
-	workspace, err := client.GetWorkspace(wsId)
+func (c *CurlCmd) CurlWorkspace(ctx context.Context, client Client, wsId int, token string, path string, curlArgs []string) error {
+	workspace, err := client.GetWorkspace(ctx, wsId)
 	if err != nil {
 		return fmt.Errorf("failed to get workspace: %w", err)
 	}
@@ -118,7 +118,7 @@ func (c *CurlCmd) CurlWorkspace(client Client, wsId int, token string, path stri
 
 	log.Printf("Sending request to workspace %d (%s) at %s\n", wsId, workspace.Name, url)
 
-	ctx, cancel := context.WithTimeout(context.Background(), c.Opts.Timeout)
+	ctx, cancel := context.WithTimeout(ctx, c.Opts.Timeout)
 	defer cancel()
 
 	// Build curl command with authentication header and -L to follow redirects

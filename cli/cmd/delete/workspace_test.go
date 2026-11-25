@@ -4,6 +4,7 @@
 package delete_test
 
 import (
+	"context"
 	"errors"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -12,6 +13,7 @@ import (
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
 	deletecmd "github.com/codesphere-cloud/cs-go/cli/cmd/delete"
+	"github.com/stretchr/testify/mock"
 )
 
 var _ = Describe("DeleteWorkspace", func() {
@@ -55,18 +57,18 @@ var _ = Describe("DeleteWorkspace", func() {
 		Context("Workspace exists", func() {
 			Context("Workspace name entered in confirmation prompt", func() {
 				It("deletes the workspace", func() {
-					mockClient.EXPECT().GetWorkspace(wsId).Return(ws, nil)
+					mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(ws, nil)
 					mockPrompt.EXPECT().InputPrompt("Confirmation delete").Return(ws.Name)
-					mockClient.EXPECT().DeleteWorkspace(wsId).Return(nil)
-					err := c.DeleteWorkspace(mockClient, wsId)
+					mockClient.EXPECT().DeleteWorkspace(mock.Anything, wsId).Return(nil)
+					err := c.DeleteWorkspace(context.Background(), mockClient, wsId)
 					Expect(err).ToNot(HaveOccurred())
 				})
 			})
 			Context("Wrong input entered in confirmation prompt", func() {
 				It("Returns an error", func() {
-					mockClient.EXPECT().GetWorkspace(wsId).Return(ws, nil)
+					mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(ws, nil)
 					mockPrompt.EXPECT().InputPrompt("Confirmation delete").Return("other-workspace")
-					err := c.DeleteWorkspace(mockClient, wsId)
+					err := c.DeleteWorkspace(context.Background(), mockClient, wsId)
 					Expect(err).To(MatchError("confirmation failed"))
 				})
 			})
@@ -85,7 +87,7 @@ var _ = Describe("DeleteWorkspace", func() {
 			getWsErr = nil
 		})
 		JustBeforeEach(func() {
-			mockClient.EXPECT().GetWorkspace(wsId).Return(ws, getWsErr)
+			mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(ws, getWsErr)
 		})
 		Context("Workspace exists", func() {
 			BeforeEach(func() {
@@ -94,8 +96,8 @@ var _ = Describe("DeleteWorkspace", func() {
 				}
 			})
 			It("Deletes the workspace", func() {
-				mockClient.EXPECT().DeleteWorkspace(wsId).Return(nil)
-				err := c.DeleteWorkspace(mockClient, wsId)
+				mockClient.EXPECT().DeleteWorkspace(mock.Anything, wsId).Return(nil)
+				err := c.DeleteWorkspace(context.Background(), mockClient, wsId)
 				Expect(err).ToNot(HaveOccurred())
 			})
 		})
@@ -107,7 +109,7 @@ var _ = Describe("DeleteWorkspace", func() {
 			})
 
 			It("Returns an error", func() {
-				err := c.DeleteWorkspace(mockClient, wsId)
+				err := c.DeleteWorkspace(context.Background(), mockClient, wsId)
 				Expect(err).To(MatchError("failed to get workspace 42: 404"))
 			})
 		})

@@ -4,6 +4,7 @@
 package add
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/mail"
@@ -53,7 +54,7 @@ func AddAddTeamMemberCmd(add *cobra.Command, opts shared.RootOptions) {
 	shared.AddCmd(add, t.cmd)
 }
 
-func (c *AddTeamMemberCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *AddTeamMemberCmd) RunE(cmd *cobra.Command, args []string) error {
 	client, err := c.ClientFactory(c.Opts.RootOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
@@ -64,12 +65,12 @@ func (c *AddTeamMemberCmd) RunE(_ *cobra.Command, args []string) error {
 		return err
 	}
 
-	err = c.AddTeamMember(client, teamId, c.Opts.Email, c.Opts.Role)
+	err = c.AddTeamMember(cmd.Context(), client, teamId, c.Opts.Email, c.Opts.Role)
 	return err
 
 }
 
-func (c *AddTeamMemberCmd) AddTeamMember(client shared.Client, teamId int, email string, role string) error {
+func (c *AddTeamMemberCmd) AddTeamMember(ctx context.Context, client shared.Client, teamId int, email string, role string) error {
 	if email == "" {
 		return errors.New("email cannot be empty")
 	}
@@ -88,7 +89,7 @@ func (c *AddTeamMemberCmd) AddTeamMember(client shared.Client, teamId int, email
 		return errors.New("invalid role: must be member or admin")
 	}
 
-	err := client.AddTeamMember(teamId, email, int(apiRole))
+	err := client.AddTeamMember(ctx, teamId, email, int(apiRole))
 	if err != nil {
 		return fmt.Errorf("failed to add member to team: %w", err)
 	}

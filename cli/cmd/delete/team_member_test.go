@@ -4,6 +4,7 @@
 package delete_test
 
 import (
+	"context"
 	"errors"
 
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
@@ -11,6 +12,7 @@ import (
 	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/stretchr/testify/mock"
 )
 
 var _ = Describe("DeleteTeamMember", func() {
@@ -50,7 +52,7 @@ var _ = Describe("DeleteTeamMember", func() {
 
 	Context("Validation", func() {
 		It("should fail if the user ID is negative", func() {
-			err := c.DeleteTeamMember(mockClient, teamId, -1)
+			err := c.DeleteTeamMember(context.Background(), mockClient, teamId, -1)
 
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal("user ID must be non-negative"))
@@ -59,22 +61,22 @@ var _ = Describe("DeleteTeamMember", func() {
 
 	It("accepts user ID zero as allowed by the API", func() {
 		c.Opts.UserId = 0
-		mockClient.EXPECT().RemoveTeamMember(teamId, 0).Return(nil).Once()
-		Expect(c.RunE(nil, nil)).To(Succeed())
+		mockClient.EXPECT().RemoveTeamMember(mock.Anything, teamId, 0).Return(nil).Once()
+		Expect(c.RunE(newTestCommand(), nil)).To(Succeed())
 	})
 
 	Context("RunE execution flow", func() {
 		It("should successfully delete a member from a team", func() {
-			mockClient.EXPECT().RemoveTeamMember(teamId, userId).Return(nil).Once()
+			mockClient.EXPECT().RemoveTeamMember(mock.Anything, teamId, userId).Return(nil).Once()
 
-			err := c.RunE(nil, []string{})
+			err := c.RunE(newTestCommand(), []string{})
 			Expect(err).ToNot(HaveOccurred())
 		})
 
 		It("should fail when the token is not allowed to delete a member", func() {
-			mockClient.EXPECT().RemoveTeamMember(teamId, userId).Return(errors.New("failed")).Once()
+			mockClient.EXPECT().RemoveTeamMember(mock.Anything, teamId, userId).Return(errors.New("failed")).Once()
 
-			err := c.RunE(nil, []string{})
+			err := c.RunE(newTestCommand(), []string{})
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to remove member from team: "))
 		})
@@ -84,7 +86,7 @@ var _ = Describe("DeleteTeamMember", func() {
 				return nil, errors.New("client init failed")
 			}
 
-			err := c.RunE(nil, []string{})
+			err := c.RunE(newTestCommand(), []string{})
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to create Codesphere client: client init failed"))
 		})
@@ -93,14 +95,14 @@ var _ = Describe("DeleteTeamMember", func() {
 			globalOpts.TeamId = -1
 			mockEnv.EXPECT().GetTeamId().Return(-1, errors.New("CS_TEAM_ID env var required, but not set")).Once()
 
-			err := c.RunE(nil, []string{})
+			err := c.RunE(newTestCommand(), []string{})
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal("CS_TEAM_ID env var required, but not set"))
 		})
 
 		It("should fail when user ID is negative", func() {
 			c.Opts.UserId = -1
-			err := c.RunE(nil, []string{})
+			err := c.RunE(newTestCommand(), []string{})
 
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal("user ID must be non-negative"))

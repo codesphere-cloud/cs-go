@@ -45,7 +45,7 @@ func RegisterDomainTools(server *mcp.Server, client *api.Client) {
 		Name:        "list_domains",
 		Description: "List all domains for a team",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args ListDomainsArgs) (*mcp.CallToolResult, any, error) {
-		domains, err := client.ListDomains(args.TeamId)
+		domains, err := client.ListDomains(ctx, args.TeamId)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -56,7 +56,7 @@ func RegisterDomainTools(server *mcp.Server, client *api.Client) {
 		Name:        "get_domain",
 		Description: "Get a specific domain by name",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args GetDomainArgs) (*mcp.CallToolResult, any, error) {
-		domain, err := client.GetDomain(args.TeamId, args.DomainName)
+		domain, err := client.GetDomain(ctx, args.TeamId, args.DomainName)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -67,7 +67,7 @@ func RegisterDomainTools(server *mcp.Server, client *api.Client) {
 		Name:        "create_domain",
 		Description: "Create a domain for a team",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args CreateDomainArgs) (*mcp.CallToolResult, any, error) {
-		domain, err := client.CreateDomain(args.TeamId, args.DomainName)
+		domain, err := client.CreateDomain(ctx, args.TeamId, args.DomainName)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -78,7 +78,7 @@ func RegisterDomainTools(server *mcp.Server, client *api.Client) {
 		Name:        "delete_domain",
 		Description: "Delete a domain",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args DeleteDomainArgs) (*mcp.CallToolResult, any, error) {
-		err := client.DeleteDomain(args.TeamId, args.DomainName)
+		err := client.DeleteDomain(ctx, args.TeamId, args.DomainName)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -89,7 +89,7 @@ func RegisterDomainTools(server *mcp.Server, client *api.Client) {
 		Name:        "update_domain",
 		Description: "Update a domain",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args UpdateDomainArgs) (*mcp.CallToolResult, any, error) {
-		domain, err := client.UpdateDomain(args.TeamId, args.DomainName, args.Args)
+		domain, err := client.UpdateDomain(ctx, args.TeamId, args.DomainName, args.Args)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -100,7 +100,7 @@ func RegisterDomainTools(server *mcp.Server, client *api.Client) {
 		Name:        "verify_domain",
 		Description: "Trigger verification for a domain",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args VerifyDomainArgs) (*mcp.CallToolResult, any, error) {
-		status, err := client.VerifyDomain(args.TeamId, args.DomainName)
+		status, err := client.VerifyDomain(ctx, args.TeamId, args.DomainName)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}

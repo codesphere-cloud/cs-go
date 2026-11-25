@@ -4,6 +4,7 @@
 package add
 
 import (
+	"context"
 	"fmt"
 	"github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	"github.com/codesphere-cloud/cs-go/pkg/io"
@@ -45,7 +46,7 @@ func AddAddOrganizationMemberCmd(parent *cobra.Command, opts shared.RootOptions)
 	shared.AddCmd(parent, c.cmd)
 }
 
-func (c *AddOrganizationMemberCmd) RunE(_ *cobra.Command, _ []string) error {
+func (c *AddOrganizationMemberCmd) RunE(cmd *cobra.Command, _ []string) error {
 	orgId, err := shared.RequireOrganizationID(c.Opts.RootOptions)
 	if err != nil {
 		return err
@@ -54,10 +55,10 @@ func (c *AddOrganizationMemberCmd) RunE(_ *cobra.Command, _ []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
-	return c.AddOrganizationMember(client, orgId, c.Opts.Email, c.Opts.Role)
+	return c.AddOrganizationMember(cmd.Context(), client, orgId, c.Opts.Email, c.Opts.Role)
 }
 
-func (c *AddOrganizationMemberCmd) AddOrganizationMember(client shared.Client, orgId, email, role string) error {
+func (c *AddOrganizationMemberCmd) AddOrganizationMember(ctx context.Context, client shared.Client, orgId, email, role string) error {
 	address, err := mail.ParseAddress(email)
 	if err != nil || address.Address != email {
 		return fmt.Errorf("invalid email address")
@@ -66,7 +67,7 @@ func (c *AddOrganizationMemberCmd) AddOrganizationMember(client shared.Client, o
 		return err
 	}
 
-	if err := client.AddOrganizationMember(orgId, email, role); err != nil {
+	if err := client.AddOrganizationMember(ctx, orgId, email, role); err != nil {
 		return fmt.Errorf("failed to add organization member: %w", err)
 	}
 	return nil

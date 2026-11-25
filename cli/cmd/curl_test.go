@@ -4,6 +4,7 @@
 package cmd_test
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -56,7 +57,7 @@ var _ = Describe("Curl", func() {
 
 	Context("CurlWorkspace", func() {
 		It("should construct the correct URL with default port", func() {
-			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(workspace, nil)
 			mockExecutor.EXPECT().Execute(
 				mock.Anything,
 				"curl",
@@ -86,13 +87,13 @@ var _ = Describe("Curl", func() {
 				mock.Anything,
 			).Return("", nil)
 
-			err := c.CurlWorkspace(mockClient, wsId, token, "/api/health", []string{"-I"})
+			err := c.CurlWorkspace(context.Background(), mockClient, wsId, token, "/api/health", []string{"-I"})
 
 			Expect(err).ToNot(HaveOccurred())
 		})
 
 		It("should construct the correct URL with custom path", func() {
-			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(workspace, nil)
 			mockExecutor.EXPECT().Execute(
 				mock.Anything,
 				"curl",
@@ -118,7 +119,7 @@ var _ = Describe("Curl", func() {
 				mock.Anything,
 			).Return("", nil)
 
-			err := c.CurlWorkspace(mockClient, wsId, token, "/custom/path", []string{})
+			err := c.CurlWorkspace(context.Background(), mockClient, wsId, token, "/custom/path", []string{})
 
 			Expect(err).ToNot(HaveOccurred())
 		})
@@ -131,25 +132,25 @@ var _ = Describe("Curl", func() {
 				DevDomain: nil,
 			}
 
-			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(workspace, nil)
 
-			err := c.CurlWorkspace(mockClient, wsId, token, "/", []string{})
+			err := c.CurlWorkspace(context.Background(), mockClient, wsId, token, "/", []string{})
 
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("does not have a dev domain configured"))
 		})
 
 		It("should return error if GetWorkspace fails", func() {
-			mockClient.EXPECT().GetWorkspace(wsId).Return(api.Workspace{}, fmt.Errorf("api error"))
+			mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(api.Workspace{}, fmt.Errorf("api error"))
 
-			err := c.CurlWorkspace(mockClient, wsId, token, "/", []string{})
+			err := c.CurlWorkspace(context.Background(), mockClient, wsId, token, "/", []string{})
 
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to get workspace"))
 		})
 
 		It("should return error if command execution fails", func() {
-			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(workspace, nil)
 			mockExecutor.EXPECT().Execute(
 				mock.Anything,
 				mock.Anything,
@@ -158,14 +159,14 @@ var _ = Describe("Curl", func() {
 				mock.Anything,
 			).Return("", fmt.Errorf("command failed"))
 
-			err := c.CurlWorkspace(mockClient, wsId, token, "/", []string{})
+			err := c.CurlWorkspace(context.Background(), mockClient, wsId, token, "/", []string{})
 
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("command failed"))
 		})
 
 		It("should return error if output contains 'Too Many Requests' message", func() {
-			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(workspace, nil)
 			mockExecutor.EXPECT().Execute(
 				mock.Anything,
 				mock.Anything,
@@ -174,7 +175,7 @@ var _ = Describe("Curl", func() {
 				mock.Anything,
 			).Return("Too Many Requests", nil)
 
-			err := c.CurlWorkspace(mockClient, wsId, token, "/", []string{})
+			err := c.CurlWorkspace(context.Background(), mockClient, wsId, token, "/", []string{})
 
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("invalid output"))
@@ -182,7 +183,7 @@ var _ = Describe("Curl", func() {
 		})
 
 		It("should return error if output contains 'Workspace server is starting' message", func() {
-			mockClient.EXPECT().GetWorkspace(wsId).Return(workspace, nil)
+			mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(workspace, nil)
 			mockExecutor.EXPECT().Execute(
 				mock.Anything,
 				mock.Anything,
@@ -191,7 +192,7 @@ var _ = Describe("Curl", func() {
 				mock.Anything,
 			).Return("Workspace server is starting", nil)
 
-			err := c.CurlWorkspace(mockClient, wsId, token, "/", []string{})
+			err := c.CurlWorkspace(context.Background(), mockClient, wsId, token, "/", []string{})
 
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("invalid output"))

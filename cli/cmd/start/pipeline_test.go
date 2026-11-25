@@ -4,6 +4,7 @@
 package start_test
 
 import (
+	"context"
 	"time"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -59,7 +60,7 @@ var _ = Describe("StartPipeline", func() {
 		})
 
 		It("fails before executing any stage", func() {
-			err := c.StartPipelineStages(mockClient, wsId, stages)
+			err := c.StartPipelineStages(context.Background(), mockClient, wsId, stages)
 			Expect(err).To(MatchError("invalid pipeline stage: " + stages[0]))
 		})
 	})
@@ -93,14 +94,14 @@ var _ = Describe("StartPipeline", func() {
 
 			Context("immediately successful", func() {
 				JustBeforeEach(func() {
-					prepareStartCall := mockClient.EXPECT().StartPipelineStage(wsId, profile, stages[0]).Return(nil).Call
-					prepareStatusCall := mockClient.EXPECT().GetPipelineState(wsId, stages[0]).Return(reportedStatusSuccess, nil).NotBefore(prepareStartCall)
+					prepareStartCall := mockClient.EXPECT().StartPipelineStage(mock.Anything, wsId, profile, stages[0]).Return(nil).Call
+					prepareStatusCall := mockClient.EXPECT().GetPipelineState(mock.Anything, wsId, stages[0]).Return(reportedStatusSuccess, nil).NotBefore(prepareStartCall)
 
-					testStartCall := mockClient.EXPECT().StartPipelineStage(wsId, profile, stages[1]).Return(nil).NotBefore(prepareStatusCall)
-					testStatusCall := mockClient.EXPECT().GetPipelineState(wsId, stages[1]).Return(reportedStatusSuccess, nil).NotBefore(testStartCall)
+					testStartCall := mockClient.EXPECT().StartPipelineStage(mock.Anything, wsId, profile, stages[1]).Return(nil).NotBefore(prepareStatusCall)
+					testStatusCall := mockClient.EXPECT().GetPipelineState(mock.Anything, wsId, stages[1]).Return(reportedStatusSuccess, nil).NotBefore(testStartCall)
 
-					runStartCall := mockClient.EXPECT().StartPipelineStage(wsId, profile, stages[2]).Return(nil).NotBefore(testStatusCall)
-					mockClient.EXPECT().GetPipelineState(wsId, stages[2]).Return(reportedStatusRunning, nil).NotBefore(runStartCall)
+					runStartCall := mockClient.EXPECT().StartPipelineStage(mock.Anything, wsId, profile, stages[2]).Return(nil).NotBefore(testStatusCall)
+					mockClient.EXPECT().GetPipelineState(mock.Anything, wsId, stages[2]).Return(reportedStatusRunning, nil).NotBefore(runStartCall)
 				})
 
 				Context("uses a custom profile", func() {
@@ -108,57 +109,57 @@ var _ = Describe("StartPipeline", func() {
 						profile = "prod"
 					})
 					It("starts all 3 stages sequentially", func() {
-						err := c.StartPipelineStages(mockClient, wsId, stages)
+						err := c.StartPipelineStages(context.Background(), mockClient, wsId, stages)
 						Expect(err).NotTo(HaveOccurred())
 					})
 				})
 
 				It("starts all 3 stages sequentially", func() {
-					err := c.StartPipelineStages(mockClient, wsId, stages)
+					err := c.StartPipelineStages(context.Background(), mockClient, wsId, stages)
 					Expect(err).NotTo(HaveOccurred())
 				})
 			})
 
 			Context("it takes more than 10 seconds to start each stage", func() {
 				It("starts all 3 stages sequentially, waiting for each stage to finish", func() {
-					prepareStartCall := mockClient.EXPECT().StartPipelineStage(wsId, profile, stages[0]).Return(nil).Call
-					prepareStatusCall := mockClient.EXPECT().GetPipelineState(wsId, stages[0]).Return(reportedStatusRunning, nil).Times(2).NotBefore(prepareStartCall)
-					prepareStatusCallSuccess := mockClient.EXPECT().GetPipelineState(wsId, stages[0]).Return(reportedStatusSuccess, nil).NotBefore(prepareStatusCall)
+					prepareStartCall := mockClient.EXPECT().StartPipelineStage(mock.Anything, wsId, profile, stages[0]).Return(nil).Call
+					prepareStatusCall := mockClient.EXPECT().GetPipelineState(mock.Anything, wsId, stages[0]).Return(reportedStatusRunning, nil).Times(2).NotBefore(prepareStartCall)
+					prepareStatusCallSuccess := mockClient.EXPECT().GetPipelineState(mock.Anything, wsId, stages[0]).Return(reportedStatusSuccess, nil).NotBefore(prepareStatusCall)
 
-					testStartCall := mockClient.EXPECT().StartPipelineStage(wsId, profile, stages[1]).Return(nil).NotBefore(prepareStatusCallSuccess)
-					testStatusCall := mockClient.EXPECT().GetPipelineState(wsId, stages[1]).Return(reportedStatusRunning, nil).Times(2).NotBefore(testStartCall)
-					testStatusCallSuccess := mockClient.EXPECT().GetPipelineState(wsId, stages[1]).Return(reportedStatusSuccess, nil).NotBefore(testStatusCall)
+					testStartCall := mockClient.EXPECT().StartPipelineStage(mock.Anything, wsId, profile, stages[1]).Return(nil).NotBefore(prepareStatusCallSuccess)
+					testStatusCall := mockClient.EXPECT().GetPipelineState(mock.Anything, wsId, stages[1]).Return(reportedStatusRunning, nil).Times(2).NotBefore(testStartCall)
+					testStatusCallSuccess := mockClient.EXPECT().GetPipelineState(mock.Anything, wsId, stages[1]).Return(reportedStatusSuccess, nil).NotBefore(testStatusCall)
 
-					runStartCall := mockClient.EXPECT().StartPipelineStage(wsId, profile, stages[2]).Return(nil).NotBefore(testStatusCallSuccess)
-					mockClient.EXPECT().GetPipelineState(wsId, stages[2]).Return(reportedStatusWaiting, nil).Times(2).NotBefore(runStartCall)
-					mockClient.EXPECT().GetPipelineState(wsId, stages[2]).Return(reportedStatusRunning, nil).NotBefore(runStartCall)
+					runStartCall := mockClient.EXPECT().StartPipelineStage(mock.Anything, wsId, profile, stages[2]).Return(nil).NotBefore(testStatusCallSuccess)
+					mockClient.EXPECT().GetPipelineState(mock.Anything, wsId, stages[2]).Return(reportedStatusWaiting, nil).Times(2).NotBefore(runStartCall)
+					mockClient.EXPECT().GetPipelineState(mock.Anything, wsId, stages[2]).Return(reportedStatusRunning, nil).NotBefore(runStartCall)
 
-					err := c.StartPipelineStages(mockClient, wsId, stages)
+					err := c.StartPipelineStages(context.Background(), mockClient, wsId, stages)
 					Expect(err).NotTo(HaveOccurred())
 				})
 			})
 
 			Context("it takes the test stage more than the timeout complete", func() {
 				It("returns a timeout error", func() {
-					prepareStartCall := mockClient.EXPECT().StartPipelineStage(wsId, profile, stages[0]).Return(nil).Call
-					prepareStatusCall := mockClient.EXPECT().GetPipelineState(wsId, stages[0]).Return(reportedStatusSuccess, nil).NotBefore(prepareStartCall)
+					prepareStartCall := mockClient.EXPECT().StartPipelineStage(mock.Anything, wsId, profile, stages[0]).Return(nil).Call
+					prepareStatusCall := mockClient.EXPECT().GetPipelineState(mock.Anything, wsId, stages[0]).Return(reportedStatusSuccess, nil).NotBefore(prepareStartCall)
 
-					testStartCall := mockClient.EXPECT().StartPipelineStage(wsId, profile, stages[1]).Return(nil).NotBefore(prepareStatusCall)
+					testStartCall := mockClient.EXPECT().StartPipelineStage(mock.Anything, wsId, profile, stages[1]).Return(nil).NotBefore(prepareStatusCall)
 
 					//this should result in a timeout
-					mockClient.EXPECT().GetPipelineState(wsId, stages[1]).Return(reportedStatusRunning, nil).Times(8).NotBefore(testStartCall)
+					mockClient.EXPECT().GetPipelineState(mock.Anything, wsId, stages[1]).Return(reportedStatusRunning, nil).Times(8).NotBefore(testStartCall)
 
-					err := c.StartPipelineStages(mockClient, wsId, stages)
+					err := c.StartPipelineStages(context.Background(), mockClient, wsId, stages)
 					Expect(err).To(MatchError("failed waiting for stage test to finish: timed out waiting for pipeline stage test to be complete"))
 				})
 			})
 
 			Context("prepare stage fails", func() {
 				It("propagates the failure", func() {
-					prepareStartCall := mockClient.EXPECT().StartPipelineStage(wsId, profile, stages[0]).Return(nil).Call
-					mockClient.EXPECT().GetPipelineState(wsId, stages[0]).Return(reportedStatusFailure, nil).NotBefore(prepareStartCall)
+					prepareStartCall := mockClient.EXPECT().StartPipelineStage(mock.Anything, wsId, profile, stages[0]).Return(nil).Call
+					mockClient.EXPECT().GetPipelineState(mock.Anything, wsId, stages[0]).Return(reportedStatusFailure, nil).NotBefore(prepareStartCall)
 
-					err := c.StartPipelineStages(mockClient, wsId, stages)
+					err := c.StartPipelineStages(context.Background(), mockClient, wsId, stages)
 					Expect(err).To(MatchError("failed waiting for stage prepare to finish: stage prepare failed: server A, replica 0 reached unexpected state failure"))
 				})
 			})

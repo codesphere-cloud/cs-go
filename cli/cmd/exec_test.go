@@ -4,6 +4,9 @@
 package cmd_test
 
 import (
+	"context"
+
+	"github.com/stretchr/testify/mock"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
@@ -44,8 +47,8 @@ var _ = Describe("Exec", func() {
 
 	Context("No workdir, no env vars set", func() {
 		It("executes the command", func() {
-			mockClient.EXPECT().ExecCommand(wsId, command, "", map[string]string{}).Return("stdout", "stderr", nil)
-			err := e.ExecCommand(mockClient, command)
+			mockClient.EXPECT().ExecCommand(mock.Anything, wsId, command, "", map[string]string{}).Return("stdout", "stderr", nil)
+			err := e.ExecCommand(context.Background(), mockClient, command)
 			Expect(err).ToNot(HaveOccurred())
 		})
 	})
@@ -55,8 +58,8 @@ var _ = Describe("Exec", func() {
 			envVars = []string{"a=b", "b=c"}
 		})
 		It("executes the command with env vars", func() {
-			mockClient.EXPECT().ExecCommand(wsId, command, "", map[string]string{"a": "b", "b": "c"}).Return("stdout", "stderr", nil)
-			err := e.ExecCommand(mockClient, command)
+			mockClient.EXPECT().ExecCommand(mock.Anything, wsId, command, "", map[string]string{"a": "b", "b": "c"}).Return("stdout", "stderr", nil)
+			err := e.ExecCommand(context.Background(), mockClient, command)
 			Expect(err).ToNot(HaveOccurred())
 		})
 	})
@@ -66,8 +69,8 @@ var _ = Describe("Exec", func() {
 			workDir = "user"
 		})
 		It("executes the command with workdir", func() {
-			mockClient.EXPECT().ExecCommand(wsId, command, workDir, map[string]string{}).Return("stdout", "stderr", nil)
-			err := e.ExecCommand(mockClient, command)
+			mockClient.EXPECT().ExecCommand(mock.Anything, wsId, command, workDir, map[string]string{}).Return("stdout", "stderr", nil)
+			err := e.ExecCommand(context.Background(), mockClient, command)
 			Expect(err).ToNot(HaveOccurred())
 		})
 	})

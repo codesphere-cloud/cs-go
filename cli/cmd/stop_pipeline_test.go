@@ -4,6 +4,9 @@
 package cmd_test
 
 import (
+	"context"
+
+	"github.com/stretchr/testify/mock"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
@@ -33,7 +36,7 @@ var _ = Describe("StopPipeline", func() {
 		})
 
 		It("fails before executing any stage", func() {
-			err := c.StopPipelineStages(mockClient, wsId, stages)
+			err := c.StopPipelineStages(context.Background(), mockClient, wsId, stages)
 			Expect(err).To(MatchError("invalid pipeline stage: " + stages[0]))
 		})
 	})
@@ -44,11 +47,11 @@ var _ = Describe("StopPipeline", func() {
 		})
 
 		It("stops all stages sequentially", func() {
-			mockClient.EXPECT().StopPipelineStage(wsId, stages[0]).Return(nil)
-			mockClient.EXPECT().StopPipelineStage(wsId, stages[1]).Return(nil)
-			mockClient.EXPECT().StopPipelineStage(wsId, stages[2]).Return(nil)
+			mockClient.EXPECT().StopPipelineStage(mock.Anything, wsId, stages[0]).Return(nil)
+			mockClient.EXPECT().StopPipelineStage(mock.Anything, wsId, stages[1]).Return(nil)
+			mockClient.EXPECT().StopPipelineStage(mock.Anything, wsId, stages[2]).Return(nil)
 
-			err := c.StopPipelineStages(mockClient, wsId, stages)
+			err := c.StopPipelineStages(context.Background(), mockClient, wsId, stages)
 			Expect(err).NotTo(HaveOccurred())
 		})
 	})

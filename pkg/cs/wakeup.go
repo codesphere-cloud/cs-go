@@ -4,6 +4,7 @@
 package cs
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"time"
@@ -13,23 +14,23 @@ import (
 
 // Client is the API contract needed to wake up a workspace.
 type Client interface {
-	GetWorkspace(workspaceId int) (api.Workspace, error)
-	WorkspaceStatus(workspaceId int) (*api.WorkspaceStatus, error)
-	ScaleWorkspace(wsId int, replicas int) error
-	WaitForWorkspaceRunning(workspace *api.Workspace, timeout time.Duration) error
+	GetWorkspace(ctx context.Context, workspaceId int) (api.Workspace, error)
+	WorkspaceStatus(ctx context.Context, workspaceId int) (*api.WorkspaceStatus, error)
+	ScaleWorkspace(ctx context.Context, wsId int, replicas int) error
+	WaitForWorkspaceRunning(ctx context.Context, workspace *api.Workspace, timeout time.Duration) error
 }
 
 // WakeUpWorkspace returns the workspace after ensuring it is running. If it is
 // stopped, it scales the workspace to at least one replica and waits up to
 // timeout for it to start.
-func WakeUpWorkspace(client Client, wsId int, timeout time.Duration) (*api.Workspace, error) {
-	workspace, err := client.GetWorkspace(wsId)
+func WakeUpWorkspace(ctx context.Context, client Client, wsId int, timeout time.Duration) (*api.Workspace, error) {
+	workspace, err := client.GetWorkspace(ctx, wsId)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get workspace: %w", err)
 	}
 
 	// Check if workspace is already running
-	status, err := client.WorkspaceStatus(wsId)
+	status, err := client.WorkspaceStatus(ctx, wsId)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get workspace status: %w", err)
 	}
@@ -47,13 +48,13 @@ func WakeUpWorkspace(client Client, wsId int, timeout time.Duration) (*api.Works
 		targetReplicas = workspace.Replicas
 	}
 
-	err = client.ScaleWorkspace(wsId, targetReplicas)
+	err = client.ScaleWorkspace(ctx, wsId, targetReplicas)
 	if err != nil {
 		return nil, fmt.Errorf("failed to scale workspace: %w", err)
 	}
 
 	log.Printf("Waiting for workspace %d to be running...\n", wsId)
-	err = client.WaitForWorkspaceRunning(&workspace, timeout)
+	err = client.WaitForWorkspaceRunning(ctx, &workspace, timeout)
 	if err != nil {
 		return nil, fmt.Errorf("workspace did not become running: %w", err)
 	}

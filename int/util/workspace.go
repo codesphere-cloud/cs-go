@@ -5,6 +5,7 @@ package util
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -113,12 +114,12 @@ func CleanupWorkspace(workspaceId string) {
 	}
 }
 
-func WaitForWorkspaceRunning(client *api.Client, workspaceId int, timeout time.Duration) error {
-	return client.WaitForWorkspaceRunning(&api.Workspace{Id: workspaceId}, timeout)
+func WaitForWorkspaceRunning(ctx context.Context, client *api.Client, workspaceId int, timeout time.Duration) error {
+	return client.WaitForWorkspaceRunning(ctx, &api.Workspace{Id: workspaceId}, timeout)
 }
 
-func ScaleWorkspace(client *api.Client, workspaceId int, replicas int) error {
-	return client.ScaleWorkspace(workspaceId, replicas)
+func ScaleWorkspace(ctx context.Context, client *api.Client, workspaceId int, replicas int) error {
+	return client.ScaleWorkspace(ctx, workspaceId, replicas)
 }
 
 func VerifyWorkspaceExists(workspaceId, teamId string) bool {

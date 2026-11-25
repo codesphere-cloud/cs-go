@@ -4,6 +4,7 @@
 package list
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/codesphere-cloud/cs-go/api"
@@ -38,13 +39,13 @@ func AddListOrgCmd(p *cobra.Command, opts *ListOptions,
 	shared.AddCmd(p, l.cmd)
 }
 
-func (l *ListOrgCmd) RunE(_ *cobra.Command, args []string) (err error) {
+func (l *ListOrgCmd) RunE(cmd *cobra.Command, args []string) (err error) {
 	client, err := l.ClientFactory(l.Opts)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
-	_, err = l.ListOrganizations(client)
+	_, err = l.ListOrganizations(cmd.Context(), client)
 	if err != nil {
 		return fmt.Errorf("failed to list organizations: %w", err)
 	}
@@ -52,8 +53,8 @@ func (l *ListOrgCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	return nil
 }
 
-func (l *ListOrgCmd) ListOrganizations(client shared.Client) ([]api.Organization, error) {
-	orgs, err := client.ListOrganizations()
+func (l *ListOrgCmd) ListOrganizations(ctx context.Context, client shared.Client) ([]api.Organization, error) {
+	orgs, err := client.ListOrganizations(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list organizations: %w", err)
 	}

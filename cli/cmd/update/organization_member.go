@@ -4,6 +4,7 @@
 package update
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/codesphere-cloud/cs-go/cli/cmd/shared"
@@ -46,7 +47,7 @@ func AddUpdateOrganizationMemberCmd(parent *cobra.Command, opts shared.RootOptio
 	shared.AddCmd(parent, c.cmd)
 }
 
-func (c *UpdateOrganizationMemberCmd) RunE(_ *cobra.Command, _ []string) error {
+func (c *UpdateOrganizationMemberCmd) RunE(cmd *cobra.Command, _ []string) error {
 	orgId, err := shared.RequireOrganizationID(c.Opts.RootOptions)
 	if err != nil {
 		return err
@@ -55,10 +56,10 @@ func (c *UpdateOrganizationMemberCmd) RunE(_ *cobra.Command, _ []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
-	return c.ChangeOrganizationMemberRole(client, orgId, c.Opts.UserId, c.Opts.Role)
+	return c.ChangeOrganizationMemberRole(cmd.Context(), client, orgId, c.Opts.UserId, c.Opts.Role)
 }
 
-func (c *UpdateOrganizationMemberCmd) ChangeOrganizationMemberRole(client shared.Client, orgId string, userId int, role string) error {
+func (c *UpdateOrganizationMemberCmd) ChangeOrganizationMemberRole(ctx context.Context, client shared.Client, orgId string, userId int, role string) error {
 	if err := shared.ValidateUserID(userId); err != nil {
 		return err
 	}
@@ -66,7 +67,7 @@ func (c *UpdateOrganizationMemberCmd) ChangeOrganizationMemberRole(client shared
 		return err
 	}
 
-	if err := client.ChangeOrganizationMemberRole(orgId, userId, role); err != nil {
+	if err := client.ChangeOrganizationMemberRole(ctx, orgId, userId, role); err != nil {
 		return fmt.Errorf("failed to change organization member role: %w", err)
 	}
 	return nil

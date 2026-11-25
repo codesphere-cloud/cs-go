@@ -42,7 +42,7 @@ func AddDeleteTeamCmd(delete *cobra.Command, opts shared.RootOptions) {
 	shared.AddCmd(delete, t.cmd)
 }
 
-func (c *DeleteTeamCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *DeleteTeamCmd) RunE(cmd *cobra.Command, args []string) error {
 	client, err := c.ClientFactory(c.Opts.RootOptions)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
@@ -53,7 +53,7 @@ func (c *DeleteTeamCmd) RunE(_ *cobra.Command, args []string) error {
 		return errors.New("resource group ID not set, use --resource-group or CS_RESOURCE_GROUP_ID to set it")
 	}
 
-	err = client.DeleteTeam(teamId)
+	err = client.DeleteTeam(cmd.Context(), teamId)
 	if err != nil {
 		return fmt.Errorf("failed to delete team: %w", err)
 	}

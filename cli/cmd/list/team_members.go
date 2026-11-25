@@ -4,6 +4,7 @@
 package list
 
 import (
+	"context"
 	"fmt"
 
 	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
@@ -38,7 +39,7 @@ func AddListTeamMembersCmd(p *cobra.Command, opts *ListOptions) {
 	shared.AddCmd(p, l.cmd)
 }
 
-func (l *ListTeamMembersCmd) RunE(_ *cobra.Command, args []string) error {
+func (l *ListTeamMembersCmd) RunE(cmd *cobra.Command, args []string) error {
 	client, err := l.ClientFactory(l.Opts)
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
@@ -49,11 +50,11 @@ func (l *ListTeamMembersCmd) RunE(_ *cobra.Command, args []string) error {
 		return err
 	}
 
-	return l.ListTeamMembers(client, teamId)
+	return l.ListTeamMembers(cmd.Context(), client, teamId)
 }
 
-func (l *ListTeamMembersCmd) ListTeamMembers(client shared.Client, teamId int) error {
-	members, err := client.ListTeamMembers(teamId)
+func (l *ListTeamMembersCmd) ListTeamMembers(ctx context.Context, client shared.Client, teamId int) error {
+	members, err := client.ListTeamMembers(ctx, teamId)
 	if err != nil {
 		return fmt.Errorf("failed to list team members: %w", err)
 	}

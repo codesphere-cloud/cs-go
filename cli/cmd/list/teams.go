@@ -37,7 +37,7 @@ func addListTeamsCmd(p *cobra.Command, opts *ListOptions) {
 	shared.AddCmd(p, l.cmd)
 }
 
-func (l *ListTeamsCmd) RunE(_ *cobra.Command, args []string) (err error) {
+func (l *ListTeamsCmd) RunE(cmd *cobra.Command, args []string) (err error) {
 	client, err := l.opts.NewClient()
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
@@ -47,7 +47,7 @@ func (l *ListTeamsCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	if err != nil {
 		return fmt.Errorf("failed to get organization ID: %w", err)
 	}
-	teams, err := client.ListTeams(orgId)
+	teams, err := client.ListTeams(cmd.Context(), orgId)
 	if err != nil {
 		return fmt.Errorf("failed to list teams: %w", err)
 	}

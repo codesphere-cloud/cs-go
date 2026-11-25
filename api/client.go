@@ -13,9 +13,9 @@ import (
 )
 
 type Client struct {
-	ctx  context.Context
-	api  *openapi_client.APIClient
-	time Time
+	token string
+	api   *openapi_client.APIClient
+	time  Time
 }
 
 type Configuration struct {
@@ -41,22 +41,28 @@ func (c Configuration) GetApiUrl() *url.URL {
 }
 
 // For use in tests
-func NewClientWithCustomDeps(ctx context.Context, opts Configuration, api *openapi_client.APIClient, time Time) *Client {
+func NewClientWithCustomDeps(opts Configuration, api *openapi_client.APIClient, time Time) *Client {
 	return &Client{
-		ctx:  context.WithValue(ctx, openapi_client.ContextAccessToken, opts.Token),
-		api:  api,
-		time: time,
+		token: opts.Token,
+		api:   api,
+		time:  time,
 	}
 }
 
-func NewClient(ctx context.Context, opts Configuration) *Client {
+func NewClient(opts Configuration) *Client {
 	cfg := openapi_client.NewConfiguration()
 	cfg.HTTPClient = NewHttpClient()
 	cfg.Servers = []openapi_client.ServerConfiguration{{
 		URL: opts.BaseUrl.String(),
 	}}
 	cfg.Debug = opts.Verbose
-	return NewClientWithCustomDeps(ctx, opts, openapi_client.NewAPIClient(cfg), &RealTime{})
+	return NewClientWithCustomDeps(opts, openapi_client.NewAPIClient(cfg), &RealTime{})
+}
+
+// withAuth returns a child of ctx that carries the API token for the generated
+// OpenAPI client. Cancellation and deadlines of ctx propagate to the HTTP request.
+func (c *Client) withAuth(ctx context.Context) context.Context {
+	return context.WithValue(ctx, openapi_client.ContextAccessToken, c.token)
 }
 
 // NewHttpClient creates a http client to use for API calls.
@@ -81,51 +87,51 @@ func NewHttpClient() *http.Client {
 	}
 }
 
-func (c *Client) ListDataCenters() ([]DataCenter, error) {
-	datacenters, r, err := c.api.MetadataAPI.MetadataGetDatacenters(c.ctx).Execute()
+func (c *Client) ListDataCenters(ctx context.Context) ([]DataCenter, error) {
+	datacenters, r, err := c.api.MetadataAPI.MetadataGetDatacenters(c.withAuth(ctx)).Execute()
 	return datacenters, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) ListDomains(teamId int) ([]Domain, error) {
-	domains, r, err := c.api.DomainsAPI.DomainsListDomains(c.ctx, teamId).Execute()
+func (c *Client) ListDomains(ctx context.Context, teamId int) ([]Domain, error) {
+	domains, r, err := c.api.DomainsAPI.DomainsListDomains(c.withAuth(ctx), teamId).Execute()
 	return domains, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) GetDomain(teamId int, domainName string) (*Domain, error) {
-	domain, r, err := c.api.DomainsAPI.DomainsGetDomain(c.ctx, teamId, domainName).Execute()
+func (c *Client) GetDomain(ctx context.Context, teamId int, domainName string) (*Domain, error) {
+	domain, r, err := c.api.DomainsAPI.DomainsGetDomain(c.withAuth(ctx), teamId, domainName).Execute()
 	return domain, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) CreateDomain(teamId int, domainName string) (*Domain, error) {
-	domain, r, err := c.api.DomainsAPI.DomainsCreateDomain(c.ctx, teamId, domainName).Execute()
+func (c *Client) CreateDomain(ctx context.Context, teamId int, domainName string) (*Domain, error) {
+	domain, r, err := c.api.DomainsAPI.DomainsCreateDomain(c.withAuth(ctx), teamId, domainName).Execute()
 	return domain, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) DeleteDomain(teamId int, domainName string) error {
-	r, err := c.api.DomainsAPI.DomainsDeleteDomain(c.ctx, teamId, domainName).Execute()
+func (c *Client) DeleteDomain(ctx context.Context, teamId int, domainName string) error {
+	r, err := c.api.DomainsAPI.DomainsDeleteDomain(c.withAuth(ctx), teamId, domainName).Execute()
 	return errors.FormatAPIError(r, err)
 }
 
 func (c *Client) UpdateDomain(
-	teamId int, domainName string, args UpdateDomainArgs,
+	ctx context.Context, teamId int, domainName string, args UpdateDomainArgs,
 ) (*Domain, error) {
 	domain, r, err := c.api.DomainsAPI.
-		DomainsUpdateDomain(c.ctx, teamId, domainName).
+		DomainsUpdateDomain(c.withAuth(ctx), teamId, domainName).
 		DomainsUpdateDomainRequest(args).
 		Execute()
 	return domain, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) VerifyDomain(
-	teamId int, domainName string,
+	ctx context.Context, teamId int, domainName string,
 ) (*DomainVerificationStatus, error) {
 	status, r, err := c.api.DomainsAPI.
-		DomainsVerifyDomain(c.ctx, teamId, domainName).Execute()
+		DomainsVerifyDomain(c.withAuth(ctx), teamId, domainName).Execute()
 	return status, errors.FormatAPIError(r, err)
 }
 
 func (c *Client) UpdateWorkspaceConnections(
-	teamId int, domainName string, connections PathToWorkspaces,
+	ctx context.Context, teamId int, domainName string, connections PathToWorkspaces,
 ) (*Domain, error) {
 	req := make(map[string][]int)
 	for path, workspaces := range connections {
@@ -136,12 +142,12 @@ func (c *Client) UpdateWorkspaceConnections(
 		req[path] = ids
 	}
 	domain, r, err := c.api.DomainsAPI.
-		DomainsUpdateWorkspaceConnections(c.ctx, teamId, domainName).
+		DomainsUpdateWorkspaceConnections(c.withAuth(ctx), teamId, domainName).
 		RequestBody(req).Execute()
 	return domain, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) ListBaseimages() ([]Baseimage, error) {
-	baseimages, r, err := c.api.MetadataAPI.MetadataGetWorkspaceBaseImages(c.ctx).Execute()
+func (c *Client) ListBaseimages(ctx context.Context) ([]Baseimage, error) {
+	baseimages, r, err := c.api.MetadataAPI.MetadataGetWorkspaceBaseImages(c.withAuth(ctx)).Execute()
 	return baseimages, errors.FormatAPIError(r, err)
 }

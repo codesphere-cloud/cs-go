@@ -4,6 +4,7 @@
 package delete
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -40,13 +41,13 @@ func (c *DeleteSSHKeyCmd) RunE(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
-	return c.DeleteSSHKey(client, cmd.InOrStdin(), cmd.ErrOrStderr(), args)
+	return c.DeleteSSHKey(cmd.Context(), client, cmd.InOrStdin(), cmd.ErrOrStderr(), args)
 }
 
-func (c *DeleteSSHKeyCmd) DeleteSSHKey(client shared.Client, input io.Reader, output io.Writer, args []string) error {
+func (c *DeleteSSHKeyCmd) DeleteSSHKey(ctx context.Context, client shared.Client, input io.Reader, output io.Writer, args []string) error {
 	var fingerprint string
 	if len(args) == 0 {
-		selected, err := selectSSHKey(client, input, output)
+		selected, err := selectSSHKey(ctx, client, input, output)
 		if err != nil || selected == "" {
 			return err
 		}
@@ -58,14 +59,14 @@ func (c *DeleteSSHKeyCmd) DeleteSSHKey(client shared.Client, input io.Reader, ou
 	if strings.TrimSpace(fingerprint) == "" {
 		return errors.New("SSH key fingerprint cannot be empty")
 	}
-	if err := client.DeleteSSHPublicKey(fingerprint); err != nil {
+	if err := client.DeleteSSHPublicKey(ctx, fingerprint); err != nil {
 		return fmt.Errorf("failed to delete SSH public key: %w", err)
 	}
 	return nil
 }
 
-func selectSSHKey(client shared.Client, input io.Reader, output io.Writer) (string, error) {
-	keys, err := client.ListSSHPublicKeys()
+func selectSSHKey(ctx context.Context, client shared.Client, input io.Reader, output io.Writer) (string, error) {
+	keys, err := client.ListSSHPublicKeys(ctx)
 	if err != nil {
 		return "", fmt.Errorf("failed to list SSH public keys: %w", err)
 	}

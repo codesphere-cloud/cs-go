@@ -18,7 +18,7 @@ func RegisterMetadataTools(server *mcp.Server, client *api.Client) {
 		Name:        "list_data_centers",
 		Description: "List all available data centers in Codesphere",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args ListDataCentersArgs) (*mcp.CallToolResult, any, error) {
-		dcs, err := client.ListDataCenters()
+		dcs, err := client.ListDataCenters(ctx)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -29,7 +29,7 @@ func RegisterMetadataTools(server *mcp.Server, client *api.Client) {
 		Name:        "list_base_images",
 		Description: "List all base images available for workspaces",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args ListBaseimagesArgs) (*mcp.CallToolResult, any, error) {
-		images, err := client.ListBaseimages()
+		images, err := client.ListBaseimages(ctx)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}

@@ -5,6 +5,7 @@ package list_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"io"
@@ -19,6 +20,7 @@ import (
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
 	listcmd "github.com/codesphere-cloud/cs-go/cli/cmd/list"
 	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
+	"github.com/stretchr/testify/mock"
 )
 
 var _ = Describe("Organization", func() {
@@ -57,15 +59,15 @@ var _ = Describe("Organization", func() {
 				return mockClient, nil
 			}
 
-			mockClient.EXPECT().ListOrganizations().Return([]api.Organization{}, nil).Once()
-			err := l.RunE(nil, []string{})
+			mockClient.EXPECT().ListOrganizations(mock.Anything).Return([]api.Organization{}, nil).Once()
+			err := l.RunE(newTestCommand(), []string{})
 			Expect(err).NotTo(HaveOccurred())
 		})
 		It("fails when client creation fails due to missing API token", func() {
 			// Mock failure to get API token
 			mockEnv.EXPECT().GetApiToken().Return("", errors.New("CS_TOKEN env var required, but not set"))
 
-			err := l.RunE(nil, []string{})
+			err := l.RunE(newTestCommand(), []string{})
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to create Codesphere client"))
 		})
@@ -74,7 +76,7 @@ var _ = Describe("Organization", func() {
 			mockEnv.EXPECT().GetApiToken().Return("test-token", nil)
 			mockEnv.EXPECT().GetApiUrl().Return("ht tp://invalid url with spaces")
 
-			err := l.RunE(nil, []string{})
+			err := l.RunE(newTestCommand(), []string{})
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to create Codesphere client"))
 		})
@@ -88,9 +90,9 @@ var _ = Describe("Organization", func() {
 			l.ClientFactory = func(opts shared.RootOptions) (cmd.Client, error) {
 				return mockClient, nil
 			}
-			mockClient.EXPECT().ListOrganizations().Return(nil, errors.New("API error")).Once()
+			mockClient.EXPECT().ListOrganizations(mock.Anything).Return(nil, errors.New("API error")).Once()
 
-			err := l.RunE(nil, []string{})
+			err := l.RunE(newTestCommand(), []string{})
 			Expect(err).To(MatchError(ContainSubstring("failed to list organizations: API error")))
 		})
 	})
@@ -101,16 +103,16 @@ var _ = Describe("Organization", func() {
 				{Id: "d90e5f82-445e-4397-a90e-74d55cd4be3c", Name: "fakeForTeam0"},
 				{Id: "d90e5f82-445e-4397-a90e-74d55cd4be4c", Name: "fakeForTeam1"},
 			}
-			mockClient.EXPECT().ListOrganizations().Return(expectedOrgs, nil).Once()
+			mockClient.EXPECT().ListOrganizations(mock.Anything).Return(expectedOrgs, nil).Once()
 
-			orgs, err := l.ListOrganizations(mockClient)
+			orgs, err := l.ListOrganizations(context.Background(), mockClient)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(orgs).To(Equal(expectedOrgs))
 		})
 
 		It("returns an empty list without error when no organizations exist", func() {
-			mockClient.EXPECT().ListOrganizations().Return([]api.Organization{}, nil).Once()
-			orgs, err := l.ListOrganizations(mockClient)
+			mockClient.EXPECT().ListOrganizations(mock.Anything).Return([]api.Organization{}, nil).Once()
+			orgs, err := l.ListOrganizations(context.Background(), mockClient)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(orgs).To(BeEmpty())
 		})
@@ -121,14 +123,14 @@ var _ = Describe("Organization", func() {
 				{Id: "d90e5f82-445e-4397-a90e-74d55cd4be3c", Name: "fakeForTeam0"},
 				{Id: "d90e5f82-445e-4397-a90e-74d55cd4be4c", Name: "fakeForTeam1"},
 			}
-			mockClient.EXPECT().ListOrganizations().Return(expectedOrgs, nil).Once()
+			mockClient.EXPECT().ListOrganizations(mock.Anything).Return(expectedOrgs, nil).Once()
 
 			// Capture Stdout
 			oldStdout := os.Stdout
 			r, w, _ := os.Pipe()
 			os.Stdout = w
 
-			orgs, err := l.ListOrganizations(mockClient)
+			orgs, err := l.ListOrganizations(context.Background(), mockClient)
 
 			Expect(err).NotTo(HaveOccurred())
 			Expect(orgs).To(Equal(expectedOrgs))
@@ -155,14 +157,14 @@ var _ = Describe("Organization", func() {
 				{Id: "d90e5f82-445e-4397-a90e-74d55cd4be3c", Name: "fakeForTeam0"},
 				{Id: "d90e5f82-445e-4397-a90e-74d55cd4be4c", Name: "fakeForTeam1"},
 			}
-			mockClient.EXPECT().ListOrganizations().Return(expectedOrgs, nil).Once()
+			mockClient.EXPECT().ListOrganizations(mock.Anything).Return(expectedOrgs, nil).Once()
 
 			// Capture Stdout
 			oldStdout := os.Stdout
 			r, w, _ := os.Pipe()
 			os.Stdout = w
 
-			orgs, err := l.ListOrganizations(mockClient)
+			orgs, err := l.ListOrganizations(context.Background(), mockClient)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(orgs).To(Equal(expectedOrgs))
 

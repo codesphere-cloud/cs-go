@@ -25,7 +25,7 @@ func Run() error {
 		log.Fatalf("failed to parse URL '%s': %v", opts.GetApiUrl(), err)
 	}
 
-	client := api.NewClient(context.Background(), api.Configuration{
+	client := api.NewClient(api.Configuration{
 		BaseUrl: apiUrl,
 		Token:   token,
 		Verbose: false,

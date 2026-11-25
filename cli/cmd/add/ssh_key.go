@@ -5,6 +5,7 @@ package add
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"os"
 	"strings"
@@ -34,15 +35,15 @@ func AddAddSSHKeyCmd(parent *cobra.Command, opts shared.RootOptions) {
 	shared.AddCmd(parent, command)
 }
 
-func (c *AddSSHKeyCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *AddSSHKeyCmd) RunE(cmd *cobra.Command, args []string) error {
 	client, err := c.Opts.NewClient()
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
-	return c.AddSSHKey(client, args[0])
+	return c.AddSSHKey(cmd.Context(), client, args[0])
 }
 
-func (c *AddSSHKeyCmd) AddSSHKey(client shared.Client, path string) error {
+func (c *AddSSHKeyCmd) AddSSHKey(ctx context.Context, client shared.Client, path string) error {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return fmt.Errorf("failed to read SSH public key: %w", err)
@@ -62,7 +63,7 @@ func (c *AddSSHKeyCmd) AddSSHKey(client shared.Client, path string) error {
 	if comment != "" {
 		publicKey += " " + comment
 	}
-	if err := client.UploadSSHPublicKey(publicKey); err != nil {
+	if err := client.UploadSSHPublicKey(ctx, publicKey); err != nil {
 		return fmt.Errorf("failed to add SSH public key: %w", err)
 	}
 	return nil

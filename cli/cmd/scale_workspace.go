@@ -4,6 +4,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"strconv"
@@ -23,7 +24,7 @@ type ScaleWorkspaceOpts struct {
 	Services []string // each entry is "service=replicas"
 }
 
-func (c *ScaleWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *ScaleWorkspaceCmd) RunE(cmd *cobra.Command, args []string) error {
 	workspaceId, err := c.Opts.GetWorkspaceId()
 	if err != nil {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
@@ -34,7 +35,7 @@ func (c *ScaleWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
-	return c.ScaleWorkspaceServices(client, workspaceId)
+	return c.ScaleWorkspaceServices(cmd.Context(), client, workspaceId)
 }
 
 func AddScaleWorkspaceCmd(scale *cobra.Command, opts *GlobalOptions) {
@@ -60,14 +61,14 @@ func AddScaleWorkspaceCmd(scale *cobra.Command, opts *GlobalOptions) {
 	scale.AddCommand(workspace.cmd)
 }
 
-func (c *ScaleWorkspaceCmd) ScaleWorkspaceServices(client Client, wsId int) error {
+func (c *ScaleWorkspaceCmd) ScaleWorkspaceServices(ctx context.Context, client Client, wsId int) error {
 	services, err := parseScaleServices(c.Opts.Services)
 	if err != nil {
 		return fmt.Errorf("failed to parse services: %w", err)
 	}
 
 	log.Printf("Scaling landscape services for workspace %d: %v\n", wsId, services)
-	err = client.ScaleLandscapeServices(wsId, services)
+	err = client.ScaleLandscapeServices(ctx, wsId, services)
 	if err != nil {
 		return fmt.Errorf("failed to scale landscape services: %w", err)
 	}

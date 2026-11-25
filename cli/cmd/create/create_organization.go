@@ -4,6 +4,7 @@
 package create
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/mail"
@@ -48,13 +49,13 @@ func AddCreateOrganizationCmd(parent *cobra.Command, opts shared.RootOptions) {
 	shared.AddCmd(parent, c.cmd)
 }
 
-func (c *CreateOrganizationCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *CreateOrganizationCmd) RunE(cmd *cobra.Command, args []string) error {
 	client, err := c.Opts.NewClient()
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
-	createdOrg, err := c.CreateOrganization(client, c.Opts.Name, c.Opts.AdminEmail)
+	createdOrg, err := c.CreateOrganization(cmd.Context(), client, c.Opts.Name, c.Opts.AdminEmail)
 	if err != nil {
 		return err
 	}
@@ -63,7 +64,7 @@ func (c *CreateOrganizationCmd) RunE(_ *cobra.Command, args []string) error {
 	return nil
 }
 
-func (c *CreateOrganizationCmd) CreateOrganization(client shared.Client, name string, adminEmail string) (*api.Organization, error) {
+func (c *CreateOrganizationCmd) CreateOrganization(ctx context.Context, client shared.Client, name string, adminEmail string) (*api.Organization, error) {
 	if name == "" {
 		return nil, errors.New("organization name cannot be empty")
 	}
@@ -74,7 +75,7 @@ func (c *CreateOrganizationCmd) CreateOrganization(client shared.Client, name st
 		return nil, errors.New("admin email is invalid")
 	}
 
-	createdOrg, err := client.CreateOrganization(name, adminEmail)
+	createdOrg, err := client.CreateOrganization(ctx, name, adminEmail)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create organization: %w", err)
 	}

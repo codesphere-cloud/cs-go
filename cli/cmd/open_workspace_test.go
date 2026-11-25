@@ -4,6 +4,7 @@
 package cmd_test
 
 import (
+	"context"
 	"fmt"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -11,6 +12,7 @@ import (
 
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
+	"github.com/stretchr/testify/mock"
 )
 
 var _ = Describe("GenerateWorkspacePath", func() {
@@ -38,12 +40,12 @@ var _ = Describe("GenerateWorkspacePath", func() {
 	})
 
 	It("queries the workspace and opens the IDE path", func() {
-		mockClient.EXPECT().GetWorkspace(wsId).Return(api.Workspace{
+		mockClient.EXPECT().GetWorkspace(mock.Anything, wsId).Return(api.Workspace{
 			Id:     wsId,
 			TeamId: teamId,
 		}, nil)
 		mockBrowser.EXPECT().OpenIde(fmt.Sprintf("teams/%d/workspaces/%d", teamId, wsId)).Return(nil)
-		err := o.OpenWorkspace(mockBrowser, mockClient, wsId)
+		err := o.OpenWorkspace(context.Background(), mockBrowser, mockClient, wsId)
 		Expect(err).ToNot(HaveOccurred())
 
 	})

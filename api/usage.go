@@ -4,14 +4,15 @@
 package api
 
 import (
+	"context"
 	"time"
 
 	"github.com/codesphere-cloud/cs-go/api/errors"
 	"github.com/codesphere-cloud/cs-go/api/openapi_client"
 )
 
-func (c *Client) GetLandscapeServiceEvents(teamId int, resourceId string, beginDate, endDate time.Time, limit, offset int) (*openapi_client.UsageGetLandscapeServiceEvents200Response, error) {
-	req := c.api.UsageAPI.UsageGetLandscapeServiceEvents(c.ctx, teamId, resourceId).
+func (c *Client) GetLandscapeServiceEvents(ctx context.Context, teamId int, resourceId string, beginDate, endDate time.Time, limit, offset int) (*openapi_client.UsageGetLandscapeServiceEvents200Response, error) {
+	req := c.api.UsageAPI.UsageGetLandscapeServiceEvents(c.withAuth(ctx), teamId, resourceId).
 		BeginDate(beginDate).
 		EndDate(endDate)
 	if limit > 0 {
@@ -24,8 +25,8 @@ func (c *Client) GetLandscapeServiceEvents(teamId int, resourceId string, beginD
 	return res, errors.FormatAPIError(r, err)
 }
 
-func (c *Client) GetUsageSummaryLandscape(teamId int, beginDate, endDate time.Time, limit, offset int) (*openapi_client.UsageGetUsageSummaryLandscape200Response, error) {
-	req := c.api.UsageAPI.UsageGetUsageSummaryLandscape(c.ctx, teamId).
+func (c *Client) GetUsageSummaryLandscape(ctx context.Context, teamId int, beginDate, endDate time.Time, limit, offset int) (*openapi_client.UsageGetUsageSummaryLandscape200Response, error) {
+	req := c.api.UsageAPI.UsageGetUsageSummaryLandscape(c.withAuth(ctx), teamId).
 		BeginDate(beginDate).
 		EndDate(endDate)
 	if limit > 0 {

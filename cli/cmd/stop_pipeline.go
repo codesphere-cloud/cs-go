@@ -4,6 +4,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"slices"
@@ -22,7 +23,7 @@ type StopPipelineOpts struct {
 	*GlobalOptions
 }
 
-func (c *StopPipelineCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *StopPipelineCmd) RunE(cmd *cobra.Command, args []string) error {
 	workspaceId, err := c.Opts.GetWorkspaceId()
 	if err != nil {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
@@ -33,7 +34,7 @@ func (c *StopPipelineCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
-	return c.StopPipelineStages(client, workspaceId, args)
+	return c.StopPipelineStages(cmd.Context(), client, workspaceId, args)
 }
 
 func AddStopPipelineCmd(stop *cobra.Command, opts *GlobalOptions) {
@@ -59,14 +60,14 @@ func AddStopPipelineCmd(stop *cobra.Command, opts *GlobalOptions) {
 	pipeline.cmd.RunE = pipeline.RunE
 }
 
-func (c *StopPipelineCmd) StopPipelineStages(client Client, wsId int, stages []string) error {
+func (c *StopPipelineCmd) StopPipelineStages(ctx context.Context, client Client, wsId int, stages []string) error {
 	for _, stage := range stages {
 		if !slices.Contains([]string{"prepare", "test", "run"}, stage) {
 			return fmt.Errorf("invalid pipeline stage: %s", stage)
 		}
 	}
 	for _, stage := range stages {
-		err := c.stopStage(client, wsId, stage)
+		err := c.stopStage(ctx, client, wsId, stage)
 		if err != nil {
 			return err
 		}
@@ -74,10 +75,10 @@ func (c *StopPipelineCmd) StopPipelineStages(client Client, wsId int, stages []s
 	return nil
 }
 
-func (c *StopPipelineCmd) stopStage(client Client, wsId int, stage string) error {
+func (c *StopPipelineCmd) stopStage(ctx context.Context, client Client, wsId int, stage string) error {
 	log.Printf("stopping %s stage on workspace %d...", stage, wsId)
 
-	err := client.StopPipelineStage(wsId, stage)
+	err := client.StopPipelineStage(ctx, wsId, stage)
 	if err != nil {
 		log.Println()
 		return fmt.Errorf("failed to stop pipeline stage %s: %w", stage, err)

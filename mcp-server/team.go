@@ -34,7 +34,7 @@ func RegisterTeamTools(server *mcp.Server, client *api.Client) {
 		Name:        "list_teams",
 		Description: "List all teams the authenticated user belongs to",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args ListTeamsArgs) (*mcp.CallToolResult, any, error) {
-		teams, err := client.ListTeams(args.OrgId)
+		teams, err := client.ListTeams(ctx, args.OrgId)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -45,7 +45,7 @@ func RegisterTeamTools(server *mcp.Server, client *api.Client) {
 		Name:        "get_team",
 		Description: "Get details of a single team",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args GetTeamArgs) (*mcp.CallToolResult, any, error) {
-		team, err := client.GetTeam(args.TeamId)
+		team, err := client.GetTeam(ctx, args.TeamId)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -56,7 +56,7 @@ func RegisterTeamTools(server *mcp.Server, client *api.Client) {
 		Name:        "create_team",
 		Description: "Create a new team",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args CreateTeamArgs) (*mcp.CallToolResult, any, error) {
-		team, err := client.CreateTeam(args.OrgId, args.Name, args.Dc)
+		team, err := client.CreateTeam(ctx, args.OrgId, args.Name, args.Dc)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -67,7 +67,7 @@ func RegisterTeamTools(server *mcp.Server, client *api.Client) {
 		Name:        "delete_team",
 		Description: "Delete a team by ID",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args DeleteTeamArgs) (*mcp.CallToolResult, any, error) {
-		err := client.DeleteTeam(args.TeamId)
+		err := client.DeleteTeam(ctx, args.TeamId)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}

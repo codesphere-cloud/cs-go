@@ -4,6 +4,7 @@
 package list_test
 
 import (
+	"context"
 	"errors"
 	"time"
 
@@ -13,6 +14,7 @@ import (
 	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/stretchr/testify/mock"
 )
 
 var _ = Describe("ListTeamMembers", func() {
@@ -62,16 +64,16 @@ var _ = Describe("ListTeamMembers", func() {
 					Email:     &email,
 				},
 			}
-			mockClient.EXPECT().ListTeamMembers(teamId).Return(expectedMembers, nil).Once()
+			mockClient.EXPECT().ListTeamMembers(mock.Anything, teamId).Return(expectedMembers, nil).Once()
 
-			err := l.ListTeamMembers(mockClient, teamId)
+			err := l.ListTeamMembers(context.Background(), mockClient, teamId)
 			Expect(err).ToNot(HaveOccurred())
 		})
 
 		It("should return error when API call fails", func() {
-			mockClient.EXPECT().ListTeamMembers(teamId).Return(nil, errors.New("api error")).Once()
+			mockClient.EXPECT().ListTeamMembers(mock.Anything, teamId).Return(nil, errors.New("api error")).Once()
 
-			err := l.ListTeamMembers(mockClient, teamId)
+			err := l.ListTeamMembers(context.Background(), mockClient, teamId)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to list team members: api error"))
 		})
@@ -79,9 +81,9 @@ var _ = Describe("ListTeamMembers", func() {
 
 	Context("RunE execution flow", func() {
 		It("should successfully run the command", func() {
-			mockClient.EXPECT().ListTeamMembers(teamId).Return([]api.TeamMember{}, nil).Once()
+			mockClient.EXPECT().ListTeamMembers(mock.Anything, teamId).Return([]api.TeamMember{}, nil).Once()
 
-			err := l.RunE(nil, []string{})
+			err := l.RunE(newTestCommand(), []string{})
 			Expect(err).ToNot(HaveOccurred())
 		})
 
@@ -90,7 +92,7 @@ var _ = Describe("ListTeamMembers", func() {
 				return nil, errors.New("client init failed")
 			}
 
-			err := l.RunE(nil, []string{})
+			err := l.RunE(newTestCommand(), []string{})
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to create Codesphere client: client init failed"))
 		})
@@ -99,7 +101,7 @@ var _ = Describe("ListTeamMembers", func() {
 			globalOpts.TeamId = -1
 			mockEnv.EXPECT().GetTeamId().Return(-1, errors.New("CS_TEAM_ID env var required, but not set")).Once()
 
-			err := l.RunE(nil, []string{})
+			err := l.RunE(newTestCommand(), []string{})
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal("CS_TEAM_ID env var required, but not set"))
 		})

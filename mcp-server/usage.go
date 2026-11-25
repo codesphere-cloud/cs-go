@@ -35,7 +35,7 @@ func RegisterUsageTools(server *mcp.Server, client *api.Client) {
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args GetLandscapeServiceEventsArgs) (*mcp.CallToolResult, any, error) {
 		begin, _ := time.Parse(time.RFC3339, args.BeginDate)
 		end, _ := time.Parse(time.RFC3339, args.EndDate)
-		events, err := client.GetLandscapeServiceEvents(args.TeamId, args.ResourceId, begin, end, args.Limit, args.Offset)
+		events, err := client.GetLandscapeServiceEvents(ctx, args.TeamId, args.ResourceId, begin, end, args.Limit, args.Offset)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -48,7 +48,7 @@ func RegisterUsageTools(server *mcp.Server, client *api.Client) {
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args GetUsageSummaryLandscapeArgs) (*mcp.CallToolResult, any, error) {
 		begin, _ := time.Parse(time.RFC3339, args.BeginDate)
 		end, _ := time.Parse(time.RFC3339, args.EndDate)
-		summary, err := client.GetUsageSummaryLandscape(args.TeamId, begin, end, args.Limit, args.Offset)
+		summary, err := client.GetUsageSummaryLandscape(ctx, args.TeamId, begin, end, args.Limit, args.Offset)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}

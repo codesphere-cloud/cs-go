@@ -4,6 +4,7 @@
 package api_test
 
 import (
+	"context"
 	"errors"
 	"github.com/codesphere-cloud/cs-go/api"
 	openapi "github.com/codesphere-cloud/cs-go/api/openapi_client"
@@ -18,9 +19,9 @@ var _ = Describe("Organization members API", func() {
 	const orgId = "8316ee2f-87f8-424e-b925-7382dc50d662"
 	var service *openapi.MockOrganizationsAPI
 	var client *api.Client
-	BeforeEach(func(ctx SpecContext) {
+	BeforeEach(func() {
 		service = openapi.NewMockOrganizationsAPI(GinkgoT())
-		client = api.NewClientWithCustomDeps(ctx, api.Configuration{}, &openapi.APIClient{OrganizationsAPI: service}, mockTime())
+		client = api.NewClientWithCustomDeps(api.Configuration{}, &openapi.APIClient{OrganizationsAPI: service}, mockTime())
 	})
 	Context("AddOrganizationMember", func() {
 		BeforeEach(func() {
@@ -35,11 +36,11 @@ var _ = Describe("Organization members API", func() {
 				payload = payload.Elem()
 				return payload.FieldByName("Email").String() == "user@example.com" && payload.FieldByName("Role").String() == "admin"
 			})).Return(nil, nil).Once()
-			Expect(client.AddOrganizationMember(orgId, "user@example.com", "admin")).To(Succeed())
+			Expect(client.AddOrganizationMember(context.Background(), orgId, "user@example.com", "admin")).To(Succeed())
 		})
 		It("reports API failures", func() {
 			service.EXPECT().OrganizationsAddOrgMemberExecute(mock.Anything).Return(&http.Response{StatusCode: 403}, errors.New("forbidden")).Once()
-			Expect(client.AddOrganizationMember(orgId, "user@example.com", "admin")).To(MatchError(ContainSubstring("forbidden")))
+			Expect(client.AddOrganizationMember(context.Background(), orgId, "user@example.com", "admin")).To(MatchError(ContainSubstring("forbidden")))
 		})
 	})
 	Context("RemoveOrganizationMember", func() {
@@ -48,11 +49,11 @@ var _ = Describe("Organization members API", func() {
 		})
 		It("succeeds", func() {
 			service.EXPECT().OrganizationsRemoveOrgMemberExecute(mock.Anything).Return(nil, nil).Once()
-			Expect(client.RemoveOrganizationMember(orgId, 0)).To(Succeed())
+			Expect(client.RemoveOrganizationMember(context.Background(), orgId, 0)).To(Succeed())
 		})
 		It("reports API failures", func() {
 			service.EXPECT().OrganizationsRemoveOrgMemberExecute(mock.Anything).Return(&http.Response{StatusCode: 403}, errors.New("forbidden")).Once()
-			Expect(client.RemoveOrganizationMember(orgId, 0)).To(MatchError(ContainSubstring("forbidden")))
+			Expect(client.RemoveOrganizationMember(context.Background(), orgId, 0)).To(MatchError(ContainSubstring("forbidden")))
 		})
 	})
 	Context("ChangeOrganizationMemberRole", func() {
@@ -68,11 +69,11 @@ var _ = Describe("Organization members API", func() {
 				payload = payload.Elem()
 				return payload.FieldByName("Role").String() == "member"
 			})).Return(nil, nil).Once()
-			Expect(client.ChangeOrganizationMemberRole(orgId, 0, "member")).To(Succeed())
+			Expect(client.ChangeOrganizationMemberRole(context.Background(), orgId, 0, "member")).To(Succeed())
 		})
 		It("reports API failures", func() {
 			service.EXPECT().OrganizationsChangeOrgRoleExecute(mock.Anything).Return(&http.Response{StatusCode: 403}, errors.New("forbidden")).Once()
-			Expect(client.ChangeOrganizationMemberRole(orgId, 0, "member")).To(MatchError(ContainSubstring("forbidden")))
+			Expect(client.ChangeOrganizationMemberRole(context.Background(), orgId, 0, "member")).To(MatchError(ContainSubstring("forbidden")))
 		})
 	})
 	Context("ListOrganizationMembers", func() {
@@ -82,13 +83,13 @@ var _ = Describe("Organization members API", func() {
 		It("returns organization members", func() {
 			members := []api.OrganizationMember{{UserId: 0, OrganizationId: orgId, Role: "admin"}}
 			service.EXPECT().OrganizationsListOrgMembersExecute(mock.Anything).Return(members, nil, nil).Once()
-			result, err := client.ListOrganizationMembers(orgId)
+			result, err := client.ListOrganizationMembers(context.Background(), orgId)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(result).To(Equal(members))
 		})
 		It("reports API failures", func() {
 			service.EXPECT().OrganizationsListOrgMembersExecute(mock.Anything).Return(nil, &http.Response{StatusCode: 403}, errors.New("forbidden")).Once()
-			result, err := client.ListOrganizationMembers(orgId)
+			result, err := client.ListOrganizationMembers(context.Background(), orgId)
 			Expect(err).To(MatchError(ContainSubstring("forbidden")))
 			Expect(result).To(BeNil())
 		})

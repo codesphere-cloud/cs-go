@@ -38,7 +38,7 @@ func (o GlobalOptions) NewClient() (*api.Client, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse URL '%s': %w", o.GetApiUrl(), err)
 	}
-	client := api.NewClient(context.Background(), api.Configuration{
+	client := api.NewClient(api.Configuration{
 		BaseUrl: apiUrl,
 		Token:   token,
 		Verbose: o.Verbose,

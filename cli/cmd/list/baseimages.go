@@ -4,6 +4,7 @@
 package list
 
 import (
+	"context"
 	"fmt"
 
 	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
@@ -34,13 +35,13 @@ func AddListBaseimagesCmd(p *cobra.Command, opts *ListOptions) {
 	shared.AddCmd(p, l.cmd)
 }
 
-func (l *ListBaseimagesCmd) RunE(_ *cobra.Command, args []string) (err error) {
+func (l *ListBaseimagesCmd) RunE(cmd *cobra.Command, args []string) (err error) {
 	client, err := l.Opts.NewClient()
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
-	err = l.ListBaseimages(client)
+	err = l.ListBaseimages(cmd.Context(), client)
 	if err != nil {
 		return fmt.Errorf("failed to list baseimages: %w", err)
 	}
@@ -48,8 +49,8 @@ func (l *ListBaseimagesCmd) RunE(_ *cobra.Command, args []string) (err error) {
 	return nil
 }
 
-func (l *ListBaseimagesCmd) ListBaseimages(client shared.Client) error {
-	baseimages, err := client.ListBaseimages()
+func (l *ListBaseimagesCmd) ListBaseimages(ctx context.Context, client shared.Client) error {
+	baseimages, err := client.ListBaseimages(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to list baseimages: %w", err)
 	}

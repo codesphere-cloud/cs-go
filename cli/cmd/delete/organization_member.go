@@ -4,6 +4,7 @@
 package delete
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/codesphere-cloud/cs-go/cli/cmd/shared"
@@ -43,7 +44,7 @@ func AddDeleteOrganizationMemberCmd(parent *cobra.Command, opts shared.RootOptio
 	shared.AddCmd(parent, c.cmd)
 }
 
-func (c *DeleteOrganizationMemberCmd) RunE(_ *cobra.Command, _ []string) error {
+func (c *DeleteOrganizationMemberCmd) RunE(cmd *cobra.Command, _ []string) error {
 	orgId, err := shared.RequireOrganizationID(c.Opts.RootOptions)
 	if err != nil {
 		return err
@@ -52,15 +53,15 @@ func (c *DeleteOrganizationMemberCmd) RunE(_ *cobra.Command, _ []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
-	return c.DeleteOrganizationMember(client, orgId, c.Opts.UserId)
+	return c.DeleteOrganizationMember(cmd.Context(), client, orgId, c.Opts.UserId)
 }
 
-func (c *DeleteOrganizationMemberCmd) DeleteOrganizationMember(client shared.Client, orgId string, userId int) error {
+func (c *DeleteOrganizationMemberCmd) DeleteOrganizationMember(ctx context.Context, client shared.Client, orgId string, userId int) error {
 	if err := shared.ValidateUserID(userId); err != nil {
 		return err
 	}
 
-	if err := client.RemoveOrganizationMember(orgId, userId); err != nil {
+	if err := client.RemoveOrganizationMember(ctx, orgId, userId); err != nil {
 		return fmt.Errorf("failed to remove organization member: %w", err)
 	}
 	return nil

@@ -4,6 +4,7 @@
 package api
 
 import (
+	"context"
 	"fmt"
 
 	cserrors "github.com/codesphere-cloud/cs-go/api/errors"
@@ -12,8 +13,8 @@ import (
 // Fetches the workspace plan for a given name.
 //
 // Returns [NotFound] if no plan with the given Id could be found
-func (client *Client) PlanByName(name string) (WorkspacePlan, error) {
-	plans, err := client.ListWorkspacePlans()
+func (client *Client) PlanByName(ctx context.Context, name string) (WorkspacePlan, error) {
+	plans, err := client.ListWorkspacePlans(ctx)
 	if err != nil {
 		return WorkspacePlan{}, err
 	}
@@ -26,7 +27,7 @@ func (client *Client) PlanByName(name string) (WorkspacePlan, error) {
 	return WorkspacePlan{}, cserrors.NotFound(fmt.Sprintf("no team with name %s found", name))
 }
 
-func (c *Client) ListWorkspacePlans() ([]WorkspacePlan, error) {
-	plans, r, err := c.api.MetadataAPI.MetadataGetWorkspacePlans(c.ctx).Execute()
+func (c *Client) ListWorkspacePlans(ctx context.Context) ([]WorkspacePlan, error) {
+	plans, r, err := c.api.MetadataAPI.MetadataGetWorkspacePlans(c.withAuth(ctx)).Execute()
 	return plans, cserrors.FormatAPIError(r, err)
 }

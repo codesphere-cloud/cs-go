@@ -105,7 +105,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		Name:        "list_workspaces",
 		Description: "List all workspaces for a given team",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args ListWorkspacesArgs) (*mcp.CallToolResult, any, error) {
-		workspaces, err := client.ListWorkspaces(args.TeamId)
+		workspaces, err := client.ListWorkspaces(ctx, args.TeamId)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -116,7 +116,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		Name:        "get_workspace",
 		Description: "Get details for a specific workspace",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args GetWorkspaceArgs) (*mcp.CallToolResult, any, error) {
-		workspace, err := client.GetWorkspace(args.WorkspaceId)
+		workspace, err := client.GetWorkspace(ctx, args.WorkspaceId)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -127,7 +127,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		Name:        "delete_workspace",
 		Description: "Delete a workspace by ID",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args DeleteWorkspaceArgs) (*mcp.CallToolResult, any, error) {
-		err := client.DeleteWorkspace(args.WorkspaceId)
+		err := client.DeleteWorkspace(ctx, args.WorkspaceId)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -138,7 +138,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		Name:        "workspace_status",
 		Description: "Get the runtime status of a workspace",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args WorkspaceStatusArgs) (*mcp.CallToolResult, any, error) {
-		status, err := client.WorkspaceStatus(args.WorkspaceId)
+		status, err := client.WorkspaceStatus(ctx, args.WorkspaceId)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -159,7 +159,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 			GitUrl:        args.GitUrl,
 			InitialBranch: args.InitialBranch,
 		}
-		workspace, err := client.CreateWorkspace(apiArgs)
+		workspace, err := client.CreateWorkspace(ctx, apiArgs)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -170,7 +170,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		Name:        "set_workspace_env_var",
 		Description: "Set environment variables on a workspace",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args SetEnvVarArgs) (*mcp.CallToolResult, any, error) {
-		err := client.SetEnvVarOnWorkspace(args.WorkspaceId, args.EnvVars)
+		err := client.SetEnvVarOnWorkspace(ctx, args.WorkspaceId, args.EnvVars)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -181,7 +181,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		Name:        "exec_command",
 		Description: "Execute a command inside a workspace",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args ExecCommandArgs) (*mcp.CallToolResult, any, error) {
-		stdout, stderr, err := client.ExecCommand(args.WorkspaceId, args.Command, args.Workdir, args.Env)
+		stdout, stderr, err := client.ExecCommand(ctx, args.WorkspaceId, args.Command, args.Workdir, args.Env)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -192,7 +192,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		Name:        "deploy_landscape",
 		Description: "Deploy a workspace landscape",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args DeployLandscapeArgs) (*mcp.CallToolResult, any, error) {
-		err := client.DeployLandscape(args.WorkspaceId, args.Profile)
+		err := client.DeployLandscape(ctx, args.WorkspaceId, args.Profile)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -203,7 +203,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		Name:        "start_pipeline_stage",
 		Description: "Start a CI pipeline stage",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args StartPipelineStageArgs) (*mcp.CallToolResult, any, error) {
-		err := client.StartPipelineStage(args.WorkspaceId, args.Profile, args.Stage)
+		err := client.StartPipelineStage(ctx, args.WorkspaceId, args.Profile, args.Stage)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -214,7 +214,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		Name:        "stop_pipeline_stage",
 		Description: "Stop a CI pipeline stage",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args StopPipelineStageArgs) (*mcp.CallToolResult, any, error) {
-		err := client.StopPipelineStage(args.WorkspaceId, args.Stage)
+		err := client.StopPipelineStage(ctx, args.WorkspaceId, args.Stage)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -225,7 +225,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		Name:        "get_pipeline_state",
 		Description: "Get the status of a pipeline stage",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args GetPipelineStateArgs) (*mcp.CallToolResult, any, error) {
-		states, err := client.GetPipelineState(args.WorkspaceId, args.Stage)
+		states, err := client.GetPipelineState(ctx, args.WorkspaceId, args.Stage)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -236,7 +236,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		Name:        "scale_workspace",
 		Description: "Scale the number of replicas for a workspace",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args ScaleWorkspaceArgs) (*mcp.CallToolResult, any, error) {
-		err := client.ScaleWorkspace(args.WorkspaceId, args.Replicas)
+		err := client.ScaleWorkspace(ctx, args.WorkspaceId, args.Replicas)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -247,7 +247,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		Name:        "scale_landscape_services",
 		Description: "Scale specific services in a landscape",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args ScaleLandscapeServicesArgs) (*mcp.CallToolResult, any, error) {
-		err := client.ScaleLandscapeServices(args.WorkspaceId, args.Services)
+		err := client.ScaleLandscapeServices(ctx, args.WorkspaceId, args.Services)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -258,7 +258,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		Name:        "get_logs_of_stage",
 		Description: "Retrieve logs of a workspace by stage",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args GetLogsOfStageArgs) (*mcp.CallToolResult, any, error) {
-		logs, err := client.GetLogsOfStage(args.WorkspaceId, args.Stage, args.Step)
+		logs, err := client.GetLogsOfStage(ctx, args.WorkspaceId, args.Stage, args.Step)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -269,7 +269,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		Name:        "get_logs_of_replica",
 		Description: "Retrieve logs of a workspace by replica",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args GetLogsOfReplicaArgs) (*mcp.CallToolResult, any, error) {
-		logs, err := client.GetLogsOfReplica(args.WorkspaceId, args.Step, args.Replica)
+		logs, err := client.GetLogsOfReplica(ctx, args.WorkspaceId, args.Step, args.Replica)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
@@ -280,7 +280,7 @@ func RegisterWorkspaceTools(server *mcp.Server, client *api.Client) {
 		Name:        "get_logs_of_server",
 		Description: "Retrieve logs of a workspace by server",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args GetLogsOfServerArgs) (*mcp.CallToolResult, any, error) {
-		logs, err := client.GetLogsOfServer(args.WorkspaceId, args.Step, args.Server)
+		logs, err := client.GetLogsOfServer(ctx, args.WorkspaceId, args.Step, args.Server)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}

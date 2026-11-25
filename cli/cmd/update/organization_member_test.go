@@ -5,6 +5,8 @@ package update_test
 
 import (
 	"errors"
+
+	"github.com/stretchr/testify/mock"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
 	"github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	subject "github.com/codesphere-cloud/cs-go/cli/cmd/update"
@@ -25,39 +27,39 @@ var _ = Describe("ChangeOrganizationMemberRole", func() {
 		c = &subject.UpdateOrganizationMemberCmd{Opts: subject.UpdateOrganizationMemberOpts{RootOptions: opts, UserId: 0, Role: "admin"}, ClientFactory: func(shared.RootOptions) (cmd.Client, error) { return client, nil }}
 	})
 	It("calls the API with the organization and member parameters", func() {
-		client.EXPECT().ChangeOrganizationMemberRole(orgId, 0, "admin").Return(nil).Once()
-		Expect(c.RunE(nil, nil)).To(Succeed())
+		client.EXPECT().ChangeOrganizationMemberRole(mock.Anything, orgId, 0, "admin").Return(nil).Once()
+		Expect(c.RunE(newTestCommand(), nil)).To(Succeed())
 	})
 	It("resolves organization from the environment", func() {
 		opts.OrgId = ""
 		env.EXPECT().GetOrgId().Return(orgId).Once()
-		client.EXPECT().ChangeOrganizationMemberRole(orgId, 0, "admin").Return(nil).Once()
-		Expect(c.RunE(nil, nil)).To(Succeed())
+		client.EXPECT().ChangeOrganizationMemberRole(mock.Anything, orgId, 0, "admin").Return(nil).Once()
+		Expect(c.RunE(newTestCommand(), nil)).To(Succeed())
 	})
 	It("requires an organization", func() {
 		opts.OrgId = ""
 		env.EXPECT().GetOrgId().Return("").Once()
-		Expect(c.RunE(nil, nil)).To(MatchError(ContainSubstring("organization ID not set")))
+		Expect(c.RunE(newTestCommand(), nil)).To(MatchError(ContainSubstring("organization ID not set")))
 	})
 	It("rejects malformed organization IDs", func() {
 		opts.OrgId = "invalid"
-		Expect(c.RunE(nil, nil)).To(MatchError(ContainSubstring("invalid organization ID")))
+		Expect(c.RunE(newTestCommand(), nil)).To(MatchError(ContainSubstring("invalid organization ID")))
 	})
 	It("rejects invalid member input without an API call", func() {
 		c.Opts.UserId = -1
-		Expect(c.RunE(nil, nil)).To(HaveOccurred())
+		Expect(c.RunE(newTestCommand(), nil)).To(HaveOccurred())
 	})
 	It("rejects invalid roles", func() {
 		c.Opts.Role = "owner"
-		Expect(c.RunE(nil, nil)).To(MatchError(`invalid organization role "owner": must be admin or member`))
+		Expect(c.RunE(newTestCommand(), nil)).To(MatchError(`invalid organization role "owner": must be admin or member`))
 	})
 	It("preserves API failures", func() {
 		failure := errors.New("forbidden")
-		client.EXPECT().ChangeOrganizationMemberRole(orgId, 0, "admin").Return(failure).Once()
-		Expect(c.RunE(nil, nil)).To(MatchError(ContainSubstring("forbidden")))
+		client.EXPECT().ChangeOrganizationMemberRole(mock.Anything, orgId, 0, "admin").Return(failure).Once()
+		Expect(c.RunE(newTestCommand(), nil)).To(MatchError(ContainSubstring("forbidden")))
 	})
 	It("reports client creation failures", func() {
 		c.ClientFactory = func(shared.RootOptions) (cmd.Client, error) { return nil, errors.New("no token") }
-		Expect(c.RunE(nil, nil)).To(MatchError("failed to create Codesphere client: no token"))
+		Expect(c.RunE(newTestCommand(), nil)).To(MatchError("failed to create Codesphere client: no token"))
 	})
 })

@@ -4,6 +4,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -27,7 +28,7 @@ type ExecOptions struct {
 	WorkDir *string
 }
 
-func (c *ExecCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *ExecCmd) RunE(cmd *cobra.Command, args []string) error {
 	command := strings.Join(args, " ")
 	log.Printf("running command %s\n", command)
 
@@ -36,7 +37,7 @@ func (c *ExecCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
-	return c.ExecCommand(client, command)
+	return c.ExecCommand(cmd.Context(), client, command)
 }
 
 func AddExecCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
@@ -62,7 +63,7 @@ func AddExecCmd(rootCmd *cobra.Command, opts *GlobalOptions) {
 	exec.cmd.RunE = exec.RunE
 }
 
-func (c *ExecCmd) ExecCommand(client Client, command string) error {
+func (c *ExecCmd) ExecCommand(ctx context.Context, client Client, command string) error {
 	wsId, err := c.Opts.GetWorkspaceId()
 	if err != nil {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
@@ -73,7 +74,7 @@ func (c *ExecCmd) ExecCommand(client Client, command string) error {
 		return fmt.Errorf("failed to parse environment variables: %w", err)
 	}
 
-	stdout, stderr, err := client.ExecCommand(wsId, command, *c.Opts.WorkDir, envVarMap)
+	stdout, stderr, err := client.ExecCommand(ctx, wsId, command, *c.Opts.WorkDir, envVarMap)
 
 	log.Println("STDOUT:")
 	log.Println(stdout)

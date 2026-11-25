@@ -4,6 +4,9 @@
 package list_test
 
 import (
+	"context"
+
+	"github.com/stretchr/testify/mock"
 	"github.com/codesphere-cloud/cs-go/api"
 	"github.com/codesphere-cloud/cs-go/cli/cmd"
 	listcmd "github.com/codesphere-cloud/cs-go/cli/cmd/list"
@@ -44,9 +47,9 @@ var _ = Describe("Workspace", func() {
 		})
 
 		It("lists workspaces of single team", func() {
-			mockClient.EXPECT().ListWorkspaces(0).Return([]api.Workspace{}, nil)
+			mockClient.EXPECT().ListWorkspaces(mock.Anything, 0).Return([]api.Workspace{}, nil)
 
-			w, err := l.ListWorkspaces(mockClient)
+			w, err := l.ListWorkspaces(context.Background(), mockClient)
 			Expect(w).To(Equal([]api.Workspace{}))
 			Expect(err).NotTo(HaveOccurred())
 		})
@@ -55,16 +58,16 @@ var _ = Describe("Workspace", func() {
 	Context("when team ID is not set", func() {
 		It("lists workspaces of all teams when no team ID is set", func() {
 			mockEnv.EXPECT().GetOrgId().Return("")
-			mockClient.EXPECT().ListTeams("").Return([]api.Team{{Id: 0}, {Id: 1}}, nil)
+			mockClient.EXPECT().ListTeams(mock.Anything, "").Return([]api.Team{{Id: 0}, {Id: 1}}, nil)
 
 			expectedWorkspaces := []api.Workspace{
 				{Id: 0, Name: "fakeForTeam0"},
 				{Id: 1, Name: "fakeForTeam1"},
 			}
-			mockClient.EXPECT().ListWorkspaces(0).Return([]api.Workspace{expectedWorkspaces[0]}, nil)
-			mockClient.EXPECT().ListWorkspaces(1).Return([]api.Workspace{expectedWorkspaces[1]}, nil)
+			mockClient.EXPECT().ListWorkspaces(mock.Anything, 0).Return([]api.Workspace{expectedWorkspaces[0]}, nil)
+			mockClient.EXPECT().ListWorkspaces(mock.Anything, 1).Return([]api.Workspace{expectedWorkspaces[1]}, nil)
 
-			w, err := l.ListWorkspaces(mockClient)
+			w, err := l.ListWorkspaces(context.Background(), mockClient)
 			Expect(w).To(Equal(expectedWorkspaces))
 			Expect(err).NotTo(HaveOccurred())
 		})

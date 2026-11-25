@@ -4,6 +4,7 @@
 package create
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"log"
@@ -37,7 +38,7 @@ type CreateWorkspaceOpts struct {
 	PublicDevDomain *bool
 }
 
-func (c *CreateWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *CreateWorkspaceCmd) RunE(cmd *cobra.Command, args []string) error {
 	client, err := c.Opts.NewClient()
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
@@ -53,7 +54,7 @@ func (c *CreateWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
 	}
 	wsName := args[0]
 
-	ws, err := c.CreateWorkspace(client, teamId, wsName)
+	ws, err := c.CreateWorkspace(cmd.Context(), client, teamId, wsName)
 	if err != nil {
 		return fmt.Errorf("failed to create workspace: %w", err)
 	}
@@ -119,7 +120,7 @@ func AddCreateWorkspaceCmd(create *cobra.Command, opts shared.RootOptions) {
 	workspace.cmd.RunE = workspace.RunE
 }
 
-func (c *CreateWorkspaceCmd) CreateWorkspace(client shared.Client, teamId int, wsName string) (*api.Workspace, error) {
+func (c *CreateWorkspaceCmd) CreateWorkspace(ctx context.Context, client shared.Client, teamId int, wsName string) (*api.Workspace, error) {
 	envVars, err := cs.ArgToEnvVarMap(*c.Opts.Env)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse environment variables: %w", err)
@@ -153,7 +154,7 @@ func (c *CreateWorkspaceCmd) CreateWorkspace(client shared.Client, teamId int, w
 	}
 
 	if c.Opts.Baseimage != nil && *c.Opts.Baseimage != "" {
-		baseimages, err := client.ListBaseimages()
+		baseimages, err := client.ListBaseimages(ctx)
 		if err != nil {
 			return nil, fmt.Errorf("failed to list base images: %w", err)
 		}
@@ -175,7 +176,7 @@ func (c *CreateWorkspaceCmd) CreateWorkspace(client shared.Client, teamId int, w
 		args.Restricted = &public
 	}
 
-	ws, err := client.DeployWorkspace(args)
+	ws, err := client.DeployWorkspace(ctx, args)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create workspace: %w", err)
 	}

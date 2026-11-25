@@ -4,6 +4,7 @@
 package create
 
 import (
+	"context"
 	"fmt"
 	"log"
 
@@ -45,16 +46,16 @@ func (l *CreateEnvCmd) parseFlags() {
 	l.Opts.EnvVar = l.cmd.Flags().StringArrayP("env-var", "e", []string{}, "env vars to set in form key=val")
 }
 
-func (l *CreateEnvCmd) RunE(_ *cobra.Command, args []string) (err error) {
+func (l *CreateEnvCmd) RunE(cmd *cobra.Command, args []string) (err error) {
 	client, err := l.Opts.NewClient()
 	if err != nil {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
-	return l.SetEnvironmentVariables(client)
+	return l.SetEnvironmentVariables(cmd.Context(), client)
 }
 
-func (l *CreateEnvCmd) SetEnvironmentVariables(client shared.Client) (err error) {
+func (l *CreateEnvCmd) SetEnvironmentVariables(ctx context.Context, client shared.Client) (err error) {
 	envVarMap, err := cs.ArgToEnvVarMap(*l.Opts.EnvVar)
 	if err != nil {
 		return fmt.Errorf("failed to parse environment variables: %w", err)
@@ -64,7 +65,7 @@ func (l *CreateEnvCmd) SetEnvironmentVariables(client shared.Client) (err error)
 		return fmt.Errorf("failed to get workspace ID: %w", err)
 	}
 
-	err = client.SetEnvVarOnWorkspace(wsId, envVarMap)
+	err = client.SetEnvVarOnWorkspace(ctx, wsId, envVarMap)
 	if err != nil {
 		return fmt.Errorf("failed to set environment variables %v: %w", envVarMap, err)
 	}

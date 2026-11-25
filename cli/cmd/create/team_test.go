@@ -5,6 +5,7 @@ package create_test
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -15,6 +16,7 @@ import (
 	shared "github.com/codesphere-cloud/cs-go/cli/cmd/shared"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/stretchr/testify/mock"
 )
 
 var _ = Describe("CreateTeam", func() {
@@ -60,7 +62,7 @@ var _ = Describe("CreateTeam", func() {
 
 	Context("Validation", func() {
 		It("should fail if the team name is empty", func() {
-			team, err := c.CreateTeam(mockClient, orgId, "", dcId)
+			team, err := c.CreateTeam(context.Background(), mockClient, orgId, "", dcId)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal("team name cannot be empty"))
 			Expect(team).To(BeNil())
@@ -78,13 +80,13 @@ var _ = Describe("CreateTeam", func() {
 				OrganizationId:      &orgId,
 				DefaultDataCenterId: dcId,
 			}
-			mockClient.EXPECT().CreateTeam(orgId, teamName, dcId).Return(&expectedTeam, nil).Once()
+			mockClient.EXPECT().CreateTeam(mock.Anything, orgId, teamName, dcId).Return(&expectedTeam, nil).Once()
 
 			oldStdout := os.Stdout
 			r, w, _ := os.Pipe()
 			os.Stdout = w
 
-			err := c.RunE(nil, []string{})
+			err := c.RunE(newTestCommand(), []string{})
 			Expect(err).ToNot(HaveOccurred())
 
 			_ = w.Close()
@@ -104,13 +106,13 @@ var _ = Describe("CreateTeam", func() {
 				Name:                teamName,
 				DefaultDataCenterId: dcId,
 			}
-			mockClient.EXPECT().CreateTeam("", teamName, dcId).Return(&expectedTeam, nil).Once()
+			mockClient.EXPECT().CreateTeam(mock.Anything, "", teamName, dcId).Return(&expectedTeam, nil).Once()
 
 			oldStdout := os.Stdout
 			r, w, _ := os.Pipe()
 			os.Stdout = w
 
-			err := c.RunE(nil, []string{})
+			err := c.RunE(newTestCommand(), []string{})
 			Expect(err).ToNot(HaveOccurred())
 
 			_ = w.Close()
@@ -136,18 +138,18 @@ var _ = Describe("CreateTeam", func() {
 				DefaultDataCenterId: dcId,
 			}
 			// Expect CreateTeam API call with the provided orgId
-			mockClient.EXPECT().CreateTeam(orgId, teamName, dcId).Return(&expectedTeam, nil).Once()
+			mockClient.EXPECT().CreateTeam(mock.Anything, orgId, teamName, dcId).Return(&expectedTeam, nil).Once()
 
-			team, err := c.CreateTeam(mockClient, orgId, teamName, dcId)
+			team, err := c.CreateTeam(context.Background(), mockClient, orgId, teamName, dcId)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(team.Name).To(Equal(teamName))
 			Expect(*team.OrganizationId).To(Equal(orgId))
 		})
 		It("should fail to create with no permission in this orgId", func() {
 			// Change the return values to (nil, error) to simulate an API failure
-			mockClient.EXPECT().CreateTeam(orgId, teamName, dcId).Return(nil, fmt.Errorf("permission denied")).Once()
+			mockClient.EXPECT().CreateTeam(mock.Anything, orgId, teamName, dcId).Return(nil, fmt.Errorf("permission denied")).Once()
 
-			team, err := c.CreateTeam(mockClient, orgId, teamName, dcId)
+			team, err := c.CreateTeam(context.Background(), mockClient, orgId, teamName, dcId)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("failed to create team: permission denied"))
 			Expect(team).To(BeNil())
@@ -165,10 +167,10 @@ var _ = Describe("CreateTeam", func() {
 				Name:                teamName,
 				DefaultDataCenterId: dcId,
 			}
-			mockClient.EXPECT().CreateTeam("", teamName, dcId).Return(&expectedTeam, nil).Once()
+			mockClient.EXPECT().CreateTeam(mock.Anything, "", teamName, dcId).Return(&expectedTeam, nil).Once()
 			mockEnv.EXPECT().GetOrgId().Return("").Once()
 
-			team, err := c.CreateTeam(mockClient, mockEnv.GetOrgId(), teamName, dcId)
+			team, err := c.CreateTeam(context.Background(), mockClient, mockEnv.GetOrgId(), teamName, dcId)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(team.Name).To(Equal(teamName))
 		})
@@ -181,7 +183,7 @@ var _ = Describe("CreateTeam", func() {
 
 		It("should return an error due to invalid organization ID format", func() {
 			// The error should occur before the API call to CreateTeam.
-			err := c.RunE(nil, []string{})
+			err := c.RunE(newTestCommand(), []string{})
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring("invalid organization ID format:"))
 		})

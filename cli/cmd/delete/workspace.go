@@ -4,6 +4,7 @@
 package delete
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"log"
@@ -29,7 +30,7 @@ type DeleteWorkspaceOpts struct {
 	Confirmed *bool
 }
 
-func (c *DeleteWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
+func (c *DeleteWorkspaceCmd) RunE(cmd *cobra.Command, args []string) error {
 	wsId, err := c.Opts.GetWorkspaceId()
 	if err != nil {
 		return fmt.Errorf("failed to get workspace ID: %w", err)
@@ -40,7 +41,7 @@ func (c *DeleteWorkspaceCmd) RunE(_ *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to create Codesphere client: %w", err)
 	}
 
-	return c.DeleteWorkspace(client, wsId)
+	return c.DeleteWorkspace(cmd.Context(), client, wsId)
 }
 
 func AddDeleteWorkspaceCmd(delete *cobra.Command, opts shared.RootOptions) {
@@ -61,9 +62,9 @@ func AddDeleteWorkspaceCmd(delete *cobra.Command, opts shared.RootOptions) {
 	workspace.cmd.RunE = workspace.RunE
 }
 
-func (c *DeleteWorkspaceCmd) DeleteWorkspace(client shared.Client, wsId int) error {
+func (c *DeleteWorkspaceCmd) DeleteWorkspace(ctx context.Context, client shared.Client, wsId int) error {
 
-	workspace, err := client.GetWorkspace(wsId)
+	workspace, err := client.GetWorkspace(ctx, wsId)
 	if err != nil {
 		return fmt.Errorf("failed to get workspace %d: %w", wsId, err)
 	}
@@ -77,7 +78,7 @@ func (c *DeleteWorkspaceCmd) DeleteWorkspace(client shared.Client, wsId int) err
 		}
 	}
 
-	err = client.DeleteWorkspace(wsId)
+	err = client.DeleteWorkspace(ctx, wsId)
 	if err != nil {
 		return err
 	}

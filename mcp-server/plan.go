@@ -17,7 +17,7 @@ func RegisterPlanTools(server *mcp.Server, client *api.Client) {
 		Name:        "list_workspace_plans",
 		Description: "List all standard Codesphere workspace plans",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args ListWorkspacePlansArgs) (*mcp.CallToolResult, any, error) {
-		plans, err := client.ListWorkspacePlans()
+		plans, err := client.ListWorkspacePlans(ctx)
 		if err != nil {
 			return &mcp.CallToolResult{IsError: true}, nil, err
 		}
