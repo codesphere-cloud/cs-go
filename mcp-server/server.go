@@ -39,6 +39,7 @@ func Run() error {
 	RegisterDomainTools(server, client)
 	RegisterWorkspaceTools(server, client)
 	RegisterUsageTools(server, client)
+	RegisterManagedServiceTools(server, client)
 
 	if err := server.Run(context.Background(), &mcp.StdioTransport{}); err != nil {
 		return err

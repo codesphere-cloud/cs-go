@@ -11,10 +11,10 @@ lint: install-build-deps
 
 test:
 	# -count=1 to disable caching test results
-	go test ./api/... ./cli/... ./pkg/... -count=1
+	go test ./api/... ./cli/... ./mcp-server/... ./pkg/... -count=1
 
 coverage:
-	go test ./api/... ./cli/... ./pkg/... -count=1 -coverprofile=coverage.out
+	go test ./api/... ./cli/... ./mcp-server/... ./pkg/... -count=1 -coverprofile=coverage.out
 	go tool cover -func=coverage.out
 
 coverage-html: coverage
