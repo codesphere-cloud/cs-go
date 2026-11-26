@@ -69,10 +69,7 @@ func AddGitPullCmd(git *cobra.Command, opts *GlobalOptions) {
 			Short: "Pull latest changes from git repository",
 			Long: io.Long(`Pull latest changes from the remote git repository.
 
-				if specified, pulls a specific branch.
-
-				The submodule and Git LFS options need Codesphere 1.117.0 or later.
-				Older versions ignore them.`),
+				if specified, pulls a specific branch.`),
 			Example: io.FormatExampleCommands("git pull", []io.Example{
 				{Cmd: "", Desc: "Pull latest HEAD from current branch"},
 				{Cmd: "--remote origin --branch staging", Desc: "Pull branch staging from remote origin"},

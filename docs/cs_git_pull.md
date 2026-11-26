@@ -8,9 +8,6 @@ Pull latest changes from the remote git repository.
 
 if specified, pulls a specific branch.
 
-The submodule and Git LFS options need Codesphere 1.117.0 or later.
-Older versions ignore them.
-
 ```
 cs git pull [flags]
 ```
