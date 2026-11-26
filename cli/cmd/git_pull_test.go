@@ -59,13 +59,22 @@ var _ = Describe("GitPull", func() {
 		Expect(pull.PullWorkspace(client, 42)).To(Succeed())
 	})
 
-	It("passes the submodule and Git LFS options to the pull", func() {
+	It("passes the submodule option alone to the pull", func() {
 		pull.Opts.RecurseSubmodules = true
+		workspace := api.Workspace{Id: 42, Name: "test-workspace"}
+		client.EXPECT().GetWorkspace(42).Return(workspace, nil)
+		client.EXPECT().WorkspaceStatus(42).Return(&api.WorkspaceStatus{IsRunning: true}, nil)
+		client.EXPECT().GitPull(42, "origin", "main", api.GitPullOptions{RecurseSubmodules: true}).Return(nil)
+
+		Expect(pull.PullWorkspace(client, 42)).To(Succeed())
+	})
+
+	It("passes the Git LFS option alone to the pull", func() {
 		pull.Opts.SkipLfs = true
 		workspace := api.Workspace{Id: 42, Name: "test-workspace"}
 		client.EXPECT().GetWorkspace(42).Return(workspace, nil)
 		client.EXPECT().WorkspaceStatus(42).Return(&api.WorkspaceStatus{IsRunning: true}, nil)
-		client.EXPECT().GitPull(42, "origin", "main", api.GitPullOptions{RecurseSubmodules: true, SkipLfs: true}).Return(nil)
+		client.EXPECT().GitPull(42, "origin", "main", api.GitPullOptions{SkipLfs: true}).Return(nil)
 
 		Expect(pull.PullWorkspace(client, 42)).To(Succeed())
 	})
