@@ -20,15 +20,23 @@ $ cs git pull
 
 # Pull branch staging from remote origin
 $ cs git pull --remote origin --branch staging
+
+# Pull and update all submodules
+$ cs git pull --recurse-submodules
+
+# Pull without downloading Git LFS objects
+$ cs git pull --skip-lfs
 ```
 
 ### Options
 
 ```
-      --branch string      Branch to pull
-  -h, --help               help for pull
-      --remote string      Remote to pull from
-      --timeout duration   Timeout for waking up the workspace (default 2m0s)
+      --branch string        Branch to pull
+  -h, --help                 help for pull
+      --recurse-submodules   Also initialize and update all submodules after the pull
+      --remote string        Remote to pull from
+      --skip-lfs             Do not download Git LFS objects, keep their pointer files
+      --timeout duration     Timeout for waking up the workspace (default 2m0s)
 ```
 
 ### Options inherited from parent commands

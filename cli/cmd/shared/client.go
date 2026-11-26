@@ -35,7 +35,7 @@ type Client interface {
 	StartPipelineStage(wsId int, profile string, stage string) error
 	StopPipelineStage(wsId int, stage string) error
 	GetPipelineState(wsId int, stage string) ([]api.PipelineStatus, error)
-	GitPull(wsId int, remote string, branch string) error
+	GitPull(wsId int, remote string, branch string, opts api.GitPullOptions) error
 	DeployLandscape(wsId int, profile string) error
 	CreateTeam(orgId string, name string, dcId int) (*api.Team, error)
 	DeleteTeam(teamId int) error

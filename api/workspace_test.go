@@ -6,6 +6,7 @@ package api_test
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"time"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -104,6 +105,20 @@ var _ = Describe("Workspace", func() {
 		})
 	})
 	Context("GitPull", func() {
+		// Whether the body of a pull request states both options, with the given
+		// values. An option that the body leaves out does not count as false.
+		carries := func(request any, opts api.GitPullOptions) bool {
+			body := reflect.ValueOf(request).FieldByName("workspacesGitPull2Request")
+			if body.IsNil() {
+				return false
+			}
+			states := func(name string, value bool) bool {
+				option := body.Elem().FieldByName(name)
+				return !option.IsNil() && option.Elem().Bool() == value
+			}
+			return states("RecurseSubmodules", opts.RecurseSubmodules) && states("SkipLfs", opts.SkipLfs)
+		}
+
 		It("sends request to pull without remote and origin", func() {
 			wsApiMock.EXPECT().WorkspacesGitPull(mock.Anything, ws.Id).
 				Return(openapi_client.ApiWorkspacesGitPullRequest{
@@ -111,7 +126,7 @@ var _ = Describe("Workspace", func() {
 				})
 			wsApiMock.EXPECT().WorkspacesGitPullExecute(mock.Anything).Return(nil, nil)
 
-			err := client.GitPull(ws.Id, "", "")
+			err := client.GitPull(ws.Id, "", "", api.GitPullOptions{})
 
 			Expect(err).NotTo(HaveOccurred())
 		})
@@ -123,7 +138,51 @@ var _ = Describe("Workspace", func() {
 				})
 			wsApiMock.EXPECT().WorkspacesGitPull2Execute(mock.Anything).Return(nil, nil)
 
-			err := client.GitPull(ws.Id, "origin", "my-branch")
+			err := client.GitPull(ws.Id, "origin", "my-branch", api.GitPullOptions{})
+
+			Expect(err).NotTo(HaveOccurred())
+		})
+
+		It("sends a body with both options off when none is set", func() {
+			wsApiMock.EXPECT().WorkspacesGitPull(mock.Anything, ws.Id).
+				Return(openapi_client.ApiWorkspacesGitPullRequest{
+					ApiService: wsApiMock,
+				})
+			wsApiMock.EXPECT().WorkspacesGitPullExecute(mock.MatchedBy(func(r openapi_client.ApiWorkspacesGitPullRequest) bool {
+				return carries(r, api.GitPullOptions{})
+			})).Return(nil, nil)
+
+			err := client.GitPull(ws.Id, "", "", api.GitPullOptions{})
+
+			Expect(err).NotTo(HaveOccurred())
+		})
+
+		It("sends the submodule and Git LFS options", func() {
+			opts := api.GitPullOptions{RecurseSubmodules: true, SkipLfs: true}
+			wsApiMock.EXPECT().WorkspacesGitPull(mock.Anything, ws.Id).
+				Return(openapi_client.ApiWorkspacesGitPullRequest{
+					ApiService: wsApiMock,
+				})
+			wsApiMock.EXPECT().WorkspacesGitPullExecute(mock.MatchedBy(func(r openapi_client.ApiWorkspacesGitPullRequest) bool {
+				return carries(r, opts)
+			})).Return(nil, nil)
+
+			err := client.GitPull(ws.Id, "", "", opts)
+
+			Expect(err).NotTo(HaveOccurred())
+		})
+
+		It("sends the options when remote and branch are specified", func() {
+			opts := api.GitPullOptions{RecurseSubmodules: true}
+			wsApiMock.EXPECT().WorkspacesGitPull2(mock.Anything, ws.Id, "origin", "my-branch").
+				Return(openapi_client.ApiWorkspacesGitPull2Request{
+					ApiService: wsApiMock,
+				})
+			wsApiMock.EXPECT().WorkspacesGitPull2Execute(mock.MatchedBy(func(r openapi_client.ApiWorkspacesGitPull2Request) bool {
+				return carries(r, opts)
+			})).Return(nil, nil)
+
+			err := client.GitPull(ws.Id, "origin", "my-branch", opts)
 
 			Expect(err).NotTo(HaveOccurred())
 		})
