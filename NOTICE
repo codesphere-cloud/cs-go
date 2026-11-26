@@ -461,21 +461,21 @@ License URL: https://github.com/yaml/go-yaml/blob/v3.0.6/LICENSE
  
 ----------
 Module: golang.org/x/crypto
-Version: v0.57.0
+Version: v0.59.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/crypto/+/v0.57.0:LICENSE
+License URL: https://cs.opensource.google/go/x/crypto/+/v0.59.0:LICENSE
  
 ----------
 Module: golang.org/x/mod/semver
-Version: v0.41.0
+Version: v0.42.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/mod/+/v0.41.0:LICENSE
+License URL: https://cs.opensource.google/go/x/mod/+/v0.42.0:LICENSE
  
 ----------
 Module: golang.org/x/net
-Version: v0.59.0
+Version: v0.62.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/net/+/v0.59.0:LICENSE
+License URL: https://cs.opensource.google/go/x/net/+/v0.62.0:LICENSE
  
 ----------
 Module: golang.org/x/oauth2
@@ -485,21 +485,21 @@ License URL: https://cs.opensource.google/go/x/oauth2/+/v0.37.0:LICENSE
  
 ----------
 Module: golang.org/x/sync/errgroup
-Version: v0.23.0
+Version: v0.25.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/sync/+/v0.23.0:LICENSE
+License URL: https://cs.opensource.google/go/x/sync/+/v0.25.0:LICENSE
  
 ----------
 Module: golang.org/x/sys
-Version: v0.49.0
+Version: v0.50.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/sys/+/v0.49.0:LICENSE
+License URL: https://cs.opensource.google/go/x/sys/+/v0.50.0:LICENSE
  
 ----------
 Module: golang.org/x/text
-Version: v0.42.0
+Version: v0.44.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/text/+/v0.42.0:LICENSE
+License URL: https://cs.opensource.google/go/x/text/+/v0.44.0:LICENSE
  
 ----------
 Module: golang.org/x/time/rate
@@ -509,9 +509,9 @@ License URL: https://cs.opensource.google/go/x/time/+/v0.15.0:LICENSE
  
 ----------
 Module: golang.org/x/tools
-Version: v0.49.0
+Version: v0.52.0
 License: BSD-3-Clause
-License URL: https://cs.opensource.google/go/x/tools/+/v0.49.0:LICENSE
+License URL: https://cs.opensource.google/go/x/tools/+/v0.52.0:LICENSE
  
 ----------
 Module: google.golang.org/protobuf
