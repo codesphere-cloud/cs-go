@@ -187,7 +187,7 @@ Full detail: [secret-management.md](./secret-management.md).
 | ------------ | --------------------------------------- | --------------------------------------------------------------------------------------- |
 | GET / POST   | `/teams`                                | List / create teams. Create body: `{name, dc, organizationId?}` (`dc` = datacenter id)  |
 | GET / DELETE | `/teams/{teamId}`                       | Get / delete a team                                                                     |
-| GET / POST   | `/teams/{teamId}/members`               | List / invite members. Invite body: `{userEmail, role}` (`role`: `0`=Admin, `1`=Member) |
+| GET / POST   | `/teams/{teamId}/members`               | List / add members. Add body: `{userEmail, role}` (`role`: `0`=Admin, `1`=Member)       |
 | DELETE       | `/teams/{teamId}/members/{userId}`      | Remove a member                                                                         |
 | PUT          | `/teams/{teamId}/members/{userId}/role` | Change a member's role                                                                  |
 | POST         | `/teams/{teamId}/migrate`               | Migrate a team into an organization                                                     |
